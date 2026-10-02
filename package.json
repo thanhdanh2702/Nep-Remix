@@ -8,7 +8,11 @@
     "build": "vite build",
     "start": "tsx server.ts",
     "preview": "vite preview",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "test:core": "tsx scripts/check-core.ts && tsx scripts/check-game.ts",
+    "test:browser": "playwright test",
+    "test:assets": "node scripts/check-built-assets.mjs",
+    "audit:assets": "python scripts/audit-assets.py"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -21,11 +25,12 @@
     "zod": "^4.6.5"
   },
   "devDependencies": {
+    "@playwright/test": "^1.63.0",
     "@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
-    "esbuild": "^0.25.0",
+    "esbuild": "^0.28.2",
     "tsx": "^4.21.0",
     "typescript": "^7.0.2"
   }

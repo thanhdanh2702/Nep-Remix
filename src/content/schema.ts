@@ -415,6 +415,7 @@ export const PuzzleBaseSchema = z.object({
   id: PuzzleIdSchema,
   title: z.string(),
   hasSession: z.boolean(),
+  prerequisitePuzzleIds: z.array(PuzzleIdSchema).optional(),
   hints: z.tuple([z.string(), z.string(), z.string()])
 });
 

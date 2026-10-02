@@ -112,6 +112,13 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
       return { ok: false, reason: `Puzzle '${puzzleId}' is already solved.` };
     }
 
+    if (puzzle.prerequisitePuzzleIds?.some(id => !chProgress.solvedPuzzleIds.includes(id))) {
+      return { ok: false, reason: 'Hãy gỡ tấm vải phủ trước khi mở ổ khóa.' };
+    }
+    if (puzzle.type === 'use' && puzzle.solution.requiredItemId && !state.inventory.itemIds.includes(puzzle.solution.requiredItemId)) {
+      return { ok: false, reason: 'An chưa có vật phẩm cần dùng. Hãy khám phá căn phòng.' };
+    }
+
     return true;
   },
 
@@ -166,8 +173,17 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
       }
     }
 
+    const dialogueId = 'dialogueTriggerId' in puzzle.solution ? puzzle.solution.dialogueTriggerId : undefined;
+    const dialogue = chData.dialogues.find(d => d.id === dialogueId);
+    const firstNode = dialogue?.nodes[0];
+    let nextNotebook = state.notebook;
+    if (firstNode?.clueId && !nextNotebook.unlockedClueIds.includes(firstNode.clueId)) {
+      nextNotebook = { unlockedClueIds: [...nextNotebook.unlockedClueIds, firstNode.clueId] };
+      events.push({ type: 'clueCollected', payload: { clueId: firstNode.clueId } });
+    }
     const nextState: GameState = {
       ...state,
+      notebook: nextNotebook,
       inventory: {
         ...state.inventory,
         itemIds: nextInventory
@@ -177,6 +193,7 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
         [chId]: {
           ...chProgress,
           solvedPuzzleIds: nextSolved,
+          activeDialogue: firstNode && dialogue ? { dialogueId: dialogue.id, currentNodeId: firstNode.id, history: [firstNode.id] } : chProgress.activeDialogue,
           unlockedAreaIds: nextUnlockedAreas
         }
       }

@@ -96,7 +96,12 @@ export function validateClueOrigin(state: GameState, content: GameContent): stri
       continue;
     }
 
-    const dialogueCompleted = allCompletedDialogues.has(clueDef.discoveredInDialogueId);
+    const dialogueCompleted = allCompletedDialogues.has(clueDef.discoveredInDialogueId) || Object.values(state.journey).some(progress => {
+      const active = progress.activeDialogue;
+      if (active?.dialogueId !== clueDef.discoveredInDialogueId) return false;
+      const dialogue = Object.values(content.chapters).flatMap(ch => ch.dialogues).find(d => d.id === active.dialogueId);
+      return dialogue?.nodes.some(node => node.clueId === clueId && active.history.includes(node.id));
+    });
 
     // Also check if clue might be rewarded by an already solved puzzle
     let puzzleSolvedForClue = false;

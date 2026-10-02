@@ -1,0 +1,4220 @@
+[
+  {
+    "path": "assets/accessories/guoc-moc/guoc-moc--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      3,
+      10,
+      46,
+      41
+    ],
+    "sha256": "ad72cb699c1f647979cf55ff912b3138e2a18b236dcf93fa439aea52d0d96960"
+  },
+  {
+    "path": "assets/accessories/guoc-moc/guoc-moc.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      90,
+      40,
+      95
+    ],
+    "sha256": "3e22131f85008d82f29f364a869759706e06a3fdee9e4001af86e261bc2ac033"
+  },
+  {
+    "path": "assets/accessories/hai-theu/hai-theu--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      2,
+      9,
+      46,
+      39
+    ],
+    "sha256": "989f9d8af70f3fff03f4647fc54e702dcd526ca9a8624e7724124e706d59274b"
+  },
+  {
+    "path": "assets/accessories/hai-theu/hai-theu.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      89,
+      41,
+      95
+    ],
+    "sha256": "18c19ca1e95322c7e0645b855c0006101a372c170ba47252d9e42263461efa86"
+  },
+  {
+    "path": "assets/accessories/khan-mo-qua/khan-mo-qua--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      4,
+      4,
+      44,
+      45
+    ],
+    "sha256": "7fd237f141534dee32cb9a8d1928bd13a59ace52b68aa063da16990b9c46b0d1"
+  },
+  {
+    "path": "assets/accessories/khan-mo-qua/khan-mo-qua.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      5,
+      41,
+      26
+    ],
+    "sha256": "d313bc00c26f9cbe635e067ee7789410e4286276d7869cedae2129f61956fb65"
+  },
+  {
+    "path": "assets/accessories/khan-van-den/khan-van-den--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      3,
+      12,
+      45,
+      41
+    ],
+    "sha256": "5d624f412d4a75d9c44f674cbe4f6bf409872bbfe59bfc639269d59d8d372b36"
+  },
+  {
+    "path": "assets/accessories/khan-van-den/khan-van-den.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      4,
+      40,
+      13
+    ],
+    "sha256": "830620ecbef97b0ed41583ad1322e8a8a9b6a1c2f0524b790ca3166b9cf3b0e7"
+  },
+  {
+    "path": "assets/accessories/khan-van-hoang-yen/khan-van-hoang-yen--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      3,
+      10,
+      45,
+      38
+    ],
+    "sha256": "16bf745a98a830d11b2d4ad2ac70a936b4486e04aee3a93ee913d78dbfd4b4c4"
+  },
+  {
+    "path": "assets/accessories/khan-van-hoang-yen/khan-van-hoang-yen.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      3,
+      41,
+      13
+    ],
+    "sha256": "d341be948cc203c9a43373c738c7ac7013076cdcec841310087efa2fbb4e5dbb"
+  },
+  {
+    "path": "assets/accessories/kieng-bac/kieng-bac--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      4,
+      47,
+      44
+    ],
+    "sha256": "6a1a288e009830982c42e6cf26aceb70f3423c76ce2a33ff85d06fbd7a53a629"
+  },
+  {
+    "path": "assets/accessories/kieng-bac/kieng-bac.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      27,
+      24,
+      37,
+      29
+    ],
+    "sha256": "e47acfefac0aaaec2c9cc0faf46cb1d3d1df538fb45d39e7dc17e2f8a7e820bb"
+  },
+  {
+    "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      16,
+      47,
+      34
+    ],
+    "sha256": "f23b02caa3a6d8d5d7bebd116e0358cd4b26a50c76bac46560414914922e661d"
+  },
+  {
+    "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      26,
+      12,
+      38,
+      16
+    ],
+    "sha256": "7d0e5cd56cf4d481487e3f87cafdaf3eceaee16cdc9ae37f43b1af1fb5a2c42c"
+  },
+  {
+    "path": "assets/accessories/non-la/non-la--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      8,
+      47,
+      43
+    ],
+    "sha256": "eaca458640f802fa78ab844582c59e8b3464d9cd04316dd6d5aba6427482ebc0"
+  },
+  {
+    "path": "assets/accessories/non-la/non-la.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      1,
+      49,
+      19
+    ],
+    "sha256": "7aa82e866279fa5b2daa10224a25b68921e886895f2124e805653b48758600d5"
+  },
+  {
+    "path": "assets/accessories/non-quai-thao/non-quai-thao--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      2,
+      47,
+      46
+    ],
+    "sha256": "ab4e3d4bce8f516b5c1a21ac37f30897865e595051db2d73fc076f3a86303a30"
+  },
+  {
+    "path": "assets/accessories/non-quai-thao/non-quai-thao.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      11,
+      1,
+      53,
+      34
+    ],
+    "sha256": "92f839b9bf4b13ebc8d593218b694cbe5991eaf3ba3a3a1ebbc49cbef85ce2bd"
+  },
+  {
+    "path": "assets/accessories/quat-lua/quat-lua--icon.png",
+    "kind": "accessory-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      9,
+      3,
+      39,
+      46
+    ],
+    "sha256": "6a6c4e32f6a1cad8f6659aa68c67441b9c56e059f8f35c03293aaa294b071220"
+  },
+  {
+    "path": "assets/accessories/quat-lua/quat-lua.png",
+    "kind": "accessory-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      41,
+      46,
+      54,
+      62
+    ],
+    "sha256": "c183218dafc33dba11a19a9439084a7c9315d45a6f7180cb653df4edce30654f"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/bg-mat-phai/bg-mat-phai.png",
+    "kind": "area-asset",
+    "width": 320,
+    "height": 240,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      240
+    ],
+    "sha256": "a1badd608bd0007e44278600d6dcb9d0548dcdee6498cffd3e1c8bb6796f68eb"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/bg-mat-trai/bg-mat-trai.png",
+    "kind": "area-asset",
+    "width": 320,
+    "height": 240,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      240
+    ],
+    "sha256": "36e80cce4bf3fc0f3f1c533be4436b82acba295ea95d33fbc67ca88063a537e6"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/hitbox-back-window/hitbox-back-window.png",
+    "kind": "area-asset",
+    "width": 210,
+    "height": 76,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      5,
+      203,
+      68
+    ],
+    "sha256": "a5bb0a8f42adf5bfe06eb4a6ec358e4ba335bf025032ee6da14591dcc24d27f8"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/hitbox-cold-porridge/hitbox-cold-porridge.png",
+    "kind": "area-asset",
+    "width": 32,
+    "height": 28,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      3,
+      31,
+      28
+    ],
+    "sha256": "db2e635efb9c04f16047bdbb0e603e19dfe83f886c442f94e0fe754714c0e076"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/hitbox-front-door/hitbox-front-door.png",
+    "kind": "area-asset",
+    "width": 32,
+    "height": 144,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      2,
+      23,
+      142
+    ],
+    "sha256": "70ee0e0fc90b8affe3757acc18d4a045d71bd3796b7628b755242ae03350ea6a"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/bg-mat-phai/bg-mat-phai.png",
+    "kind": "area-asset",
+    "width": 320,
+    "height": 240,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      240
+    ],
+    "sha256": "2d84580ef9b3b67ba2934e0aabf5d5559d5d4588883aee2b79f827f9de6e8422"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/bg-mat-trai/bg-mat-trai.png",
+    "kind": "area-asset",
+    "width": 320,
+    "height": 240,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      240
+    ],
+    "sha256": "2824cc5156a09d35fa2ab5ec74f1d7c42588269b7ef9b2b2e369173a59a5de02"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/hitbox-honor-plaque/hitbox-honor-plaque.png",
+    "kind": "area-asset",
+    "width": 128,
+    "height": 115,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      9,
+      2,
+      119,
+      112
+    ],
+    "sha256": "89cea08d3ff1431d21b4f996f8814d562226f63b54c8dfa3427f9816ce2faad9"
+  },
+  {
+    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/hitbox-incense-burner/hitbox-incense-burner.png",
+    "kind": "area-asset",
+    "width": 104,
+    "height": 28,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      2,
+      104,
+      27
+    ],
+    "sha256": "b47dcf28d2d38350ffc25a773f9231e944c90864919ac9cedd0f35fc04545a1c"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      50,
+      35,
+      785,
+      485
+    ],
+    "sha256": "e0dab6d22ab099a623cadf3e376a248b424d610173afbc7a39544ea3b17c3340"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--phai.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "4991350b4ec6a6a042a335f04ddf1107b7926375b3d2570f6446e829e4f3c903"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--trai.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "e693ef77db91c2b40d2b228738011dc62d1eda410b284a5e74dc7e3df04da86f"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/vfx-c0-s1-bui-nang-chieu.png",
+    "kind": "area-asset",
+    "width": 256,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      4,
+      3,
+      250,
+      94
+    ],
+    "sha256": "9f7451377e7c2b1c7d1989c0f1c30a5fc7a706e6f84fec8a972b2a9ab5a82e4d"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--phai.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "125cda4217c04db565fa5d8f1cb30e4b566d4de4c54a5fb3257a0f45bf62acfb"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--ruong-he-mo.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      117,
+      780,
+      439
+    ],
+    "sha256": "974a62feb45802f440b15ce6d65065d8157dfc1c69de0236faf2e2b695cbe5d3"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--ruong-mo-toang.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      138,
+      41,
+      663,
+      469
+    ],
+    "sha256": "26f26b9ae50e1472138211a3eaf044ffb043f8f1c5574035cb27c19d2d1637b0"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--trai.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "f794b2504c7e4110f1a35c09d6f17418eeb78518db6f85ba9cbc688538eb7dd5"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--tuong-go-mo-tay.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      180,
+      2,
+      503,
+      488
+    ],
+    "sha256": "a94ab27df15e3b767e64a91d802b3033f3d685141c30bc3f03e13e4f6a93d65d"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--vai-phu-roi.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      135,
+      794,
+      418
+    ],
+    "sha256": "252276ccc2853a6fe32b36576d0affca4534027bcc7d6b010cd8a4df0a73df3b"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/cg-prologue-mo-ruong-hoi-sinh.png",
+    "kind": "area-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "2e2654140a7686a542c1eac9e0482cb6efd60a0351ea928b8b9677ce7d120ef7"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/doc-c0-s2-loi-dan-nguoi-ba.png",
+    "kind": "area-asset",
+    "width": 400,
+    "height": 250,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      41,
+      28,
+      361,
+      225
+    ],
+    "sha256": "3f70844d9a1e24e2e2a4f523590bb1709361a08a72883fe3ea18c0c88a540fd8"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/doc-c0-s2-so-tay-ky-uc-1888.png",
+    "kind": "area-asset",
+    "width": 400,
+    "height": 250,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      4,
+      20,
+      394,
+      232
+    ],
+    "sha256": "56710f2b4a03aa9916341ec5d2ac9125e84f9635560f5594f23d83767f52e6c4"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/vfx-c0-s2-anh-sang-thuoc-go.png",
+    "kind": "area-asset",
+    "width": 256,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      3,
+      8,
+      253,
+      90
+    ],
+    "sha256": "6df65073f29dcf2a3a9354f456f88d8baa4c9c4b27744cbed01fe7ad98989acf"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/vfx-c0-s2-bong-mo-ong-le.png",
+    "kind": "area-asset",
+    "width": 256,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      3,
+      20,
+      253,
+      79
+    ],
+    "sha256": "247f837fea7232c0e2d95f9787ad4787056ed70250d65a3102b5dc827c6b9601"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/vfx-c0-s2-chi-theu-vang-sang.png",
+    "kind": "area-asset",
+    "width": 256,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      4,
+      28,
+      253,
+      58
+    ],
+    "sha256": "f51c1c00ad9ee35210f988e826a02d49574f86379d41b8f24dd9a1cafb7c2cd8"
+  },
+  {
+    "path": "assets/branding/logo-viet-phuc.png",
+    "kind": "brand-logo",
+    "width": 1154,
+    "height": 465,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1154,
+      465
+    ],
+    "sha256": "183cebbd227cb0bba5af6ecd5e94cc55a3f7c640dcab8db19ea4aa788c2387f3"
+  },
+  {
+    "path": "assets/branding/sen-ngoc.png",
+    "kind": "currency-icon",
+    "width": 160,
+    "height": 161,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      160,
+      161
+    ],
+    "sha256": "ca413b61197cdc30cc013cfb113f38a20c0088aa764f0fd7160dfc05ab4e3bcd"
+  },
+  {
+    "path": "assets/branding/viet-phuc-ui-sheet.png",
+    "kind": "branding-source-sheet",
+    "width": 2048,
+    "height": 731,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      2048,
+      731
+    ],
+    "sha256": "387e29527c7f74eed7e3436bcba7a42c1060a03dac17ae9d2eeb0d0107134a23"
+  },
+  {
+    "path": "assets/characters/an/body.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      42,
+      114,
+      1366,
+      4390
+    ],
+    "sha256": "f8334644c84768a7a72c9f92f5bda1c7ea8a09bd34ee932115ddcbc8754526cc"
+  },
+  {
+    "path": "assets/characters/an/bottom.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      36,
+      220,
+      1382,
+      4544
+    ],
+    "sha256": "455a26cbf75caf8f1140631a0dcbfdcde457ee55cc4529ad3885f46d48a5d319"
+  },
+  {
+    "path": "assets/characters/an/bottom__ivory.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      36,
+      220,
+      1382,
+      4544
+    ],
+    "sha256": "c293c33c2c96027bed19609c66336e8a3b310f41c1f8f8d5f29e6f086439ec13"
+  },
+  {
+    "path": "assets/characters/an/face.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      33,
+      72,
+      1376,
+      3444
+    ],
+    "sha256": "f2f335d1bab7eca46e2d436ec4f5a070f4b59a02466b53c02f2bd411640795fa"
+  },
+  {
+    "path": "assets/characters/an/hair_back.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      128,
+      1399,
+      4380
+    ],
+    "sha256": "97a2b1af1f165c9c8410fb695430016aa76bfcd412f37cb31a881b4ef4a66bf2"
+  },
+  {
+    "path": "assets/characters/an/hair_back__bob.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      128,
+      1393,
+      4329
+    ],
+    "sha256": "bfaa0c12740183ff3611c454662c2476106109799ad7e5d917fd75bed38b8345"
+  },
+  {
+    "path": "assets/characters/an/hair_front.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      15,
+      1386,
+      3458
+    ],
+    "sha256": "0090a4090b7d0935bc7e018622bcfbc8a45d5b457c19f2337fe93767a65a5e67"
+  },
+  {
+    "path": "assets/characters/an/hair_front__bob.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      15,
+      1386,
+      3458
+    ],
+    "sha256": "0090a4090b7d0935bc7e018622bcfbc8a45d5b457c19f2337fe93767a65a5e67"
+  },
+  {
+    "path": "assets/characters/an/hands.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      34,
+      208,
+      1380,
+      4418
+    ],
+    "sha256": "7d57e51fd777a852c03df313e84cc3b6f49e93455d21f2c0d2dac9cbb221d2c7"
+  },
+  {
+    "path": "assets/characters/an/head.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      35,
+      46,
+      1373,
+      4291
+    ],
+    "sha256": "d4d34987c6a1c73c6b8208a229b75e52022c37615e57a5c987b34f9f0abf891f"
+  },
+  {
+    "path": "assets/characters/an/head_accessory.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      58,
+      1386,
+      4303
+    ],
+    "sha256": "cbf286a7ac810d661d4895d8c735d3c91fbb37f324436265323757d2461c6a11"
+  },
+  {
+    "path": "assets/characters/an/head_accessory__peach.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      58,
+      1386,
+      4303
+    ],
+    "sha256": "0f8b7c9109d92e489cd6040bf541a42e660004319eea92ae4a16fc9c14986239"
+  },
+  {
+    "path": "assets/characters/an/legs.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      48,
+      318,
+      1360,
+      4549
+    ],
+    "sha256": "0054a05524732c13282cc888c09c8575cdb5249ef1acb323d001cfd08e07a44a"
+  },
+  {
+    "path": "assets/characters/an/outfit_back.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      218,
+      1390,
+      4515
+    ],
+    "sha256": "2c4ae659e600a57614ecc4a6d97e773705ec448957d7917cb77ca12dbe76013d"
+  },
+  {
+    "path": "assets/characters/an/outfit_back__jade.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      218,
+      1390,
+      4515
+    ],
+    "sha256": "63a4c3ff5f1ee0c5e30333236ce87381b34bad9abe87f75bf7609c062037f261"
+  },
+  {
+    "path": "assets/characters/an/outfit_back__rose.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      218,
+      1390,
+      4515
+    ],
+    "sha256": "a6cc9d077fa06f29bc74f2cf8d7f9c3b3a005bcd54c01895b6fcc6374ed3e030"
+  },
+  {
+    "path": "assets/characters/an/outfit_main.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      125,
+      1387,
+      4521
+    ],
+    "sha256": "f8cc3b98ba3512530ea82bc790e41607661516e3433fed598585154def49b69f"
+  },
+  {
+    "path": "assets/characters/an/outfit_main__jade.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      125,
+      1387,
+      4521
+    ],
+    "sha256": "2b8bfb8846c057f044b9a781b96f270c532dfff8f6d59f76047ea1f7670e4320"
+  },
+  {
+    "path": "assets/characters/an/outfit_main__rose.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      125,
+      1387,
+      4521
+    ],
+    "sha256": "d7f1ed88dfdf8ed578c4a9e0a7b23f5a8dd9e62dc579cdb35ec0d0fd8fda67dc"
+  },
+  {
+    "path": "assets/characters/an/shadow.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      52
+    ],
+    "bounds": [
+      47,
+      395,
+      1361,
+      4566
+    ],
+    "sha256": "1d30e16f8d6f62c52cc3781e29cab5def65151b6dbd4195b05a30277b23b690e"
+  },
+  {
+    "path": "assets/characters/an/shoes.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      31,
+      372,
+      1377,
+      4556
+    ],
+    "sha256": "3fef4bfa9b4ca535182478a2e791165721d1798b19f8ffddaf809108eeedf323"
+  },
+  {
+    "path": "assets/characters/an/shoes__gold.png",
+    "kind": "character-layer",
+    "width": 1408,
+    "height": 4576,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      31,
+      372,
+      1377,
+      4556
+    ],
+    "sha256": "3dbb46bc01ca0cf5b73cc984a4dc3598f0827dcbde9758e00cd2780aceb85f62"
+  },
+  {
+    "path": "assets/characters/ba-lon/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      0,
+      49,
+      95
+    ],
+    "sha256": "cbdc2d4b3ef739f72f964529c6231d378f611397eaf857fcd85580439fa9bb9f"
+  },
+  {
+    "path": "assets/characters/ba-lon/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      0,
+      49,
+      94
+    ],
+    "sha256": "79ff6cedceb40be1934667572c4caefd1ae0e00aea82e1986a6ebfee6211301b"
+  },
+  {
+    "path": "assets/characters/ba-lon/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      1,
+      47,
+      95
+    ],
+    "sha256": "5a9f6554bc08ca73f3efdd6ad598a190ce5c451a5021318266fa5207e970e06a"
+  },
+  {
+    "path": "assets/characters/ba-lon/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      19,
+      1,
+      46,
+      95
+    ],
+    "sha256": "8b05c41cbfa2d28abda25e0457f2194d23d216ec0e649d7655d7551811d3e489"
+  },
+  {
+    "path": "assets/characters/ba-mai/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      3,
+      45,
+      93
+    ],
+    "sha256": "9db205f12372ef0ab37f15a2b073aafaa5c6cf294a10cd41181daa0fa2c5eb60"
+  },
+  {
+    "path": "assets/characters/ba-mai/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      2,
+      44,
+      94
+    ],
+    "sha256": "78f1644d6399388c923bb159f550c3b571114c8e35a12a280564d89a2c1586e3"
+  },
+  {
+    "path": "assets/characters/ba-mai/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      1,
+      44,
+      95
+    ],
+    "sha256": "428a5d79e9908544c969a81c6381375af160a9dec654a453e614e83c2f816af3"
+  },
+  {
+    "path": "assets/characters/ba-mai/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      1,
+      43,
+      95
+    ],
+    "sha256": "92d59c8a55de69113bbdceb5356f86b91976450ebe3124957bf9c0d87707b900"
+  },
+  {
+    "path": "assets/characters/ca-nghi/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      11,
+      5,
+      57,
+      92
+    ],
+    "sha256": "9de4ab35fcbeee1677ec8db412f22c2866fb2042694c6a1729ad814eb6b29534"
+  },
+  {
+    "path": "assets/characters/ca-nghi/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      11,
+      5,
+      54,
+      93
+    ],
+    "sha256": "e09ba5f4d00a3596dd9e8e4dd27013c85beaee497c8847564a0bcab65bbb475d"
+  },
+  {
+    "path": "assets/characters/ca-nghi/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      12,
+      4,
+      51,
+      93
+    ],
+    "sha256": "e9ac130bc583624e43bc443673679ee4cf71e7318671a86cb727651388d9696c"
+  },
+  {
+    "path": "assets/characters/ca-nghi/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      2,
+      50,
+      95
+    ],
+    "sha256": "e97605652a1eb381048953132d0fd006089b2d1324b76bd0182f8013a1b64835"
+  },
+  {
+    "path": "assets/characters/cat-nep/view-back.png",
+    "kind": "character-sprite",
+    "width": 32,
+    "height": 32,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      3,
+      28,
+      30
+    ],
+    "sha256": "b52eb11fcaf04fa1a61b2deed6e5f5f14fb7800811cd2573bf72898f57db4667"
+  },
+  {
+    "path": "assets/characters/cat-nep/view-front.png",
+    "kind": "character-sprite",
+    "width": 32,
+    "height": 32,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      4,
+      3,
+      25,
+      30
+    ],
+    "sha256": "a611c5cdcb29addab78d180b87bdb061d3fbe3189a05f106f9451df64f107962"
+  },
+  {
+    "path": "assets/characters/cat-nep/view-left.png",
+    "kind": "character-sprite",
+    "width": 32,
+    "height": 32,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      3,
+      29,
+      30
+    ],
+    "sha256": "f962d1b74c2e50e80b82e00d3511a33725a34589d564cc67787f3a08c8a9fb53"
+  },
+  {
+    "path": "assets/characters/cat-nep/view-right.png",
+    "kind": "character-sprite",
+    "width": 32,
+    "height": 32,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      4,
+      3,
+      25,
+      30
+    ],
+    "sha256": "11a919d22e7f4432a7ea99b17d7e7b82dfb05a81dae61e53967022372a771b14"
+  },
+  {
+    "path": "assets/characters/chu-suu/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      3,
+      50,
+      93
+    ],
+    "sha256": "dac0f9559cddad03e44de1f292dd9efc9135708c4305c204aba363b69bb2b718"
+  },
+  {
+    "path": "assets/characters/chu-suu/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      2,
+      50,
+      94
+    ],
+    "sha256": "d495f20c9ccc36d3708c70e8980ab796445ff90feec430d09744e03cb256117a"
+  },
+  {
+    "path": "assets/characters/chu-suu/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      3,
+      45,
+      94
+    ],
+    "sha256": "b74f01ff6a1fe5bced961de6b90db7caaaf4ecc73fb202903a43f44faea96189"
+  },
+  {
+    "path": "assets/characters/chu-suu/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      1,
+      45,
+      95
+    ],
+    "sha256": "29df12c981c0061cda940450c204e891b6029cae9d53cdfec3a1c5880e73b619"
+  },
+  {
+    "path": "assets/characters/cu-cam/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      0,
+      47,
+      95
+    ],
+    "sha256": "5afe71559d401752c568d8f4d60cee03671bb3854cd14f5f2f3e41cdcd2d257b"
+  },
+  {
+    "path": "assets/characters/cu-cam/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      2,
+      46,
+      94
+    ],
+    "sha256": "0da9fc21bd4e98b2b8019c53b08d49fb3674a0691b6364d84dab8650f2641c8e"
+  },
+  {
+    "path": "assets/characters/cu-cam/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      1,
+      46,
+      95
+    ],
+    "sha256": "65788e0fe38d93008805736486ec3d76424e58db085252531b3cfe66baa58ece"
+  },
+  {
+    "path": "assets/characters/cu-cam/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      19,
+      1,
+      43,
+      95
+    ],
+    "sha256": "38c0b9b62208ab6cb6571be5280d4d6da3b9284d991022683c066d6dd5b81873"
+  },
+  {
+    "path": "assets/characters/cu-loan/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      16,
+      3,
+      45,
+      94
+    ],
+    "sha256": "8b04d320d4d33ee4d3b82bfc14734fa953f9c5e27630f43eca47614bad71484f"
+  },
+  {
+    "path": "assets/characters/cu-loan/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      2,
+      47,
+      95
+    ],
+    "sha256": "b1a5b78cc196009768788a39e035987928e46da536c8cbaf1c75cfa26149faf9"
+  },
+  {
+    "path": "assets/characters/cu-loan/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      2,
+      46,
+      95
+    ],
+    "sha256": "bfd97caec3bf3ecc96a77d82d84750f4f3c2e9709db8dbf09b57df796a11abfe"
+  },
+  {
+    "path": "assets/characters/cu-loan/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      3,
+      46,
+      95
+    ],
+    "sha256": "9208f86016c306c39f8d76e83eebacb1552c18afeee052ad8eb2b931a3fa4843"
+  },
+  {
+    "path": "assets/characters/hoang-lam/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      16,
+      4,
+      51,
+      92
+    ],
+    "sha256": "36d14d04d58911d112d3723775f232b794e7d2b4a580816db4cc08d4a25c4200"
+  },
+  {
+    "path": "assets/characters/hoang-lam/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      16,
+      6,
+      48,
+      91
+    ],
+    "sha256": "8127b15c2680d3b57ae5dfa1cef3d40e8bd8a0fb3b77ee77d159357aaa1a23e0"
+  },
+  {
+    "path": "assets/characters/hoang-lam/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      6,
+      45,
+      93
+    ],
+    "sha256": "ceeb44210cb6c95850a109e6d673bcc6a3b85b8bde9c13858cd0430ba4e13ea5"
+  },
+  {
+    "path": "assets/characters/hoang-lam/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      3,
+      47,
+      93
+    ],
+    "sha256": "5351b8a3e5ca855795332ec9de87e97059bcbf23949acc2e7674f4d0f0627f33"
+  },
+  {
+    "path": "assets/characters/me-phuong/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      18,
+      2,
+      44,
+      94
+    ],
+    "sha256": "b05c3389f5c30066392956609e9860db2502c3b3de19a1c231ad4392ab4d375f"
+  },
+  {
+    "path": "assets/characters/me-phuong/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      19,
+      2,
+      45,
+      94
+    ],
+    "sha256": "8fdcf02531832b58123fed7c1e68860de338b53e7dcb8e77c2d1dc077fd3e9c7"
+  },
+  {
+    "path": "assets/characters/me-phuong/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      1,
+      44,
+      94
+    ],
+    "sha256": "9753a1c598adc95e341b6723c259e1751a2c947942578317a0b6e773641b90a4"
+  },
+  {
+    "path": "assets/characters/me-phuong/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      2,
+      47,
+      94
+    ],
+    "sha256": "a7a41b0822e28a3d9f71d038331e2ac4dc6d773444d59fe985b0516c419d0874"
+  },
+  {
+    "path": "assets/characters/ong-le/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      7,
+      1,
+      60,
+      95
+    ],
+    "sha256": "63fd8bd054902384b9ea88aa628c3638090a4afc6a29bbb92ec0ed303ea700eb"
+  },
+  {
+    "path": "assets/characters/ong-le/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      1,
+      60,
+      95
+    ],
+    "sha256": "f08f3e3360f6730045393d1e13971a3f6feeff5f137870007b1c833b551e8c9a"
+  },
+  {
+    "path": "assets/characters/ong-le/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      2,
+      54,
+      95
+    ],
+    "sha256": "1dbf7a8b08171480a7ad69eb67b8cb0492c05be7342429aaed89ac83f67b9846"
+  },
+  {
+    "path": "assets/characters/ong-le/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      1,
+      50,
+      95
+    ],
+    "sha256": "66678aeb1c2e6e2df2d84faed969b4234a4dc01a02f9f6cde52e2d6753c30855"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      4,
+      49,
+      93
+    ],
+    "sha256": "b19b0027cb40c7a2d1a4f37b0dfe419ce110799434baad2ce7e916a66d70f8e6"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      2,
+      49,
+      93
+    ],
+    "sha256": "8fb7697d134d3a5b9a32a6edde951e528f011fc7444146bd9f89393dc8358b44"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      1,
+      46,
+      95
+    ],
+    "sha256": "003565375a2c069057372ea6ba5c1b74a4ad6f4b19dbf800364dccf65dcea159"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      1,
+      46,
+      95
+    ],
+    "sha256": "11e408df0fedee011402c81216616581fa2119f85c806c2524b4b6c2a87ef31f"
+  },
+  {
+    "path": "assets/characters/truong-toc-bui/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      13,
+      3,
+      53,
+      93
+    ],
+    "sha256": "7a52e919b13c754a4d6aadb3534944f7ee248d45d55f510e5782df5597bad70d"
+  },
+  {
+    "path": "assets/characters/truong-toc-bui/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      12,
+      3,
+      51,
+      92
+    ],
+    "sha256": "1f31cbdddf23aa5efe692591c88cfd70dfd3433c9bc8ac2dd19c4237496c9fe7"
+  },
+  {
+    "path": "assets/characters/truong-toc-bui/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      13,
+      3,
+      48,
+      94
+    ],
+    "sha256": "d20b3ac4f0dd3d5a9f24439338090a0317afb3a852dd61f16354a98b89ca6df8"
+  },
+  {
+    "path": "assets/characters/truong-toc-bui/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      1,
+      48,
+      94
+    ],
+    "sha256": "8397cc8fb4c6e115e730f82305545bb6d804ec3f84b8cc132e7a6164d81d9ec5"
+  },
+  {
+    "path": "assets/characters/vinh/view-back.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      3,
+      47,
+      92
+    ],
+    "sha256": "7f94caac5aa79766c295f184f8c3fc5be6402dd751f0875deb54090769cd3d22"
+  },
+  {
+    "path": "assets/characters/vinh/view-front.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      4,
+      47,
+      93
+    ],
+    "sha256": "534bbf5703180c06e5024c2fdf750f78b9549636144aa7d832f9ca265810f8a6"
+  },
+  {
+    "path": "assets/characters/vinh/view-left.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      3,
+      42,
+      94
+    ],
+    "sha256": "3b19819dcdac2cf2be0cf73747e7f01eb0baa30d05fb4bc915b7fafdf5525f30"
+  },
+  {
+    "path": "assets/characters/vinh/view-right.png",
+    "kind": "character-sprite",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      3,
+      42,
+      93
+    ],
+    "sha256": "a019b1f3bc8f9e141e15b206d5255d90b89fc9d251e8155d478289668ddc37be"
+  },
+  {
+    "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      26,
+      4,
+      70,
+      93
+    ],
+    "sha256": "d647b4da802970458d9e38bdce0604ed1426db1aa1bfab8fbe667e79c51620b0"
+  },
+  {
+    "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      25,
+      48,
+      90
+    ],
+    "sha256": "cf26aad732f70b67eb2e78375b2368105a72a48cacc3ec1be279711987816842"
+  },
+  {
+    "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      4,
+      72,
+      93
+    ],
+    "sha256": "f4b416187eaa3caadc6035f1add64dabd78b52d0dc44a2a8cd2ef56d41701277"
+  },
+  {
+    "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      25,
+      47,
+      90
+    ],
+    "sha256": "4f84d341f4e0163262efe9bc664072a164bf77b5deee9b77fdc06259c8edb30a"
+  },
+  {
+    "path": "assets/garments/ao-dai-lemur/ao-dai-lemur--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      2,
+      76,
+      94
+    ],
+    "sha256": "1a9cc3da84f5726c31968d24a32a2309f15fd46440cec8f1b560c3ff61828c5c"
+  },
+  {
+    "path": "assets/garments/ao-dai-lemur/ao-dai-lemur.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      16,
+      25,
+      48,
+      90
+    ],
+    "sha256": "d8f389714702c4dfc12281de3aaf76fbf833bade1e18de646ba676d89273ef2e"
+  },
+  {
+    "path": "assets/garments/ao-dai-popolin/ao-dai-popolin--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      26,
+      2,
+      70,
+      94
+    ],
+    "sha256": "f11671dcf271b925f57a4ea6e2fa54fe072136f987b2e16122c998ffe54c35b1"
+  },
+  {
+    "path": "assets/garments/ao-dai-popolin/ao-dai-popolin.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      25,
+      47,
+      90
+    ],
+    "sha256": "739f51e9c51ae3512ad0c6abad48289ee1f4ab89e38204d90cfdac5031e26232"
+  },
+  {
+    "path": "assets/garments/ao-dai-raglan/ao-dai-raglan--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      25,
+      2,
+      71,
+      94
+    ],
+    "sha256": "c83e7c3e7e60d56274de908971a6a6878d3999aafa50d247a16e3228ba805ceb"
+  },
+  {
+    "path": "assets/garments/ao-dai-raglan/ao-dai-raglan.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      25,
+      48,
+      90
+    ],
+    "sha256": "cd08249d0b0d5844d0e9a9c5e6bdd090ec7bc5144f172ee5290c6ae67d8d9e28"
+  },
+  {
+    "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      4,
+      68,
+      92
+    ],
+    "sha256": "77d99b79d6cfee5778fb3cd3e17ecf18e2faf7c2afa6880ab9b7eda32dc97c07"
+  },
+  {
+    "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      25,
+      47,
+      90
+    ],
+    "sha256": "1b9c74ed92f914ba8eadbf2579289aa76ecdf199d7b92c73b403df81e7253676"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      2,
+      79,
+      93
+    ],
+    "sha256": "0bd04c49f2c02acbc5f9470042f6575586b0837d6d2d85b775f3f12775689ce8"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      10,
+      25,
+      53,
+      90
+    ],
+    "sha256": "5ac4752ab017cfe7316beea287156b1a2f9e6522f70499de82033210aeaa9b06"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      16,
+      4,
+      80,
+      92
+    ],
+    "sha256": "9eaf3f6f6a8330299527ae3baedc6b4ee7b4080ffe5215af09bc549649984567"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      25,
+      50,
+      90
+    ],
+    "sha256": "43384eb1b516d4b2787540612c3cf7c9cea48911ba654b0854c8a70264825277"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      2,
+      4,
+      94,
+      92
+    ],
+    "sha256": "60461f92f7b7d2f9b0a03d5b2e57efc6405eea4ea0366130a95d33696eecb21e"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      25,
+      55,
+      90
+    ],
+    "sha256": "856d6abd42ba42f3e1adc9d46c62dd4982eba0cb20931b6c7945bc45e8f65ade"
+  },
+  {
+    "path": "assets/garments/ao-tu-than/ao-tu-than--icon.png",
+    "kind": "garment-thumb",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      4,
+      81,
+      92
+    ],
+    "sha256": "2dc264583f9a61dd59ae5eacdd7c0e09ad676fe0396d476a7e82355584f27532"
+  },
+  {
+    "path": "assets/garments/ao-tu-than/ao-tu-than.png",
+    "kind": "garment-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      25,
+      49,
+      90
+    ],
+    "sha256": "fe21d01c68a15f00ee8120c1b43a986982dd90ddb798c284760e2d6900b7156e"
+  },
+  {
+    "path": "assets/items/ban-giao-keo-ep-hon/ban-giao-keo-ep-hon.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      7,
+      10,
+      41,
+      40
+    ],
+    "sha256": "d4e5fe5297b599c22349805ff696541a902c3fa6d1314a4b430aa15274f6b0cd"
+  },
+  {
+    "path": "assets/items/ban-ve-ao-dai-tan-thoi/ban-ve-ao-dai-tan-thoi.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      5,
+      42,
+      44
+    ],
+    "sha256": "7160a5be8e8826f2d1c556cedfa05eda93a792056810c24dc5979c964f107c84"
+  },
+  {
+    "path": "assets/items/bien-lai-tra-no-goc-1935/bien-lai-tra-no-goc-1935.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      5,
+      9,
+      43,
+      40
+    ],
+    "sha256": "6379e1a8a0259ea35a8a4ff87403f1a83d22ad36c3c71dd6a0c6f1e3085d6e4c"
+  },
+  {
+    "path": "assets/items/bien-nhan-tien-thay-boi/bien-nhan-tien-thay-boi.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      5,
+      41,
+      44
+    ],
+    "sha256": "06686f0012b7f5279d03e0952e91eca70bd3e5df19c7cdd256f6b9acf2bc2ffa"
+  },
+  {
+    "path": "assets/items/bua-chu-tru-yeu-1/bua-chu-tru-yeu-1.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      12,
+      4,
+      36,
+      44
+    ],
+    "sha256": "3152f7deeacd3bd12b2580939801124baf608e586ab2284bc631ea3b01f314f1"
+  },
+  {
+    "path": "assets/items/bua-chu-tru-yeu-2/bua-chu-tru-yeu-2.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      13,
+      6,
+      35,
+      43
+    ],
+    "sha256": "da2f62ad9ca8df5e49b6d9210d61ac801faaea57e87490ba965883ce7640abb4"
+  },
+  {
+    "path": "assets/items/buc-thu-tay-chong-cu-cam/buc-thu-tay-chong-cu-cam.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      10,
+      42,
+      41
+    ],
+    "sha256": "ddf70fa62d859d1c6b9415d55aa37c862680e42f49d6e59514ffd2d777b2c14f"
+  },
+  {
+    "path": "assets/items/cac-trang-gia-pha-goc-bi-xe/cac-trang-gia-pha-goc-bi-xe.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      5,
+      44,
+      44
+    ],
+    "sha256": "db78619e3925ea4aaaa68a8966a9a1c25df492a25e8bd4cf3d5413a03ed4cac3"
+  },
+  {
+    "path": "assets/items/chia-khoa-dong-ba-chau/chia-khoa-dong-ba-chau.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      13,
+      4,
+      35,
+      44
+    ],
+    "sha256": "06c7b4a87f2f28ce73119b725937eb8f4271da887aa2d7e88cfce426c68181bc"
+  },
+  {
+    "path": "assets/items/chia-khoa-ket-sat-bang-thau/chia-khoa-ket-sat-bang-thau.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      2,
+      35,
+      46
+    ],
+    "sha256": "217eaa8b1ff9b8b9867a6ac17907543b41ef909516ac208fe5a67f51dfb2c983"
+  },
+  {
+    "path": "assets/items/chiec-ao-dai-cuoi-vai-phin/chiec-ao-dai-cuoi-vai-phin.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      8,
+      42,
+      43
+    ],
+    "sha256": "8dd6b8d48a145640c7229a84a54aad47a80b25530f6ca89985f43024d5656a26"
+  },
+  {
+    "path": "assets/items/con-thoi-go-mun/con-thoi-go-mun.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      3,
+      13,
+      45,
+      36
+    ],
+    "sha256": "e4e4e878a3c63debdbf4a303d104d8afb45b61174001dcd58af1a3a416130a9b"
+  },
+  {
+    "path": "assets/items/cuon-chi-to-dao/cuon-chi-to-dao.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      12,
+      8,
+      36,
+      41
+    ],
+    "sha256": "ada3ac843138c87e3cc08c5b80453a9638bc109a00197da710515bf1cdda1683"
+  },
+  {
+    "path": "assets/items/dung-cu-moc-then-cua/dung-cu-moc-then-cua.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      9,
+      3,
+      45,
+      45
+    ],
+    "sha256": "5971b48ceec7811b83ec5e10d4cc48e1aa22087456fe867add3f7d1670796466"
+  },
+  {
+    "path": "assets/items/ho-so-giam-dinh-y-phuc-2026/ho-so-giam-dinh-y-phuc-2026.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      4,
+      4,
+      45,
+      44
+    ],
+    "sha256": "42d2d3e3f1832c9dec75b32e076f08ecadffbcfbe48793ca54963bc5b9b55763"
+  },
+  {
+    "path": "assets/items/keo-may-bang-dong/keo-may-bang-dong.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      2,
+      4,
+      46,
+      44
+    ],
+    "sha256": "1a0137e47c6e9ef920af309981991f9a06009b72dd571d65b298dfd8d0926e37"
+  },
+  {
+    "path": "assets/items/kim-gut-bang-bac/kim-gut-bang-bac.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      10,
+      9,
+      40,
+      40
+    ],
+    "sha256": "096c9307f8cce895bb613fd82676e885966e9c603bf5c2bf45987445d3f8a827"
+  },
+  {
+    "path": "assets/items/kim-theu-thep/kim-theu-thep.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      11,
+      4,
+      41,
+      44
+    ],
+    "sha256": "0b393e0b49b2926f952dc290cbf23bc61f17fb33451815b9b8edbb54f86e93af"
+  },
+  {
+    "path": "assets/items/manh-ban-ve-ao-dai-1/manh-ban-ve-ao-dai-1.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      5,
+      5,
+      44,
+      43
+    ],
+    "sha256": "6ae9537df7f2f4df2abdf49353ffd27d979bb2fc1b7afca2194cbbb681af3eee"
+  },
+  {
+    "path": "assets/items/manh-ban-ve-ao-dai-2/manh-ban-ve-ao-dai-2.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      2,
+      43,
+      47
+    ],
+    "sha256": "0b2ffa47fcbbb7d816b07cc933ce76e86d307951a79b9ca65cb1d32a655b1234"
+  },
+  {
+    "path": "assets/items/manh-ban-ve-ao-dai-3/manh-ban-ve-ao-dai-3.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      7,
+      4,
+      43,
+      45
+    ],
+    "sha256": "df384245cefc59d39660f2d05feca2f0225e7f24d34645699cfe75684ba75515"
+  },
+  {
+    "path": "assets/items/manh-ban-ve-ao-dai-4/manh-ban-ve-ao-dai-4.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      9,
+      5,
+      45,
+      44
+    ],
+    "sha256": "09eb627a1e3012a1db0ac56dac471d072a710d5317eba7d10cb1cc0ff1be3bc7"
+  },
+  {
+    "path": "assets/items/nam-cham-loa-dai/nam-cham-loa-dai.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      11,
+      13,
+      37,
+      37
+    ],
+    "sha256": "6b380012375b72e3b02304f21b55722b23d4cade53f04bde6d5d70aa8ab66922"
+  },
+  {
+    "path": "assets/items/phan-may-mau-xanh/phan-may-mau-xanh.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      8,
+      42,
+      42
+    ],
+    "sha256": "d58a30f87469ceff31e670a30cac3c581ffd525bbb6cf87ca3cf15eaaf1bb1d1"
+  },
+  {
+    "path": "assets/items/so-tu-vi-nguyen-ban-1962/so-tu-vi-nguyen-ban-1962.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      5,
+      42,
+      45
+    ],
+    "sha256": "bb196bff2588af244b368f431e361895406d338e51cff9fcbe94a97b83cac313"
+  },
+  {
+    "path": "assets/items/that-lung-lua-cham/that-lung-lua-cham.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      7,
+      8,
+      43,
+      45
+    ],
+    "sha256": "b59758200e81fb5561a0089cbc4ebed9d272678e5b9095c8ee98785afd7d243e"
+  },
+  {
+    "path": "assets/items/thu-tay-thoa-thuan-boi-toan/thu-tay-thoa-thuan-boi-toan.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      2,
+      10,
+      46,
+      41
+    ],
+    "sha256": "6474f072ac65b7f27517a1c53b4a3554ebc90f6c4063a6360df0c327b8988fc3"
+  },
+  {
+    "path": "assets/items/thuoc-go-tho-may-1888/thuoc-go-tho-may-1888.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      2,
+      6,
+      47,
+      45
+    ],
+    "sha256": "48c863c6968e14fc36c56e3477682e6589f1bdb94d615865f69260f92a60305f"
+  },
+  {
+    "path": "assets/items/to-van-tu-cam-co-dat/to-van-tu-cam-co-dat.png",
+    "kind": "item-icon",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      7,
+      3,
+      42,
+      45
+    ],
+    "sha256": "bda10c1f84b2a31d7386c5a06456a41054ce3b6d347cdf42f1daac59ccebba62"
+  },
+  {
+    "path": "assets/paperdoll/avatar-female-default.png",
+    "kind": "paperdoll-layer",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      9,
+      3,
+      119,
+      128
+    ],
+    "sha256": "fb667a7038cc1687b0f19e924743844810f4300da5fc1ee0a631ed65309eefc5"
+  },
+  {
+    "path": "assets/paperdoll/body-female.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      18,
+      6,
+      46,
+      93
+    ],
+    "sha256": "a351b576622248935e130eff56f72cb242f456f6c8f02a5f8512a1500465d776"
+  },
+  {
+    "path": "assets/paperdoll/body-male.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      4,
+      50,
+      93
+    ],
+    "sha256": "b554aa22cadc345086245c9f04df8c3058f723b2b70368529ec75523886eed4f"
+  },
+  {
+    "path": "assets/paperdoll/face-blink.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      11,
+      36,
+      20
+    ],
+    "sha256": "7c9f1be6e2acdcd24680dafca19f5045646bff5d6d5b989d713104f1e4f29bbc"
+  },
+  {
+    "path": "assets/paperdoll/face-neutral.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      11,
+      36,
+      20
+    ],
+    "sha256": "d130ece30e0050c71a49aac2baae3e1f0cc38e6c35a659533e13aea2cce1c4a5"
+  },
+  {
+    "path": "assets/paperdoll/face-smile.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      11,
+      36,
+      16
+    ],
+    "sha256": "d28a7bd36fe844aafd9475f6728787bafbd5167417378962e15c50b4c6278502"
+  },
+  {
+    "path": "assets/paperdoll/hair-long-female-back.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      4,
+      42,
+      48
+    ],
+    "sha256": "2aa75f7c973a668a70254eef08af18eb5499795cd98f7f18586b2964bec4a95b"
+  },
+  {
+    "path": "assets/paperdoll/hair-long-female-front.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      4,
+      41,
+      27
+    ],
+    "sha256": "515cba23e3cac0735b1c7054af63e8aab76db7e4d6d98f7cd74ac43f535e8e17"
+  },
+  {
+    "path": "assets/paperdoll/hair-male-back.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      3,
+      40,
+      21
+    ],
+    "sha256": "25b9cef5dc019f165be632b382b2832326f86b21187a5bd4885aa9e0c7094bfa"
+  },
+  {
+    "path": "assets/paperdoll/hair-male-front.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      3,
+      40,
+      17
+    ],
+    "sha256": "75725f15b53507c032061621fba53142b5b467712b81e6a7bb39347cf9f05c12"
+  },
+  {
+    "path": "assets/paperdoll/hair-short-female-back.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      4,
+      40,
+      22
+    ],
+    "sha256": "38a8d909277053a1db1d8e056698c6b9737f29bb95b2b5c13fe0761d4c77e595"
+  },
+  {
+    "path": "assets/paperdoll/hair-short-female-front.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      4,
+      40,
+      18
+    ],
+    "sha256": "dd1afa37a528f35b13b04d1b4fa77bbf6cf4563efc6c5a4dceb298c6b0b498eb"
+  },
+  {
+    "path": "assets/paperdoll/hair-shoulder-female-back.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      4,
+      41,
+      29
+    ],
+    "sha256": "c5352d16a59695143bb929f0ffcaea4e2b3f7d24cf7b8793bf59bbf0c8592ed0"
+  },
+  {
+    "path": "assets/paperdoll/hair-shoulder-female-front.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      4,
+      41,
+      26
+    ],
+    "sha256": "42abb2c53542cee39c7fd594dd4b5c83d07d1f547fe751367a8570adc345400c"
+  },
+  {
+    "path": "assets/paperdoll/layer-0-shadow.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      19,
+      91,
+      45,
+      95
+    ],
+    "sha256": "df3487627cde910d5572bb2b8cda7083f71ee00fd7db8b1ceb4315943984648e"
+  },
+  {
+    "path": "assets/paperdoll/pants-female-black.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      46,
+      41,
+      93
+    ],
+    "sha256": "44e336e2e8ace12a3d6e56ad5dba2f84452f274750180edb7a2956992abd02c2"
+  },
+  {
+    "path": "assets/paperdoll/pants-female-white.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      46,
+      41,
+      93
+    ],
+    "sha256": "025b0574f7332e39927e8594bd2a68331d59dcd00ebcb215e2dc6922292c6fdd"
+  },
+  {
+    "path": "assets/paperdoll/pants-male-black.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      46,
+      42,
+      93
+    ],
+    "sha256": "7f2a595510ed766a92ed5a7fc00166a6a2aa1a6a541aafd583abd42bfd48425e"
+  },
+  {
+    "path": "assets/paperdoll/pants-male-white.png",
+    "kind": "paperdoll-layer",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      46,
+      42,
+      93
+    ],
+    "sha256": "a0562ef09ea9ad535e0cf52e79b73fd5d83aeb8366846ef073694d38de633fed"
+  },
+  {
+    "path": "assets/screens/main-shop/action-card-frame--9slice.png",
+    "kind": "screen-asset",
+    "width": 64,
+    "height": 64,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      64,
+      64
+    ],
+    "sha256": "feb36ab823594aac1c404a30d1669a63e303cf30704f65392a971815b57ecc00"
+  },
+  {
+    "path": "assets/screens/main-shop/area-sign-frame.png",
+    "kind": "screen-asset",
+    "width": 2048,
+    "height": 683,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      31,
+      34,
+      2016,
+      683
+    ],
+    "sha256": "93a04275b087c683cae0774dd892c11eabffd41b44db0693d332fefac280523b"
+  },
+  {
+    "path": "assets/screens/main-shop/background--landscape.png",
+    "kind": "screen-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "f3c58993dd43198007f0ac0f554e335ac6852d9f8260fe9fcbe6189fdad37095"
+  },
+  {
+    "path": "assets/screens/main-shop/background--portrait.png",
+    "kind": "screen-asset",
+    "width": 320,
+    "height": 480,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      480
+    ],
+    "sha256": "a0b9bebc12f2acc5dd6d71a7c6fa5bf49d81b0a27c5175cf4b10fc4c0b9fe65b"
+  },
+  {
+    "path": "assets/screens/main-shop/currency-hud.png",
+    "kind": "screen-asset",
+    "width": 2048,
+    "height": 683,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      67,
+      52,
+      1983,
+      683
+    ],
+    "sha256": "77b8d3b45cf0a673e2fbf7d3fc405abf24845258e03638f6a1178d05ec0d1348"
+  },
+  {
+    "path": "assets/screens/main-shop/door-entrance-glow.png",
+    "kind": "screen-asset",
+    "width": 64,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      252
+    ],
+    "bounds": [
+      2,
+      2,
+      62,
+      94
+    ],
+    "sha256": "96ed04e6706b911a4e1794f60d8d780991f0ad8f52e97d5918a63c0aed469cfe"
+  },
+  {
+    "path": "assets/screens/main-shop/garden--landscape.png",
+    "kind": "screen-asset",
+    "width": 1585,
+    "height": 992,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1585,
+      992
+    ],
+    "sha256": "4978e0458d833f88132f9f033e1af9cec6b9e548d0c10f6be0c7375f493bc51f"
+  },
+  {
+    "path": "assets/screens/main-shop/garden-overview--landscape.png",
+    "kind": "screen-asset",
+    "width": 1586,
+    "height": 992,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "sha256": "5f240f8fec16e8f8c100ad3e874deb23086c974e5676ac41b5a4c735b66ccbbe"
+  },
+  {
+    "path": "assets/screens/main-shop/garden-user--landscape.png",
+    "kind": "screen-asset",
+    "width": 1586,
+    "height": 992,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "sha256": "7c5e4fe3e251e6d33363fcc2699b24f86b523e48cdc34f81971eff2b19558857"
+  },
+  {
+    "path": "assets/screens/main-shop/settings-button.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      105,
+      103,
+      1135,
+      1117
+    ],
+    "sha256": "d6b44ef1729a22c1faab3ebec1f175ed6843e7603159a9f871f4764b8c7a523f"
+  },
+  {
+    "path": "assets/screens/main-shop/ui-hud--3slice.png",
+    "kind": "screen-asset",
+    "width": 120,
+    "height": 40,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      120,
+      40
+    ],
+    "sha256": "6d8d3d027d350e10215f7a6f27272e01c64fec6c709505b6d07de07e20f2aeec"
+  },
+  {
+    "path": "assets/screens/museum/bookshelf-pink--landscape.png",
+    "kind": "screen-asset",
+    "width": 1586,
+    "height": 992,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "sha256": "9c86545ccf2be51589ef70c8f8f0e63f494a706bc3be692a2fc176fdaa8e96f5"
+  },
+  {
+    "path": "assets/screens/museum/bookshelf-view--landscape.png",
+    "kind": "screen-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "db20264d5d38c8db8f078cf59293100ed5c7036a45d0b79223f3ba720c46ced7"
+  },
+  {
+    "path": "assets/screens/museum/bookshelf-view--portrait.png",
+    "kind": "screen-asset",
+    "width": 320,
+    "height": 480,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      480
+    ],
+    "sha256": "ef5ef4973897d1209e2e19b376c7d7e96c9a903af1577eaccf3a99f0fa8f7c01"
+  },
+  {
+    "path": "assets/screens/museum/card-modal--9slice.png",
+    "kind": "screen-asset",
+    "width": 64,
+    "height": 64,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      64,
+      64
+    ],
+    "sha256": "6a250b2410568158490e9c94cf4299eb4f5956e8418ced6f89c35c664da35ff3"
+  },
+  {
+    "path": "assets/screens/museum/citation-seal.png",
+    "kind": "screen-asset",
+    "width": 32,
+    "height": 32,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      3,
+      4,
+      29,
+      28
+    ],
+    "sha256": "e1a0ce286f42e896aee40542f3a98f1c850351a7e83481090421d25d8709c756"
+  },
+  {
+    "path": "assets/screens/museum/museum-filter-bar--3slice.png",
+    "kind": "screen-asset",
+    "width": 120,
+    "height": 40,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      120,
+      40
+    ],
+    "sha256": "f3f322dec33562dbc84fdeac73185a2094d998d2c138155eb349a2da35abd5fe"
+  },
+  {
+    "path": "assets/screens/studio/color-palette-bar--3slice.png",
+    "kind": "screen-asset",
+    "width": 120,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      120,
+      48
+    ],
+    "sha256": "e924673211fca1e1babe3dc61eaee2a4e42927dfd45c2ba15e69b198d544203f"
+  },
+  {
+    "path": "assets/screens/studio/event-selector-strip--3slice.png",
+    "kind": "screen-asset",
+    "width": 120,
+    "height": 40,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      120,
+      40
+    ],
+    "sha256": "ab33cf913b0ad71e712cce3edaae5bb37f3efb07f105f0bace05653584c547f2"
+  },
+  {
+    "path": "assets/screens/studio/lookbook-frame.png",
+    "kind": "screen-asset",
+    "width": 1144,
+    "height": 1375,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1144,
+      1375
+    ],
+    "sha256": "1d17c6b26d44c246e7cce564d235df7fa078ea64b2882f7d36f846b10058604b"
+  },
+  {
+    "path": "assets/screens/studio/lookbook-modal--9slice.png",
+    "kind": "screen-asset",
+    "width": 64,
+    "height": 64,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      64,
+      64
+    ],
+    "sha256": "b12fd64d001860dfc5926bc48a3cf4e9a24d7c04aa7839c3513e09e007bc6157"
+  },
+  {
+    "path": "assets/screens/studio/studio-panel-frame--9slice.png",
+    "kind": "screen-asset",
+    "width": 48,
+    "height": 48,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      48,
+      48
+    ],
+    "sha256": "c615e8eac964ca79ddbfc0b2759ae9fe4e6df01915633555b909093861cf9292"
+  },
+  {
+    "path": "assets/screens/studio/vietnamese-room--landscape.png",
+    "kind": "screen-asset",
+    "width": 1585,
+    "height": 992,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1585,
+      992
+    ],
+    "sha256": "4db9de28dbcdadd8fb6832809bf168e257476c16269d371c6704fc683a7ef089"
+  },
+  {
+    "path": "assets/screens/studio/wardrobe-frame--landscape.png",
+    "kind": "screen-asset",
+    "width": 2172,
+    "height": 724,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "sha256": "1e1fb1d7735d83767f162caccc71d5a73538a3f2f9237b72145eaa32d8115c50"
+  },
+  {
+    "path": "assets/screens/studio/workbench-ui--landscape.png",
+    "kind": "screen-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "6ddd50856c48e900ac9741480e710615ffc80c0ee62e5ab150367642b2bf45b4"
+  },
+  {
+    "path": "assets/screens/studio/workbench-ui--portrait.png",
+    "kind": "screen-asset",
+    "width": 320,
+    "height": 480,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      480
+    ],
+    "sha256": "5f7f37eb5fb0a85fba859f15ddb8916bdcc1d15865b275b3f3f7b74dcea1b32b"
+  },
+  {
+    "path": "assets/screens/wardrobe/closet-shelf--landscape.png",
+    "kind": "screen-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "da5845b399e937e71de31147408579fdbae3f42e4e3c438f386c4e62d3676105"
+  },
+  {
+    "path": "assets/screens/wardrobe/closet-shelf--portrait.png",
+    "kind": "screen-asset",
+    "width": 320,
+    "height": 480,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      480
+    ],
+    "sha256": "bb57dfa4b25053bf9298daa668bb3a29d3bf13714a64cc21b69459fafddf60e4"
+  },
+  {
+    "path": "assets/screens/welcome/welcome-courtyard.png",
+    "kind": "screen-asset",
+    "width": 1774,
+    "height": 887,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1774,
+      887
+    ],
+    "sha256": "3b9539c44076860c3d5b72f3669253d0e21104cb69c8ac121d81c8d8edd7b3c1"
+  },
+  {
+    "path": "assets/screens/workshop/sewing-machine--landscape.png",
+    "kind": "screen-asset",
+    "width": 800,
+    "height": 500,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      800,
+      500
+    ],
+    "sha256": "54ebac8a98abb3ad84cde6db2a063373ff4f0d10a5fb20cf91cd8398aeac3401"
+  },
+  {
+    "path": "assets/screens/workshop/sewing-machine--portrait.png",
+    "kind": "screen-asset",
+    "width": 320,
+    "height": 480,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      320,
+      480
+    ],
+    "sha256": "f10aeaf486e9534dd0414eae86a3834ac9155f38405054747844d9ff7b66ec27"
+  },
+  {
+    "path": "map.png",
+    "kind": "screen-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "8a822c69cec5626c58daa5c5481a6f1b593f1a3c5be7618360235a8de8790a8a"
+  }
+]

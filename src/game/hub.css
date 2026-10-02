@@ -1,0 +1,202 @@
+@font-face {
+  font-family: "VT323";
+  src: url("../../assets/fonts/vt323/VT323-Regular.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+
+/* Keep this typography and the supplied sign artwork within the main courtyard. */
+.screen-hub { font-family: "VT323", monospace; }
+.app-shell.screen-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: min(calc(100vw - 48px), calc((100dvh - 48px) * 1.6), 1600px);
+  height: auto;
+  aspect-ratio: 8 / 5;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 0 2px #86554e, 0 16px 48px #140c17aa;
+}
+.screen-hub .site-header { inset: 14px 18px auto; gap: 12px; }
+.screen-hub .brand { width: clamp(170px, 22%, 260px); }
+.screen-hub .header-actions { gap: 8px; }
+.screen-hub .hub-wallet {
+  position: relative;
+  width: clamp(144px, min(14vw, 22.4dvh), 188px);
+  aspect-ratio: 2048 / 683;
+  flex-shrink: 0;
+}
+.screen-hub .hub-wallet img,
+.screen-hub .hub-settings-button img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+.screen-hub .hub-wallet strong {
+  position: absolute;
+  left: 32%;
+  right: 9%;
+  top: 49%;
+  transform: translateY(-50%);
+  font-size: clamp(24px, 2vw, 28px);
+  font-weight: 400;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  color: #ffe4aa;
+  text-shadow: 2px 2px #541b39;
+}
+.screen-hub .hub-settings-button {
+  width: clamp(48px, 5vw, 64px);
+  aspect-ratio: 1;
+  flex-shrink: 0;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+.screen-hub .hub-settings-button:hover:not(:disabled) { background: transparent; filter: brightness(1.15); }
+.screen-hub .hub-settings-button:active:not(:disabled) { box-shadow: none; }
+.screen-hub .hub-settings-button:disabled { background: transparent; opacity: .6; }
+.screen-hub .hub-cards .chapter-card { right: 16px; width: 178px; padding: 10px 8px; }
+.screen-hub .modal { max-height: calc(100% - 24px); }
+.screen-hub .tagline {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  transform: translateX(-50%);
+  font-size: 23px;
+  font-weight: 400;
+  line-height: 1;
+  padding: 6px 10px;
+  background: transparent;
+}
+.screen-hub .hud strong { font-size: 26px; font-weight: 400; }
+.screen-hub .settings-button { font-size: 20px; }
+.screen-hub .hub-cards h2 { font-size: 30px; font-weight: 400; line-height: 1.1; }
+.screen-hub .hub-cards p { font-size: 21px; line-height: 1.15; }
+.screen-hub .hub-cards button { font-size: 22px; line-height: 1; min-height: 42px; }
+.screen-hub .chapter-card h2 { font-size: 23px; }
+.screen-hub .chapter-card .eyebrow { font-size: 13px; letter-spacing: .3px; font-weight: 400; }
+.screen-hub .chapter-card p { font-size: 17px; }
+.screen-hub .chapter-card button { font-size: 19px; min-height: 36px; }
+.screen-hub .controls-help { font-size: 17px; line-height: 1.1; }
+.screen-hub kbd { font-size: 17px; }
+.screen-hub .save-state { font-size: 16px; }
+.screen-hub .interaction-prompt { font-size: 22px; line-height: 1; }
+.screen-hub .modal h2 { font-size: 30px; }
+.screen-hub .modal label,.screen-hub .modal button,
+.screen-hub .modal input,.screen-hub .modal select { font-size: 22px; }
+.screen-hub .modal p { font-size: 22px; line-height: 1.15; }
+.screen-hub .toast { font-size: 20px; line-height: 1.1; }
+.screen-hub .toast button { font-size: 18px; }
+
+.screen-hub .area-sign {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 2048 / 683;
+  padding: 0;
+  min-height: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #47203a;
+  font-family: inherit;
+  font-size: 28px;
+  font-weight: 400;
+  line-height: 1;
+  text-shadow: none;
+}
+.screen-hub .area-sign:hover:not(:disabled) { background: transparent; filter: brightness(1.08); }
+.screen-hub .area-sign:disabled { background: transparent; opacity: .65; }
+.screen-hub .area-sign img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: contain;
+  pointer-events: none;
+}
+.screen-hub .area-sign>span {
+  position: absolute;
+  left: 14%;
+  right: 14%;
+  top: 43%;
+  transform: translateY(-50%);
+  text-align: center;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.screen-hub .sign {
+  position: absolute;
+  width: calc(132px * var(--scene-scale, 1));
+  font-size: calc(14px * var(--scene-scale, 1));
+  rotate: none;
+  transform: translate(-50%, -50%) rotate(var(--sign-angle, 0deg));
+}
+.screen-hub .sign img { filter: drop-shadow(0 2px 1px #2b182a80); }
+.screen-hub .sign:active:not(:disabled) { transform: translate(-50%, calc(-50% + 2px)) rotate(var(--sign-angle, 0deg)); box-shadow: none; }
+
+@media (max-width: 1000px) {
+  .screen-hub .hub-cards h2 { font-size: 27px; }
+  .screen-hub .hub-cards p { font-size: 19px; }
+  .screen-hub .hub-cards button { font-size: 20px; }
+}
+@media (max-width: 640px) {
+  /* Preserve the usable touch layout on portrait phones; desktop uses the full 8:5 view. */
+  .app-shell.screen-hub {
+    width: calc(100vw - 16px);
+    height: calc(100dvh - 16px);
+    aspect-ratio: auto;
+  }
+  .screen-hub .site-header { inset: 8px 8px auto; }
+  .screen-hub .brand { width: 142px; }
+  .screen-hub .header-actions { gap: 4px; }
+  .screen-hub .hub-wallet { width: clamp(104px, 34vw, 126px); }
+  .screen-hub .hub-wallet strong { font-size: 22px; }
+  .screen-hub .hub-settings-button { width: 44px; }
+  .screen-hub .hud strong { font-size: 25px; }
+  .screen-hub .settings-button { font-size: 20px; }
+  .screen-hub .main-nav {
+    top: 76px;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 4px;
+    overflow: visible;
+  }
+  .screen-hub .main-nav .area-sign { font-size: 20px; min-height: 0; }
+  .screen-hub .chapter-card { top: 212px; }
+  .screen-hub .chapter-card h2 { font-size: 24px; }
+  .screen-hub .chapter-card .eyebrow { font-size: 14px; }
+  .screen-hub .chapter-card p { font-size: 18px; }
+  .screen-hub .hub-cards .welcome-card h2 { font-size: 26px; }
+  .screen-hub .hub-cards .welcome-card p { font-size: 18px; }
+  .screen-hub .hub-cards button { font-size: 20px; }
+  .screen-hub .hub-cards .welcome-card h2 { font-size: 23px; }
+  .screen-hub .hub-cards .welcome-card p { display: none; }
+  .screen-hub .hub-cards .welcome-card .actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .screen-hub .hub-cards .welcome-card button { font-size: 18px; padding: 4px; }
+  .screen-hub .hub-cards .chapter-card { width: 142px; right: 12px; }
+  .screen-hub .chapter-card .eyebrow { display: none; }
+  .screen-hub .chapter-card h2 { font-size: 20px; line-height: 1.1; }
+  .screen-hub .chapter-card p { font-size: 14px; line-height: 1.1; }
+  .screen-hub .chapter-card button { font-size: 16px; }
+  .screen-hub .dpad button { font-size: 20px; }
+  .screen-hub .touch-interact { font-size: 22px; }
+  .screen-hub .save-state { font-size: 13px; }
+  .screen-hub .interaction-prompt { font-size: 20px; }
+}
+@media (max-height: 520px) and (min-width: 641px) {
+  .screen-hub .hub-cards h2 { font-size: 23px; }
+  .screen-hub .hub-cards p { font-size: 17px; }
+  .screen-hub .hub-cards button { font-size: 19px; min-height: 34px; }
+  .screen-hub .chapter-card .eyebrow { font-size: 13px; }
+  .screen-hub .controls-help { font-size: 14px; }
+}

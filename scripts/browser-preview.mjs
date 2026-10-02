@@ -1,0 +1,18 @@
+import { chromium } from '@playwright/test';
+import { mkdir } from 'node:fs/promises';
+await mkdir('artifacts', { recursive: true });
+const browser = await chromium.launch({ channel: 'chrome', headless: true });
+const page = await browser.newPage({ viewport: { width: 1366, height: 1100 } });
+const errors = [];
+page.on('pageerror', error => errors.push(error.message));
+page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+await page.goto(process.env.QA_BASE_URL || 'http://localhost:3000');
+await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
+  await page.locator('.scene canvas[data-position]').waitFor();
+await page.screenshot({ path: 'artifacts/hub-browser.png', fullPage: true });
+console.log(JSON.stringify({ title: await page.title(), errors, canvas: await page.locator('.scene canvas').getAttribute('data-position') }));
+await page.getByRole('button', { name: 'Phòng phối đồ', exact: true }).first().click();
+await page.locator('#paperdoll').waitFor();
+await page.waitForFunction(() => { const canvas = document.querySelector('#paperdoll'); return canvas && canvas.getContext('2d').getImageData(0,0,64,96).data.some((value,index) => index % 4 === 3 && value); });
+await page.screenshot({ path: 'artifacts/studio-browser.png', fullPage: true });
+await browser.close();

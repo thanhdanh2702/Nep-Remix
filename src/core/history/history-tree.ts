@@ -121,7 +121,7 @@ export function dispatch(
     };
   }
 
-  const newNodeIndex = Object.keys(tree.nodes).length + 1;
+  const newNodeIndex = Math.max(1, ...Object.keys(tree.nodes).map(id => Number(/^node-(\d+)-/.exec(id)?.[1] ?? 0))) + 1;
   const safeType = cmd.type.replace(/\//g, '_');
   const newNodeId = `node-${newNodeIndex}-${safeType}`;
 
@@ -356,10 +356,11 @@ export function branches(
 
 /**
  * Prunes history tree to keep total nodes <= maxNodes (default 200).
- * Protects: rootId, headId, all ancestors of headId, and all labeled nodes.
- * Cuts oldest unprotected branch nodes first.
+ * Removes unprotected leaves first. If the active path itself exceeds the
+ * budget, rolls its oldest snapshot into a checkpoint root, preserving replay.
  */
 export function prune(tree: HistoryTree, maxNodes = 200): HistoryTree {
+  maxNodes = Math.max(2, Math.floor(maxNodes));
   const allNodeIds = Object.keys(tree.nodes);
   if (allNodeIds.length <= maxNodes) {
     return tree;
@@ -384,37 +385,34 @@ export function prune(tree: HistoryTree, maxNodes = 200): HistoryTree {
     }
   }
 
-  // 2. Identify candidates for pruning sorted by creation time (oldest first)
-  const removableNodes = Object.values(tree.nodes)
-    .filter((n) => !protectedIds.has(n.id))
-    .sort((a, b) => a.createdAt.localeCompare(b.createdAt));
-
-  const toRemoveCount = allNodeIds.length - maxNodes;
-  const idsToRemove = new Set(
-    removableNodes.slice(0, toRemoveCount).map((n) => n.id)
-  );
-
-  if (idsToRemove.size === 0) {
-    return tree;
-  }
-
-  // 3. Construct pruned nodes map and update childIds references
-  const nextNodes: Record<string, HistoryNode> = {};
-  for (const [id, node] of Object.entries(tree.nodes)) {
-    if (!idsToRemove.has(id)) {
-      nextNodes[id] = {
-        ...node,
-        childIds: node.childIds.filter((cid) => !idsToRemove.has(cid)),
-        lastVisitedChildId:
-          node.lastVisitedChildId && idsToRemove.has(node.lastVisitedChildId)
-            ? null
-            : node.lastVisitedChildId
-      };
+  const nextNodes = Object.fromEntries(Object.entries(tree.nodes).map(([id, node]) => [id, { ...node, childIds: [...node.childIds] }]));
+  while (Object.keys(nextNodes).length > maxNodes) {
+    const leaf = Object.values(nextNodes).filter(node => !protectedIds.has(node.id) && !node.childIds.length)
+      .sort((a,b) => a.createdAt.localeCompare(b.createdAt))[0];
+    if (!leaf) break;
+    delete nextNodes[leaf.id];
+    const parent = leaf.parentId ? nextNodes[leaf.parentId] : undefined;
+    if (parent) {
+      parent.childIds = parent.childIds.filter(id => id !== leaf.id);
+      if (parent.lastVisitedChildId === leaf.id) parent.lastVisitedChildId = parent.childIds.at(-1) ?? null;
     }
   }
+  if (Object.keys(nextNodes).length <= maxNodes) return { ...tree, nodes: nextNodes };
 
-  return {
-    ...tree,
-    nodes: nextNodes
+  const path: HistoryNode[] = [];
+  let node: HistoryNode | undefined = tree.nodes[tree.headId];
+  while (node) { path.unshift(node); node = node.parentId ? tree.nodes[node.parentId] : undefined; }
+  const retained = path.slice(1).slice(-(maxNodes - 1));
+  if (!retained.length) return { ...tree, nodes: { [tree.rootId]: { ...tree.nodes[tree.rootId], childIds: [], lastVisitedChildId: null } } };
+  const firstIndex = path.indexOf(retained[0]);
+  const checkpoint = path[Math.max(0, firstIndex - 1)];
+  const compacted: Record<string, HistoryNode> = {
+    [tree.rootId]: { ...checkpoint, id: tree.rootId, parentId: null, command: null, label: 'Mốc lưu tiến trình', childIds: [retained[0].id], lastVisitedChildId: retained[0].id },
   };
+  retained.forEach((entry, index) => {
+    const childId = retained[index + 1]?.id;
+    compacted[entry.id] = { ...entry, parentId: index ? retained[index-1].id : tree.rootId,
+      childIds: childId ? [childId] : [], lastVisitedChildId: childId ?? null };
+  });
+  return { ...tree, nodes: compacted };
 }

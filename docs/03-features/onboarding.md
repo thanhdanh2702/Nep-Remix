@@ -1,55 +1,41 @@
-# Đặc Tả Luồng Khởi Tạo Nhân Vật Tại Sảnh (Onboarding)
+# Màn chờ và luồng vào Tiệm May Nếp
 
-## 1. Mục đích của khu vực
+Cập nhật 02/10/2026 theo yêu cầu mới: mỗi lần mở web, người chơi đến màn chờ trước khi vào game. Đặc tả này thay thế luồng vào thẳng sân nhà trước đây.
 
-Luồng Khởi tạo nhân vật được tích hợp trực tiếp ngay tại Sảnh sân nhà, loại bỏ hoàn toàn màn hình chào mừng tách rời để người dùng mới không gặp bất kỳ rào cản đăng nhập hay khảo sát ban đầu nào. Ngay khi mở ứng dụng, người dùng được trải nghiệm ngay không gian tiệm may thông qua thẻ tương tác "Bắt đầu câu chuyện của bạn", đồng thời được toàn quyền chủ động quyết định diện mạo nhân vật pixel (tự chọn giới tính và phong cách, hoặc để AI trích xuất nhanh thuộc tính tóc và kính từ ảnh selfie mà không lưu trữ dữ liệu khuôn mặt cá nhân).
+## Màn chờ
 
-## 2. Các bước người dùng thao tác
+Thông điệp chính: **Áo dài Việt. Chất riêng bạn.**
+Khẩu hiệu: **Một tà áo. Muôn câu chuyện.**
 
-- **Bước 1: Tiếp cận tại sảnh**
-  Người dùng bước thẳng vào Sảnh chính (Sân nhà hoàng hôn). Ở cạnh dưới trung tâm, thẻ *"Bắt đầu câu chuyện của bạn"* hiển thị trang trọng với hai tùy chọn rõ ràng:
-  - **Lựa chọn A - "Dạo quanh sân nhà":** Người dùng vào tiệm ngay với nhân vật mẫu mặc định (mặc áo dài trắng truyền thống thanh lịch). Thẻ hướng dẫn tự động thu gọn để người dùng tự do tham quan 4 khu vực.
-  - **Lựa chọn B - "Tạo nhân vật từ ảnh":** Mở bảng điều khiển (modal / bottom sheet) tạo nhân vật pixel hóa.
+Desktop đặt lời mời và nút ở trái, sân tiệm may pixel cùng các nhân vật áo dài ở phải. Mobile xếp tiêu đề, tranh minh họa và nút theo chiều dọc. Dùng bảng màu kem, tím mận, hồng sen cùng đường viền pixel.
 
-- **Bước 2: Chọn giới tính và phương thức tạo diện mạo**
-  Người dùng tự tay chọn định danh giới tính cho nhân vật (Nam hoặc Nữ), hệ thống **tuyệt đối không dùng AI suy đoán giới tính** từ hình ảnh. Sau đó, người dùng chọn một trong hai phương thức tạo chi tiết:
-  - **Cách 1 - Tạo từ ảnh selfie:** Người dùng tải ảnh chân dung/selfie từ thiết bị. Mô hình Gemini chỉ bóc tách 3 đặc điểm đồ họa: chiều dài kiểu tóc (ngắn / ngang vai / dài), màu tóc cơ bản (đen / nâu hạt dẻ / vàng khói) và phụ kiện kính mắt (có đeo kính hay không). Hệ thống không lưu trữ hay nhận diện khuôn mặt chân thực, chỉ ánh xạ các đặc điểm này thành các mảnh sprite pixel art tương ứng.
-  - **Cách 2 - Chọn mẫu thủ công:** Người dùng tự chọn nhanh từ bảng danh sách kiểu tóc, màu tóc và màu da được vẽ sẵn.
+Header kem gồm logo Tiệm May Nếp, Về Nếp và Cách chơi. Footer kem gồm Phối áo dài, Chuyện nhà và Nếp văn hóa. Hai thanh này luôn giữ nguyên khi vào game; vùng chơi co giãn và nằm giữa, thay cho khung 8:5 có khoảng đệm cũ.
 
-- **Bước 3: Tinh chỉnh và đặt tên nhân vật**
-  Người dùng có thể bấm đổi nhanh kiểu tóc hoặc kính nếu muốn thay đổi gợi ý từ AI, sau đó nhập tên hiển thị ngắn (tối đa 12 ký tự, mặc định: *"Thợ May Mới"*).
+## Các thao tác đang có
 
-- **Bước 4: Hoàn tất và lưu trữ**
-  Nhấn nút *"Xác nhận diện mạo"*, bảng tạo nhân vật đóng lại, nhân vật pixel mới tạo xuất hiện ngay trên tâm vòng hoa văn tròn giữa sân nhà. Dữ liệu nhân vật được lưu an toàn vào `localStorage` của trình duyệt.
+- **Vào game:** chỉ lúc bấm mới mở Game với nhân vật có sẵn. Bản lưu hợp lệ đổi nhãn thành Tiếp tục chơi.
+- **Tải ảnh của bạn:** mở hộp chọn ảnh và bảng xem trước; có thể kéo thả ảnh vào bảng.
+- **Cách chơi:** hướng dẫn phím WASD/mũi tên, E và nút cảm ứng.
+- **Về Nếp:** giới thiệu mục tiêu giúp người trẻ tiếp cận văn hóa áo dài.
+- **Ba mục footer:** giới thiệu các phân hệ khi đang ở màn chờ; mở phòng tương ứng khi đang chơi.
+- **Logo hoặc Màn chờ:** quay về màn chờ khi không có hội thoại/modal game đang mở.
 
-## 3. Các trạng thái màn hình
+Mở thông tin hoặc menu tạm dừng di chuyển. Hội thoại/modal trong game khóa các nút điều hướng ngoài để tránh chồng hộp thoại. Lưu tiến trình và lựa chọn diện mạo thủ công vẫn hoạt động như trước.
 
-### Bố cục ngang (chính)
-Thẻ "Bắt đầu câu chuyện của bạn" hiển thị nổi bật ở góc dưới bên trái hoặc trung tâm sân gạch đỏ trên nền `background--landscape.png` với khung viền `action-card-frame--9slice.png` (nền kem đào `cream-100`, viền ngoài mận chín `plum-800`, viền trong vàng đồng `gold-500` và hoa sen hai bên). Nút chính *"Tạo nhân vật từ ảnh ▶"* mang sắc hồng sen (`pink-500`) với bóng nổi dày 4px và liên kết phụ *"Dạo quanh sân nhà ▶"*.
+## Tải ảnh ở phiên bản này
 
-### Bố cục dọc (phụ)
-Thẻ "Bắt đầu câu chuyện của bạn" hiển thị nổi bật ở nửa dưới sảnh chính với nền kem đào (`cream-100`), viền ngoài mận chín (`plum-800`), viền trong vàng đồng (`gold-500`) và hoa sen hai bên. Nút chính *"Tạo nhân vật từ ảnh ▶"* mang sắc hồng sen (`pink-500`) với bóng nổi dày 4px.
+Chấp nhận JPG/PNG/WEBP tối đa 5 MB. Ảnh hợp lệ được xem trước, kèm tên file và nhãn **Tạo nhân vật pixel · Sắp có**. Tệp sai định dạng, quá lớn hoặc không giải mã được hiển thị thông báo để chọn lại.
 
-### Trạng thái đang tải (Loading)
-Xuất hiện khi người dùng tải ảnh selfie để AI phân tích thuộc tính tóc và kính. Hiển thị hoạt ảnh con thoi dệt lụa dập nổi kèm dòng thông báo: *"Đang chọn nếp tóc và dáng kính pixel..."*. Các nút thao tác tạm thời vô hiệu hóa để tránh gửi yêu cầu lặp lại.
+Ảnh chỉ được xem trước trên thiết bị. Không tải ảnh lên máy chủ, không gọi tuyến AI, không tạo kết quả nhân vật giả, không lưu ảnh gốc vào localStorage. Object URL được thu hồi khi thay ảnh hoặc đóng ứng dụng.
 
-### Trạng thái trống (Empty)
-Khi người dùng chưa thực hiện tạo nhân vật (mới truy cập lần đầu), sảnh mặc định hiển thị nhân vật mẫu trong tà áo dài ngũ thân trắng tinh khôi, sẵn sàng cho mọi tính năng phối đồ hay chơi game cốt truyện.
+Tính năng tạo nhân vật từ ảnh thuộc giai đoạn tiếp theo. Khi phát triển cần để người dùng chủ động lựa chọn giới tính/diện mạo và giữ luồng chơi với nhân vật có sẵn.
 
-### Trạng thái lỗi (Error)
-Xuất hiện khi tệp tải lên không phải hình ảnh hợp lệ (chỉ chấp nhận PNG, JPG, WEBP) hoặc dung lượng vượt quá 5MB. Khung thông báo viền hồng sen xuất hiện: *"Tệp ảnh chưa phù hợp hoặc quá lớn (tối đa 5MB). Bạn thử chọn ảnh khác nhé!"*.
+## Tiêu chí hoàn thành
 
-### Trạng thái dự phòng khi AI lỗi (Fallback)
-Nếu kết nối mạng bị ngắt hoặc dịch vụ Gemini không phản hồi trong vòng 5 giây:
-- Không chặn người dùng hay dừng ứng dụng.
-- Tự động chuyển thẳng sang chế độ chọn mẫu thủ công với thông báo thân thiện: *"Tín hiệu AI gián đoạn, tiệm đã mở sẵn bảng chọn tóc và kính thủ công để bạn tự do lựa chọn!"*.
-- Người dùng chỉ mất 1-2 lần chạm tay là hoàn thành diện mạo và tiếp tục trải nghiệm.
-
-## 4. Tiêu chí để coi là làm xong (Acceptance Criteria)
-
-- Người dùng mới vào thẳng Sảnh chính mà không bị chặn bởi bất kỳ màn hình trung gian nào.
-- Thẻ "Bắt đầu câu chuyện của bạn" hiển thị đầy đủ hai lựa chọn ("Tạo nhân vật từ ảnh" và "Dạo quanh sân nhà").
-- Tuyệt đối không để AI đoán giới tính từ ảnh; người dùng luôn là người chủ động chọn định danh giới tính.
-- Ảnh selfie chỉ dùng để ánh xạ 3 thuộc tính (kiểu tóc, màu tóc, kính mắt) sang sprite pixel, không lưu trữ ảnh gốc lên máy chủ.
-- Cơ chế dự phòng ngoại tuyến/lỗi API chuyển mượt mà sang giao diện chọn mẫu thủ công trong tích tắc.
-- Trạng thái nhân vật được ghi nhận tức thì vào `localStorage` và duy trì chính xác qua các lần mở lại trang web.
+- Lần mở trang mới và sau reload đều hiển thị màn chờ.
+- Chưa mount canvas hay ghi tiến trình game trước khi bấm vào chơi.
+- Các nút mở đúng bảng, chọn ảnh có xem trước và lỗi rõ ràng.
+- Không có yêu cầu đến /api/ai/ trong luồng tải ảnh hiện tại.
+- Header/footer kem giữ cùng vị trí trước và sau khi vào game.
+- Game, nền phòng và các bảng nằm trong vùng giữa trên desktop, mobile dọc và ngang.
+- Người chơi cũ tiếp tục bản lưu qua nút Tiếp tục chơi.

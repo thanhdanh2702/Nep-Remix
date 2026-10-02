@@ -528,6 +528,7 @@ export function runSelfCheck(): SelfCheckReport {
   executeCheck(12, 'interact: ngoài bán kính bị từ chối; trong bán kính mở dialogue; playerPos không nằm trong state', () => {
     const s0 = createInitialState(content, ctx);
     const interactDef = defaultRegistry.get('interact')!;
+    const catPosition = content.chapters.prologue.areas[0].interactables.find(i => i.id === 'hitbox-cat')!.pos;
 
     // 1. Outside radius
     const outRes = interactDef.guard(
@@ -542,7 +543,7 @@ export function runSelfCheck(): SelfCheckReport {
     // 2. Inside radius
     const inRes = interactDef.guard(
       s0,
-      { targetId: 'hitbox-cat', playerPos: { x: 0.72, y: 0.68 } },
+      { targetId: 'hitbox-cat', playerPos: catPosition },
       content
     );
     if (inRes !== true && (typeof inRes === 'object' && !inRes.ok)) {
@@ -551,7 +552,7 @@ export function runSelfCheck(): SelfCheckReport {
 
     const applied = interactDef.apply(
       s0,
-      { targetId: 'hitbox-cat', playerPos: { x: 0.72, y: 0.68 } },
+      { targetId: 'hitbox-cat', playerPos: catPosition },
       content
     );
 
@@ -567,7 +568,7 @@ export function runSelfCheck(): SelfCheckReport {
     }
 
     // Verify nearestInteractable
-    const near = nearestInteractable(s0, content, { x: 0.72, y: 0.68 });
+    const near = nearestInteractable(s0, content, catPosition);
     if (near !== 'hitbox-cat') {
       throw new Error(`nearestInteractable returned '${near}', expected 'hitbox-cat'`);
     }

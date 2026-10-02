@@ -20,35 +20,35 @@
       "title": "Sảnh chính Tiệm May Nếp trong nắng chiều",
       "aspect": "8:5",
       "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.15, "y": 0.56 },
+      "notes": "Spawn và vùng tương tác đã đối chiếu nền 800×500; bản đồ va chạm chân nằm trong src/game/physics.ts.",
+      "spawn": { "x": 0.175, "y": 0.76 },
       "sides": { "phai": true, "trai": false },
       "exits": { "stairs": "c0-s2-gac-xep-chiec-ruong" },
       "interactables": [
         {
           "id": "hitbox-cat",
           "kind": "npc",
-          "pos": { "x": 0.79, "y": 0.77 },
+          "pos": { "x": 0.79, "y": 0.916 },
           "radius": 0.08,
-          "rect": { "x": 0.72, "y": 0.68, "w": 0.14, "h": 0.18 },
+          "rect": { "x": 0.75, "y": 0.84, "w": 0.10, "h": 0.12 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-cat" }
         },
         {
           "id": "hitbox-stairs",
           "kind": "object",
-          "pos": { "x": 0.86, "y": 0.475 },
+          "pos": { "x": 0.91, "y": 0.90 },
           "radius": 0.08,
-          "rect": { "x": 0.75, "y": 0.20, "w": 0.22, "h": 0.55 },
+          "rect": { "x": 0.875, "y": 0.86, "w": 0.085, "h": 0.10 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-stairs" }
         },
         {
           "id": "hitbox-table",
           "kind": "object",
-          "pos": { "x": 0.48, "y": 0.71 },
+          "pos": { "x": 0.78, "y": 0.72 },
           "radius": 0.08,
-          "rect": { "x": 0.28, "y": 0.55, "w": 0.40, "h": 0.32 },
+          "rect": { "x": 0.64, "y": 0.53, "w": 0.32, "h": 0.39 },
           "side": "phai",
           "action": { "type": "item", "targetId": "phan_may_mau_xanh" }
         },
@@ -69,8 +69,8 @@
       "title": "Căn gác xép phủ bụi và chiếc rương cũ",
       "aspect": "8:5",
       "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.10, "y": 0.60 },
+      "notes": "Spawn và vùng tương tác đã đối chiếu nền 800×500; bản đồ va chạm chân nằm trong src/game/physics.ts.",
+      "spawn": { "x": 0.14, "y": 0.776 },
       "sides": { "phai": true, "trai": true },
       "exits": { "back": "c0-s1-tiem-may-chieu" },
       "interactables": [
@@ -86,18 +86,18 @@
         {
           "id": "hitbox-wall-key",
           "kind": "object",
-          "pos": { "x": 0.16, "y": 0.42 },
+          "pos": { "x": 0.16, "y": 0.66 },
           "radius": 0.08,
-          "rect": { "x": 0.12, "y": 0.35, "w": 0.08, "h": 0.14 },
+          "rect": { "x": 0.12, "y": 0.61, "w": 0.08, "h": 0.14 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-wall-key" }
         },
         {
           "id": "hitbox-sewing-basket",
           "kind": "object",
-          "pos": { "x": 0.86, "y": 0.625 },
+          "pos": { "x": 0.835, "y": 0.77 },
           "radius": 0.08,
-          "rect": { "x": 0.80, "y": 0.55, "w": 0.12, "h": 0.15 },
+          "rect": { "x": 0.80, "y": 0.68, "w": 0.10, "h": 0.12 },
           "side": "phai",
           "action": { "type": "item", "targetId": "kim_gut_bang_bac" }
         },
@@ -243,6 +243,7 @@
       "type": "use",
       "title": "Tra chìa mở nắp rương gỗ lim",
       "hasSession": false,
+      "prerequisitePuzzleIds": ["p-c0-cloth"],
       "hints": [
         "Ổ khóa ba then cài hình hoa cúc khép cánh trên nắp rương.",
         "Cần chiếc chìa khóa ba chấu vừa khớp với ổ hoa cúc.",

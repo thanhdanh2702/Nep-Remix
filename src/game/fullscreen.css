@@ -1,0 +1,180 @@
+/* All game controls live over the scene; only panels scroll, never the page. */
+html,body,#root{width:100%;height:100%;overflow:hidden;background:#2b2035}
+.app-shell{position:relative;width:100%;height:100dvh;max-width:none;margin:0;padding:0;overflow:hidden;isolation:isolate}
+.app-shell main{position:absolute;inset:0}
+.screen-reader-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.site-header{position:absolute;inset:18px 24px auto;min-height:0;height:104px;border:0;display:flex;align-items:flex-start;justify-content:space-between;gap:20px;z-index:8;pointer-events:none}
+.site-header button,.site-header .hud{pointer-events:auto}
+.brand{width:clamp(180px,25vw,360px);min-height:0;position:relative;flex-shrink:0;line-height:1;filter:drop-shadow(0 3px 2px #29102199)}
+.brand img{display:block;width:100%;height:auto}
+.brand span{position:absolute;left:35%;bottom:10%;font-size:8px;letter-spacing:2px;color:#f8d48d;text-shadow:1px 1px #291021}
+.tagline{flex:0 1 auto;margin:8px 0 0;padding:8px 16px;min-height:36px;background:#fff1df;font-family:inherit;font-size:clamp(12px,1.2vw,18px);font-weight:700;font-style:normal;text-align:center;white-space:nowrap}
+.header-actions{display:flex;align-items:center;gap:12px;margin-top:8px;flex-shrink:0}
+.hud{padding:4px 8px;gap:8px;background:#2b142b;min-height:46px;color:#ffe4aa}
+.hud>img{width:34px;height:34px;object-fit:contain;filter:drop-shadow(0 2px #291021)}
+.hud strong{font-size:19px;letter-spacing:1px}
+.hud strong span{display:none}
+.settings-button{background:#392136;border-color:#e9b66b;color:#ffe4aa;box-shadow:0 3px #291021;font-size:12px}
+.settings-button:hover:not(:disabled){background:#613146}
+.back-home{position:absolute;left:26px;top:112px;z-index:9;background:#fff1df;font-weight:650;font-size:13px}
+.main-nav{position:absolute;top:100px;right:26px;z-index:9;border:0;padding:0;gap:6px;max-width:calc(100% - 210px);overflow-x:auto;scrollbar-width:thin}
+.main-nav button{background:#fff1df;border:2px solid #855064;box-shadow:0 3px #291021;color:#402036;font-size:12px;white-space:nowrap}
+.main-nav button[aria-current="page"]{background:#432039;color:#ffe4aa}
+.play-area{position:absolute;inset:0;width:100%;max-width:none;height:100%;margin:0;border:0;box-shadow:none}
+.scene{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;overflow:hidden}
+.scene canvas{width:100%;height:100%;display:block}
+.scene-status{z-index:15}
+.sign{font-size:clamp(12px,1.3vw,20px);min-height:44px;padding:8px 18px;background:#fff1df;border-color:#a1545e;box-shadow:0 3px #553044,0 0 0 3px #edbe88;transform:translate(-50%,-50%)}
+.sign:active:not(:disabled){transform:translate(-50%,calc(-50% + 2px))}
+.sign-studio{rotate:-4deg}.sign-closet{rotate:7deg}.sign-museum{font-size:13px}
+.interaction-prompt{z-index:5;bottom:215px;padding:8px 14px;min-height:40px;box-shadow:0 3px #553044}
+.hub-cards{position:absolute;inset:0;z-index:5;display:block;width:100%;max-width:none;margin:0;pointer-events:none}
+.hub-cards>.slice{position:absolute;pointer-events:auto;box-shadow:0 5px 0 #41253766}
+.hub-cards .welcome-card{bottom:38px;left:50%;transform:translateX(-50%);width:clamp(390px,44vw,640px);display:flex;align-items:center;gap:16px;padding:12px 16px}
+.welcome-avatar{width:88px;height:100px;object-fit:contain;flex-shrink:0;border:2px solid #a77555;background:#f0d7b1}
+.hub-cards h2{font-size:clamp(18px,1.6vw,24px);margin:0 0 6px}
+.hub-cards p{font-size:12px;margin:0 0 8px}
+.hub-cards .actions{gap:8px;margin:8px 0 0}
+.hub-cards button{font-size:12px;min-height:38px;padding:6px 12px}
+.hub-cards .chapter-card{right:24px;bottom:30px;width:clamp(165px,16vw,225px);padding:14px 12px;text-align:center}
+.chapter-card .eyebrow{font-size:9px;letter-spacing:1px;margin-bottom:8px}
+.chapter-card h2{font-size:18px;line-height:1.4}
+.chapter-card button{width:100%}
+.controls-help{position:absolute;bottom:8px;left:24px;z-index:5;margin:0;padding:6px 10px;background:#fff1dfdb;color:#402036;border:1px solid #a77555;font-size:10px}
+.controls-help span{margin-left:14px}
+.save-state{position:absolute;bottom:9px;right:24px;z-index:6;background:#2b142bbc;color:#ffdfb4;font-size:10px;padding:4px 8px;border:1px solid #b98367}
+.save-state.error{color:#ffadc1}
+.journey-toolbar{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);z-index:6;width:max-content;max-width:calc(100% - 48px);margin:0;padding:8px;background:#fff1dfef;border:2px solid #855064;box-shadow:0 3px #291021;gap:8px}
+.journey-toolbar button{font-size:11px;min-height:36px;padding:6px 10px}
+.journey-toolbar span{font-size:10px}
+.screen-journey .controls-help{top:172px;bottom:auto;left:26px}
+.screen-journey .interaction-prompt{bottom:120px}
+.inventory-strip{position:absolute;bottom:87px;left:24px;width:auto;max-width:calc(100% - 48px);max-height:84px;overflow:auto;margin:0;z-index:6;flex-wrap:nowrap;padding:4px}
+.inventory-strip button{flex-shrink:0;background:#fff1dfec;min-height:38px}
+.room{position:absolute;inset:0;min-height:0;width:100%;height:100%;margin:0;padding:0;border:0;box-shadow:none;overflow:hidden;display:block;background:#392336}
+.room-background{position:absolute;inset:0;width:100%;height:100%;z-index:-1;overflow:hidden}
+.room-background img{width:100%;height:100%;object-fit:cover;object-position:center}
+.room-panel{position:absolute;top:164px;right:28px;width:min(49%,640px);max-width:none;max-height:calc(100dvh - 190px);overflow-y:auto;padding:16px;scrollbar-color:#9d6a57 #f4e1c5;scrollbar-width:thin;overscroll-behavior:contain;box-shadow:0 5px #29102166}
+.mannequin-stage{position:absolute;left:25%;top:24%;transform:translateX(-50%);width:37%;padding:0;text-align:center}
+.paperdoll{width:clamp(192px,23vw,256px);height:auto;aspect-ratio:2/3}
+.mannequin-stage>.eyebrow{padding:6px 10px;font-size:9px}
+.mannequin-stage>button{font-size:11px;min-height:36px;margin:8px auto}
+.doll-caption{margin:8px auto;font-size:12px;padding:5px 10px}
+.compare .paperdoll{width:clamp(96px,15vw,160px);height:auto}
+.museum-list{position:absolute;top:164px;left:28px;width:36%;max-height:calc(100dvh - 190px);overflow:auto;padding:16px}
+.museum-card{width:55%;right:28px}
+.catalog{max-height:clamp(130px,26dvh,285px)}
+.books{max-height:clamp(130px,30dvh,330px)}
+.room-panel h2,.museum-list h2{font-size:22px}
+.toast{z-index:30;bottom:16px}
+.modal-backdrop{z-index:25}
+@media(min-width:1650px){
+  .site-header{inset:22px 32px auto}
+  .mannequin-stage{top:28%;padding:0}
+  .paperdoll{width:320px;height:480px}
+  .room-panel{right:42px;top:172px;max-height:calc(100dvh - 200px)}
+  .museum-list{top:172px}
+}
+@media(max-width:1000px){
+  .tagline{display:none}
+  .site-header{inset:12px 16px auto}
+  .brand{width:210px}
+  .hub-cards .welcome-card{left:42%;width:400px;padding:10px}
+  .welcome-avatar{width:64px;height:80px}
+  .hub-cards .chapter-card{right:16px;width:160px}
+  .hub-cards h2{font-size:18px}
+  .main-nav{right:16px;gap:4px}
+  .main-nav button{padding:6px 9px;font-size:11px}
+  .room-panel{right:16px;width:52%;padding:12px}
+  .mannequin-stage{left:2%;width:38%;top:27%}
+  .museum-list{left:16px;width:37%;padding:12px}
+  .museum-card{width:56%}
+}
+@media(max-width:640px){
+  .site-header{inset:8px 10px auto;height:64px;gap:8px;align-items:flex-start}
+  .brand{width:155px}
+  .brand span{font-size:5px;letter-spacing:1px}
+  .header-actions{gap:6px;margin-top:8px}
+  .hud{padding:3px 4px;gap:4px;min-height:34px}
+  .hud>img{width:24px;height:24px}
+  .hud strong{font-size:14px;letter-spacing:0}
+  .settings-button{font-size:10px;padding:5px 7px;min-height:36px}
+  .main-nav{top:91px;left:10px;right:10px;max-width:none;gap:4px;padding:0;overflow-x:auto}
+  .main-nav button{flex:1;flex-shrink:0;min-height:36px;font-size:10px;padding:5px 7px;box-shadow:0 2px #291021}
+  .screen-hub .main-nav{top:78px}
+  .back-home{top:66px;left:10px;min-height:24px;padding:2px 8px;font-size:10px;box-shadow:none}
+  .scene-signs{display:none}
+  .hub-cards .welcome-card{bottom:139px;left:12px;transform:none;width:calc(100% - 24px);padding:10px;gap:10px}
+  .welcome-avatar{width:48px;height:66px}
+  .hub-cards .welcome-card h2{font-size:17px}
+  .hub-cards .welcome-card p{font-size:11px;line-height:1.5}
+  .hub-cards .actions{flex-wrap:wrap;gap:5px;margin:6px 0 0}
+  .hub-cards button{font-size:11px;padding:5px 8px;min-height:36px}
+  .hub-cards .chapter-card{top:141px;bottom:auto;right:12px;width:142px;padding:8px}
+  .chapter-card h2{font-size:15px}
+  .chapter-card .eyebrow{font-size:8px;letter-spacing:.4px;margin-bottom:4px}
+  .chapter-card p{font-size:10px;line-height:1.5;margin-bottom:6px}
+  .touch-controls{position:absolute;bottom:22px;left:10px;right:10px;z-index:7;padding:7px 10px;border:2px solid #855064;background:#fff1dfd9;gap:10px}
+  .dpad{grid-template-columns:repeat(3,40px);grid-template-rows:40px 40px;gap:3px}
+  .dpad button{min-height:40px;font-size:10px}
+  .touch-interact{min-height:46px;font-size:12px}
+  .controls-help{display:none}
+  .save-state{right:10px;bottom:2px;font-size:8px;padding:2px 5px;max-width:none}
+  .interaction-prompt{bottom:280px;font-size:10px;padding:6px 10px}
+  .journey-toolbar{bottom:126px;left:10px;transform:none;width:calc(100% - 20px);max-width:none;gap:5px;padding:5px;justify-content:center}
+  .journey-toolbar button{min-height:34px;font-size:9px;padding:4px 6px}
+  .journey-toolbar span{margin:0;width:auto;font-size:8px}
+  .inventory-strip{bottom:205px;left:10px;max-width:calc(100% - 20px);max-height:54px}
+  .inventory-strip button{font-size:9px;padding:4px 6px}
+  .screen-journey .interaction-prompt{bottom:270px}
+  .room{display:block;overflow:hidden}
+  .room-background{inset:0;height:100%;bottom:0;overflow:hidden}
+  .room-background img{object-fit:cover;object-position:center}
+  .mannequin-stage{left:50%;transform:translateX(-50%);top:136px;width:80%;height:auto;padding:0}
+  .mannequin-stage>.eyebrow{display:none}
+  .paperdoll{width:144px;height:216px}
+  .compare .paperdoll{width:104px;height:156px}
+  .doll-caption{font-size:11px;padding:3px 8px;margin:3px auto}
+  .mannequin-stage>button{margin:3px auto;min-height:30px;font-size:10px;padding:4px 8px}
+  .room-panel{top:440px;bottom:16px;right:10px;width:calc(100% - 20px);max-height:none;padding:12px;overflow:auto}
+  .closet-room .room-panel{top:62dvh}
+  .room-panel h2,.museum-list h2{font-size:21px}
+  .catalog{max-height:210px;min-height:100px}
+  .catalog-item img{width:54px;height:54px}
+  .catalog-item span{font-size:11px}
+  .catalog-item small{font-size:10px}
+  .session-tools button{font-size:11px;min-height:36px}
+  .room-panel>.actions button{font-size:12px;min-height:40px}
+  .museum-room{padding:0}
+  .museum-list{top:140px;left:10px;width:calc(100% - 20px);max-height:210px;padding:10px;overflow:auto}
+  .museum-list h2{margin:0 0 8px}
+  .museum-list>.eyebrow{display:none}
+  .museum-list .books{max-height:100px}
+  .museum-card{top:368px;bottom:16px;right:10px;width:calc(100% - 20px)}
+  .museum-garment{width:96px;height:96px}
+  .historical-fact{font-size:14px}
+  .toast{bottom:24px;max-width:calc(100% - 20px);font-size:11px}
+}
+@media(max-width:640px) and (max-height:720px){
+  .mannequin-stage{top:134px}
+  .paperdoll{width:104px;height:156px}
+  .room-panel{top:354px}
+  .hub-cards .welcome-card{padding:6px;bottom:132px}
+  .hub-cards .welcome-card p{display:none}
+  .welcome-avatar{width:40px;height:52px}
+  .chapter-card h2{font-size:13px}
+  .chapter-card p{margin-bottom:4px}
+}
+@media(max-height:520px) and (min-width:641px){
+  .brand{width:150px}.site-header{height:60px;top:6px}
+  .tagline{display:none}.back-home{top:66px}.main-nav{top:64px}
+  .room-panel,.museum-list{top:114px;max-height:calc(100dvh - 128px)}
+  .mannequin-stage{top:110px}.paperdoll{width:128px;height:192px}
+  .mannequin-stage>.eyebrow{display:none}
+  .hub-cards .welcome-card{bottom:28px;padding:6px;width:370px;left:43%}
+  .welcome-avatar{width:42px;height:58px}.hub-cards .welcome-card p{display:none}
+  .hub-cards .chapter-card{bottom:25px;width:155px;padding:7px}
+  .hub-cards h2{font-size:15px}.chapter-card p{font-size:10px}
+  .sign{font-size:12px;min-height:34px;padding:4px 10px}
+  .screen-journey .controls-help{display:none}
+}

@@ -76,6 +76,12 @@ export function nearestInteractable(
   let minDistance = Infinity;
 
   for (const interactable of currentArea.interactables) {
+    if (interactable.action.type === 'item' && state.inventory.itemIds.includes(interactable.action.targetId)) continue;
+    if (interactable.action.type === 'puzzle') {
+      if (chProgress.solvedPuzzleIds.includes(interactable.action.targetId)) continue;
+      const puzzle = chData.puzzles.find(p => p.id === interactable.action.targetId);
+      if (puzzle?.prerequisitePuzzleIds?.some(id => !chProgress.solvedPuzzleIds.includes(id))) continue;
+    }
     if (!matchesSide(interactable.side, chProgress.side)) {
       continue;
     }
@@ -103,7 +109,7 @@ export const interactCommand: CommandDef<InteractPayload> = {
     if (!targetId) {
       return { ok: false, reason: 'Target ID is required for interaction.' };
     }
-    if (!playerPos || typeof playerPos.x !== 'number' || typeof playerPos.y !== 'number') {
+    if (!playerPos || !Number.isFinite(playerPos.x) || !Number.isFinite(playerPos.y) || playerPos.x < 0 || playerPos.x > 1 || playerPos.y < 0 || playerPos.y > 1) {
       return { ok: false, reason: 'Player position is required for interaction.' };
     }
 
