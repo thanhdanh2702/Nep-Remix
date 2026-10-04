@@ -1,0 +1,55 @@
+/* Gemini-powered Studio extras (stylist + AI lookbook). Tokens from src/ui/tokens.css; pixel look: hard borders, no blur. */
+.studio-ai-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: var(--sp-2); margin-top: var(--sp-2); }
+.studio-ai-button { min-height: var(--target-min); padding: 0 var(--sp-3); font-size: var(--fs-caption); }
+
+/* Neutral chip: offline is an expected state (billing / quota), so never red. */
+.ai-badge {
+  display: inline-block; padding: 2px var(--sp-2); font-size: var(--fs-min); font-weight: 600; line-height: 1.4;
+  color: var(--c-deep-plum); background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border);
+}
+.ai-badge.is-ok { color: var(--c-success); background: var(--c-success-bg); border-color: var(--c-success); }
+.ai-badge.is-cached { color: var(--c-muted-plum); background: var(--c-soft-pink); }
+.ai-badge.is-fallback { color: var(--c-hint); background: var(--c-hint-bg); border-color: var(--c-hint); }
+
+/* Lookbook status: overlay on the board bottom so it never grows the panel (the wardrobe dock sits right below it). */
+.studio-ai-lookbook-status {
+  position: absolute; left: 7%; right: 7%; bottom: 3%; z-index: 1; max-height: 45%; overflow: auto;
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-1); padding: 2px var(--sp-1);
+  font-size: var(--fs-min); line-height: 1.4; color: var(--c-deep-plum); background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border);
+}
+.studio-ai-lookbook-status:empty { display: none; }
+.studio-ai-photo { display: block; width: 100%; height: 100%; object-fit: cover; }
+.studio-actions button[aria-busy="true"] { min-height: var(--target-min); }
+
+/* Stylist dialog */
+.studio-ai-note { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-2); margin: 0 0 var(--sp-3); font-size: var(--fs-caption); }
+.studio-ai-cards { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); }
+.studio-ai-card { padding: var(--sp-3); background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border); }
+.studio-ai-card h3 { margin: 0 0 var(--sp-2); font-size: var(--fs-dialogue); }
+.studio-ai-card p { margin: 0 0 var(--sp-2); font-size: var(--fs-caption); line-height: 1.5; }
+.studio-ai-swatches { display: flex; gap: var(--sp-1); margin-bottom: var(--sp-2); }
+.studio-ai-swatches span { width: 28px; height: 28px; border: var(--bw-thin) solid var(--c-deep-plum); }
+.studio-ai-lock { font-size: var(--fs-min); font-weight: 600; color: var(--c-hint); }
+.studio-ai-card .primary { min-height: var(--target-min); }
+.studio-ai-comment { color: var(--c-muted-plum); }
+
+/* Short phone landscape: the session row is hidden there, so the stylist button sits beside the model instead of shrinking it. */
+@media (max-height: 500px) and (min-width: 641px) {
+  .studio-ai-row { position: absolute; right: 100%; bottom: 0; width: 136px; flex-direction: column; margin: 0; }
+  .studio-ai-button { width: 100%; }
+}
+
+/* Third lookbook action (AI) must fit the 68px action row the lookbook width is derived from.
+   Higher specificity than studio.css so import order does not matter. */
+.studio-lookbook .studio-actions button { font-size: var(--fs-min); line-height: 1.25; padding: var(--sp-1) 2px; }
+.studio-lookbook .studio-actions button.studio-ai-capture { flex: 1.1; }
+@media (max-width: 640px) {
+  .studio-lookbook .studio-actions { display: grid; grid-template-columns: 1fr 1fr; flex-direction: row; }
+  .studio-lookbook .studio-actions button { min-height: var(--target-min); }
+  .studio-lookbook .studio-actions button.studio-ai-capture { grid-column: 1 / -1; }
+}
+@media (max-height: 500px) and (min-width: 641px) {
+  .studio-ai-lookbook-status { left: 0; right: 0; bottom: 0; max-height: 65%; }
+  .studio-lookbook .studio-actions { display: grid; grid-template-columns: 1fr 1fr; width: 184px; gap: 2px; }
+  .studio-lookbook .studio-actions button.studio-ai-capture { grid-column: 1 / -1; }
+}
