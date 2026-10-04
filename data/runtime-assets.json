@@ -3707,21 +3707,21 @@
   {
     "path": "assets/screens/main-shop/area-sign-frame.png",
     "kind": "screen-asset",
-    "width": 2048,
-    "height": 683,
+    "width": 512,
+    "height": 171,
     "format": "PNG",
     "mode": "RGBA",
     "alphaRange": [
       0,
-      254
+      255
     ],
     "bounds": [
-      31,
-      34,
-      2016,
-      683
+      10,
+      17,
+      502,
+      161
     ],
-    "sha256": "93a04275b087c683cae0774dd892c11eabffd41b44db0693d332fefac280523b"
+    "sha256": "6d54e087c9206392bf4eacef9e145dacf68da8fd9ceca8f1f44a6ba26dd50494"
   },
   {
     "path": "assets/screens/main-shop/background--landscape.png",
@@ -3764,21 +3764,21 @@
   {
     "path": "assets/screens/main-shop/currency-hud.png",
     "kind": "screen-asset",
-    "width": 2048,
-    "height": 683,
+    "width": 384,
+    "height": 128,
     "format": "PNG",
     "mode": "RGBA",
     "alphaRange": [
       0,
-      254
+      255
     ],
     "bounds": [
-      67,
-      52,
-      1983,
-      683
+      14,
+      10,
+      370,
+      115
     ],
-    "sha256": "77b8d3b45cf0a673e2fbf7d3fc405abf24845258e03638f6a1178d05ec0d1348"
+    "sha256": "f3229fa40f89913fc58c528efc48ffbb4f24eca1908b7e1900ec3cd0d0f6cd1b"
   },
   {
     "path": "assets/screens/main-shop/door-entrance-glow.png",
@@ -3800,50 +3800,12 @@
     "sha256": "96ed04e6706b911a4e1794f60d8d780991f0ad8f52e97d5918a63c0aed469cfe"
   },
   {
-    "path": "assets/screens/main-shop/garden--landscape.png",
-    "kind": "screen-asset",
-    "width": 1585,
-    "height": 992,
-    "format": "PNG",
-    "mode": "RGB",
-    "alphaRange": [
-      255,
-      255
-    ],
-    "bounds": [
-      0,
-      0,
-      1585,
-      992
-    ],
-    "sha256": "4978e0458d833f88132f9f033e1af9cec6b9e548d0c10f6be0c7375f493bc51f"
-  },
-  {
-    "path": "assets/screens/main-shop/garden-overview--landscape.png",
-    "kind": "screen-asset",
-    "width": 1586,
-    "height": 992,
-    "format": "PNG",
-    "mode": "RGB",
-    "alphaRange": [
-      255,
-      255
-    ],
-    "bounds": [
-      0,
-      0,
-      1586,
-      992
-    ],
-    "sha256": "5f240f8fec16e8f8c100ad3e874deb23086c974e5676ac41b5a4c735b66ccbbe"
-  },
-  {
     "path": "assets/screens/main-shop/garden-user--landscape.png",
     "kind": "screen-asset",
-    "width": 1586,
-    "height": 992,
+    "width": 793,
+    "height": 496,
     "format": "PNG",
-    "mode": "RGB",
+    "mode": "P",
     "alphaRange": [
       255,
       255
@@ -3851,16 +3813,16 @@
     "bounds": [
       0,
       0,
-      1586,
-      992
+      793,
+      496
     ],
-    "sha256": "7c5e4fe3e251e6d33363fcc2699b24f86b523e48cdc34f81971eff2b19558857"
+    "sha256": "2ca3c5976611d4cf5f012e60d87fd876aa6172796288beea4addcb793ea57f55"
   },
   {
     "path": "assets/screens/main-shop/settings-button.png",
     "kind": "screen-asset",
-    "width": 1254,
-    "height": 1254,
+    "width": 128,
+    "height": 128,
     "format": "PNG",
     "mode": "RGBA",
     "alphaRange": [
@@ -3868,12 +3830,12 @@
       255
     ],
     "bounds": [
-      105,
-      103,
-      1135,
-      1117
+      12,
+      14,
+      116,
+      114
     ],
-    "sha256": "d6b44ef1729a22c1faab3ebec1f175ed6843e7603159a9f871f4764b8c7a523f"
+    "sha256": "746cca76538cf4383937e2c58553778c81c028d466ae6989c9a8e068865244d3"
   },
   {
     "path": "assets/screens/main-shop/ui-hud--3slice.png",
@@ -3897,10 +3859,10 @@
   {
     "path": "assets/screens/museum/bookshelf-pink--landscape.png",
     "kind": "screen-asset",
-    "width": 1586,
-    "height": 992,
+    "width": 793,
+    "height": 496,
     "format": "PNG",
-    "mode": "RGB",
+    "mode": "P",
     "alphaRange": [
       255,
       255
@@ -3908,10 +3870,10 @@
     "bounds": [
       0,
       0,
-      1586,
-      992
+      793,
+      496
     ],
-    "sha256": "9c86545ccf2be51589ef70c8f8f0e63f494a706bc3be692a2fc176fdaa8e96f5"
+    "sha256": "af7af8aaa67cb1976981a5eb955e6517c412ade5f3f2be3840430258dfe81769"
   },
   {
     "path": "assets/screens/museum/bookshelf-view--landscape.png",
@@ -4049,10 +4011,10 @@
   {
     "path": "assets/screens/studio/lookbook-frame.png",
     "kind": "screen-asset",
-    "width": 1144,
-    "height": 1375,
+    "width": 572,
+    "height": 688,
     "format": "PNG",
-    "mode": "RGB",
+    "mode": "P",
     "alphaRange": [
       255,
       255
@@ -4060,10 +4022,10 @@
     "bounds": [
       0,
       0,
-      1144,
-      1375
+      572,
+      688
     ],
-    "sha256": "1d17c6b26d44c246e7cce564d235df7fa078ea64b2882f7d36f846b10058604b"
+    "sha256": "ae507f7aca0028e064247800ad53f301c5a43c7b65b03449b2ad45654b2ef1de"
   },
   {
     "path": "assets/screens/studio/lookbook-modal--9slice.png",
@@ -4106,10 +4068,10 @@
   {
     "path": "assets/screens/studio/vietnamese-room--landscape.png",
     "kind": "screen-asset",
-    "width": 1585,
-    "height": 992,
+    "width": 793,
+    "height": 496,
     "format": "PNG",
-    "mode": "RGB",
+    "mode": "P",
     "alphaRange": [
       255,
       255
@@ -4117,18 +4079,18 @@
     "bounds": [
       0,
       0,
-      1585,
-      992
+      793,
+      496
     ],
-    "sha256": "4db9de28dbcdadd8fb6832809bf168e257476c16269d371c6704fc683a7ef089"
+    "sha256": "8ac3aa655f94f28748d60d3cdaa9dcf47e3d1a09761c1a073bbd66c206a58bdc"
   },
   {
     "path": "assets/screens/studio/wardrobe-frame--landscape.png",
     "kind": "screen-asset",
-    "width": 2172,
-    "height": 724,
+    "width": 724,
+    "height": 241,
     "format": "PNG",
-    "mode": "RGB",
+    "mode": "P",
     "alphaRange": [
       255,
       255
@@ -4136,10 +4098,10 @@
     "bounds": [
       0,
       0,
-      2172,
-      724
+      724,
+      241
     ],
-    "sha256": "1e1fb1d7735d83767f162caccc71d5a73538a3f2f9237b72145eaa32d8115c50"
+    "sha256": "ee921a2f3ae58cde92a6d69c9f7f08ef7c46a911f51967cd3e2828713d5107e6"
   },
   {
     "path": "assets/screens/studio/workbench-ui--landscape.png",
@@ -4220,10 +4182,10 @@
   {
     "path": "assets/screens/welcome/welcome-courtyard.png",
     "kind": "screen-asset",
-    "width": 1774,
-    "height": 887,
+    "width": 887,
+    "height": 443,
     "format": "PNG",
-    "mode": "RGB",
+    "mode": "P",
     "alphaRange": [
       255,
       255
@@ -4231,10 +4193,10 @@
     "bounds": [
       0,
       0,
-      1774,
-      887
+      887,
+      443
     ],
-    "sha256": "3b9539c44076860c3d5b72f3669253d0e21104cb69c8ac121d81c8d8edd7b3c1"
+    "sha256": "4e1a308a01bb12d2253cb3d549e03011a2e2552cf6638139972d496f90ebd042"
   },
   {
     "path": "assets/screens/workshop/sewing-machine--landscape.png",
