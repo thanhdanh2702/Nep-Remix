@@ -167,8 +167,8 @@ export default function App() {
       </>}
       {panel === 'help' && <>
         <p className="nep-dialog-lead">Cứ ghé tiệm, rồi chọn điều bạn muốn khám phá.</p>
-        <div className="nep-help-grid"><div><strong>Trên máy tính</strong><p><kbd>W A S D</kbd> hoặc phím mũi tên để di chuyển.<br /><kbd>E</kbd> để trò chuyện và tương tác khi đến gần.</p></div><div><strong>Trên điện thoại</strong><p>Giữ các nút hướng để đi cùng An. Chạm <b>Tương tác</b> khi đứng gần đồ vật hoặc nhân vật.</p></div></div>
-        <p>Chọn biển <b>Phòng phối đồ</b> để thử bộ phối; <b>Cốt truyện</b> để khám phá chiếc rương của bà; <b>Bảo tàng</b> để đọc những câu chuyện về nếp áo; <b>Tủ đồ</b> để xem trang phục và phụ kiện.</p>
+        <div className="nep-help-grid"><div><strong>Ngoài sân</strong><p><kbd>W A S D</kbd> hoặc phím mũi tên để đi cùng An.<br /><kbd>E</kbd> để trò chuyện và tương tác khi đến gần.<br />Trên điện thoại: giữ các nút hướng, chạm <b>Tương tác</b> khi đứng gần.</p></div><div><strong>Trong phòng</strong><p>Bấm hoặc chạm vào vật có viền sáng để xem, nhặt hay trò chuyện. Khó thấy thì bấm <b>Soi</b> (hoặc <kbd>Space</kbd>) để vật hiện lên một lúc. Mở <b>Túi đồ</b> để ghép đồ và xem manh mối.</p></div></div>
+        <p>Chọn biển <b>Phòng phối đồ</b> để thử bộ phối, nhờ <b>Gợi ý từ Gemini</b> hay chụp <b>Lookbook AI</b>; <b>Cốt truyện</b> để khám phá chiếc rương của bà; <b>Bảo tàng</b> để đọc những câu chuyện về nếp áo; <b>Tủ đồ</b> để xem trang phục, phụ kiện và may thêm ở <b>Xưởng may</b>.</p>
         <p className="nep-dialog-caption">Tiến trình được tự động lưu trên thiết bị bạn đang chơi.</p>
       </>}
       {panel === 'upload' && <>

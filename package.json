@@ -13,7 +13,9 @@
     "test:core": "tsx scripts/check-core.ts && tsx scripts/check-game.ts",
     "test:browser": "playwright test",
     "test:assets": "node scripts/check-built-assets.mjs",
-    "audit:assets": "python scripts/audit-assets.py"
+    "audit:assets": "python scripts/audit-assets.py",
+    "setup": "node scripts/setup.mjs",
+    "smoke:ai": "tsx scripts/smoke-gemini.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
