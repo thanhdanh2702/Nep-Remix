@@ -2,13 +2,14 @@ import { palette } from '../ui/pixel-art';
 import { bakeOutline, drawBrackets, drawSparkle, outlinePad } from './hotspot-highlight';
 import { setSmoothing } from '../ui/pixel-scale';
 import { drawPixelSprite } from './scene-view';
+import { portraitFor } from './npc-portraits';
 
 // Canvas drawing for point-and-click rooms. Everything is pure canvas math over loaded images;
 // RoomScene owns state, DOM and timing. The stage canvas is exactly the room background, so world px
 // (the background's own pixel size) map to device px by `k`.
 
 export interface Box { x: number; y: number; w: number; h: number }
-export interface RoomAssets { bg: HTMLImageElement; cat?: HTMLImageElement; vfx?: HTMLImageElement; cutouts: Record<string, HTMLImageElement> }
+export interface RoomAssets { bg: HTMLImageElement; cat?: HTMLImageElement; vfx?: HTMLImageElement; cutouts: Record<string, HTMLImageElement>; npcs: Record<string, HTMLImageElement> }
 export interface Highlight { id: string; hit: Box; world: Box; useCutout: boolean }
 export interface RoomFrame {
   w: number; h: number; k: number; t: number; reduced: boolean;
@@ -18,7 +19,19 @@ export interface RoomFrame {
   /** "Soi" mode: brackets on every hotspot. */
   all: Box[];
   sparkle: { x: number; y: number; frame: number } | null;
+  /** NPCs standing in the room: rect in world px, feet at its bottom centre. */
+  npcs: { id: string; rect: Box }[];
 }
+
+/** Interactables that stand an NPC in the room (c1 content has no npc field): sprite path + ghost flag, by interactable id.
+ *  Speaker-backed ones reuse npc-portraits so a sprite is named once. */
+const speakerSprite = (speaker: string) => { const p = portraitFor(speaker); return p.kind === 'sprite' ? { path: p.path, ghost: p.ghost } : undefined; };
+export const ROOM_NPCS: Record<string, { path: string; ghost?: boolean } | undefined> = {
+  'hitbox-village-officials': { path: 'assets/characters/truong-toc-bui/view-front.png' },
+  'hitbox-ong-le-entity': speakerSprite('Bóng mờ Ông Lệ'),
+  'hitbox-styling-cam': speakerSprite('Cụ Cầm'),
+};
+const NPC_W = 64, NPC_H = 96, NPC_PITCH = NPC_W + 8;
 
 /** Overlays that change the art for the current progress (same rules the WASD scene used). */
 export function overlaysFor(s1: boolean, itemIds: string[], solved: string[]): string[] {
@@ -79,6 +92,18 @@ export function drawRoom(ctx: CanvasRenderingContext2D, assets: RoomAssets, area
   setSmoothing(ctx, false);
   const cam = { scale: k, x: 0, y: 0 };
   if (f.s1 && assets.cat) drawPixelSprite(ctx, assets.cat, { x: 0, y: 0, w: 32, h: 32 }, { x: 661, y: 426, w: 32, h: 32 }, cam, 1);
+  // NPCs: 1x world scale (whole device px, like the cat), a wide rect holds several side by side. Ghosts are see-through.
+  for (const { id, rect } of f.npcs) {
+    const img = assets.npcs[id];
+    if (!img) continue;
+    const copies = Math.max(1, Math.floor((rect.w + NPC_PITCH - NPC_W) / NPC_PITCH));
+    ctx.globalAlpha = ROOM_NPCS[id]?.ghost ? .7 : 1;
+    for (let c = 0; c < copies; c++) {
+      const cx = rect.x + rect.w / 2 + (c - (copies - 1) / 2) * NPC_PITCH;
+      drawPixelSprite(ctx, img, { x: 0, y: 0, w: NPC_W, h: NPC_H }, { x: cx - NPC_W / 2, y: rect.y + rect.h - NPC_H, w: NPC_W, h: NPC_H }, cam, 1);
+    }
+    ctx.globalAlpha = 1;
+  }
   if (f.vfx && assets.vfx) {
     const { cell, foot } = f.s1 ? VFX.s1 : VFX.s2, { frame, alpha, rise } = vfxState(f.s1, t, f.reduced);
     // Light is added with a screen blend so it brightens the wood instead of sitting on it like a sticker.

@@ -8,7 +8,7 @@ import { setupCanvas } from '../ui/pixel-scale';
 import { prefersReducedMotion } from '../ui/motion';
 import { ARROW_UP, CURSOR_DEFAULT, CURSOR_EXIT, CURSOR_HAND, cursorCss, gridToDataUrl, palette, rotateGrid } from '../ui/pixel-art';
 import { HUD_SELECTOR, measureInsets } from './scene-view';
-import { drawRoom, overlaysFor, vfxState, type Box, type Highlight, type RoomAssets } from './room-render';
+import { drawRoom, overlaysFor, ROOM_NPCS, vfxState, type Box, type Highlight, type RoomAssets } from './room-render';
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
 const cutoutBoxes = import.meta.glob<Record<string, Box>>('../../assets/areas/*/*/hotspots.json', { eager: true, import: 'default' });
@@ -33,6 +33,21 @@ const labelFor = (i: Interactable, chapter: Chapter) => {
 const hitOf = (r: Box, b: Box): Box => {
   const w = Math.max(MIN_HIT, r.w * b.w), h = Math.max(MIN_HIT, r.h * b.h);
   return { x: (r.x + r.w / 2) * b.w - w / 2, y: (r.y + r.h / 2) * b.h - h / 2, w, h };
+};
+// A small hotspot's grown hit box must not swallow the centre of a larger hotspot (the incense burner sat on the altar's centre
+// on small screens): cut it back on whichever side keeps the most area. Where nothing conflicts it stays >= MIN_HIT.
+const limitHit = (hit: Box, rect: Box, centres: { x: number; y: number }[]): Box => {
+  let { x, y, w, h } = hit;
+  for (const c of centres) {
+    if (c.x <= x || c.x >= x + w || c.y <= y || c.y >= y + h || (c.x >= rect.x && c.x <= rect.x + rect.w && c.y >= rect.y && c.y <= rect.y + rect.h)) continue;
+    const cuts: Box[] = [];
+    if (c.x < rect.x) cuts.push({ x: Math.min(rect.x, c.x + 1), y, w: x + w - Math.min(rect.x, c.x + 1), h });
+    if (c.x > rect.x + rect.w) cuts.push({ x, y, w: Math.max(rect.x + rect.w, c.x - 1) - x, h });
+    if (c.y < rect.y) cuts.push({ x, y: Math.min(rect.y, c.y + 1), w, h: y + h - Math.min(rect.y, c.y + 1) });
+    if (c.y > rect.y + rect.h) cuts.push({ x, y, w, h: Math.max(rect.y + rect.h, c.y - 1) - y });
+    ({ x, y, w, h } = cuts.reduce((best, b) => b.w * b.h > best.w * best.h ? b : best));
+  }
+  return { x, y, w, h };
 };
 let cursors: Record<string, string> | undefined;
 const arrows = new Map<string, string>();
@@ -76,15 +91,23 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
         const r = i.rect ?? { x: i.pos.x - .03, y: i.pos.y - .03, w: .06, h: .06 }, a = i.action;
         const used = a.type === 'item' ? state.inventory.itemIds.includes(a.targetId)
           : a.type === 'puzzle' ? progress.solvedPuzzleIds.includes(a.targetId) : progress.completedDialogueIds.includes(a.targetId);
-        return { i, label: labelFor(i, chapter), used, hit: hitOf(r, stage), world: boxes[i.id], area: r.w * r.h };
+        return { i, label: labelFor(i, chapter), used, hit: hitOf(r, stage), world: boxes[i.id], rect: r, area: r.w * r.h };
       })
-      .sort((a, b) => b.area - a.area); // smaller rects later in the DOM, so they sit on top
+      .sort((a, b) => b.area - a.area) // smaller rects later in the DOM, so they sit on top
+      .map((s, _, all) => {
+        const rect = { x: s.rect.x * stage.w, y: s.rect.y * stage.h, w: s.rect.w * stage.w, h: s.rect.h * stage.h };
+        const centres = all.filter(o => o.area > s.area).map(o => ({ x: (o.rect.x + o.rect.w / 2) * stage.w, y: (o.rect.y + o.rect.h / 2) * stage.h }));
+        return { i: s.i, label: s.label, used: s.used, world: s.world, hit: limitHit(s.hit, rect, centres) };
+      });
   }, [area, chapterId, areaId, box.w, box.h, progress.side, progress.solvedPuzzleIds, progress.completedDialogueIds, state.inventory.itemIds, chapter]);
+  const npcs = area.interactables // same side rule as the spots; solved puzzles keep their NPC standing
+    .filter(i => ROOM_NPCS[i.id] && (i.side === 'ca_hai' || `mat_${i.side}` === progress.side))
+    .map(i => { const r = i.rect ?? { x: i.pos.x - .03, y: i.pos.y - .03, w: .06, h: .06 }; return { id: i.id, rect: { x: r.x * world.w, y: r.y * world.h, w: r.w * world.w, h: r.h * world.h } }; });
   const via = new Set((area.exitArrows ?? []).map(a => a.via));
   const buttons = spots.filter(s => !via.has(s.i.id));
   const focusSpot = !blocked && hoverId ? spots.find(s => s.i.id === hoverId) : undefined;
-  const live = useRef({ box, ready, blocked, hoverId, soi, overlays, s1, areaId, spots, focusSpot, via });
-  live.current = { box, ready, blocked, hoverId, soi, overlays, s1, areaId, spots, focusSpot, via };
+  const live = useRef({ box, ready, blocked, hoverId, soi, overlays, s1, areaId, spots, focusSpot, via, npcs });
+  live.current = { box, ready, blocked, hoverId, soi, overlays, s1, areaId, spots, focusSpot, via, npcs };
 
   useEffect(() => { // Pixel cursors are baked once and exposed as CSS custom properties.
     cursors ??= { '--cursor-default': cursorCss(CURSOR_DEFAULT, [0, 0]), '--cursor-hand': cursorCss(CURSOR_HAND, [6, 0]), '--cursor-exit': cursorCss(CURSOR_EXIT, [8, 8]) };
@@ -113,12 +136,15 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     setReady(false); setFailure(''); setHoverId(null); assets.current = null; lastSig.current = '';
     const folder = areaFolder(chapterId, areaId), vfxFile = VFX_FILE[areaId];
     const ids = Object.keys(boxesFor(chapterId, areaId)).filter(id => assetRegistry[`${folder}/hotspot-${id}.png`]);
+    const npcIds = area.interactables.map(i => i.id).filter(id => ROOM_NPCS[id]);
     Promise.all([
       Promise.all([loadImage(areaAsset(chapterId, areaId)), s1 ? loadImage(CAT_SPRITE) : undefined, vfxFile ? loadImage(`${folder}/${vfxFile}`) : undefined]),
       Promise.allSettled(ids.map(id => loadImage(`${folder}/hotspot-${id}.png`))),
-    ]).then(([[bg, cat, vfx], cuts]) => {
+      Promise.allSettled(npcIds.map(id => loadImage(ROOM_NPCS[id]!.path))),
+    ]).then(([[bg, cat, vfx], cuts, people]) => {
       if (cancelled) return;
-      assets.current = { bg, cat, vfx, cutouts: Object.fromEntries(ids.flatMap((id, i) => cuts[i].status === 'fulfilled' ? [[id, cuts[i].value]] : [])) };
+      assets.current = { bg, cat, vfx, cutouts: Object.fromEntries(ids.flatMap((id, i) => cuts[i].status === 'fulfilled' ? [[id, cuts[i].value]] : [])),
+        npcs: Object.fromEntries(npcIds.flatMap((id, i) => people[i].status === 'fulfilled' ? [[id, people[i].value]] : [])) };
       setReady(true);
     }).catch(error => { if (!cancelled) setFailure(error.message); });
     return () => { cancelled = true; };
@@ -153,7 +179,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const within = t % 4000, sparkling = !reduced && !L.blocked && !lit && pending.length > 0 && within < 450;
     const target = sparkling ? pending[Math.floor(t / 4000) % pending.length] : undefined;
     const phase = [!(a.vfx && vfxOn) ? 0 : Object.values(vfxState(L.s1, t, reduced)).join(':'), !lit || reduced ? 0 : `${Math.floor(t / 400) % 2}${Math.floor(t / 500) % 2}`, target ? Math.floor(within / 150) : -1].join();
-    const sig = [L.box.w, L.box.h, L.box.dpr, L.focusSpot?.i.id, L.soi, L.overlays.join('+'), L.areaId, L.spots.map(s => s.used).join(), phase].join('|');
+    const sig = [L.box.w, L.box.h, L.box.dpr, L.focusSpot?.i.id, L.soi, L.overlays.join('+'), L.areaId, L.npcs.map(n => n.id).join(), L.spots.map(s => s.used).join(), phase].join('|');
     if (sig === lastSig.current) return;
     lastSig.current = sig;
     const { dpr } = setupCanvas(surface, L.box.w, L.box.h), px = (b: Box): Box => ({ x: b.x * dpr, y: b.y * dpr, w: b.w * dpr, h: b.h * dpr });
@@ -161,6 +187,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const focus: Highlight | null = L.focusSpot ? { id: L.focusSpot.i.id, hit: px(L.focusSpot.hit), world: L.focusSpot.world ?? { x: 0, y: 0, w: 0, h: 0 }, useCutout: !L.focusSpot.used && Boolean(L.focusSpot.world) } : null;
     drawRoom(surface.getContext('2d')!, a, L.areaId, { w: surface.width, h: surface.height, k, t, reduced, overlays: L.overlays, s1: L.s1, vfx: vfxOn, focus,
       all: L.soi ? L.spots.filter(s => !L.via.has(s.i.id)).map(s => px(s.hit)) : [],
+      npcs: L.npcs,
       sparkle: target ? { x: (target.hit.x + target.hit.w / 2) * dpr, y: (target.hit.y + target.hit.h * .35) * dpr, frame: Math.floor(within / 150) } : null });
   };
   useEffect(paint); // after every render (state changes)

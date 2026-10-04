@@ -87,7 +87,7 @@ async function playToYard(page: Page, mobile = false) {
   await expect(room(page)).toHaveAttribute('data-ready', 'true');
   await spot(page, 'hitbox-honor-plaque').click();
   await closeDialogue(page);
-  await spot(page, 'hitbox-ancestor-altar').click({ position: { x: 8, y: 8 } }); // the incense burner's 44px hit area covers the altar centre on small screens
+  await spot(page, 'hitbox-ancestor-altar').click();
   await dialog(page).getByRole('button', { name: 'Kéo may bằng đồng', exact: true }).click();
   await page.getByRole('button', { name: 'Dùng vật phẩm', exact: true }).click();
   await closeDialogue(page);
