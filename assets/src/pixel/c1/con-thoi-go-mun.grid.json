@@ -1,0 +1,24 @@
+{
+  "id": "con-thoi-go-mun",
+  "kind": "item",
+  "w": 20,
+  "h": 6,
+  "palette": "ui+garment",
+  "mirror": "x",
+  "outline": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "C": "FFF1DF",
+    "W": "402036",
+    "h": "74506E"
+  },
+  "rows": [
+    "KC........",
+    ".KKKKKKKKK",
+    "KWWWhhhhhh",
+    "KWWWWWWWKK",
+    ".KKWWWWWWW",
+    "...KKKKKKK"
+  ]
+}

@@ -380,12 +380,12 @@
     "sha256": "c183218dafc33dba11a19a9439084a7c9315d45a6f7180cb653df4edce30654f"
   },
   {
-    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/bg-mat-phai/bg-mat-phai.png",
+    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/c1-s1-buong-det-khoa-kin--phai.png",
     "kind": "area-asset",
-    "width": 320,
-    "height": 240,
+    "width": 640,
+    "height": 360,
     "format": "PNG",
-    "mode": "RGBA",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -393,18 +393,18 @@
     "bounds": [
       0,
       0,
-      320,
-      240
+      640,
+      360
     ],
-    "sha256": "a1badd608bd0007e44278600d6dcb9d0548dcdee6498cffd3e1c8bb6796f68eb"
+    "sha256": "6b78279066f51f650eb7bebf9c219369bc666ef6baf9710c8d796fc715a99adc"
   },
   {
-    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/bg-mat-trai/bg-mat-trai.png",
+    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/c1-s2-ban-tho-nha-tho-ho--phai.png",
     "kind": "area-asset",
-    "width": 320,
-    "height": 240,
+    "width": 640,
+    "height": 360,
     "format": "PNG",
-    "mode": "RGBA",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -412,75 +412,18 @@
     "bounds": [
       0,
       0,
-      320,
-      240
+      640,
+      360
     ],
-    "sha256": "36e80cce4bf3fc0f3f1c533be4436b82acba295ea95d33fbc67ca88063a537e6"
+    "sha256": "09281caf49bc9d8c740f17397b988a3c97d1c078354d80cc316e38a87897aeb2"
   },
   {
-    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/hitbox-back-window/hitbox-back-window.png",
+    "path": "assets/areas/chapter-1/c1-s3-cong-dinh-doi-dau/c1-s3-cong-dinh-doi-dau--phai.png",
     "kind": "area-asset",
-    "width": 210,
-    "height": 76,
+    "width": 640,
+    "height": 360,
     "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      8,
-      5,
-      203,
-      68
-    ],
-    "sha256": "a5bb0a8f42adf5bfe06eb4a6ec358e4ba335bf025032ee6da14591dcc24d27f8"
-  },
-  {
-    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/hitbox-cold-porridge/hitbox-cold-porridge.png",
-    "kind": "area-asset",
-    "width": 32,
-    "height": 28,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      1,
-      3,
-      31,
-      28
-    ],
-    "sha256": "db2e635efb9c04f16047bdbb0e603e19dfe83f886c442f94e0fe754714c0e076"
-  },
-  {
-    "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/hitbox-front-door/hitbox-front-door.png",
-    "kind": "area-asset",
-    "width": 32,
-    "height": 144,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      8,
-      2,
-      23,
-      142
-    ],
-    "sha256": "70ee0e0fc90b8affe3757acc18d4a045d71bd3796b7628b755242ae03350ea6a"
-  },
-  {
-    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/bg-mat-phai/bg-mat-phai.png",
-    "kind": "area-asset",
-    "width": 320,
-    "height": 240,
-    "format": "PNG",
-    "mode": "RGBA",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -488,67 +431,10 @@
     "bounds": [
       0,
       0,
-      320,
-      240
+      640,
+      360
     ],
-    "sha256": "2d84580ef9b3b67ba2934e0aabf5d5559d5d4588883aee2b79f827f9de6e8422"
-  },
-  {
-    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/bg-mat-trai/bg-mat-trai.png",
-    "kind": "area-asset",
-    "width": 320,
-    "height": 240,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      255,
-      255
-    ],
-    "bounds": [
-      0,
-      0,
-      320,
-      240
-    ],
-    "sha256": "2824cc5156a09d35fa2ab5ec74f1d7c42588269b7ef9b2b2e369173a59a5de02"
-  },
-  {
-    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/hitbox-honor-plaque/hitbox-honor-plaque.png",
-    "kind": "area-asset",
-    "width": 128,
-    "height": 115,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      9,
-      2,
-      119,
-      112
-    ],
-    "sha256": "89cea08d3ff1431d21b4f996f8814d562226f63b54c8dfa3427f9816ce2faad9"
-  },
-  {
-    "path": "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/hitbox-incense-burner/hitbox-incense-burner.png",
-    "kind": "area-asset",
-    "width": 104,
-    "height": 28,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      1,
-      2,
-      104,
-      27
-    ],
-    "sha256": "b47dcf28d2d38350ffc25a773f9231e944c90864919ac9cedd0f35fc04545a1c"
+    "sha256": "68fb0bd426037aabc15262f2ab846c483dbf243dedc78ae44b7babf1926a9939"
   },
   {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan.png",

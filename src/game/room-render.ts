@@ -67,8 +67,9 @@ export function drawRoom(ctx: CanvasRenderingContext2D, assets: RoomAssets, area
   const { k, t } = f;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, f.w, f.h);
-  // Painted art is smoothed; the stage has the background's aspect, so it fills the canvas exactly.
-  setSmoothing(ctx, true);
+  // Painted prologue art (c0-*) is smoothed; chapter backgrounds are code-drawn pixel art and stay crisp.
+  // The stage has the background's aspect, so it fills the canvas exactly.
+  setSmoothing(ctx, areaId.startsWith('c0-'));
   ctx.setTransform(k, 0, 0, k, 0, 0);
   ctx.drawImage(assets.bg, 0, 0);
   // State overlays are not drawn: the supplied overlay art is framed as close-ups and does not register

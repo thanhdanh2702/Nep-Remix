@@ -112,18 +112,15 @@
     "assets/items/chiec_ao_dai_cuoi_vai_phin/chiec_ao_dai_cuoi_vai_phin.png",
     "assets/items/cac_trang_gia_pha_goc_bi_xe/cac_trang_gia_pha_goc_bi_xe.png",
     "assets/items/ho_so_giam_dinh_y_phuc_2026/ho_so_giam_dinh_y_phuc_2026.png",
-    "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/c1-s1-buong-det-khoa-kin--phai.png",
     "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/c1-s1-buong-det-khoa-kin--trai.png",
     "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/c1-s1-buong-det-khoa-kin--cua-so-mo.png",
     "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/c1-s1-buong-det-khoa-kin--xich-sat-roi.png",
     "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/vfx-c1-s1-bui-to-tam.png",
-    "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/c1-s2-ban-tho-nha-tho-ho--phai.png",
     "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/c1-s2-ban-tho-nha-tho-ho--trai.png",
     "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/c1-s2-ban-tho-nha-tho-ho--rem-dieu-ven.png",
     "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/doc-c1-s2-to-van-tu-cam-co-dat.png",
     "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/doc-c1-s2-buc-thu-tay-chong-cu-cam.png",
     "assets/areas/chapter-1/c1-s2-ban-tho-nha-tho-ho/vfx-c1-s2-khoi-nhang-tram.png",
-    "assets/areas/chapter-1/c1-s3-cong-dinh-doi-dau/c1-s3-cong-dinh-doi-dau--phai.png",
     "assets/areas/chapter-1/c1-s3-cong-dinh-doi-dau/c1-s3-cong-dinh-doi-dau--trai.png",
     "assets/areas/chapter-1/c1-s3-cong-dinh-doi-dau/vfx-c1-s3-ong-le-tan-bien.png",
     "assets/areas/chapter-1/c1-s3-cong-dinh-doi-dau/cg-c1-s3-cong-ly-van-phuc.png",
@@ -184,7 +181,7 @@
     "assets/areas/chapter-5/c5-s3-doi-chat-hoi-sinh/cg-c5-s3-toa-sang-heritage-week.png"
   ],
   "notes": [
-    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 232 ảnh thật.",
+    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 226 ảnh thật.",
     "Không có tệp âm thanh trong assets/audio/.",
     "Không có nền portrait cho hai khu vực prologue; UI giữ nguyên tỷ lệ 8:5."
   ]

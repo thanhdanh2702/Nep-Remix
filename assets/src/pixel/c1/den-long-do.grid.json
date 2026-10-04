@@ -1,0 +1,34 @@
+{
+  "id": "den-long-do",
+  "kind": "item",
+  "w": 12,
+  "h": 15,
+  "palette": "ui+garment",
+  "mirror": "x",
+  "outline": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "Y": "CFA449",
+    "S": "711B40",
+    "R": "B83A24",
+    "E": "E9B66B"
+  },
+  "rows": [
+    ".....K",
+    "..KKKK",
+    ".KYYYY",
+    "KSRRRR",
+    "KSRRER",
+    "KSRRER",
+    "KSRRRR",
+    "KSRRRR",
+    ".KSRRR",
+    ".KYYYY",
+    "..KKKK",
+    ".....K",
+    ".....Y",
+    ".....Y",
+    "....YY"
+  ]
+}

@@ -1,0 +1,40 @@
+{
+  "areaId": "c1-s2-ban-tho-nha-tho-ho",
+  "size": {
+    "w": 640,
+    "h": 360
+  },
+  "generatedBy": "scripts/pixel/draw-c1-rooms.py",
+  "interactables": {
+    "hitbox-ancestor-altar": {
+      "x": 0.3234,
+      "y": 0.2194,
+      "w": 0.3531,
+      "h": 0.4833
+    },
+    "hitbox-incense-burner": {
+      "x": 0.4609,
+      "y": 0.5,
+      "w": 0.0781,
+      "h": 0.0694
+    },
+    "hitbox-honor-plaque": {
+      "x": 0.7109,
+      "y": 0.3528,
+      "w": 0.1437,
+      "h": 0.4611
+    }
+  },
+  "exits": {
+    "back": {
+      "x": 0.0531,
+      "y": 0.5278,
+      "dir": "left"
+    },
+    "yard": {
+      "x": 0.5,
+      "y": 0.9444,
+      "dir": "down"
+    }
+  }
+}

@@ -4,7 +4,7 @@
 - Plan: ./plan.md · Pipeline: `../../../reports/Claude vẽ pixel UI bằng code.md` (mục "Bộ khung", "Validator", "preview 224–336px")
 
 ## Overview
-- Priority: high · Status: pending · Est. effort: 5–6 h · Depends on: 01
+- Priority: high · Status: completed (05/10; budget ≤ 32 màu/phòng theo yêu cầu điều phối, không phải 24) · Est. effort: 5–6 h · Depends on: 01
 
 ## Key Insights
 - (05/10, sau phase 01) Art prologue rất chi tiết, hiển thị ~1.9× ở 1920 px; nền c1 phải 640×360 để mật độ pixel gần prologue (320×180 sẽ thô gấp ~5×). Dùng nhiều lớp texture procedural (vân gỗ, gạch, dither ánh sáng, bóng đổ) để không phẳng.
@@ -35,13 +35,13 @@
 5. test:assets pass.
 
 ## Todo List
-- [ ] palettes + pixel-grid.py
-- [ ] grid vật nhỏ
-- [ ] draw-c1-rooms.py 3 phòng + preview duyệt
-- [ ] layout.json
-- [ ] xóa art cũ + README
-- [ ] audit:assets + test:assets
-- [ ] SKILL.md pixel-draw
+- [x] palettes + pixel-grid.py
+- [x] grid vật nhỏ
+- [x] draw-c1-rooms.py 3 phòng + preview duyệt
+- [x] layout.json
+- [x] xóa art cũ + README
+- [x] audit:assets + test:assets
+- [x] SKILL.md pixel-draw
 
 ## Success Criteria
 - 3 PNG 640×360, ≤ 24 màu mỗi ảnh (script kiểm), không pixel bán trong suốt.
