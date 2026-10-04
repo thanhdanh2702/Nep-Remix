@@ -14,8 +14,8 @@ Header kem gồm logo Tiệm May Nếp, Về Nếp và Cách chơi. Footer kem g
 ## Các thao tác đang có
 
 - **Vào game:** chỉ lúc bấm mới mở Game với nhân vật có sẵn. Bản lưu hợp lệ đổi nhãn thành Tiếp tục chơi.
-- **Tải ảnh của bạn:** mở hộp chọn ảnh và bảng xem trước; có thể kéo thả ảnh vào bảng.
-- **Cách chơi:** hướng dẫn phím WASD/mũi tên, E và nút cảm ứng.
+- **Tải ảnh của bạn:** chọn ảnh JPG/PNG/WEBP, tick đồng ý gửi tới Google Gemini, bấm **Phân tích bằng Gemini** để nhận gợi ý kiểu tóc rồi **Dùng diện mạo này** để áp vào An. Ảnh được thu nhỏ trên máy, không lưu lại; đóng hộp thoại là xóa.
+- **Cách chơi:** ngoài sân đi bằng WASD/phím mũi tên (điện thoại: nút hướng) và E/Tương tác; trong phòng cốt truyện bấm/chạm vào vật có viền sáng, **Soi** (Space) để lộ mọi vật, mở **Túi đồ** để ghép vật phẩm.
 - **Về Nếp:** giới thiệu mục tiêu giúp người trẻ tiếp cận văn hóa áo dài.
 - **Ba mục footer:** giới thiệu các phân hệ khi đang ở màn chờ; mở phòng tương ứng khi đang chơi.
 - **Logo hoặc Màn chờ:** quay về màn chờ khi không có hội thoại/modal game đang mở.

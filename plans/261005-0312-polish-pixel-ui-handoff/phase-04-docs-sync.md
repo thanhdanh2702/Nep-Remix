@@ -1,7 +1,7 @@
 # Phase 04 — docs-sync
 
 ## Overview
-Priority: medium · Status: pending · Est. 1–2 h · Depends on: 01, 03
+Priority: medium · Status: complete · Est. 1–2 h · Depends on: 01, 03
 
 ## Requirements
 Đồng bộ docs với code hiện tại (chỉ sửa chỗ sai/lỗi thời, giữ cấu trúc):

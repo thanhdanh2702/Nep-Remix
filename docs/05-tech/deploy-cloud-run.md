@@ -88,6 +88,25 @@ gcloud billing budgets create \
 
 Budget chỉ **cảnh báo**, không tự ngắt dịch vụ. Khi nhận mail, kiểm tra Lookbook/min-instances và tắt nếu cần (mục 8, 12).
 
+## 5b. Chỉ có API key (bước tối thiểu)
+
+Nếu không muốn cấu hình Secret Manager: đặt `GEMINI_API_KEY` trực tiếp trong lệnh deploy (bất an, chỉ để thử nghiệm):
+
+```bash
+gcloud run deploy tiem-may-nep \
+  --source . \
+  --region asia-southeast1 \
+  --allow-unauthenticated \
+  --update-env-vars GEMINI_API_KEY="DÁN_KEY_VÀO_ĐÂY" \
+  --memory 1Gi --cpu 1 --cpu-boost \
+  --timeout 120 \
+  --max-instances 2 --min-instances 0
+```
+
+**Cảnh báo:** API key xuất hiện trong lịch sử lệnh gcloud và revision detail trong Console; chỉ dùng test key hoặc key sắp bị disable.
+
+Hoặc dùng **AI Studio Deploy button**: mở project trong AI Studio Build, bấm Deploy (góc trên bên phải), chọn GCP project có billing. AI Studio tạo Cloud Run service riêng và tự chèn key phía server.
+
 ## 6. Deploy
 
 ```bash
