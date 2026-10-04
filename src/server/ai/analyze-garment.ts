@@ -4,6 +4,7 @@ import { Type } from '@google/genai';
 import { ai } from './gemini-client.ts';
 import { aiCache } from './cache.ts';
 import { AI_MODELS } from '../../config/ai-models.ts';
+import { toFallbackReason, type FallbackReason } from './sanitize.ts';
 
 // ----------------------------------------------------
 // 1. Zod Enums & Schemas
@@ -73,12 +74,14 @@ export interface GarmentAnalysisSuccessResponse {
 }
 
 export interface GarmentAnalysisFallback {
+  reason: FallbackReason;
   manualTailoring: boolean;
   message: string;
   defaultGarmentId: string;
 }
 
 const DEFAULT_FALLBACK: GarmentAnalysisFallback = {
+  reason: 'ai_unavailable',
   manualTailoring: true,
   message: 'Máy may tự động đang bảo trì, mời bạn chọn thông số bằng tay!',
   defaultGarmentId: 'ao-ngu-than-tay-chen'
@@ -233,12 +236,13 @@ export async function handleAnalyzeGarment(req: Request, res: Response) {
       data: result
     });
   } catch (err) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error('[AI] analyze-garment failed:', err);
     return res.json({
       ok: false,
       fallback: {
         ...DEFAULT_FALLBACK,
-        message: `Lỗi phân tích áo: ${errorMsg}. Tiệm chuyển sang chế độ may đo thủ công.`
+        reason: toFallbackReason(err),
+        message: 'Không phân tích được áo lúc này. Tiệm chuyển sang chế độ may đo thủ công.'
       }
     });
   }

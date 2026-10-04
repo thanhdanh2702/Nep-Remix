@@ -1,7 +1,7 @@
+import 'dotenv/config';
 import express from 'express';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import dotenv from 'dotenv';
 import { createServer as createViteServer } from 'vite';
 
 import { runSelfCheck } from './src/core/self-check.ts';
@@ -12,8 +12,6 @@ import { loadContent } from './src/content/index.ts';
 import { SERVER_LIMITS } from './src/config/limits.ts';
 import { aiRouter } from './src/server/ai/index.ts';
 
-dotenv.config();
-
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -21,10 +19,9 @@ const PORT = parseInt(process.env.PORT || '3000', 10);
 const isProd = process.env.NODE_ENV === 'production';
 const APP_VERSION = '1.0.0';
 
-// Safely access GEMINI_API_KEY (never exposed to client responses)
-const _GEMINI_API_KEY = process.env.GEMINI_API_KEY || '';
-
 const app = express();
+// Behind Cloud Run / a single reverse proxy: trust X-Forwarded-For so req.ip is the real client
+app.set('trust proxy', 1);
 
 // ----------------------------------------------------
 // 1. Middlewares: Body limit & Sanitized Error Logging
@@ -34,6 +31,7 @@ app.use(express.urlencoded({ extended: true, limit: SERVER_LIMITS.maxBodySize })
 
 // Simple in-memory rate limiter for AI routes (/api/ai/*)
 const ipRateMap = new Map<string, { count: number; resetTime: number }>();
+const IP_RATE_MAP_SWEEP_SIZE = 1000;
 
 app.use('/api/ai/*', (req, res, next) => {
   const ip = req.ip || req.socket.remoteAddress || 'unknown';
@@ -43,6 +41,12 @@ app.use('/api/ai/*', (req, res, next) => {
 
   let clientRecord = ipRateMap.get(ip);
   if (!clientRecord || now > clientRecord.resetTime) {
+    // Drop expired entries so the map cannot grow without bound
+    if (ipRateMap.size > IP_RATE_MAP_SWEEP_SIZE) {
+      for (const [key, record] of ipRateMap) {
+        if (now > record.resetTime) ipRateMap.delete(key);
+      }
+    }
     clientRecord = { count: 1, resetTime: now + windowMs };
     ipRateMap.set(ip, clientRecord);
     return next();
