@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import { loadContent } from '../src/content';
-import { createInitialState, createInitialTree, dispatch, nearestInteractable, prune, replayPath, toJSON, fromJSON } from '../src/core';
+import { createInitialState, createInitialTree, dispatch, prune, replayPath, toJSON, fromJSON } from '../src/core';
 import { worlds, canStand, move } from '../src/game/physics';
 
 const content=loadContent();
@@ -25,30 +25,20 @@ send('dialogue/advance',{});send('chapter/complete',{chapterId:'prologue'});send
 assert.equal(state().wallet.senNgoc,150);
 assert.equal(dispatch(tree,{type:'reward/claim',payload:{chapterId:'prologue'}},content).ok,false);
 
-// Reachability checks use foot collisions and actual nearest-target priority.
-for(const area of content.chapters.prologue.areas) {
-  const world=worlds[area.id];assert.ok(canStand(world.spawn,world));
-  let initial=createInitialState(content);
-  initial={...initial,journey:{...initial.journey,prologue:{...initial.journey.prologue,currentArea:area.id}}};
-  const visited=new Set<string>(), queue=[world.spawn];
-  for(let index=0;index<queue.length;index++) {
-    const p=queue[index];
-    for(const [dx,dy] of [[8,0],[-8,0],[0,8],[0,-8]]) {
-      const next={x:p.x+dx,y:p.y+dy},key=`${next.x},${next.y}`;
-      if(!visited.has(key) && canStand(next,world)){visited.add(key);queue.push(next);}
-    }
-  }
-  for(const target of area.interactables.filter(i=>i.side!=='trai')) {
-    const current=structuredClone(initial);
-    if(target.id==='hitbox-chest-lock')current.journey.prologue.solvedPuzzleIds=['p-c0-cloth'];
-    assert.ok(queue.some(p=>nearestInteractable(current,content,{x:p.x/800,y:p.y/500})===target.id),`Unreachable target ${target.id}`);
+// Point-and-click rooms: every hit rect stays inside the 8:5 stage and every exit arrow resolves.
+const inUnit=(r:{x:number;y:number;w:number;h:number})=>r.x>=0&&r.y>=0&&r.w>=0&&r.h>=0&&r.x+r.w<=1&&r.y+r.h<=1;
+for(const chapter of Object.values(content.chapters))for(const area of chapter.areas) {
+  for(const target of area.interactables)assert.ok(!target.rect||inUnit(target.rect),`Rect out of [0,1] on ${area.id}/${target.id}`);
+  for(const arrow of area.exitArrows??[]) {
+    assert.ok(arrow.exit in area.exits,`Exit arrow ${arrow.exit} not in exits of ${area.id}`);
+    assert.ok(!arrow.via||area.interactables.some(i=>i.id===arrow.via),`Exit arrow via ${arrow.via} missing on ${area.id}`);
+    assert.ok(inUnit(arrow.rect),`Exit arrow rect out of [0,1] on ${area.id}`);
   }
 }
-const world=worlds.hub,p=world.spawn;
+// Hub: spawn is standable and diagonal movement is normalized.
+const world=worlds.hub;assert.ok(canStand(world.spawn,world));const p=world.spawn;
 const straight=move(p,{x:1,y:0},.04,world),diagonal=move(p,{x:1,y:1},.04,world);
 assert.ok(Math.abs(Math.hypot(straight.x-p.x,straight.y-p.y)-Math.hypot(diagonal.x-p.x,diagonal.y-p.y))<.001);
-const tableWorld=worlds['c0-s1-tiem-may-chieu'];
-assert.deepEqual(move({x:488,y:380},{x:1,y:0},.05,tableWorld),{x:488,y:380});
 
 // A long linear save must remain under 200 nodes and replay after checkpointing.
 for(let i=0;i<450;i++){send('profile/update',{name:`An ${i%10}`});tree=prune(tree,200);}
@@ -57,4 +47,4 @@ const replay=replayPath(tree,tree.headId,content);assert.ok(replay.ok && replay.
 const restored=fromJSON(toJSON(tree),content);assert.ok(restored.ok);
 const previousHead=tree.headId;send('profile/update',{name:'An'});assert.notEqual(tree.headId,previousHead);
 assert.equal(Object.keys(tree.nodes).length,201);
-console.log('PASS: full prologue, item guards, reward deduplication, normalized input, all interaction paths, collision, diagonal speed, bounded save and replay.');
+console.log('PASS: full prologue, item guards, reward deduplication, normalized input, room hit rects and exit arrows, hub collision, diagonal speed, bounded save and replay.');

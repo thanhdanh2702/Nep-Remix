@@ -27,7 +27,8 @@ test('Map reveals through two clouds, shows the six representatives and preserve
   const save = await page.evaluate(() => localStorage.getItem('tiem-may-nep-save-v1'));
   await page.screenshot({ path: 'artifacts/journey-map-desktop.png' });
   await page.locator('[data-chapter="prologue"] .journey-map-character').click();
-  await expect(page.locator('.scene canvas')).toHaveAttribute('data-position', '140.0,380.0');
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-ready', 'true');
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', 'c0-s1-tiem-may-chieu');
   await page.getByRole('button', { name: 'Bản đồ chương', exact: true }).click();
   await expect(page.locator('.journey-map-screen')).toHaveAttribute('data-revealing', 'false');
   expect(await page.evaluate(() => localStorage.getItem('tiem-may-nep-save-v1'))).toBe(save);
@@ -52,5 +53,6 @@ test('Mobile map pans without page overflow and respects reduced motion', async 
   await scroll.evaluate(el => { el.scrollLeft = el.scrollWidth; });
   await expect(page.locator('[data-chapter="c5"] .journey-map-label')).toBeInViewport();
   await page.locator('[data-chapter="prologue"] .journey-map-label').click();
-  await expect(page.locator('.scene canvas')).toHaveAttribute('data-world-width', '800');
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-world-width', '800');
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', 'c0-s1-tiem-may-chieu');
 });

@@ -362,6 +362,14 @@ export const InteractableSchema = z.object({
 });
 export type Interactable = z.infer<typeof InteractableSchema>;
 
+export const ExitArrowSchema = z.object({
+  exit: z.string(),
+  rect: NormalizedRectSchema,
+  dir: z.enum(['left', 'right', 'up', 'down']),
+  via: InteractableIdSchema.optional()
+});
+export type ExitArrow = z.infer<typeof ExitArrowSchema>;
+
 export const AreaSchema = z.object({
   id: AreaIdSchema,
   chapterId: ChapterIdSchema,
@@ -378,7 +386,14 @@ export const AreaSchema = z.object({
     trai: z.boolean()
   }),
   exits: z.record(z.string(), z.string()),
+  /** Point-and-click exit arrows; `via` routes the click through an interactable (e.g. a dialogue before the stairs). */
+  exitArrows: z.array(ExitArrowSchema).optional(),
   interactables: z.array(InteractableSchema)
+}).superRefine((area, ctx) => {
+  for (const arrow of area.exitArrows ?? []) {
+    if (!(arrow.exit in area.exits)) ctx.addIssue({ code: 'custom', message: `Exit arrow '${arrow.exit}' is not in exits of '${area.id}'.` });
+    if (arrow.via && !area.interactables.some(i => i.id === arrow.via)) ctx.addIssue({ code: 'custom', message: `Exit arrow via '${arrow.via}' is not an interactable of '${area.id}'.` });
+  }
 });
 export type Area = z.infer<typeof AreaSchema>;
 

@@ -5,7 +5,7 @@ export type World = { bounds: Rect; obstacles: Rect[]; spawn: Point; walkable?: 
 const courtyardPolygon = (points: [number, number][]): Point[] => points.map(([x, y]) => ({
   x: x / 1586 * 1000 - 100, y: y / 992 * 625 - 62.5,
 }));
-// Foot-plane collisions measured from the actual backgrounds, not interaction rectangles.
+// Foot-plane collisions for the walkable courtyard. Story rooms are point-and-click (no physics).
 export const worlds: Record<string, World> = {
   hub: {
     bounds: { x: -100, y: -62.5, w: 1000, h: 625 },
@@ -23,8 +23,6 @@ export const worlds: Record<string, World> = {
     ],
     spawn: { x: 440, y: 340 },
   },
-  'c0-s1-tiem-may-chieu': { bounds: { x: 82, y: 314, w: 686, h: 166 }, obstacles: [{ x: 496, y: 314, w: 304, h: 130 }], spawn: { x: 140, y: 380 } },
-  'c0-s2-gac-xep-chiec-ruong': { bounds: { x: 80, y: 326, w: 656, h: 154 }, obstacles: [{ x: 272, y: 326, w: 246, h: 25 }, { x: 638, y: 326, w: 92, h: 54 }], spawn: { x: 112, y: 388 } },
 };
 function insidePolygon(pos: Point, polygon: Point[]) {
   let inside = false;

@@ -1,0 +1,101 @@
+/* Standing dialogue ("Áo cưới giấy"): full-width box at the bottom, character art standing
+   behind it. NPC on the right, An on the left. The art layer is a sibling under the modal
+   backdrop (z-modal - 1) and positions itself exactly like .modal-backdrop. cqh resolves
+   against .game-stage and falls back to viewport units elsewhere. */
+.standing-art, .modal-backdrop.dialogue-stage {
+  --box-h: max(26cqh, 168px);
+  --feet-sink: 24px;
+}
+
+.standing-art {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-modal) - 1);
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 clamp(var(--sp-4), 6vw, 96px) calc(var(--box-h) + var(--sp-2) - var(--feet-sink));
+  background: color-mix(in srgb, var(--c-deep-plum) 55%, transparent);
+  pointer-events: none;
+  overflow: hidden;
+  animation: px-fade var(--dur-base) steps(3, end) both;
+}
+.game-stage .standing-art { position: absolute; }
+
+.standing-slot {
+  display: flex;
+  animation: standing-in var(--dur-slow) steps(4, end) both;
+  transition: filter var(--dur-base) steps(3, end);
+}
+.standing-slot.is-npc { margin-left: auto; }
+.standing-slot.is-dim { filter: brightness(.45); }
+.standing-slot canvas { display: block; max-width: none; }
+.standing-slot.is-ghost canvas { opacity: .7; animation: standing-flicker 1.2s steps(1, end) infinite; }
+
+@keyframes standing-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+/* Two held frames: .7 and .45. */
+@keyframes standing-flicker {
+  0%, 100% { opacity: .7; }
+  50% { opacity: .45; }
+}
+
+/* Text box: full width, ~28vh, existing 9-slice frame. */
+.modal-backdrop.dialogue-stage {
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0 var(--sp-2) var(--sp-2);
+  background: transparent;
+}
+.dialogue-stage .modal {
+  display: flex;
+  width: 100%;
+  max-width: none;
+  min-height: var(--box-h);
+}
+.dialogue-stage.is-emblem .modal { width: min(100%, 720px); }
+.dialogue-stage .modal > .slice {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  padding: var(--sp-3) clamp(var(--sp-4), 4vw, var(--sp-7)) var(--sp-4);
+}
+.dialogue-stage .modal-heading { margin-bottom: var(--sp-2); }
+.dialogue-stage .modal-heading h2 {
+  display: inline-block;
+  margin: 0;
+  padding: 0 var(--sp-3);
+  background: var(--c-warm-gold);
+  border: var(--bw-thin) solid var(--c-deep-plum);
+  box-shadow: var(--shadow-sm);
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.3;
+}
+.dialogue-stage .dialogue-text {
+  flex: 1;
+  margin: 0 0 var(--sp-3);
+  font-family: var(--font-body);
+  font-size: var(--fs-dialogue);
+  line-height: 28px;
+  cursor: pointer;
+}
+.dialogue-stage .dialogue-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-3); }
+.dialogue-stage .dialogue-actions .actions { margin: 0; }
+
+/* Phones: An only appears while she speaks; NPC scale is fixed to ×3 in DialogueBox. */
+@media (max-width: 640px) {
+  .standing-art { padding-inline: var(--sp-2); }
+  .standing-slot.is-an.is-dim { display: none; }
+  .dialogue-stage .modal > .slice { padding: var(--sp-2) var(--sp-3) var(--sp-3); }
+  .dialogue-stage .modal-heading h2 { font-size: 22px; }
+  .dialogue-stage .dialogue-text { font-size: var(--fs-body); line-height: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .standing-art, .standing-slot, .standing-slot.is-ghost canvas { animation: none; transition: none; }
+}

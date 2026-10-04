@@ -608,6 +608,63 @@
     "sha256": "e693ef77db91c2b40d2b228738011dc62d1eda410b284a5e74dc7e3df04da86f"
   },
   {
+    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/hotspot-hitbox-mirror.png",
+    "kind": "area-asset",
+    "width": 87,
+    "height": 334,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      87,
+      334
+    ],
+    "sha256": "15acae3827f9c29f9300be218e892c9d50ac5912fcca61f7e045f498b1e403d9"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/hotspot-hitbox-stairs.png",
+    "kind": "area-asset",
+    "width": 159,
+    "height": 256,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      159,
+      255
+    ],
+    "sha256": "b9e048600bc19641c295c5f7fc0e4613abfe64b0ef716ee0592bd7f939b37a12"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/hotspot-hitbox-table.png",
+    "kind": "area-asset",
+    "width": 308,
+    "height": 207,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      308,
+      207
+    ],
+    "sha256": "dfc768b0e388222d44f46b8f75a3585f04e12e03c7f920f5e40fc53b6997b238"
+  },
+  {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/vfx-c0-s1-bui-nang-chieu.png",
     "kind": "area-asset",
     "width": 256,
@@ -796,6 +853,139 @@
       232
     ],
     "sha256": "56710f2b4a03aa9916341ec5d2ac9125e84f9635560f5594f23d83767f52e6c4"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/hotspot-hitbox-chest-cloth.png",
+    "kind": "area-asset",
+    "width": 269,
+    "height": 85,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      269,
+      85
+    ],
+    "sha256": "52ef14eb3882b14da6c769f5ca92de25b800cba98dfea20ff9041036b4dca41d"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/hotspot-hitbox-chest-lock.png",
+    "kind": "area-asset",
+    "width": 26,
+    "height": 19,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      26,
+      19
+    ],
+    "sha256": "084ab65634c6f69c46c23a992c13dfb91b7b79fe806436924885da13c5b580bf"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/hotspot-hitbox-mannequin-hand.png",
+    "kind": "area-asset",
+    "width": 56,
+    "height": 212,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      56,
+      212
+    ],
+    "sha256": "60fa374f957fa97c8daf30bbe9a18fd5ee8c45c5e9786a28e398fb1dc63aab2c"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/hotspot-hitbox-sewing-basket.png",
+    "kind": "area-asset",
+    "width": 75,
+    "height": 86,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      75,
+      86
+    ],
+    "sha256": "d26a4b109c56a62a0da95772daaf1ebbbff72f7a392b5258e0fbbe19e5a335b5"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/hotspot-hitbox-sewing-hoop.png",
+    "kind": "area-asset",
+    "width": 55,
+    "height": 91,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      55,
+      91
+    ],
+    "sha256": "05d6e348642ddcd55b318811975d437424d68f3ff18ed2338d23422098495023"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/hotspot-hitbox-wall-key.png",
+    "kind": "area-asset",
+    "width": 17,
+    "height": 14,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      17,
+      14
+    ],
+    "sha256": "6a45b38c4cc4227be73d8ca264d66715661cdce022b16f657971f1d47f2bb405"
+  },
+  {
+    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/vfx-c0-s2-anh-sang-thuoc-go--frames.png",
+    "kind": "area-asset",
+    "width": 308,
+    "height": 82,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      0,
+      304,
+      82
+    ],
+    "sha256": "12fbb2d5fb036421b96b0f9b060ed2394a20a9fd6a6d9687225cd037036db2fa"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/vfx-c0-s2-anh-sang-thuoc-go.png",
