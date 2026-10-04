@@ -1,43 +1,88 @@
-import { useEffect, useRef, useState, type CSSProperties } from 'react';
+import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import type { GameState, StudioDraft } from '../core';
 import type { Garment } from '../content/schema';
+import { integerScale } from '../ui/pixel-scale';
 import { asset, accessoryAsset, assetInfo, garmentAsset, loadImage } from './assets';
 import { content } from './store';
+import { recolorLayer } from './StudioCharacter';
 
 export type StudioPalette = { name: string; colors: [string, string, string, string] };
 export type WardrobeTab = 'garment' | 'color' | 'accessory' | 'footwear';
 
-function GarmentPreview({ garment, colors }: { garment: Garment; colors: StudioDraft['colorPalette'] }) {
+// Whole-number scale for a pixel thumbnail: the largest multiple of its native height
+// that fits the slot it is centred in (never fractional, so pixels stay square).
+function useFitScale(nativeHeight: number, max = 2) {
+  const slot = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(1);
+  useLayoutEffect(() => {
+    const element = slot.current!;
+    const measure = () => setScale(Math.min(max, integerScale(element.clientHeight, nativeHeight)));
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, [nativeHeight, max]);
+  return [slot, scale] as const;
+}
+
+function LockBadge({ hint }: { hint: string }) {
+  return <span className="wardrobe-lock">
+    <svg viewBox="0 0 8 10" width="16" height="20" shapeRendering="crispEdges" aria-hidden="true"><path d="M2 0h4v1h1v3h1v6H0V4h1V1h1zm1 1v3h2V1zM3 6v2h2V6z" fill="currentColor" fillRule="evenodd" /></svg>
+    <span>Chưa mở khóa · cần {hint}</span>
+  </span>;
+}
+
+function GarmentPreview({ garment, colors, locked = false, hint = '' }: { garment: Garment; colors: StudioDraft['colorPalette']; locked?: boolean; hint?: string }) {
   const ref = useRef<HTMLCanvasElement>(null);
+  const path = garmentAsset(garment.id);
+  const [bx, by, bx2, by2] = assetInfo[path].bounds ?? [0, 0, 64, 96];
+  const width = bx2 - bx, height = by2 - by;
+  const [slot, scale] = useFitScale(height);
   useEffect(() => {
     let cancelled = false;
-    ref.current!.dataset.ready = 'false';
-    const path = garmentAsset(garment.id);
+    const canvas = ref.current!;
+    canvas.dataset.ready = 'false';
     loadImage(path).then(image => {
       if (cancelled) return;
-      const layer = document.createElement('canvas'); layer.width = 64; layer.height = 96;
-      const ctx = layer.getContext('2d')!; ctx.drawImage(image, 0, 0);
-      const pixels = ctx.getImageData(0, 0, 64, 96);
-      const keys = [224, 158, 97, 33];
-      const palette = colors.map(hex => [1, 3, 5].map(start => parseInt(hex.slice(start, start + 2), 16)));
-      for (let p = 0; p < pixels.data.length; p += 4) {
-        const color = keys.indexOf(pixels.data[p]);
-        if (pixels.data[p + 3] && color >= 0 && pixels.data[p] === pixels.data[p + 1] && pixels.data[p] === pixels.data[p + 2]) {
-          palette[color].forEach((value, channel) => { pixels.data[p + channel] = value; });
-        }
-      }
-      ctx.putImageData(pixels, 0, 0);
-      const bounds = assetInfo[path].bounds ?? [0, 0, 64, 96];
-      const canvas = ref.current!;
-      canvas.width = bounds[2] - bounds[0]; canvas.height = bounds[3] - bounds[1];
       const preview = canvas.getContext('2d')!; preview.imageSmoothingEnabled = false;
-      preview.drawImage(layer, bounds[0], bounds[1], canvas.width, canvas.height, 0, 0, canvas.width, canvas.height);
+      preview.clearRect(0, 0, width, height);
+      preview.drawImage(recolorLayer(image, path, colors), bx, by, width, height, 0, 0, width, height);
+      if (locked) {
+        // Locked garments read as a dark silhouette of the real shape (spec §6.4).
+        preview.globalCompositeOperation = 'source-in';
+        preview.fillStyle = getComputedStyle(canvas).color;
+        preview.fillRect(0, 0, width, height);
+        preview.globalCompositeOperation = 'source-over';
+      }
       canvas.dataset.ready = 'true';
-    }).catch(() => { if (!cancelled) ref.current!.dataset.ready = 'error'; });
+    }).catch(() => { if (!cancelled) canvas.dataset.ready = 'error'; });
     return () => { cancelled = true; };
-  }, [garment, colors]);
-  return <canvas ref={ref} className="wardrobe-garment" aria-hidden="true" />;
+  }, [path, colors, locked, bx, by, width, height]);
+  return <div ref={slot} className="wardrobe-thumb">
+    <canvas ref={ref} className="wardrobe-garment pixel-native" width={width} height={height}
+      style={{ width: width * scale, height: height * scale }} aria-hidden="true" />
+    {locked && <LockBadge hint={hint} />}
+  </div>;
 }
+
+function AccessoryIcon({ id, locked, hint }: { id: string; locked: boolean; hint: string }) {
+  const [slot, scale] = useFitScale(48);
+  return <div ref={slot} className="wardrobe-thumb">
+    <img className="pixel-native" src={asset(accessoryAsset(id, true))} alt="" width={48} height={48} style={{ width: 48 * scale, height: 48 * scale }} />
+    {locked && <LockBadge hint={hint} />}
+  </div>;
+}
+
+// The chapter whose reward hands out this garment.
+function garmentHint(garmentId: string) {
+  const chapter = Object.values(content.chapters).find(c => (c.chapter.reward.garmentIds as string[] | undefined)?.includes(garmentId));
+  return chapter ? `Chương ${chapter.chapter.id.replace(/^c/, '')}` : 'hoàn thành cốt truyện';
+}
+
+const tabs: { id: WardrobeTab; label: string }[] = [
+  { id: 'garment', label: 'Áo dài' }, { id: 'color', label: 'Màu vải' },
+  { id: 'accessory', label: 'Phụ kiện' }, { id: 'footwear', label: 'Giày' },
+];
 
 export function StudioWardrobe({ state, draft, tab, onTab, palettes, onGarment, onColor, onAccessory, className }: {
   state: GameState; draft: StudioDraft; tab: WardrobeTab; onTab: (tab: WardrobeTab) => void;
@@ -45,6 +90,9 @@ export function StudioWardrobe({ state, draft, tab, onTab, palettes, onGarment, 
   onAccessory: (id: string) => void; className: string;
 }) {
   const [page, setPage] = useState(0);
+  const [fade, setFade] = useState<'none' | 'start' | 'end' | 'both'>('none');
+  const scroller = useRef<HTMLDivElement>(null);
+  const tabRefs = useRef<Partial<Record<WardrobeTab, HTMLButtonElement | null>>>({});
   const accessories = content.accessories.filter(a => tab === 'footwear' ? a.category === 'footwear' : a.category !== 'footwear');
   const count = tab === 'garment' ? content.garments.length : tab === 'color' ? palettes.length : accessories.length;
   const pages = Math.max(1, Math.ceil(count / 6));
@@ -52,41 +100,60 @@ export function StudioWardrobe({ state, draft, tab, onTab, palettes, onGarment, 
   const start = currentPage * 6;
   const samePalette = (palette: StudioPalette) => palette.colors.every((color, i) => color === draft.colorPalette[i]);
   const chooseTab = (next: WardrobeTab) => { setPage(0); onTab(next); };
-  const tabs: { id: WardrobeTab; label: string; accessible: string }[] = [
-    { id: 'garment', label: 'Áo dài', accessible: 'Dáng áo' }, { id: 'color', label: 'Màu vải', accessible: 'Màu vải' },
-    { id: 'accessory', label: 'Phụ kiện', accessible: 'Phụ kiện' }, { id: 'footwear', label: 'Giày', accessible: 'Giày' },
-  ];
+  const onTabKey = (event: KeyboardEvent, index: number) => {
+    const target = event.key === 'ArrowRight' ? index + 1 : event.key === 'ArrowLeft' ? index - 1 : event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : null;
+    if (target === null) return;
+    event.preventDefault();
+    const next = tabs[(target + tabs.length) % tabs.length].id;
+    chooseTab(next); tabRefs.current[next]?.focus();
+  };
+  // Edge fades tell the player the dock scrolls sideways when the board is wider than the screen.
+  useEffect(() => {
+    const element = scroller.current!;
+    const update = () => {
+      const before = element.scrollLeft > 1, after = element.scrollLeft + element.clientWidth < element.scrollWidth - 1;
+      setFade(before && after ? 'both' : before ? 'start' : after ? 'end' : 'none');
+    };
+    update();
+    element.addEventListener('scroll', update, { passive: true });
+    const observer = new ResizeObserver(update); observer.observe(element); observer.observe(element.firstElementChild!);
+    return () => { element.removeEventListener('scroll', update); observer.disconnect(); };
+  }, []);
   return <section className={`studio-wardrobe ${className}`} aria-label="Khay chọn trang phục">
-    <div className="wardrobe-scroll" tabIndex={0} aria-label="Các ô trang phục, cuộn ngang để xem thêm"><div className="wardrobe-board">
-      <div className="wardrobe-art" aria-hidden="true"><img src={asset('assets/screens/studio/wardrobe-frame--landscape.png')} alt="" /></div>
-      <div className="wardrobe-tabs" role="tablist" aria-label="Danh mục phối đồ">{tabs.map(t => <button key={t.id} role="tab" aria-label={t.accessible} aria-selected={tab === t.id} onClick={() => chooseTab(t.id)}>{t.label}</button>)}</div>
+    <div ref={scroller} className="wardrobe-scroll" data-fade={fade} tabIndex={0} aria-label="Các ô trang phục, cuộn ngang để xem thêm"><div className="wardrobe-board">
+      <div className="wardrobe-art" aria-hidden="true"><img className="art-hires" src={asset('assets/screens/studio/wardrobe-frame--landscape.png')} alt="" /></div>
+      <div className="wardrobe-tabs" role="tablist" aria-label="Danh mục phối đồ">{tabs.map((t, index) =>
+        <button key={t.id} ref={element => { tabRefs.current[t.id] = element; }} role="tab" id={`wardrobe-tab-${t.id}`} aria-controls="wardrobe-panel"
+          aria-selected={tab === t.id} tabIndex={tab === t.id ? 0 : -1} onKeyDown={event => onTabKey(event, index)} onClick={() => chooseTab(t.id)}>{t.label}</button>)}
+      </div>
       <div className="wardrobe-pagination" role="group" aria-label="Trang danh mục">
         <button aria-label="Trang trang phục trước" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>‹</button>
         <span>{currentPage + 1}/{pages}</span>
         <button aria-label="Trang trang phục tiếp" disabled={currentPage === pages - 1} onClick={() => setPage(currentPage + 1)}>›</button>
       </div>
-      <div className="wardrobe-cards" role="tabpanel" aria-label={tabs.find(t => t.id === tab)!.label}>
+      <div className="wardrobe-cards" role="tabpanel" id="wardrobe-panel" aria-labelledby={`wardrobe-tab-${tab}`}>
         {Array.from({ length: 6 }, (_, index) => {
           const itemIndex = start + index;
           if (itemIndex >= count) return <div className="wardrobe-empty" key={index} aria-hidden="true" />;
           if (tab === 'garment') {
             const garment = content.garments[itemIndex];
             const owned = state.closet.unlockedGarmentIds.includes(garment.id);
-            return <button key={garment.id} className={`wardrobe-card ${garment.id === draft.garmentId ? 'is-selected' : ''}`} disabled={!owned} aria-pressed={garment.id === draft.garmentId} onClick={() => onGarment(garment)} title={garment.name}>
-              <GarmentPreview garment={garment} colors={garment.defaultColorPalette} /><span>{garment.name}</span>{!owned && <small>Chưa mở khóa</small>}
+            const equipped = garment.id === draft.garmentId;
+            return <button key={garment.id} className={`wardrobe-card ${equipped ? 'is-selected' : ''} ${owned ? '' : 'is-locked'}`} aria-disabled={!owned || undefined} aria-pressed={equipped} onClick={() => { if (owned) onGarment(garment); }}>
+              <GarmentPreview garment={garment} colors={garment.defaultColorPalette} locked={!owned} hint={garmentHint(garment.id)} /><span className="wardrobe-name">{garment.name}</span>{equipped && <small>Đang mặc</small>}
             </button>;
           }
           if (tab === 'color') {
             const palette = palettes[itemIndex];
             return <button key={palette.name} className={`wardrobe-card ${samePalette(palette) ? 'is-selected' : ''}`} aria-label={`Thử màu ${palette.name}`} aria-pressed={samePalette(palette)} onClick={() => onColor(palette)}>
-              <GarmentPreview garment={content.garmentsById.get(draft.garmentId)!} colors={palette.colors} /><span>{palette.name}</span>
+              <GarmentPreview garment={content.garmentsById.get(draft.garmentId)!} colors={palette.colors} /><span className="wardrobe-name">{palette.name}</span>
             </button>;
           }
           const accessory = accessories[itemIndex];
           const owned = state.closet.unlockedAccessoryIds.includes(accessory.id);
           const selected = Object.values(draft.equippedAccessories).includes(accessory.id);
-          return <button key={accessory.id} className={`wardrobe-card ${selected ? 'is-selected' : ''}`} disabled={!owned} aria-pressed={selected} onClick={() => onAccessory(accessory.id)} title={accessory.name}>
-            <img src={asset(accessoryAsset(accessory.id, true))} alt="" /><span>{accessory.name}</span>{!owned && <small>Chưa sở hữu</small>}
+          return <button key={accessory.id} className={`wardrobe-card ${selected ? 'is-selected' : ''} ${owned ? '' : 'is-locked'}`} aria-disabled={!owned || undefined} aria-pressed={selected} onClick={() => { if (owned) onAccessory(accessory.id); }}>
+            <AccessoryIcon id={accessory.id} locked={!owned} hint={`${accessory.senNgocPrice} Sen Ngọc`} /><span className="wardrobe-name">{accessory.name}</span>
           </button>;
         })}
       </div>

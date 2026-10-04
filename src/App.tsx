@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import Game from './game/Game';
 import { Modal } from './game/Modal';
+import { ErrorBoundary } from './game/ErrorBoundary';
 import { restoreGame } from './game/store';
 import { PixelIcon } from './welcome/PixelIcon';
 import welcomeArt from '../assets/screens/welcome/welcome-courtyard.png';
@@ -27,11 +28,23 @@ export default function App() {
     if (entered) hasPlayed.current = true;
     else if (hasPlayed.current) entryButton.current?.focus({ preventScroll: true });
   }, [entered]);
+  const header = useRef<HTMLElement>(null);
   useEffect(() => {
     if (!menuOpen) return;
+    // The open menu pauses the game, so every way out of it must close it: Esc, a tap
+    // outside the header, or the layout switching back to the desktop header.
     const close = (event: KeyboardEvent) => { if (event.key === 'Escape') setMenuOpen(false); };
+    const outside = (event: PointerEvent) => { if (!header.current?.contains(event.target as Node)) setMenuOpen(false); };
+    const compact = matchMedia('(max-width: 800px)');
+    const resized = () => { if (!compact.matches) setMenuOpen(false); };
     window.addEventListener('keydown', close);
-    return () => window.removeEventListener('keydown', close);
+    window.addEventListener('pointerdown', outside);
+    compact.addEventListener('change', resized);
+    return () => {
+      window.removeEventListener('keydown', close);
+      window.removeEventListener('pointerdown', outside);
+      compact.removeEventListener('change', resized);
+    };
   }, [menuOpen]);
 
   function openPanel(next: Panel) { setMenuOpen(false); setPanel(next); }
@@ -67,7 +80,7 @@ export default function App() {
   const title = panel === 'about' ? 'Chào bạn, tiệm là Nếp!' : panel === 'help' ? 'Ghé tiệm, chơi thế nào?' : panel === 'upload' ? 'Một phiên bản pixel của bạn' : '';
 
   return <div className={'nep-app ' + (entered ? 'is-playing' : 'is-welcome')}>
-    <header className="nep-header" inert={Boolean(panel)}>
+    <header ref={header} className="nep-header" inert={Boolean(panel)}>
       <button className="nep-wordmark" onClick={entered ? returnToWelcome : () => setMenuOpen(false)} disabled={entered && gameBlocked} aria-label={entered ? 'Tiệm May Nếp · Về màn chờ' : 'Tiệm May Nếp'}>
         <PixelIcon kind="lotus" /><span>TIỆM MAY NẾP</span>
       </button>
@@ -80,9 +93,11 @@ export default function App() {
     </header>
 
     {entered ? <div className="game-stage" inert={Boolean(panel)} aria-label="Khu chơi game">
-      <Game embedded paused={Boolean(panel) || menuOpen} onBlockedChange={setGameBlocked} />
+      <ErrorBoundary onReset={returnToWelcome}>
+        <Game embedded paused={Boolean(panel) || menuOpen} onBlockedChange={setGameBlocked} />
+      </ErrorBoundary>
     </div> : <main className="nep-welcome" inert={Boolean(panel)}>
-      <img className="nep-welcome-art" src={welcomeArt} alt="Hai nhân vật mặc áo dài trắng và hồng cùng mèo Nếp trong sân tiệm may Việt Nam lúc hoàng hôn" fetchPriority="high" />
+      <img className="nep-welcome-art art-hires" src={welcomeArt} alt="Hai nhân vật mặc áo dài trắng và hồng cùng mèo Nếp trong sân tiệm may Việt Nam lúc hoàng hôn" fetchPriority="high" />
       <section className="nep-introduction" aria-labelledby="welcome-title">
         <div className="nep-eyebrow"><span aria-hidden="true">✿</span><span>VIỆT PHỤC REMIX</span><span aria-hidden="true">✿</span></div>
         <h1 id="welcome-title">Áo dài Việt.<br /><span>Chất riêng bạn.</span></h1>

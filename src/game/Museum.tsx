@@ -59,14 +59,17 @@ export function Museum({ state, send, onReadingChange }: {
 
   return <div className="room museum-room">
     <div className="room-background museum-background" aria-hidden="true">
-      <div className="museum-art"><img src={asset('assets/screens/museum/bookshelf-pink--landscape.png')} alt="" /></div>
+      <div className="museum-art"><img className="art-hires" src={asset('assets/screens/museum/bookshelf-pink--landscape.png')} alt="" /></div>
     </div>
     <div className="museum-art museum-book-targets" role="group" aria-label="Kệ 12 cuốn sách văn hóa">
-      {volumes.map((book, index) => <button key={book.number} className="museum-book" aria-label={`Mở sách ${book.number}: ${book.cards.map(c => c.title).join(' · ')}`} title={book.cards.map(c => c.title).join(' · ')} style={{ left: `${book.x / 8}%`, top: `${book.y / 5}%`, width: '5%', height: '14.4%' } as CSSProperties} onClick={() => open(index)}>
+      {volumes.map((book, index) => {
+        const read = book.cards.every(c => state.museum.readCardIds.includes(c.id));
+        return <button key={book.number} className="museum-book" aria-label={`Mở sách ${book.number}: ${book.cards.map(c => c.title).join(' · ')}${read ? ' · Đã đọc' : ''}`} title={book.cards.map(c => c.title).join(' · ')} style={{ left: `${book.x / 8}%`, top: `${book.y / 5}%`, width: '5%', height: '14.4%' } as CSSProperties} onClick={() => open(index)}>
         <span className="museum-book-number">{String(book.number).padStart(2, '0')}</span>
         <span className="museum-book-tooltip">{book.cards[0].title}</span>
-        {book.cards.every(c => state.museum.readCardIds.includes(c.id)) && <span className="museum-book-read" aria-label="Đã đọc">✓</span>}
-      </button>)}
+        {read && <span className="museum-book-read" aria-hidden="true">✓</span>}
+      </button>;
+      })}
     </div>
     <aside className="room-panel museum-guide">
       <span className="eyebrow">THƯ PHÒNG · TIỆM MAY NẾP</span>
@@ -94,8 +97,8 @@ export function Museum({ state, send, onReadingChange }: {
         <section key={`${selected}-${page}`} className={`museum-paper turn-${direction}`} aria-label={`Trang ${page + 1}`}>
           <div className="museum-page-content">
             {page < volume.cards.length * 2 ? <><span className="eyebrow">{card.timePeriod}</span><h3>{card.title}</h3>
-              {page % 2 === 0 ? <>{garment && <img className="museum-garment" src={asset(garmentAsset(garment.id, true))} alt={garment.name} />}<p className="historical-fact">{card.historicalFact}</p></> : <><span className="museum-section-note">Những tên gọi qua thời gian</span>{card.officialName && <p><strong>Tên chính thức</strong><br />{card.officialName}</p>}{card.folkName && <p><strong>Tên thường gọi</strong><br />{card.folkName}</p>}</>}
-            </> : page === pageCount - 2 ? <><span className="eyebrow">GHI CHÉP CUỐI SỔ</span><h3>Nguồn tư liệu</h3><img className="museum-seal" src={asset('assets/screens/museum/citation-seal.png')} alt="" /><p>Tư liệu được cung cấp trong kho nội dung của tiệm.</p><p className="fine-print">Các trích dẫn thư mục chi tiết sẽ được bổ sung khi hoàn thiện nội dung.</p></> : <><span className="eyebrow">KHÉP MỘT NẾP KÝ ỨC</span><h3>Bạn đã đến trang cuối</h3><p>Ghi nhớ những nếp áo vừa khám phá, rồi chọn một cuốn sách khác trên kệ nhé.</p><div className="museum-reading-rewards">{volume.cards.map(c => <div key={c.id}><strong>{c.title}</strong><button className="primary" disabled={state.museum.readCardIds.includes(c.id)} onClick={() => send({ type: 'museum/readCard', payload: { cardId: c.id } })}>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc và nhận thưởng' : 'Đã hiểu · +15 Sen Ngọc'}</button></div>)}</div></>}
+              {page % 2 === 0 ? <>{garment && <img className="museum-garment pixel-native" src={asset(garmentAsset(garment.id, true))} alt={garment.name} />}<p className="historical-fact">{card.historicalFact}</p></> : <><span className="museum-section-note">Những tên gọi qua thời gian</span>{card.officialName && <p><strong>Tên chính thức</strong><br />{card.officialName}</p>}{card.folkName && <p><strong>Tên thường gọi</strong><br />{card.folkName}</p>}</>}
+            </> : page === pageCount - 2 ? <><span className="eyebrow">GHI CHÉP CUỐI SỔ</span><h3>Nguồn tư liệu</h3><img className="museum-seal pixel-native" src={asset('assets/screens/museum/citation-seal.png')} alt="" /><p>Tư liệu được cung cấp trong kho nội dung của tiệm.</p><p className="fine-print">Các trích dẫn thư mục chi tiết sẽ được bổ sung khi hoàn thiện nội dung.</p></> : <><span className="eyebrow">KHÉP MỘT NẾP KÝ ỨC</span><h3>Bạn đã đến trang cuối</h3><p>Ghi nhớ những nếp áo vừa khám phá, rồi chọn một cuốn sách khác trên kệ nhé.</p><div className="museum-reading-rewards">{volume.cards.map(c => <div key={c.id}><strong>{c.title}</strong><button className="primary" disabled={state.museum.readCardIds.includes(c.id)} onClick={() => send({ type: 'museum/readCard', payload: { cardId: c.id } })}>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc và nhận thưởng' : 'Đã hiểu · +15 Sen Ngọc'}</button></div>)}</div></>}
           </div>
           <span className="museum-folio">{String(page + 1).padStart(2, '0')}</span>
         </section>

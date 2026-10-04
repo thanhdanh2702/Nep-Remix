@@ -1,0 +1,78 @@
+/* Design tokens — source of truth: docs/06-design/design-system.md §2–§4. */
+:root {
+  /* UI foundation palette (§2.1) */
+  --c-lotus-pink: #d986a7;
+  --c-soft-pink: #f4cad7;
+  --c-paper-cream: #fff1df;
+  --c-light-cream: #fff8ee;
+  --c-deep-plum: #2b2035;
+  --c-muted-plum: #74506e;
+  --c-warm-gold: #e9b66b;
+  --c-crimson: #a72d60;
+  --c-primary-hover: #8d234f;
+  --c-primary-pressed: #711b40;
+  --c-sub-border: #855064;
+  --c-page: #f4eadb;
+  --c-wood: #402036;
+  --c-wood-dark: #291021;
+
+  /* State colors (§2.2) */
+  --c-success: #2e6847;
+  --c-success-bg: #e4efdf;
+  --c-hint: #80501c;
+  --c-hint-bg: #fff0cb;
+  --c-error: #a12b48;
+  --c-error-bg: #fbe2e6;
+  --c-disabled-bg: #e1d5dc;
+  --c-disabled-fg: #855064;
+  --c-backdrop: rgb(43 32 53 / 75%);
+
+  /* Spacing — 4px base unit, 8px cadence (§3) */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+
+  /* Borders and hard shadows, never blurred (§3) */
+  --bw-thin: 2px;
+  --bw-thick: 4px;
+  --shadow-sm: 0 4px 0 var(--c-deep-plum);
+  --shadow-sm-primary: 0 4px 0 var(--c-primary-pressed);
+  --shadow-pressed: 0 2px 0 var(--c-deep-plum);
+  --shadow-lg: 0 8px 0 var(--c-deep-plum);
+  --step-sm: 4px;
+  --step-lg: 8px;
+
+  /* Touch targets (§3) */
+  --target-min: 44px;
+  --target-primary: 48px;
+
+  /* Typography (§4) — VT323 for display/HUD, Be Vietnam Pro for reading */
+  --font-display: "VT323", "Be Vietnam Pro", monospace;
+  --font-body: "Be Vietnam Pro", system-ui, sans-serif;
+  --fs-screen-title: 32px;
+  --fs-panel-title: 24px;
+  --fs-card-title: 20px;
+  --fs-dialogue: 18px;
+  --fs-body: 16px;
+  --fs-caption: 14px;
+  --fs-min: 12px;
+  --lh-tight: 1.25;
+  --lh-body: 1.5;
+
+  /* Layering */
+  --z-scene: 1;
+  --z-hud: 10;
+  --z-nav: 12;
+  --z-toast: 40;
+  --z-modal: 50;
+
+  /* Motion */
+  --dur-fast: 120ms;
+  --dur-base: 200ms;
+  --dur-slow: 320ms;
+}

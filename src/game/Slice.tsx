@@ -12,9 +12,9 @@ export function Slice({ path, className = '', style, fillCenter = true, ...props
     borderWidth: `${top}px ${slice.right}px ${bottom}px ${slice.left}px`,
     borderImageSource: `url("${asset(path)}")`,
     borderImageSlice: `${top} ${slice.right} ${bottom} ${slice.left}${!top && fillCenter ? ' fill' : ''}`,
-    borderImageRepeat: 'repeat', imageRendering: 'pixelated',
+    borderImageRepeat: 'repeat',
   };
-  return <div className={`slice ${className}`} style={{ ...border, ...style }} {...props} />;
+  return <div className={`slice pixel-native ${className}`} style={{ ...border, ...style }} {...props} />;
 }
 export const CARD_FRAME = 'assets/screens/main-shop/action-card-frame--9slice.png';
 export const STUDIO_FRAME = 'assets/screens/studio/studio-panel-frame--9slice.png';

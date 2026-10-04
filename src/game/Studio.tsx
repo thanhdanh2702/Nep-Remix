@@ -1,11 +1,11 @@
-import { useState } from 'react';
+import { useRef, useState, type CSSProperties } from 'react';
 import { createScopedSession, dispatchSession, undoSession, redoSession, resetSession, commitSession, runCommand, evaluateOutfit, type GameState, type StudioDraft, type Command } from '../core';
 import type { Garment } from '../content/schema';
 import { content } from './store';
 import { asset } from './assets';
 import { Modal } from './Modal';
-import { Paperdoll } from './Paperdoll';
 import { MannequinStage } from './MannequinStage';
+import { pop } from '../ui/motion';
 import { StudioCharacter, studioViews } from './StudioCharacter';
 import { StudioWardrobe, type WardrobeTab } from './StudioWardrobe';
 import './studio.css';
@@ -29,7 +29,10 @@ export function Studio({ state, send, notify, initial }: { state: GameState; sen
   const [comparison,setComparison] = useState<StudioDraft | null>(null);
   const [optionsOpen,setOptionsOpen] = useState(false);
   const [viewIndex,setViewIndex] = useState(0);
+  const [sparkle,setSparkle] = useState(0);
+  const saveRef = useRef<HTMLButtonElement>(null);
   const view = studioViews[viewIndex];
+  const preset = state.profile?.avatarPreset ?? 'an-default';
   const turn = (step:number) => setViewIndex(index => (index + step + studioViews.length) % studioViews.length);
   const draft = session.current;
   const evaluation = evaluateOutfit(draft, {eventId:draft.eventContextId},content);
@@ -37,6 +40,8 @@ export function Studio({ state, send, notify, initial }: { state: GameState; sen
     const result = runCommand({...state,activeSession:draft},cmd,content);
     if (!result.ok) { notify(result.reason); return; }
     setSession(current => dispatchSession(current,()=>result.state.activeSession as StudioDraft));
+    // Garment/colour/accessory changes get the star-dust halo (design-system §7.2).
+    if (cmd.type !== 'studio/selectEvent') setSparkle(count => count + 1);
   };
   const selectGarment = (garment:Garment) => update({type:'studio/applyPreset',payload:{preset:{...draft,garmentId:garment.id,silhouette:garment.silhouette,colorPalette:garment.defaultColorPalette}}});
   const wardrobe = (className:string) => <StudioWardrobe className={className} state={state} draft={draft} tab={tab} onTab={setTab} palettes={palettes} onGarment={selectGarment}
@@ -44,52 +49,66 @@ export function Studio({ state, send, notify, initial }: { state: GameState; sen
     onAccessory={accessoryId=>update({type:'studio/equip',payload:{accessoryId}})} />;
   const save = () => {
     const result = commitSession(session);
-    if (result.ok) send({...result.command,payload:{...result.command.payload as object,name:name.trim() || content.garmentsById.get(draft.garmentId)?.name}});
-    else notify(result.reason);
+    if (!result.ok) { notify(result.reason); return; }
+    // Game's send() already raises the "Đã lưu bộ phối" success toast.
+    if (send({...result.command,payload:{...result.command.payload as object,name:name.trim() || content.garmentsById.get(draft.garmentId)?.name}})) pop(saveRef.current);
   };
+  const undo = <button disabled={!session.history.length} onClick={()=>setSession(s=>undoSession(s).session)}>Hoàn tác</button>;
+  const redo = <button disabled={!session.future.length} onClick={()=>setSession(s=>redoSession(s).session)}>Làm lại</button>;
+  const garmentName = content.garmentsById.get(draft.garmentId)?.name;
   return <div className="room studio-room">
-    <picture className="room-background"><img src={asset('assets/screens/studio/vietnamese-room--landscape.png')} alt="Phòng may gỗ Việt với lụa hồng, gốm men lam và thảm hoa sen" /></picture>
+    <picture className="room-background"><img className="art-hires" src={asset('assets/screens/studio/vietnamese-room--landscape.png')} alt="Phòng may gỗ Việt với lụa hồng, gốm men lam và thảm hoa sen" /></picture>
     <MannequinStage room="studio">
-      <StudioCharacter draft={draft} direction={view.direction} preset={state.profile?.avatarPreset ?? 'an-default'}/>
-      <div className="studio-turn-controls" role="group" aria-label="Xoay nhân vật">
-        <button onClick={()=>turn(-1)} aria-label="Xoay nhân vật sang trái">‹</button>
-        <span aria-live="polite">{view.label}</span>
-        <button onClick={()=>turn(1)} aria-label="Xoay nhân vật sang phải">›</button>
+      <div className="studio-model">
+        <StudioCharacter draft={draft} direction={view.direction} preset={preset}/>
+        {sparkle > 0 && <span key={sparkle} className="studio-sparkle" aria-hidden="true" />}
+        <div className="studio-turn-controls" role="group" aria-label="Xoay nhân vật">
+          <button onClick={()=>turn(-1)} aria-label="Xoay nhân vật sang trái">‹</button>
+          <span aria-live="polite">{view.label}</span>
+          <button onClick={()=>turn(1)} aria-label="Xoay nhân vật sang phải">›</button>
+        </div>
       </div>
-      <p className="doll-caption">{content.garmentsById.get(draft.garmentId)?.name}</p>
+      <p className="doll-caption" title={garmentName}>{garmentName}</p>
+      {/* Instant feedback outside the modal; hidden (not removed) while the options dialog shows its own copy. */}
+      <div className={`studio-session ${optionsOpen ? 'is-covered' : ''}`} role="group" aria-label="Độ hài hòa và lịch sử phối">
+        <div className="studio-score" role="meter" aria-label="Độ hài hòa" aria-valuemin={0} aria-valuemax={100} aria-valuenow={evaluation.score}>
+          <span><span>Độ hài hòa</span><span>{evaluation.score}/100</span></span>
+          <span className="studio-score-bar" style={{'--score':`${evaluation.score}%`} as CSSProperties} />
+        </div>
+        {undo}{redo}
+      </div>
     </MannequinStage>
     <section className="studio-lookbook" aria-label="Lookbook của bạn">
       <h2 className="studio-lookbook-heading">Lookbook của bạn</h2>
       <div className="studio-lookbook-board">
-      <div className="studio-lookbook-art" aria-hidden="true"><img src={asset('assets/screens/studio/lookbook-frame.png')} alt="" /></div>
-      <div className="studio-lookbook-grid">
-        {([
-          {id:'front',direction:'down',label:'Chính diện'},
-          {id:'side',direction:'left',label:'Góc nghiêng'},
-          {id:'back',direction:'up',label:'Sau lưng'},
-          {id:'closeup',direction:'down',label:'Cận cảnh'},
-        ] as const).map(portrait=><figure key={portrait.id} className={`studio-lookbook-card ${portrait.id==='closeup'?'studio-lookbook-closeup':''}`}>
-          <div className="studio-lookbook-portrait">
-            <StudioCharacter id={`lookbook-${portrait.id}`} draft={draft} direction={portrait.direction} label={portrait.label} preset={state.profile?.avatarPreset ?? 'an-default'}/>
-          </div>
-          <figcaption>{portrait.label}</figcaption>
-        </figure>)}
-      </div>
+        <div className="studio-lookbook-art" aria-hidden="true"><img className="art-hires" src={asset('assets/screens/studio/lookbook-frame.png')} alt="" /></div>
+        <div className="studio-lookbook-grid">
+          {([
+            {id:'front',direction:'down',label:'Chính diện'},
+            {id:'side',direction:'left',label:'Góc nghiêng'},
+            {id:'back',direction:'up',label:'Sau lưng'},
+            {id:'closeup',direction:'down',label:'Cận cảnh'},
+          ] as const).map(portrait=><figure key={portrait.id} className={`studio-lookbook-card ${portrait.id==='closeup'?'studio-lookbook-closeup':''}`}>
+            <div className="studio-lookbook-portrait">
+              <StudioCharacter id={`lookbook-${portrait.id}`} draft={draft} direction={portrait.direction} label={portrait.label} preset={preset}/>
+            </div>
+            <figcaption>{portrait.label}</figcaption>
+          </figure>)}
+        </div>
       </div>
       <div className="studio-actions" role="group" aria-label="Lưu và tùy chỉnh bộ phối">
         <button onClick={()=>setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>
-        <button className="primary" onClick={save}>Lưu bộ phối</button>
+        <button ref={saveRef} className="primary" onClick={save}>Lưu bộ phối</button>
       </div>
-      <div className="studio-lookbook-edge" aria-hidden="true"><img src={asset('assets/screens/studio/lookbook-frame.png')} alt="" /></div>
     </section>
     {wardrobe('studio-wardrobe-dock')}
     {optionsOpen && <Modal title="Tùy chỉnh bộ phối" className="studio-options" onClose={()=>setOptionsOpen(false)}>
       <label className="outfit-name">Tên bộ phối<input maxLength={36} placeholder="Nếp áo của An" value={name} onChange={e=>setName(e.target.value)} /></label>
       <button className="studio-pin" onClick={()=>setComparison(comparison?null:structuredClone(draft))}>{comparison?'Đóng so sánh':'Ghim để so sánh'}</button>
-      {comparison && <div className="studio-comparison"><Paperdoll id="comparison-doll" draft={comparison}/><p>Bộ phối đã ghim<br/><strong>{content.garmentsById.get(comparison.garmentId)?.name}</strong></p></div>}
+      {comparison && <div className="studio-comparison"><StudioCharacter id="comparison-doll" draft={comparison} direction="down" label="Bộ phối đã ghim" preset={preset}/><p>Bộ phối đã ghim<br/><strong>{content.garmentsById.get(comparison.garmentId)?.name}</strong></p></div>}
       <label className="studio-event">Sự kiện<select value={draft.eventContextId} onChange={e=>update({type:'studio/selectEvent',payload:{eventId:e.target.value}})}>{events.map(e=><option key={e.id} value={e.id}>{e.name}</option>)}</select></label>
-      {(tab==='accessory'||tab==='footwear') && <button className="studio-pin" onClick={()=>setSession(s=>dispatchSession(s,d=>({...d,equippedAccessories:{}})))}>Tháo phụ kiện</button>}
-      <div className="session-tools"><button disabled={!session.history.length} onClick={()=>setSession(s=>undoSession(s).session)}>Hoàn tác</button><button disabled={!session.future.length} onClick={()=>setSession(s=>redoSession(s).session)}>Làm lại</button><button onClick={()=>setSession(s=>resetSession(s))}>Đặt lại</button></div>
+      {Object.values(draft.equippedAccessories).some(Boolean) && <button className="studio-pin" onClick={()=>setSession(s=>dispatchSession(s,d=>({...d,equippedAccessories:{}})))}>Tháo phụ kiện</button>}
+      <div className="session-tools">{undo}{redo}<button onClick={()=>setSession(s=>resetSession(s))}>Đặt lại</button></div>
       <div className="evaluation"><strong>Độ hài hòa · {evaluation.score}/100</strong><meter min={0} max={100} value={evaluation.score} />{evaluation.feedback.filter(f=>f.type!=='info').map((f,i)=><p key={i}>{f.message}</p>)}</div>
       <p className="fine-print">Bốn ô Lookbook tự cập nhật theo bộ đồ đang phối.</p>
     </Modal>}

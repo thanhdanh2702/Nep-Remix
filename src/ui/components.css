@@ -1,0 +1,106 @@
+/* Shared pixel components (design-system §6). Deliberately unlayered: they refine
+   screen rules that game.css already sets (.modal-backdrop, .toast, .modal-heading),
+   so they use compound selectors to win where both apply. */
+
+/* Modal: frame-stepped pop-in over a fading backdrop. */
+.modal-backdrop[data-state="open"] { animation: px-fade var(--dur-base) steps(3, end) both; }
+.modal-backdrop[data-state="open"] > .modal { animation: px-pop-in var(--dur-slow) steps(4, end) both; }
+
+/* NPC dialogue (§6.2, §7.3): bottom panel, portrait, gold name tag, 18/28 text. */
+.modal-backdrop.dialogue-layer { align-items: flex-end; padding-bottom: var(--sp-5); }
+.dialogue-layer .modal { width: min(100%, 880px); }
+.dialogue-layer .modal > .slice {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-areas: "portrait heading" "portrait text" "portrait actions";
+  column-gap: var(--sp-5);
+  align-items: start;
+}
+.dialogue-layer .portrait-frame { grid-area: portrait; }
+.dialogue-layer .modal-heading { grid-area: heading; margin-bottom: var(--sp-3); }
+.dialogue-layer .modal-heading h2 {
+  display: inline-block;
+  margin: 0;
+  padding: 0 var(--sp-3);
+  background: var(--c-warm-gold);
+  border: var(--bw-thin) solid var(--c-deep-plum);
+  box-shadow: 0 4px 0 var(--c-deep-plum);
+  font-size: 26px;
+  line-height: 1.3;
+}
+.dialogue-layer .dialogue-text {
+  grid-area: text;
+  margin: 0 0 var(--sp-4);
+  font-size: var(--fs-dialogue);
+  line-height: 28px;
+  cursor: pointer;
+}
+.dialogue-untyped { visibility: hidden; }
+.dialogue-layer .dialogue-actions { grid-area: actions; display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+.dialogue-actions .actions { margin: 0; }
+
+/* Portrait: 32px crops shown ×4 (128) inside a plum frame with a gold inner line. */
+.portrait-frame {
+  display: grid;
+  place-items: center;
+  width: calc(128px + 2 * var(--bw-thick));
+  height: calc(128px + 2 * var(--bw-thick));
+  background: var(--c-paper-cream);
+  border: var(--bw-thick) solid var(--c-deep-plum);
+  box-shadow: inset 0 0 0 2px var(--c-warm-gold), var(--shadow-sm);
+  overflow: hidden;
+}
+.portrait-frame canvas { display: block; width: 128px; height: 128px; }
+.portrait-frame.is-ghost canvas { opacity: .55; }
+.portrait-frame.is-emblem .nep-icon { width: 64px; height: 64px; }
+
+/* Puzzle answer feedback (§6.5). */
+.puzzle-feedback.is-error {
+  margin: var(--sp-3) 0 0;
+  padding: var(--sp-2) var(--sp-3);
+  color: var(--c-error);
+  background: var(--c-error-bg);
+  border-left: var(--bw-thick) solid var(--c-error);
+  font-weight: 600;
+}
+
+/* Toast (§6.8): centred without a half-pixel translate, slides up, tone on the left edge. */
+div.toast {
+  left: 0;
+  right: 0;
+  margin-inline: auto;
+  transform: none;
+  font-family: var(--font-body);
+  font-size: var(--fs-caption);
+  border-left-width: var(--bw-thick);
+  animation: px-slide-up var(--dur-slow) steps(4, end) both;
+}
+div.toast.is-success { border-left-color: var(--c-success); }
+div.toast.is-error { border-left-color: var(--c-error); }
+div.toast button { min-height: var(--target-min); font-size: var(--fs-min); }
+.toast-mark { font-family: var(--font-display); font-size: 22px; line-height: 1; color: var(--c-warm-gold); }
+.toast.is-success .toast-mark { color: var(--c-success); }
+.toast.is-error .toast-mark { color: var(--c-error); }
+
+/* Fallback shown by ErrorBoundary. */
+.error-panel {
+  position: relative;
+  z-index: var(--z-hud);
+  max-width: 480px;
+  margin: 15vh auto 0;
+  padding: var(--sp-5);
+  background: var(--c-paper-cream);
+  border: var(--bw-thick) solid var(--c-deep-plum);
+  box-shadow: inset 0 0 0 2px var(--c-warm-gold), var(--shadow-lg);
+  text-align: center;
+}
+
+@media (max-width: 640px), (max-height: 500px) {
+  .modal-backdrop.dialogue-layer { padding: var(--sp-2); }
+  .dialogue-layer .modal > .slice { column-gap: var(--sp-3); }
+  .portrait-frame { width: calc(64px + 2 * var(--bw-thick)); height: calc(64px + 2 * var(--bw-thick)); }
+  .portrait-frame canvas { width: 64px; height: 64px; }
+  .portrait-frame.is-emblem .nep-icon { width: 32px; height: 32px; }
+  .dialogue-layer .modal-heading h2 { font-size: 22px; }
+  .dialogue-layer .dialogue-text { font-size: var(--fs-body); line-height: 24px; margin-bottom: var(--sp-3); }
+}

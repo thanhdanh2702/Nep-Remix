@@ -19,5 +19,5 @@ export function Modal({title,children,onClose,wide=false,className=''}: {title:s
     window.addEventListener('keydown',key);
     return()=>{window.removeEventListener('keydown',key);previous?.focus();};
   },[]);
-  return <div className={`modal-backdrop ${className}`}><div ref={ref} className={`modal ${wide?'wide':''}`} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}><Slice path={CARD_FRAME}><div className="modal-heading"><h2>{title}</h2>{onClose && <button onClick={onClose}>Đóng</button>}</div>{children}</Slice></div></div>;
+  return <div className={`modal-backdrop ${className}`} data-state="open"><div ref={ref} className={`modal ${wide?'wide':''}`} role="dialog" aria-modal="true" aria-label={title} tabIndex={-1}><Slice path={CARD_FRAME}><div className="modal-heading"><h2>{title}</h2>{onClose && <button onClick={onClose}>Đóng</button>}</div>{children}</Slice></div></div>;
 }
