@@ -38,7 +38,7 @@ An ở hub dùng scale 0.36 để tương ứng với bố cục tham chiếu m�
 
 Màn mở đầu có tiệm may chiều, cầu thang, gác xép, các hội thoại/vật phẩm, ba câu đố, lời bà, manh mối và phần thưởng. Hub điều hướng đến Studio, Tủ đồ, Bảo tàng và Cốt truyện. Bản đồ chương hiển thị nội dung được cung cấp và tình trạng khả dụng; chưa bật phần chơi của chương 1–5.
 
-Không sửa file asset gốc, không sinh/tải ảnh ngoài. Không gọi luồng `src/server/ai/lookbook.ts`; Lookbook chỉ tải canvas paperdoll chính diện hiện tại. Không tạo hướng mới. Chưa phát âm thanh vì thư mục audio chỉ có tài liệu.
+Không sửa file asset gốc; chỉ sinh ảnh qua Gemini khi người dùng bấm "Chụp Lookbook AI". Phòng phối đồ gọi Gemini qua `/api/ai/stylist` để gợi ý trang phục khi bấm "Gợi ý từ Gemini"; Lookbook gọi `/api/ai/lookbook` để sinh 4 ảnh chân thực khi bấm "Chụp Lookbook AI", nhưng luôn hiển thị 4 ảnh pixel làm fallback. Không tạo hướng mới. Chưa phát âm thanh vì thư mục audio chỉ có tài liệu.
 
 ## Registry và render
 
