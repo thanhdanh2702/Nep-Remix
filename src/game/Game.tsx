@@ -32,11 +32,13 @@ function Coins({ value }: { value: number }) {
 }
 type Panel = 'journal' | 'settings' | 'restart' | 'ending' | null;
 const screenNames:Record<Screen,string>={hub:'Sân nhà',studio:'Phòng phối đồ',closet:'Tủ đồ',museum:'Bảo tàng',journey:'Cốt truyện'};
-export default function Game({ embedded = false, paused = false, navigationRequest, onBlockedChange }: {
+export default function Game({ embedded = false, paused = false, navigationRequest, onBlockedChange, pendingAvatarPreset, onAvatarApplied }: {
   embedded?: boolean;
   paused?: boolean;
   navigationRequest?: { screen: Destination; id: number } | null;
   onBlockedChange?: (blocked: boolean) => void;
+  pendingAvatarPreset?: string | null;
+  onAvatarApplied?: () => void;
 } = {}) {
   const [restored] = useState(restoreGame);
   const [tree,setTree] = useState(restored.tree);
@@ -69,6 +71,18 @@ export default function Game({ embedded = false, paused = false, navigationReque
   const internalBlocked=Boolean(panel || puzzle || progress.activeDialogue || museumReading || mapChapter);
   const blocked=paused || internalBlocked;
   useEffect(()=>{onBlockedChange?.(internalBlocked);},[internalBlocked,onBlockedChange]);
+  // Avatar suggested from the welcome selfie flow: applied once, then the parent clears it. Read the live tree
+  // (not the render closure) so a repeated effect run never sends the same update twice.
+  useEffect(()=>{
+    if(!pendingAvatarPreset)return;
+    const head=treeRef.current.nodes[treeRef.current.headId].snapshot;
+    if(!head.profile)return;
+    if(head.profile.avatarPreset!==pendingAvatarPreset && send({type:'profile/update',payload:{avatarPreset:pendingAvatarPreset}})){
+      setPreset(pendingAvatarPreset);
+      setToast('Đã áp diện mạo mới');
+    }
+    onAvatarApplied?.();
+  },[pendingAvatarPreset]);
 
   function send(command:Command):GameState|null {
     const result=execute(treeRef.current,command);
