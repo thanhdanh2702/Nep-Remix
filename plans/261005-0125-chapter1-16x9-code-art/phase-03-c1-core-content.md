@@ -33,10 +33,10 @@ EXTRACT-SHARED — helper cấp thưởng/unlock dùng chung cho `item/use` và 
 4. lint, test:core.
 
 ## Todo List
-- [ ] helper + puzzle/submit
-- [ ] c1.json
-- [ ] check-game c1
-- [ ] lint + test:core pass
+- [x] helper + puzzle/submit
+- [x] c1.json
+- [x] check-game c1
+- [x] lint + test:core pass
 
 ## Success Criteria
 - `npm run test:core`: 15/15 + PASS prologue + PASS c1 walk-through (in tên các bước).

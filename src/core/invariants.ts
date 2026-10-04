@@ -109,7 +109,8 @@ export function validateClueOrigin(state: GameState, content: GameContent): stri
       for (const p of ch.puzzles) {
         if (allSolvedPuzzles.has(p.id)) {
           // If puzzle triggers the dialogue that contains the clue
-          if ('dialogueTriggerId' in p.solution && p.solution.dialogueTriggerId === clueDef.discoveredInDialogueId) {
+          const sol = p.solution as { dialogueTriggerId?: string; dialogueTriggerIds?: string[] }; // trigger fields exist on only some puzzle types
+          if (sol.dialogueTriggerId === clueDef.discoveredInDialogueId || sol.dialogueTriggerIds?.includes(clueDef.discoveredInDialogueId)) {
             puzzleSolvedForClue = true;
             break;
           }

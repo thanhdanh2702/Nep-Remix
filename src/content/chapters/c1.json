@@ -5,6 +5,7 @@
     "year": 1888,
     "historicalPeriod": "thoi_nguyen",
     "summary": "Cụ Nguyễn Thị Cầm tại làng lụa Vạn Phúc vượt qua hủ tục ép thủ tiết của dòng họ, giải phóng nếp áo ngũ thân.",
+    "completionDialogueId": "d-c1-gate-exit",
     "reward": {
       "id": "reward-c1",
       "chapterId": "c1",
@@ -20,53 +21,54 @@
       "title": "Gian buồng dệt khóa then",
       "aspect": "16:9",
       "logicalSize": { "w": 640, "h": 360 },
-      "notes": "đo lại khi có nền 800×500",
+      "notes": "rect và exitArrows lấy từ assets/areas/chapter-1/<mã cảnh>/layout.json (sinh bởi scripts/pixel/draw-c1-rooms.py)",
       "spawn": { "x": 0.15, "y": 0.50 },
       "sides": { "phai": true, "trai": true },
       "exits": { "window": "c1-s2-ban-tho-nha-tho-ho" },
+      "exitArrows": [{ "exit": "window", "dir": "up", "rect": { "x": 0.5709, "y": 0.2744, "w": 0.08, "h": 0.14 } }],
       "interactables": [
         {
           "id": "hitbox-loom-shuttle",
           "kind": "object",
-          "pos": { "x": 0.23, "y": 0.59 },
+          "pos": { "x": 0.2329, "y": 0.5708 },
           "radius": 0.08,
-          "rect": { "x": 0.12, "y": 0.45, "w": 0.22, "h": 0.28 },
+          "rect": { "x": 0.1172, "y": 0.3972, "w": 0.2313, "h": 0.3472 },
           "side": "phai",
           "action": { "type": "item", "targetId": "con_thoi_go_mun" }
         },
         {
           "id": "hitbox-belt-rack",
           "kind": "object",
-          "pos": { "x": 0.88, "y": 0.695 },
+          "pos": { "x": 0.8812, "y": 0.6944 },
           "radius": 0.08,
-          "rect": { "x": 0.82, "y": 0.52, "w": 0.12, "h": 0.35 },
+          "rect": { "x": 0.8078, "y": 0.5194, "w": 0.1469, "h": 0.35 },
           "side": "phai",
           "action": { "type": "item", "targetId": "that_lung_lua_cham" }
         },
         {
           "id": "hitbox-cold-porridge",
           "kind": "object",
-          "pos": { "x": 0.49, "y": 0.68 },
+          "pos": { "x": 0.4922, "y": 0.7027 },
           "radius": 0.08,
-          "rect": { "x": 0.44, "y": 0.62, "w": 0.10, "h": 0.12 },
+          "rect": { "x": 0.4422, "y": 0.6583, "w": 0.1, "h": 0.0889 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c1-porridge" }
         },
         {
           "id": "hitbox-front-door",
           "kind": "object",
-          "pos": { "x": 0.07, "y": 0.55 },
+          "pos": { "x": 0.0547, "y": 0.3931 },
           "radius": 0.08,
-          "rect": { "x": 0.02, "y": 0.25, "w": 0.10, "h": 0.60 },
+          "rect": { "x": 0.0125, "y": 0.1556, "w": 0.0844, "h": 0.475 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c1-locked-door" }
         },
         {
           "id": "hitbox-back-window",
           "kind": "object",
-          "pos": { "x": 0.61, "y": 0.34 },
+          "pos": { "x": 0.611, "y": 0.3388 },
           "radius": 0.08,
-          "rect": { "x": 0.50, "y": 0.18, "w": 0.22, "h": 0.32 },
+          "rect": { "x": 0.5016, "y": 0.1694, "w": 0.2188, "h": 0.3389 },
           "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c1-escape" }
         }
@@ -78,36 +80,40 @@
       "title": "Gian nhà thờ họ Bùi",
       "aspect": "16:9",
       "logicalSize": { "w": 640, "h": 360 },
-      "notes": "đo lại khi có nền 800×500",
+      "notes": "rect và exitArrows lấy từ assets/areas/chapter-1/<mã cảnh>/layout.json (sinh bởi scripts/pixel/draw-c1-rooms.py)",
       "spawn": { "x": 0.10, "y": 0.60 },
       "sides": { "phai": true, "trai": true },
       "exits": { "yard": "c1-s3-cong-dinh-doi-dau", "back": "c1-s1-buong-det-khoa-kin" },
+      "exitArrows": [
+        { "exit": "back", "dir": "left", "rect": { "x": 0.0131, "y": 0.4578, "w": 0.08, "h": 0.14 } },
+        { "exit": "yard", "dir": "down", "rect": { "x": 0.46, "y": 0.86, "w": 0.08, "h": 0.14 } }
+      ],
       "interactables": [
         {
           "id": "hitbox-honor-plaque",
           "kind": "object",
-          "pos": { "x": 0.82, "y": 0.59 },
+          "pos": { "x": 0.7827, "y": 0.5834 },
           "radius": 0.08,
-          "rect": { "x": 0.72, "y": 0.35, "w": 0.20, "h": 0.48 },
+          "rect": { "x": 0.7109, "y": 0.3528, "w": 0.1437, "h": 0.4611 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c1-tiet-hanh" }
         },
         {
           "id": "hitbox-incense-burner",
           "kind": "object",
-          "pos": { "x": 0.50, "y": 0.50 },
+          "pos": { "x": 0.5, "y": 0.5347 },
           "radius": 0.08,
-          "rect": { "x": 0.46, "y": 0.44, "w": 0.08, "h": 0.12 },
+          "rect": { "x": 0.4609, "y": 0.5, "w": 0.0781, "h": 0.0694 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c1-incense" }
         },
         {
           "id": "hitbox-ancestor-altar",
           "kind": "object",
-          "pos": { "x": 0.50, "y": 0.46 },
+          "pos": { "x": 0.5, "y": 0.4611 },
           "radius": 0.08,
-          "rect": { "x": 0.32, "y": 0.22, "w": 0.36, "h": 0.48 },
-          "side": "trai",
+          "rect": { "x": 0.3234, "y": 0.2194, "w": 0.3531, "h": 0.4833 },
+          "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c1-altar-cut-threads" }
         }
       ]
@@ -118,53 +124,54 @@
       "title": "Cổng đình làng Vạn Phúc",
       "aspect": "16:9",
       "logicalSize": { "w": 640, "h": 360 },
-      "notes": "đo lại khi có nền 800×500",
+      "notes": "rect và exitArrows lấy từ assets/areas/chapter-1/<mã cảnh>/layout.json (sinh bởi scripts/pixel/draw-c1-rooms.py). Lối 'exit' không dẫn đi đâu: bấm cổng mở d-c1-gate-exit (chapter.completionDialogueId) để kết chương.",
       "spawn": { "x": 0.10, "y": 0.60 },
       "sides": { "phai": true, "trai": true },
-      "exits": { "exit": "prologue" },
+      "exits": { "exit": "c1-s3-cong-dinh-doi-dau" },
+      "exitArrows": [{ "exit": "exit", "dir": "left", "via": "hitbox-village-gate-exit", "rect": { "x": 0.0375, "y": 0.1528, "w": 0.175, "h": 0.6111 } }],
       "interactables": [
         {
           "id": "hitbox-village-officials",
           "kind": "npc",
-          "pos": { "x": 0.80, "y": 0.45 },
+          "pos": { "x": 0.8016, "y": 0.4556 },
           "radius": 0.08,
-          "rect": { "x": 0.68, "y": 0.26, "w": 0.24, "h": 0.38 },
+          "rect": { "x": 0.6813, "y": 0.2667, "w": 0.2406, "h": 0.3778 },
           "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c1-present-contract" }
         },
         {
           "id": "hitbox-ong-le-entity",
           "kind": "npc",
-          "pos": { "x": 0.50, "y": 0.55 },
+          "pos": { "x": 0.5805, "y": 0.55 },
           "radius": 0.10,
-          "rect": { "x": 0.38, "y": 0.30, "w": 0.24, "h": 0.50 },
+          "rect": { "x": 0.5203, "y": 0.3, "w": 0.1203, "h": 0.5 },
           "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c1-present-letter" }
         },
         {
           "id": "hitbox-stone-step",
           "kind": "object",
-          "pos": { "x": 0.30, "y": 0.70 },
+          "pos": { "x": 0.3149, "y": 0.7472 },
           "radius": 0.08,
-          "rect": { "x": 0.20, "y": 0.55, "w": 0.20, "h": 0.30 },
+          "rect": { "x": 0.2172, "y": 0.6694, "w": 0.1953, "h": 0.1556 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c1-giai-phong" }
         },
         {
           "id": "hitbox-styling-cam",
           "kind": "object",
-          "pos": { "x": 0.50, "y": 0.55 },
+          "pos": { "x": 0.4578, "y": 0.6112 },
           "radius": 0.08,
-          "rect": { "x": 0.40, "y": 0.40, "w": 0.20, "h": 0.30 },
+          "rect": { "x": 0.4, "y": 0.4167, "w": 0.1156, "h": 0.3889 },
           "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c1-styling-cam" }
         },
         {
           "id": "hitbox-village-gate-exit",
           "kind": "object",
-          "pos": { "x": 0.13, "y": 0.475 },
+          "pos": { "x": 0.125, "y": 0.4583 },
           "radius": 0.08,
-          "rect": { "x": 0.04, "y": 0.20, "w": 0.18, "h": 0.55 },
+          "rect": { "x": 0.0375, "y": 0.1528, "w": 0.175, "h": 0.6111 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c1-gate-exit" }
         }
@@ -178,7 +185,12 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Bát cháo hoa đã đóng váng từ sáng. Nuốt nghẹn đắng họng làm sao trôi khi tự do bị tước đoạt."
+          "text": "Bát cháo hoa đã đóng váng từ sáng. Nuốt nghẹn đắng họng làm sao trôi khi tự do bị tước đoạt.",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Cụ đẩy bát cháo sang một bên. Phải tìm đường ra khỏi gian buồng này."
         }
       ]
     },
@@ -188,7 +200,12 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Cửa chính bị khóa ngoài bằng xích sắt kiên cố, Trưởng tộc quyết tâm giam cầm mình trong này."
+          "text": "Cửa chính bị khóa ngoài bằng xích sắt kiên cố, Trưởng tộc quyết tâm giam cầm mình trong này.",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Cửa trước đã bị khóa chặt. Chỉ còn lối cửa chớp phía sau buồng."
         }
       ]
     },
@@ -199,7 +216,12 @@
         {
           "id": "node-1",
           "text": "Tấm biển 'Tiết Hạnh Khả Phong' sơn còn thơm mùi nhựa thông, nhưng chữ vàng này tẩm bằng nước mắt người góa phụ.",
-          "clueId": "clue-tiet-hanh-kha-phong"
+          "clueId": "clue-tiet-hanh-kha-phong",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Cụ lặng nhìn tấm biển thêm một lúc rồi quay đi."
         }
       ]
     },
@@ -209,7 +231,12 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Khói trầm hương nồng nặc nghi ngút che giấu sự dối trá dưới chân các bài vị tổ tiên."
+          "text": "Khói trầm hương nồng nặc nghi ngút che giấu sự dối trá dưới chân các bài vị tổ tiên.",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Cụ lùi lại, mắt dõi theo làn khói bay về phía bàn thờ tổ."
         }
       ]
     },
@@ -220,7 +247,12 @@
         {
           "id": "node-1",
           "text": "Nếu nghe tin anh xấu số, xin em đừng giam mình thủ tiết theo lệ làng hà khắc. Hãy tự do sống cuộc đời của em.",
-          "clueId": "clue-thu-chong-cu-cam"
+          "clueId": "clue-thu-chong-cu-cam",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Em hãy giữ lấy lá thư này, và đừng để ai bắt em sống một đời không phải của mình."
         }
       ]
     },
@@ -231,7 +263,12 @@
         {
           "id": "node-1",
           "text": "Tờ văn tự này chứng minh Trưởng tộc đem gán ruộng dệt của vợ chồng tôi để trả nợ cờ bạc!",
-          "clueId": "clue-van-tu-ban-dat"
+          "clueId": "clue-van-tu-ban-dat",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Có tờ văn tự này, sự thật đã nằm trong tay tôi. Giờ phải mang nó ra trước thềm đình."
         }
       ]
     },
@@ -241,7 +278,12 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Từ hôm nay, nếp áo dệt của làng Vạn Phúc là để tôn vinh sự cần cù và tự do của người phụ nữ, không phải tấm vải liệm thanh xuân!"
+          "text": "Từ hôm nay, nếp áo dệt của làng Vạn Phúc là để tôn vinh sự cần cù và tự do của người phụ nữ, không phải tấm vải liệm thanh xuân!",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Nói xong, cụ ngẩng cao đầu, bước chân nhẹ hẳn đi."
         }
       ]
     },
@@ -251,7 +293,12 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Cổng đình làng mở rộng đón gió xuân. Tự do này, cụ sẽ trao truyền lại cho con cháu muôn đời sau."
+          "text": "Cổng đình làng mở rộng đón gió xuân. Tự do này, cụ sẽ trao truyền lại cho con cháu muôn đời sau.",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "Cụ khoác tà áo ngũ thân, bước qua cổng đình. Câu chuyện của Cụ Cầm khép lại ở đây, nhưng nếp áo vẫn còn đi tiếp."
         }
       ]
     }
@@ -275,17 +322,18 @@
     {
       "id": "p-c1-altar-cut-threads",
       "type": "use",
-      "title": "Lật Vải cắt đứt sợi chỉ xám giấu thư",
+      "title": "Cắt đứt sợi chỉ xám giấu thư",
       "hasSession": false,
       "hints": [
-        "Bàn thờ tổ đóng kín mít ở mặt phải thế giới thực.",
-        "Bật 'Lật Vải' để nhìn luồng rễ chỉ xám quấn quanh hốc mộng chân cột cái.",
+        "Bàn thờ tổ đóng kín mít, có sợi chỉ xám quấn chặt quanh hốc mộng chân cột cái.",
+        "Nhìn kỹ luồng chỉ xám ấy: ba mối nối đang giữ kín hộp gỗ trắc.",
         "Dùng kéo may bằng đồng cắt 3 mối nối chỉ xám để lấy hộp gỗ trắc chứa bức thư tay và tờ văn tự."
       ],
       "solution": {
         "requiredItemId": "keo_may_bang_dong",
         "rewardItemIds": ["buc_thu_tay_chong_cu_Cam", "to_van_tu_cam_co_dat"],
-        "dialogueTriggerIds": ["d-c1-thu-chong", "d-c1-van-tu"]
+        "dialogueTriggerIds": ["d-c1-thu-chong", "d-c1-van-tu"],
+        "unlocksAreaId": "c1-s3-cong-dinh-doi-dau"
       }
     },
     {

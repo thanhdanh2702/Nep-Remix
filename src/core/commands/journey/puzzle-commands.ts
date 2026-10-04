@@ -2,6 +2,7 @@ import type { CommandDef } from '../../command.ts';
 import type { GameState, PuzzleDraft } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 import type { Puzzle } from '../../../content/schema.ts';
+import { applyPuzzleSolved } from './puzzle-solution.ts';
 
 // ==========================================
 // Text Normalization (Diacritic & Case Insensitive)
@@ -100,23 +101,23 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
     const chProgress = state.journey[chId];
 
     if (!chData || !chProgress) {
-      return { ok: false, reason: `Invalid chapter '${chId}'.` };
+      return { ok: false, reason: `Chương '${chId}' không hợp lệ.` };
     }
 
     const puzzle = chData.puzzles.find((p) => p.id === puzzleId);
     if (!puzzle) {
-      return { ok: false, reason: `Puzzle '${puzzleId}' does not belong to chapter '${chId}'.` };
+      return { ok: false, reason: `Câu đố '${puzzleId}' không thuộc chương hiện tại.` };
     }
 
     if (chProgress.solvedPuzzleIds.includes(puzzleId)) {
-      return { ok: false, reason: `Puzzle '${puzzleId}' is already solved.` };
+      return { ok: false, reason: 'Câu đố này đã được giải rồi.' };
     }
 
     if (puzzle.prerequisitePuzzleIds?.some(id => !chProgress.solvedPuzzleIds.includes(id))) {
       return { ok: false, reason: 'Hãy gỡ tấm vải phủ trước khi mở ổ khóa.' };
     }
     if (puzzle.type === 'use' && puzzle.solution.requiredItemId && !state.inventory.itemIds.includes(puzzle.solution.requiredItemId)) {
-      return { ok: false, reason: 'An chưa có vật phẩm cần dùng. Hãy khám phá căn phòng.' };
+      return { ok: false, reason: 'Chưa có vật phẩm cần dùng. Hãy khám phá căn phòng.' };
     }
 
     return true;
@@ -126,7 +127,6 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
     const { puzzleId, answer } = payload;
     const chId = state.currentChapter;
     const chData = content.chapters[chId];
-    const chProgress = state.journey[chId];
     const puzzle = chData.puzzles.find((p) => p.id === puzzleId)!;
 
     const isCorrect = evaluatePuzzleAnswer(puzzle, answer);
@@ -144,65 +144,8 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
       };
     }
 
-    // Correct answer: solve puzzle and grant rewards/unlocks
-    const nextSolved = [...chProgress.solvedPuzzleIds, puzzleId];
-    let nextInventory = state.inventory.itemIds;
-    let nextUnlockedAreas = chProgress.unlockedAreaIds;
-    const events: any[] = [
-      {
-        type: 'puzzleSolved',
-        payload: { puzzleId }
-      }
-    ];
-
-    if ('rewardItemId' in puzzle.solution && puzzle.solution.rewardItemId) {
-      const rewardItem = puzzle.solution.rewardItemId;
-      if (!nextInventory.includes(rewardItem)) {
-        nextInventory = [...nextInventory, rewardItem];
-        events.push({
-          type: 'itemPicked',
-          payload: { itemId: rewardItem }
-        });
-      }
-    }
-
-    if ('unlocksAreaId' in puzzle.solution && puzzle.solution.unlocksAreaId) {
-      const area = puzzle.solution.unlocksAreaId;
-      if (!nextUnlockedAreas.includes(area)) {
-        nextUnlockedAreas = [...nextUnlockedAreas, area];
-      }
-    }
-
-    const dialogueId = 'dialogueTriggerId' in puzzle.solution ? puzzle.solution.dialogueTriggerId : undefined;
-    const dialogue = chData.dialogues.find(d => d.id === dialogueId);
-    const firstNode = dialogue?.nodes[0];
-    let nextNotebook = state.notebook;
-    if (firstNode?.clueId && !nextNotebook.unlockedClueIds.includes(firstNode.clueId)) {
-      nextNotebook = { unlockedClueIds: [...nextNotebook.unlockedClueIds, firstNode.clueId] };
-      events.push({ type: 'clueCollected', payload: { clueId: firstNode.clueId } });
-    }
-    const nextState: GameState = {
-      ...state,
-      notebook: nextNotebook,
-      inventory: {
-        ...state.inventory,
-        itemIds: nextInventory
-      },
-      journey: {
-        ...state.journey,
-        [chId]: {
-          ...chProgress,
-          solvedPuzzleIds: nextSolved,
-          activeDialogue: firstNode && dialogue ? { dialogueId: dialogue.id, currentNodeId: firstNode.id, history: [firstNode.id] } : chProgress.activeDialogue,
-          unlockedAreaIds: nextUnlockedAreas
-        }
-      }
-    };
-
-    return {
-      state: nextState,
-      events
-    };
+    // Correct answer: shared solve transition (rewards, unlocks, triggered dialogues)
+    return applyPuzzleSolved(state, puzzle, content);
   },
 
   invert: (_state: GameState, payload: PuzzleSubmitPayload) => {
