@@ -4,8 +4,8 @@ import { setSmoothing } from '../ui/pixel-scale';
 import { drawPixelSprite } from './scene-view';
 
 // Canvas drawing for point-and-click rooms. Everything is pure canvas math over loaded images;
-// RoomScene owns state, DOM and timing. The stage canvas is exactly the 8:5 room, so world px (800x500)
-// map to device px by `k`.
+// RoomScene owns state, DOM and timing. The stage canvas is exactly the room background, so world px
+// (the background's own pixel size) map to device px by `k`.
 
 export interface Box { x: number; y: number; w: number; h: number }
 export interface RoomAssets { bg: HTMLImageElement; cat?: HTMLImageElement; vfx?: HTMLImageElement; cutouts: Record<string, HTMLImageElement> }
@@ -48,11 +48,12 @@ function outlineFor(key: string, cutout: HTMLImageElement, w: number, h: number,
   return baked;
 }
 
-/** Shop dust loops in place; the chest light (re-sliced by scripts/build-vfx-frames.py) seeps from the lid seam:
+/** World px below are for the 890x500 prologue rooms (800x500 art centred between two 45 px side bands).
+ *  Shop dust loops in place; the chest light (re-sliced by scripts/build-vfx-frames.py) seeps from the lid seam:
  *  each 2.6s pulse grows through its 4 frames, drifts up and fades, in whole art pixels and quarter-alpha steps. */
 const VFX = {
-  s1: { cell: { w: 64, h: 96 }, foot: { x: 398, y: 304 } },
-  s2: { cell: { w: 77, h: 82 }, foot: { x: 397, y: 296 } },
+  s1: { cell: { w: 64, h: 96 }, foot: { x: 443, y: 304 } },
+  s2: { cell: { w: 77, h: 82 }, foot: { x: 442, y: 296 } },
 };
 const PULSE = 2600;
 export function vfxState(s1: boolean, t: number, reduced: boolean) {
@@ -66,20 +67,17 @@ export function drawRoom(ctx: CanvasRenderingContext2D, assets: RoomAssets, area
   const { k, t } = f;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, f.w, f.h);
-  // Painted art is smoothed; the 8:5 background is contained (never cropped) inside the stage.
+  // Painted art is smoothed; the stage has the background's aspect, so it fills the canvas exactly.
   setSmoothing(ctx, true);
   ctx.setTransform(k, 0, 0, k, 0, 0);
-  const { bg } = assets;
-  const fit = Math.min(800 / bg.naturalWidth, 500 / bg.naturalHeight);
-  const bw = bg.naturalWidth * fit, bh = bg.naturalHeight * fit;
-  ctx.drawImage(bg, (800 - bw) / 2, (500 - bh) / 2, bw, bh);
+  ctx.drawImage(assets.bg, 0, 0);
   // State overlays are not drawn: the supplied overlay art is framed as close-ups and does not register
   // with the background. `f.overlays` still drives state-dependent effects (vfx) in RoomScene.
   // True pixel sprites: device pixels, whole-number scale.
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   setSmoothing(ctx, false);
   const cam = { scale: k, x: 0, y: 0 };
-  if (f.s1 && assets.cat) drawPixelSprite(ctx, assets.cat, { x: 0, y: 0, w: 32, h: 32 }, { x: 616, y: 426, w: 32, h: 32 }, cam, 1);
+  if (f.s1 && assets.cat) drawPixelSprite(ctx, assets.cat, { x: 0, y: 0, w: 32, h: 32 }, { x: 661, y: 426, w: 32, h: 32 }, cam, 1);
   if (f.vfx && assets.vfx) {
     const { cell, foot } = f.s1 ? VFX.s1 : VFX.s2, { frame, alpha, rise } = vfxState(f.s1, t, f.reduced);
     // Light is added with a screen blend so it brightens the wood instead of sitting on it like a sticker.

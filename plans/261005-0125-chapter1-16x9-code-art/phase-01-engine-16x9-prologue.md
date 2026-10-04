@@ -4,7 +4,7 @@
 - Plan: ./plan.md
 
 ## Overview
-- Priority: high · Status: pending · Est. effort: 5–6 h
+- Priority: high · Status: completed · Est. effort: 5–6 h
 
 ## Key Insights (khảo sát 05/10)
 - Rect interactable / exitArrow chuẩn hóa 0..1 (`schema.ts:331-336`); `hitOf` nhân với stage box, tối thiểu 44 px (`RoomScene.tsx:15,28-32`); hotspot = button DOM trong suốt (`RoomScene.tsx:183-190`).
@@ -35,12 +35,12 @@ REUSE-EXTEND engine hiện có; script mở rộng ảnh là FORK-NEW (Pillow, n
 5. lint, test:core (check-game rect 0..1), test:assets, `game.spec` + `journey-map.spec` + `ui-polish.spec`.
 
 ## Todo List
-- [ ] engine theo phòng
-- [ ] schema + JSON
-- [ ] script nới 16:9 + art
-- [ ] migrate rect/cutout/hằng
-- [ ] audit:assets
-- [ ] test pass
+- [x] engine theo phòng
+- [x] schema + JSON
+- [x] script nới 16:9 + art
+- [x] migrate rect/cutout/hằng
+- [x] audit:assets
+- [x] test pass
 
 ## Success Criteria
 - Phòng prologue: `data-world-width="890"`, tỉ lệ canvas 1.78 ±0.01 ở 1920×1080; bấm hết prologue (`game.spec` point-and-click + full prologue) pass; Tab order vẫn bắt đầu `hitbox-table`.

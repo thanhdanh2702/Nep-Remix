@@ -51,9 +51,9 @@ Revert các commit; asset prologue cũ 800×500 còn trong git history.
 User yêu cầu tự quyết (memory `autonomy-only-api-key`). Quyết định:
 | # | Câu hỏi | Chọn | Lý do |
 |---|---|---|---|
-| 1 | World size | Theo từng phòng = kích thước nền; prologue nới 890×500, c1 320×180 | Đều ≈16:9, engine không còn hằng số |
+| 1 | World size | Theo từng phòng = kích thước nền; prologue nới 890×500, c1 640×360 | Đều ≈16:9, engine không còn hằng số |
 | 2 | Prologue 16:9 | Vẽ bằng code 45 px mỗi bên (kéo dài tường/sàn từ cột rìa + chi tiết pixel) | User muốn vẽ bằng code; hotspot chỉ dịch offset |
-| 3 | Art c1 | Vẽ mới 3 phòng bằng code 320×180, bỏ art 4:3 cũ | Đồng bộ phong cách; s3 chưa có art |
+| 3 | Art c1 | Vẽ mới 3 phòng bằng code 640×360, bỏ art 4:3 cũ | Đồng bộ phong cách; s3 chưa có art |
 | 4 | Bàn thờ mặt `trai` | Chuyển sang `phai` | Lật vải tắt cho 10/10 |
 | 5 | Phần thưởng số nhiều | Mở rộng `puzzle/submit` xử lý `rewardItemIds`/`dialogueTriggerIds`/unlock | Một nguồn logic, self-check bao phủ |
 | 6 | Cutout glow c1 | Không làm cutout; highlight dùng khung rect (fallback) | Tiết kiệm thời gian |

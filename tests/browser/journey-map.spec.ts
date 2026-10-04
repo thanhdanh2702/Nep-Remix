@@ -53,6 +53,6 @@ test('Mobile map pans without page overflow and respects reduced motion', async 
   await scroll.evaluate(el => { el.scrollLeft = el.scrollWidth; });
   await expect(page.locator('[data-chapter="c5"] .journey-map-label')).toBeInViewport();
   await page.locator('[data-chapter="prologue"] .journey-map-label').click();
-  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-world-width', '800');
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-world-width', '890');
   await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', 'c0-s1-tiem-may-chieu');
 });

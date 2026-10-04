@@ -1,7 +1,7 @@
 """Cut hand-traced hotspot objects out of the opaque prologue backgrounds.
 
-Reads scripts/hotspot-masks.json ({area: {interactableId: [[x,y],...]}}, coords in the
-800x500 world), crops each polygon bbox from `<area>--phai.png`, applies the polygon as a
+Reads scripts/hotspot-masks.json ({area: {interactableId: [[x,y],...]}}, coords in the original
+800x500 image; shifted by MASK_OFFSET_X into the 890x500 16:9 world), crops each polygon bbox from `<area>--phai.png`, applies the polygon as a
 hard 0/255 alpha mask and writes `assets/areas/prologue/<area>/hotspot-<id>.png` plus
 `hotspots.json` ({id: {x,y,w,h}} in world px = top-left placement offset and size).
 Rect containment vs src/content/chapters/prologue.json (expanded 10%) is an info print only:
@@ -15,7 +15,8 @@ from pathlib import Path
 from PIL import Image, ImageDraw
 
 ROOT = Path(__file__).resolve().parent.parent
-WORLD = (800, 500)
+WORLD = (890, 500)
+MASK_OFFSET_X = 45  # masks were traced on the 800x500 originals, now centred in the 890x500 world
 EXPAND = 0.10
 
 
@@ -35,9 +36,9 @@ def inside_expanded(box, rect):
 def cutout(bg, points):
     """Return (RGBA cutout, world bbox (x0,y0,x1,y1) ints) for a polygon in world coords."""
     sx, sy = bg.width / WORLD[0], bg.height / WORLD[1]
-    px = [(x * sx, y * sy) for x, y in points]
+    px = [((x + MASK_OFFSET_X) * sx, y * sy) for x, y in points]
     x0, y0 = max(0, int(min(p[0] for p in px))), max(0, int(min(p[1] for p in px)))
-    x1, y1 = min(bg.width, int(max(p[0] for p in px)) + 1), min(bg.height, int(max(p[1] for p in px)) + 1)
+    x1, y1 = min(bg.width - MASK_OFFSET_X, int(max(p[0] for p in px)) + 1), min(bg.height, int(max(p[1] for p in px)) + 1)
     mask = Image.new('L', (x1 - x0, y1 - y0), 0)
     ImageDraw.Draw(mask).polygon([(x - x0, y - y0) for x, y in px], fill=255)  # no antialiasing -> hard alpha
     out = bg.convert('RGBA').crop((x0, y0, x1, y1))

@@ -124,7 +124,7 @@ test('Mobile camera, touch controls, input focus and corrupt saves work',async({
   await page.getByRole('button',{name:'Lưu diện mạo',exact:true}).click();
   expect((await savedState(page)).profile.name).toBe('An Nếpw');
   await page.getByRole('button',{name:'Cốt truyện',exact:true}).first().click();
-  await page.locator('[data-chapter="prologue"] .journey-map-label').click();await expect(room(page)).toHaveAttribute('data-world-width','800');
+  await page.locator('[data-chapter="prologue"] .journey-map-label').click();await expect(room(page)).toHaveAttribute('data-world-width','890');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.evaluate(()=>localStorage.setItem('tiem-may-nep-save-v1','broken-json'));await page.reload();await enterGame(page);
   expect((await savedState(page)).wallet.senNgoc).toBe(100);await expect(page.getByRole('status').filter({hasText:'Bản lưu không hợp lệ'})).toBeVisible();

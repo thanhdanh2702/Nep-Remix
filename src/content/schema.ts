@@ -374,10 +374,11 @@ export const AreaSchema = z.object({
   id: AreaIdSchema,
   chapterId: ChapterIdSchema,
   title: z.string(),
-  aspect: z.literal('8:5'),
+  aspect: z.enum(['8:5', '16:9']),
+  /** Background size in art px; the room engine reads the real size from the background image. */
   logicalSize: z.object({
-    w: z.literal(800),
-    h: z.literal(500)
+    w: z.number().int().positive(),
+    h: z.number().int().positive()
   }),
   notes: z.string().optional(),
   spawn: NormalizedCoordSchema,

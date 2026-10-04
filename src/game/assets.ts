@@ -33,8 +33,11 @@ export const sliceMetadata = [
   ...studioMeta.assets.map(a => ({ ...a, path: `assets/screens/studio/${a.file}` })),
   ...museumMeta.assets.map(a => ({ ...a, path: `assets/screens/museum/${a.file}` })),
 ];
-export function areaAsset(areaId: string, suffix = 'phai') {
-  return `assets/areas/prologue/${areaId}/${areaId}--${suffix}.png`;
+/** Folder name under assets/areas for a chapter id: `prologue` stays, `c1` -> `chapter-1`. */
+export const chapterFolder = (chapterId: string) => chapterId.replace(/^c(\d+)$/, 'chapter-$1');
+export const areaFolder = (chapterId: string, areaId: string) => `assets/areas/${chapterFolder(chapterId)}/${areaId}`;
+export function areaAsset(chapterId: string, areaId: string, suffix = 'phai') {
+  return `${areaFolder(chapterId, areaId)}/${areaId}--${suffix}.png`;
 }
 export function itemAsset(id: string) {
   const slug = id.replaceAll('_', '-').toLowerCase();

@@ -553,7 +553,7 @@
   {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -562,17 +562,17 @@
       255
     ],
     "bounds": [
-      50,
+      95,
       35,
-      785,
+      830,
       485
     ],
-    "sha256": "e0dab6d22ab099a623cadf3e376a248b424d610173afbc7a39544ea3b17c3340"
+    "sha256": "59e117810c7d57c7f43e4f2c32141930643279776ae493ab0cbb4a1bbedf72f0"
   },
   {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--phai.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -583,15 +583,15 @@
     "bounds": [
       0,
       0,
-      800,
+      890,
       500
     ],
-    "sha256": "4991350b4ec6a6a042a335f04ddf1107b7926375b3d2570f6446e829e4f3c903"
+    "sha256": "6a980bf7a47d05f357d914c294f7feda0298ae4c09461af510b0aeaa60f04342"
   },
   {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--trai.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -602,10 +602,10 @@
     "bounds": [
       0,
       0,
-      800,
+      890,
       500
     ],
-    "sha256": "e693ef77db91c2b40d2b228738011dc62d1eda410b284a5e74dc7e3df04da86f"
+    "sha256": "71efb2d9b7beab403f9cb749d5299401023a3e8edd59d2833b029980556e2ee0"
   },
   {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/hotspot-hitbox-mirror.png",
@@ -686,7 +686,7 @@
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--phai.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -697,15 +697,15 @@
     "bounds": [
       0,
       0,
-      800,
+      890,
       500
     ],
-    "sha256": "125cda4217c04db565fa5d8f1cb30e4b566d4de4c54a5fb3257a0f45bf62acfb"
+    "sha256": "fa60c030b1a3487bc6fdafdf477fa7b8ab41fe88019edd5fbf1094a5474362bc"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--ruong-he-mo.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -714,17 +714,17 @@
       255
     ],
     "bounds": [
-      20,
+      65,
       117,
-      780,
+      825,
       439
     ],
-    "sha256": "974a62feb45802f440b15ce6d65065d8157dfc1c69de0236faf2e2b695cbe5d3"
+    "sha256": "032d836149fe80dc56c736c696b7505f2344b96ace6fc8878e08bb3a7b61b4ff"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--ruong-mo-toang.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -733,17 +733,17 @@
       255
     ],
     "bounds": [
-      138,
+      183,
       41,
-      663,
+      708,
       469
     ],
-    "sha256": "26f26b9ae50e1472138211a3eaf044ffb043f8f1c5574035cb27c19d2d1637b0"
+    "sha256": "5107a1df188518f9d38340facf2796679dc9c17e8507fe645955394bae55903f"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--trai.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -754,15 +754,15 @@
     "bounds": [
       0,
       0,
-      800,
+      890,
       500
     ],
-    "sha256": "f794b2504c7e4110f1a35c09d6f17418eeb78518db6f85ba9cbc688538eb7dd5"
+    "sha256": "8634de403dd80242517123a78ed6a570ef57a33a8cf858a32291eaf7cf16f77a"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--tuong-go-mo-tay.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -771,17 +771,17 @@
       255
     ],
     "bounds": [
-      180,
+      225,
       2,
-      503,
+      548,
       488
     ],
-    "sha256": "a94ab27df15e3b767e64a91d802b3033f3d685141c30bc3f03e13e4f6a93d65d"
+    "sha256": "c8801a0c66cfe5cfbda7658bb8b7dbdc86cf876c16b944ac89c328c460279dad"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--vai-phu-roi.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -790,17 +790,17 @@
       255
     ],
     "bounds": [
-      6,
+      51,
       135,
-      794,
+      839,
       418
     ],
-    "sha256": "252276ccc2853a6fe32b36576d0affca4534027bcc7d6b010cd8a4df0a73df3b"
+    "sha256": "f3293359bb7421c760e0a8cb08c7e96be8019c2561e38be42d611a249f8f9108"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/cg-prologue-mo-ruong-hoi-sinh.png",
     "kind": "area-asset",
-    "width": 800,
+    "width": 890,
     "height": 500,
     "format": "PNG",
     "mode": "RGBA",
@@ -811,10 +811,10 @@
     "bounds": [
       0,
       0,
-      800,
+      890,
       500
     ],
-    "sha256": "2e2654140a7686a542c1eac9e0482cb6efd60a0351ea928b8b9677ce7d120ef7"
+    "sha256": "950d618233069d57553ed2940ac62f402f9c28404014e2f838bcf03e96a154bc"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/doc-c0-s2-loi-dan-nguoi-ba.png",
