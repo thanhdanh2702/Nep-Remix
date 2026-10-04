@@ -5,6 +5,7 @@
     "year": 2026,
     "historicalPeriod": "hien_dai",
     "summary": "An tiếp quản tiệm may của bà ngoại tại số nhà cổ phố Hàng Đào, khám phá chiếc rương gia bảo trên gác xép.",
+    "completionDialogueId": "d-c0-ba-dan-do",
     "reward": {
       "id": "reward-prologue",
       "chapterId": "prologue",

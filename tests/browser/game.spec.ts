@@ -67,9 +67,7 @@ test('An walks the hub, plays the prologue by clicking and restores the save wit
   await expect(page.locator('[data-chapter="c1"] .journey-map-label')).toBeEnabled();
   await expect(page.locator('[data-chapter="c1"] .journey-lock')).toHaveCount(0);
   await expect(page.locator('[data-chapter="c2"] .journey-map-label')).toBeDisabled();
-  await page.locator('[data-chapter="c1"] .journey-map-label').click();
-  await expect(page.getByRole('dialog')).toContainText('Cụ Nguyễn Thị Cầm');
-  await page.getByRole('button',{name:'Trở về bản đồ',exact:true}).click();
+  await expect(page.locator('[data-chapter="c1"]')).toHaveClass(/is-open/); // playable now; chapter1.spec plays it
   await page.getByRole('button',{name:'‹ Về sân nhà',exact:true}).click();
   await page.reload();await enterGame(page);
   expect((await savedState(page)).wallet.senNgoc).toBe(150);

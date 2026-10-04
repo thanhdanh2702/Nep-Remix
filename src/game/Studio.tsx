@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties } from 'react';
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createScopedSession, dispatchSession, undoSession, redoSession, resetSession, commitSession, runCommand, evaluateOutfit, type GameState, type StudioDraft, type Command } from '../core';
 import type { Garment } from '../content/schema';
 import { content } from './store';
@@ -24,7 +24,8 @@ const palettes: {name:string;colors:[string,string,string,string]}[] = [
 export function makeDraft(garment: Garment): StudioDraft {
   return {type:'studio',eventContextId:'dao_pho',silhouette:garment.silhouette,garmentId:garment.id,colorPalette:[...garment.defaultColorPalette],equippedAccessories:{}};
 }
-export function Studio({ state, send, notify, initial }: { state: GameState; send: (cmd:Command)=>GameState|null; notify:(message:string)=>void; initial?: StudioDraft }) {
+// `challenge` turns the room into a puzzle: it receives the live draft and renders the submit / cancel controls.
+export function Studio({ state, send, notify, initial, challenge }: { state: GameState; send: (cmd:Command)=>GameState|null; notify:(message:string)=>void; initial?: StudioDraft; challenge?: (draft:StudioDraft)=>ReactNode }) {
   const [session, setSession] = useState(() => createScopedSession(initial ?? makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds[0])!), 'studio'));
   const [tab,setTab] = useState<WardrobeTab>('garment');
   const [name,setName] = useState('');
@@ -81,6 +82,7 @@ export function Studio({ state, send, notify, initial }: { state: GameState; sen
       </div>
       <StudioStylist state={state} draft={draft} update={update} notify={notify} />
     </MannequinStage>
+    {challenge?.(draft)}
     <section className="studio-lookbook" aria-label="Lookbook của bạn">
       <h2 className="studio-lookbook-heading">Lookbook của bạn</h2>
       <StudioLookbookAi draft={draft} eventTitle={events.find(e=>e.id===draft.eventContextId)?.name ?? events[0].name}

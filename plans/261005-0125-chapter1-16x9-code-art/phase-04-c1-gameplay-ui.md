@@ -36,12 +36,12 @@ REUSE-EXTEND Game/Studio/Modal; tách component mới khi vượt 200 LOC.
 6. lint, build, test:core, toàn bộ test:browser, test:assets.
 
 ## Todo List
-- [ ] mở c1
-- [ ] PuzzleModal + InventoryCombine
-- [ ] tổng quát hằng + màn kết
-- [ ] chapter1.spec
-- [ ] game.spec c1 case
-- [ ] full test pass
+- [x] mở c1
+- [x] PuzzleModal + InventoryCombine
+- [x] tổng quát hằng + màn kết
+- [x] chapter1.spec
+- [x] game.spec c1 case
+- [x] full test pass
 
 ## Success Criteria
 - `chapter1.spec` chơi hết c1 bằng UI; full `test:browser` pass; `Game.tsx` ≤ 200 LOC.
