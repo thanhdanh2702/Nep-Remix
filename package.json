@@ -5,8 +5,9 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "build": "vite build",
-    "start": "tsx server.ts",
+    "build": "vite build && npm run build:server",
+    "build:server": "esbuild server.ts --bundle --platform=node --format=esm --packages=external --outfile=server.mjs",
+    "start": "node server.mjs",
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "test:core": "tsx scripts/check-core.ts && tsx scripts/check-game.ts",
