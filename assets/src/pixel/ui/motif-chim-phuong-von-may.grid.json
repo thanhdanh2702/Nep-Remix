@@ -1,0 +1,33 @@
+{
+  "id": "motif-chim-phuong-von-may",
+  "kind": "motif",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "g": "E9B66B",
+    "c": "FFF1DF",
+    "r": "A72D60"
+  },
+  "rows": [
+    "................",
+    ".......rr.......",
+    ".....r.rr.r.....",
+    ".....rrrrrr.....",
+    "................",
+    "......KggK......",
+    ".....KgccgK.....",
+    "..KKKccgcgcKKK..",
+    "..KcgccggccgcK..",
+    ".KcgcgccccgcgcK.",
+    ".KcggccccccggcK.",
+    "..KccccccccccK..",
+    "..KKKKKKKKKKKK..",
+    "................",
+    "................",
+    "................"
+  ]
+}

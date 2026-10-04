@@ -224,7 +224,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
         {tip && <span className={`room-tip${tip.below ? ' below' : ''}`} style={{ left: tip.left, top: tip.top }} aria-hidden="true">{tip.text}</span>}
       </div>
     </div>
-    <button type="button" className="room-soi" aria-pressed={soi} disabled={blocked} onClick={() => setSoi(on => !on)}>Soi</button>
+    <button type="button" className="room-soi hud-ic hud-ic-soi" aria-pressed={soi} disabled={blocked} onClick={() => setSoi(on => !on)}>Soi</button>
     <div className="room-fade" data-state={ready ? 'clear' : 'dark'} aria-hidden="true" />
     {!ready && !failure && <div className="room-status" role="status">Đang mở căn phòng…</div>}
     {failure && <div className="room-status error" role="alert">{failure}</div>}

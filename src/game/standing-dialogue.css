@@ -63,6 +63,21 @@
   min-width: 0;
   padding: var(--sp-3) clamp(var(--sp-4), 4vw, var(--sp-7)) var(--sp-4);
 }
+/* Code-drawn frame (assets/src/pixel/ui/ui-dialogue-frame.grid.json): 42px, 14px lotus corners.
+   Slice.tsx sets the stock frame inline, so these must be !important. */
+.dialogue-stage .modal > .slice {
+  border-width: 14px !important;
+  border-image-source: url("../../assets/ui-pixel/dialogue-frame--9slice.png") !important;
+  border-image-slice: 14 fill !important;
+}
+/* Roomy screens draw the frame at x2 (28px border, whole-pixel scale); the border takes over
+   the padding it adds so the text keeps its place. */
+@media (min-width: 900px) and (min-height: 700px) {
+  .dialogue-stage .modal > .slice {
+    border-width: 28px !important;
+    padding: 0 clamp(0px, calc(4vw - 16px), 24px) 0;
+  }
+}
 .dialogue-stage .modal-heading { margin-bottom: var(--sp-2); }
 .dialogue-stage .modal-heading h2 {
   display: inline-block;

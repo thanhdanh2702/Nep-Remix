@@ -181,7 +181,7 @@
     "assets/areas/chapter-5/c5-s3-doi-chat-hoi-sinh/cg-c5-s3-toa-sang-heritage-week.png"
   ],
   "notes": [
-    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 226 ảnh thật.",
+    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 234 ảnh thật.",
     "Không có tệp âm thanh trong assets/audio/.",
     "Không có nền portrait cho hai khu vực prologue; UI giữ nguyên tỷ lệ 8:5."
   ]

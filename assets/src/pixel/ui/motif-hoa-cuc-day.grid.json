@@ -1,0 +1,33 @@
+{
+  "id": "motif-hoa-cuc-day",
+  "kind": "motif",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "g": "E9B66B",
+    "p": "D986A7",
+    "r": "A72D60"
+  },
+  "rows": [
+    ".......KK.......",
+    "....KK.KK.KK....",
+    "....KpKKKKpK....",
+    ".....KpggpK.....",
+    "...KKKggggKKK...",
+    "...KKKggggKKK...",
+    ".....KpggpK.....",
+    "....KpKKKKpK....",
+    "....KK.KK.KK....",
+    ".......KK.......",
+    "...rr..KK.......",
+    "KK.rr..KK....KKK",
+    "..KKK.....KKK...",
+    ".....KKKKK.rr...",
+    "...........rr...",
+    "................"
+  ]
+}

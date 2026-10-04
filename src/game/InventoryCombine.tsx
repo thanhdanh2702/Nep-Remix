@@ -15,7 +15,7 @@ export function InventoryCombine({ state, initialItem, send, notify, onClose }: 
     if (send({ type: 'item/combine', payload: { itemIds: [picked[0], picked[1]] } })) setPicked([]);
     else notify('Hai món này chưa ghép được với nhau.'); // replaces the engine's English reason
   };
-  return <Modal title="Túi đồ & Sổ manh mối" wide onClose={onClose}><div className="journal-columns">
+  return <Modal title="Túi đồ & Sổ manh mối" wide className="journal-modal" onClose={onClose}><div className="journal-columns">
     <section><h3>Vật phẩm của An</h3>
       {!state.inventory.itemIds.length && <p>Túi đồ còn trống.</p>}
       {state.inventory.itemIds.map(id => <button key={id} className={`journal-item${picked.includes(id) ? ' selected' : ''}`} aria-pressed={picked.includes(id)} onClick={() => toggle(id)}>

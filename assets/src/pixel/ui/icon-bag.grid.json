@@ -1,0 +1,34 @@
+{
+  "id": "icon-bag",
+  "kind": "icon",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "x",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "g": "E9B66B",
+    "C": "FFF8EE",
+    "r": "A72D60",
+    "d": "711B40"
+  },
+  "rows": [
+    "........",
+    "......KK",
+    ".....Kgg",
+    "......KK",
+    "....KKdd",
+    "...KrrCr",
+    "..KrrCrr",
+    "..Krrrrr",
+    "..Krrrgg",
+    "..Krrrgg",
+    "..Krrrrr",
+    "..Kdrrrr",
+    "...Kdddd",
+    "....KKKK",
+    "........",
+    "........"
+  ]
+}

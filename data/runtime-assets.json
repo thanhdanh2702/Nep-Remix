@@ -4237,6 +4237,196 @@
     "sha256": "f10aeaf486e9534dd0414eae86a3834ac9155f38405054747844d9ff7b66ec27"
   },
   {
+    "path": "assets/ui-pixel/dialogue-frame--9slice.png",
+    "kind": "screen-asset",
+    "width": 42,
+    "height": 42,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      42,
+      42
+    ],
+    "sha256": "9b5e867a37dc5adce2fe11bd6bc59c588c08ec2467d2615caa508cab05b5398b"
+  },
+  {
+    "path": "assets/ui-pixel/icon-bag.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      2,
+      1,
+      14,
+      14
+    ],
+    "sha256": "2128c9ea6d62b964f61c0f1c11711022374b916eaaba9f96fd6da270e12c72bd"
+  },
+  {
+    "path": "assets/ui-pixel/icon-map.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      0,
+      15,
+      16
+    ],
+    "sha256": "971e7b604100805b8ef1a606e72c3fff5c5fafa79e38e51014f525968095b2c0"
+  },
+  {
+    "path": "assets/ui-pixel/icon-notebook.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      2,
+      1,
+      14,
+      15
+    ],
+    "sha256": "9a11fed90022acae9f57839ff21b3088f51e32b0235e1b1e3eb16995a33626c7"
+  },
+  {
+    "path": "assets/ui-pixel/icon-sen-ngoc.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      1,
+      15,
+      15
+    ],
+    "sha256": "e0d8a17965811861e2ccccf54dbfe78177ce3e95146d935e652ea3bf70330ff6"
+  },
+  {
+    "path": "assets/ui-pixel/icon-settings.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      16,
+      16
+    ],
+    "sha256": "a03935007392e69ef376721a00f269e206551fd53ce0614db2122ca5ffe06d39"
+  },
+  {
+    "path": "assets/ui-pixel/icon-soi.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      3,
+      16,
+      11
+    ],
+    "sha256": "ed91dcca3842092bc59a31c7f6d0dc17037501185cd3d483297fc70641db3fec"
+  },
+  {
+    "path": "assets/ui-pixel/motif-chim-phuong-von-may.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1,
+      1,
+      15,
+      13
+    ],
+    "sha256": "a2dbf64c3d42f9b26c09c4b1115bfa3d1e20a475a41a79a6cbebea5d5856152e"
+  },
+  {
+    "path": "assets/ui-pixel/motif-hoa-cuc-day.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      16,
+      15
+    ],
+    "sha256": "fd6d8d3365f13ab9c8c55b1c39f2d4b4e0f94afe1b7ef4939d7aeaad01afec66"
+  },
+  {
+    "path": "assets/ui-pixel/motif-hoa-sen-lien-hoa.png",
+    "kind": "screen-asset",
+    "width": 16,
+    "height": 16,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      3,
+      16,
+      16
+    ],
+    "sha256": "69508ee613539d541036ac0bafd83b85a25b103aa66a4261d5115990ba6dc215"
+  },
+  {
     "path": "map.png",
     "kind": "screen-asset",
     "width": 1672,

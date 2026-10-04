@@ -26,7 +26,7 @@ export const brandingAssets = {
   areaSign: 'assets/screens/main-shop/area-sign-frame.png',
   garden: 'assets/screens/main-shop/garden-user--landscape.png',
   logo: 'assets/branding/logo-viet-phuc.png',
-  coin: 'assets/branding/sen-ngoc.png',
+  coin: 'assets/ui-pixel/icon-sen-ngoc.png',
 };
 export const sliceMetadata = [
   ...mainMeta.assets.map(a => ({ ...a, path: `assets/screens/main-shop/${a.file}` })),

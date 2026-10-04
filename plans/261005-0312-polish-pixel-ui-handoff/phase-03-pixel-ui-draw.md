@@ -1,7 +1,7 @@
 # Phase 03 — pixel-ui-draw
 
 ## Overview
-Priority: medium · Status: pending · Est. 3–4 h · Depends on: 02
+Priority: medium · Status: completed · Est. 3–4 h · Depends on: 02
 
 ## Key Insights
 - Dialogue box hiện là CSS (`src/game/standing-dialogue.css`); khung 9-slice dùng qua `src/game/Slice.tsx` (`border-image`). Icon code-drawn có sẵn ở `src/ui/pixel-art.ts` (char-grid) và `src/welcome/PixelIcon.tsx` (SVG crispEdges).
@@ -18,10 +18,10 @@ Priority: medium · Status: pending · Est. 3–4 h · Depends on: 02
 Create: `assets/src/pixel/ui/*.grid.json`, PNG output, có thể `src/ui/pixel-icons.css`. Modify: `src/game/standing-dialogue.css`, component HUD chứa các nút trên (tìm bằng grep — chỉ thêm icon), `data/runtime-assets.json` (generated).
 
 ## Todo
-- [ ] khung thoại 9-slice
-- [ ] 6 icon HUD
-- [ ] 3 motif + 1 chỗ dùng
-- [ ] audit:assets, lint, build, full test:browser, test:assets
+- [x] khung thoại 9-slice
+- [x] 6 icon HUD
+- [x] 3 motif + 1 chỗ dùng
+- [x] audit:assets, lint, build, full test:browser, test:assets
 
 ## Success Criteria
 Full `test:browser` pass; screenshot hộp thoại + HUD 1920×1080 và 844×390 sắc nét, icon đọc được.
