@@ -209,6 +209,38 @@ test.describe('point-and-click room',()=>{
     await expect(room(page)).toHaveAttribute('data-hover','');
   });
 
+  const anAttr = async (page:Page,name:string)=>Number(await room(page).getAttribute(name));
+  const anShare = async (page:Page)=>(await anAttr(page,'data-an-h'))/(await anAttr(page,'data-world-height'));
+
+  test('reduced motion: clicking a hotspot puts An beside it at once and the dialogue opens, An is 38-50% of the room',async({page})=>{
+    await openRoom(page);
+    const start=await anAttr(page,'data-an-x');
+    await spot(page,'hitbox-mirror').click();
+    await expect(page.getByRole('dialog',{name:'An',exact:true})).toBeVisible();
+    expect(await anAttr(page,'data-an-x')).not.toBe(start);
+    const share=await anShare(page);
+    expect(share).toBeGreaterThanOrEqual(0.38);expect(share).toBeLessThanOrEqual(0.5);
+    const foot=await anAttr(page,'data-an-y'),world=await anAttr(page,'data-world-height');
+    expect(foot).toBeGreaterThanOrEqual(world*0.6);expect(foot).toBeLessThanOrEqual(world*0.95); // on the floor strip
+  });
+
+  test('with motion An walks to the hotspot first, the dialogue opens once she arrives, and a new click retargets',async({page})=>{
+    await openRoom(page,true);
+    const start=await anAttr(page,'data-an-x');
+    await spot(page,'hitbox-mirror').click();
+    await expect.poll(()=>anAttr(page,'data-an-x')).not.toBe(start); // she is moving
+    await expect(page.getByRole('dialog')).toHaveCount(0);            // nothing fires before she arrives
+    await spot(page,'hitbox-mirror').click();                          // same target again: ignored
+    await expect(page.getByRole('dialog',{name:'An',exact:true})).toBeVisible({timeout:10000});
+    await expect(page.getByRole('dialog')).toHaveCount(1);
+    await page.getByRole('button',{name:'Khép lời kể'}).click();
+    await spot(page,'hitbox-cat').click();                             // walk to the cat, then change her mind
+    await expect.poll(()=>anAttr(page,'data-an-x')).toBeGreaterThan(0);
+    await spot(page,'hitbox-mirror').click();
+    await expect(page.getByRole('dialog',{name:'An',exact:true})).toBeVisible({timeout:10000});
+    await expect(page.getByRole('dialog',{name:'Mèo Nếp',exact:true})).toHaveCount(0);
+  });
+
   test('Soi reveals every hotspot for about 1.5s, by button and by Space, and is locked during dialogue',async({page})=>{
     await openRoom(page,true);
     const soi=page.getByRole('button',{name:'Soi',exact:true});
