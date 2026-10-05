@@ -7,7 +7,7 @@ Sảnh tiệm may là không gian trung tâm của ứng dụng, đóng vai trò
 ## 2. Bố cục trực quan và các thành phần trên giao diện
 
 ### Bố cục ngang (chính)
-- **Tỷ lệ hiển thị:** Chuẩn 8:5 (lưới logic 800×500 px, hiển thị nguyên lần 1600×1000 px) trên nền `background--landscape.png`.
+- **Tỷ lệ hiển thị:** Nền gốc `garden-user--landscape.png` kích thước 1586×992, hiển thị theo kích thước thật với smoothing (`image-rendering: auto`) để fit/cover viewport. Thế giới logic 1000×625 px (tỷ lệ ~8:5).
 - **Cảnh nền sân nhà:** Khung cảnh sân gạch đỏ cổ truyền lúc hoàng hôn vàng ấm:
   - Bên trái: Dãy nhà ngói cổ dẫn vào **"Phòng phối đồ"** (`studio`).
   - Bên phải: Dãy nhà ngói cổ đối xứng dẫn vào **"Tủ đồ"** (`closet`).

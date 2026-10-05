@@ -100,7 +100,7 @@
 - **Quyết định:** Cơ chế Lật vải được giữ trong core dưới cờ cấu hình `features.latVai` nhưng TẮT ở bản nộp 10/10 do UI chưa thiết kế, đồng thời hoãn sản xuất hình ảnh mặt trái sau 10/10 và chỉ cân nhắc bật lại cho vòng chung kết 03/11.
 - **Lý do:** Tránh nghẽn tiến độ hoàn thiện giao diện cho mốc nộp bài 10/10 trong khi vẫn đảm bảo mã nguồn lõi sẵn sàng kích hoạt lại mà không cần chỉnh sửa logic kiến trúc.
 
-### 20. Quy chuẩn tỷ lệ, kích thước khu vực & hệ tọa độ
+### 20. Quy chuẩn tỷ lệ, kích thước khu vực & hệ tọa độ **(Đã thay thế bởi #32)**
 - **Quyết định:** Mỗi khu vực chuẩn hóa theo tỷ lệ 8:5, lưới logic 800×500 (hiển thị nhân đôi integer-scaling thành artboard 1600×1000), trong đó core engine chỉ nhận và xử lý tọa độ chuẩn hóa 0–1 và quy đổi ra pixel logic để tính toán khoảng cách.
 - **Lý do:** Đảm bảo tính toán logic độc lập tuyệt đối với độ phân giải màn hình hiển thị của UI mà vẫn giữ tỷ lệ pixel art sắc nét chuẩn mực.
 
@@ -108,7 +108,7 @@
 - **Quyết định:** Tương tác phím E được kích hoạt khi khoảng cách logic từ người chơi tới NPC nằm trong bán kính mặc định 0.08 chiều rộng khu vực (tương đương 64 px logic), còn với vật thể thì dựa vào khung chữ nhật từ `setup.md` được nới rộng 0.02 mỗi phía (nếu vật không có khung sẽ áp dụng bán kính như NPC).
 - **Lý do:** Tạo vùng nhận lệnh tương tác tự nhiên, mượt mà cho người chơi khi di chuyển bằng phím mà không đòi hỏi độ chính xác tuyệt đối từng điểm ảnh.
 
-### 22. Quy chuẩn kích thước tài nguyên hình ảnh (Assets Sizing)
+### 22. Quy chuẩn kích thước tài nguyên hình ảnh (Assets Sizing) **(Đã thay thế bởi #32)**
 - **Quyết định:** Chuẩn hóa kích thước sprite người chơi và NPC là 64×96 mỗi frame, chân dung (portrait) 128×128 (thẻ manh mối dùng bản thu nhỏ 64×64), thumbnail áo trong tủ đồ 96×96, biểu tượng vật phẩm và phụ kiện 48×48, còn biểu tượng UI 24×24 do team UI phụ trách.
 - **Lý do:** Tạo sự đồng bộ tỷ lệ mỹ thuật pixel art xuyên suốt các màn hình và phân định ranh giới trách nhiệm rõ ràng giữa chuỗi asset game và team giao diện.
 
@@ -132,7 +132,7 @@
 - **Quyết định (01/10/2026):** Khung ngang là bố cục chính, khung dọc là bố cục phụ; mọi màn hình đều có cả hai bố cục.
 - **Lý do:** Tối ưu hóa trải nghiệm thị giác điện ảnh và độ chi tiết của không gian pixel art theo tỷ lệ màn ảnh rộng mà vẫn bảo đảm tính linh hoạt công thái học trên thiết bị di động.
 
-### 28. Quy chuẩn nền màn hình ngang 8:5 và tạo sinh qua Gemini (L2 - 01/10/2026)
+### 28. Quy chuẩn nền màn hình ngang 8:5 và tạo sinh qua Gemini **(Đã thay thế bởi #32)** (L2 - 01/10/2026)
 - **Quyết định (01/10/2026):** Nền màn hình ngang chuẩn hóa theo tỷ lệ 8:5, lưới logic 800×500, hiển thị nhân đôi integer-scaling thành 1600×1000 (cùng lưới với khu vực game), tạo sinh bằng model AI theo tỷ lệ 16:9 rồi cắt biên hai bên về 8:5.
 - **Lý do:** Đồng bộ hóa hoàn hảo tỷ lệ hiển thị giữa các màn hình giao diện với không gian khu vực cốt truyện và khắc phục giới hạn Gemini không có tỷ lệ 8:5 trực tiếp.
 
@@ -147,4 +147,12 @@
 ### 31. Đặc tả hai bố cục trong README màn hình (L5 - 01/10/2026)
 - **Quyết định (01/10/2026):** README mỗi màn hình bắt buộc có hai đoạn "Bố cục ngang" và "Bố cục dọc" tả bằng lời vị trí các vùng (nền, nhân vật, bảng, HUD, nút chính).
 - **Lý do:** Cung cấp đặc tả giao diện trực quan, rành mạch để đội ngũ phát triển UI hiện thực hóa chính xác cả hai chế độ hiển thị mà không phụ thuộc vào diễn giải cảm tính.
+
+### 20–22. Bỏ: Spec cũ 64×96 và 800×500
+- **Thay thế bởi Quyết định #32**
+
+### 32. Đơn vị An thay lưới 64×96 (05/10/2026)
+- **Quyết định (05/10/2026):** Toàn bộ spec lấy nhân vật An làm đơn vị chuẩn thay cho lưới pixel cũ. An khung 176×416, điểm chân (88,400), dáng cao 380–392 px, tỷ lệ chibi. NPC, áo, phụ kiện cùng spec An. Helper `characterScale(scene, bgH, footY?)` quyết định kích thước mọi nhân vật trên mọi cảnh. Nền và screen giữ ảnh gen gốc, không resize bắt buộc. Icon/9-slice/ui-pixel là pixel art, phóng theo bội số nguyên.
+- **Hệ quả:** Xóa 90 asset nhân vật 64×96 và 5 overlay hỏng; gen lại ~79 ảnh nhân vật/áo/phụ kiện theo spec An; screens dùng bản raw hi-res, backgrounds giữ nguyên; code có fallback (icon/bản cũ) khi asset mới chưa về.
+- **Lý do:** Nhân vật chính và UI lệch tỉ lệ 4,3 lần và lệch mật độ pixel nên không ăn khớp. Spec An neo được cả asset gen sau lẫn code hiển thị, gom các hằng số scale rải rác về một chỗ, tạo nền tảng chuẩn cho toàn hệ thống.
 

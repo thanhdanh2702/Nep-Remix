@@ -8,7 +8,7 @@ Thứ tự ưu tiên (thay dần, không chặn các phase UI khác):
 
 1. 2-3 áo hero ở khung An 176×416 (view `front`, `left`, `back`).
 2. Chân dung NPC 128×128 bản đẹp (thay bản crop từ sprite).
-3. Nền dọc Studio 270×480 (tùy chọn).
+3. (Dropped) Nền dọc Studio 320×480 — screens dùng bản gen gốc hi-res, không cần chuẩn hóa.
 
 ## 1. Quy tắc chung cho mọi prompt
 
@@ -43,9 +43,7 @@ for name in layers:
 bg = Image.new('RGBA', cell.size, '#00FF00'); bg.alpha_composite(cell)
 bg.resize((704, 1664), Image.NEAREST).convert('RGB').save(out / 'an-ref-front.png')
 
-npc = Image.open(root / 'assets/characters/ba-mai/view-front.png').convert('RGBA')  # đổi id NPC tại đây
-bg = Image.new('RGBA', npc.size, '#00FF00'); bg.alpha_composite(npc)
-bg.resize((512, 768), Image.NEAREST).convert('RGB').save(out / 'ba-mai-ref-front.png')
+# (Ghi chú: NPC file view-front đã xóa; dùng tham chiếu ghép lại từ layer An hoặc ảnh QA nếu có)
 ```
 
 Ghi chú: sheet An là 1408×4576 = 8 cột × 11 hàng, ô 176×416, chân neo tại (88, 400). Lớp áo thật là `outfit_main.png`; ở ô front idle, vùng áo chiếm khoảng x 50-139, y 127-377 (cao 250 px). Con số này dùng ở bước hậu xử lý (mục 5).
@@ -65,7 +63,7 @@ Mỗi prompt có bản tiếng Anh (dán vào model) và phần giải thích ti
 
 ### 4.1. Áo hero trên An (kèm `an-ref-front.png`)
 
-Mục tiêu: **chỉ lớp áo**, cùng tỷ lệ, tư thế đứng thẳng, nền xanh, để ghép vào paperdoll.
+Mục tiêu: **chỉ lớp áo**, cùng tỷ lệ, tư thế đứng thẳng, nền xanh, để ghép vào dải spec An (528×416, ô front).
 
 ```
 Attached image: pixel-art chibi girl "An" standing, front view, on a flat green background.
@@ -99,9 +97,9 @@ No text, no logo, no watermark.
 Avoid: photorealistic, 3D render, glow, blur, gradients, modern objects.
 ```
 
-Giải thích: chân dung gốc hiện được crop từ sprite 64×96, nên mờ và thiếu chi tiết. Prompt này vẽ lại cùng nhân vật để dùng ở hộp thoại (design-system §6.2) và thẻ manh mối (thu nhỏ 64×64). Giữ nguyên nhận diện: màu áo, kiểu tóc, tuổi.
+Giải thích: chân dung gốc chỉ có khi NPC được gen lại theo spec An (phần dưới mục 2 ghi chú). Prompt này dùng ảnh tham chiếu từ view-front hoặc ghép từ layer An để vẽ cùng nhân vật chi tiết hơn cho hộp thoại (design-system §6.2) và thẻ manh mối/Sổ tay (thu nhỏ 64×64). Giữ nguyên nhận diện: màu áo, kiểu tóc, tuổi.
 
-### 4.3. Nền dọc Studio 270×480 (tùy chọn, không cần nền xanh)
+### 4.3. Nền dọc Studio 320×480 (Dropped)
 
 ```
 Vertical 9:16 pixel-art background for a cozy traditional Vietnamese tailor's studio (tiem may), three-quarter perspective.
@@ -129,9 +127,7 @@ python scripts/process-ai-asset.py --in artifacts/ai-raw/raw-ao-tu-than-front.pn
 python scripts/process-ai-asset.py --in artifacts/ai-raw/raw-ba-mai-portrait.png \
   --out assets/characters/ba-mai/portrait.png --kind portrait
 
-# Nền dọc (không chroma-key, cover-crop 540x960 = 270x480 x2)
-python scripts/process-ai-asset.py --in artifacts/ai-raw/raw-studio-bg.png \
-  --out assets/areas/studio-vertical.png --kind background
+# (Dropped) Nền dọc — screens dùng bản gen gốc hi-res
 
 # Thử trước, không ghi file
 python scripts/process-ai-asset.py --in raw.png --out x.png --kind icon --dry-run

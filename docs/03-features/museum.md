@@ -8,11 +8,12 @@ Khu vực Bảo tàng (Museum, hiển thị qua kệ sách gỗ gắn biển đ�
 
 Bước 1: Người dùng chạm vào biển gỗ hoặc kệ sách Bảo tàng tại sảnh sân nhà để mở giao diện Bảo tàng.
 
-Bước 2: Người dùng xem danh mục thẻ tư liệu được sắp xếp theo hai cách:
-- Theo dòng thời gian: Thời Lê - Trịnh, Thời Nguyễn (cải cách Võ Vương Nguyễn Phúc Khoát và vua Minh Mạng), Thời Pháp thuộc (thập niên 1930 với áo Le Mur), và Thời kỳ hiện đại.
-- Theo loại trang phục: Áo tứ thân, Áo ngũ thân tay chẽn, Áo ngũ thân tay thụng (Áo tấc), Áo dài tân thời.
+Bước 2: Người dùng xem các nút hoặc tab chuyên biệt:
+- **Thẻ Văn Hóa (Culture Cards):** Danh mục thẻ tư liệu được sắp xếp theo dòng thời gian (Thời Lê - Trịnh, Nguyễn, Pháp thuộc, hiện đại) hoặc loại trang phục (Tứ thân, Ngũ thân, Áo dài tân thời). Mỗi thẻ hiển thị chân dung NPC 128×128 (nếu đã gặp) hoặc bóng đen "???" (nếu chưa gặp), tên, chương lần đầu gặp.
+- **Sổ Tay Nhân Vật (Character Codex):** Liệt kê tất cả nhân vật trong game có hội thoại hoặc tương tác (trừ An). Những nhân vật đã gặp hiển thị chân dung và mô tả ngắn; những nhân vật chưa gặp hiển thị bóng đen kèm "???".
+- **Sổ Tay Kỷ Vật (Item Codex):** Liệt kê 29 vật phẩm trong game. Những vật đã tìm thấy hiển thị icon màu sắc và mô tả; những vật chưa tìm thấy hiển thị icon silhouette tô đen kèm "Chưa tìm thấy".
 
-Bước 3: Người dùng chọn một thẻ tư liệu để mở rộng toàn màn hình. Mỗi thẻ gồm các phần chuẩn hóa:
+Bước 3: Người dùng chọn một thẻ thẻ Văn Hóa để mở rộng toàn màn hình. Mỗi thẻ gồm các phần chuẩn hóa:
 - Tên gọi chính thức và các tên gọi dân gian.
 - Hình vẽ minh họa cấu trúc chi tiết (vạt, tà, cổ, khuy, tay áo).
 - Hoàn cảnh ra đời và ý nghĩa biểu tượng (ví dụ: năm thân áo ngũ thân tượng trưng cho tứ thân phụ mẫu và chính bản thân người mặc; năm hạt cùi tượng trưng cho ngũ thường: Nhân, Lễ, Nghĩa, Trí, Tín).
@@ -26,9 +27,9 @@ Bước 5: Người dùng có thể dùng thanh tìm kiếm nhanh ở đầu gia
 ## 3. Các trạng thái màn hình
 
 ### Bố cục ngang (chính)
-- **Cảnh nền:** Nền `bookshelf-view--landscape.png` trải rộng 800×500 px (tỷ lệ 8:5, hiển thị integer-scaling ×2 = 1600×1000 px) thể hiện không gian thư phòng khảo cứu cổ điển trang nhã, tường vôi trắng, kệ gỗ tối màu và ánh sáng dịu nhẹ.
-- **Nửa bên trái (khoảng 360–380 px):** Kệ sách gỗ cổ kính trưng bày 12 cuốn sổ tay văn hóa, phía trên có thanh dải lọc 5 mốc thời kỳ `museum-filter-bar--3slice.png` (Tất cả, 1888, 1934, 1962, 1982, 2026); các cuốn sổ tay gắn huy hiệu trạng thái đọc (Đã đọc / Mới mở khóa).
-- **Nửa bên phải (khoảng 400–420 px):** Khung thẻ đọc tư liệu `card-modal--9slice.png` mở sẵn hoặc hiển thị chi tiết cuốn sổ tay đang chọn, gồm tiêu đề cổ phục, ảnh minh họa phục dựng (128×128 px), nội dung khảo cứu, con dấu triện son `citation-seal.png` đính kèm trích dẫn chính sử, và nút "Đã hiểu (+15 Sen Ngọc)".
+- **Cảnh nền:** Nền gốc `bookshelf-pink--landscape.png` kích thước 1586×992, hiển thị theo kích thước thật với smoothing (`image-rendering: auto`) để fit/cover viewport, thể hiện không gian thư phòng khảo cứu cổ điển trang nhã, tường vôi trắng, kệ gỗ tối màu và ánh sáng dịu nhẹ.
+- **Nửa bên trái (khoảng 360–380 px):** Kệ sách gỗ cổ kính với 3 nút/tab chuyên biệt: "Thẻ Văn Hóa" (các cuốn sổ tay cổ phục), "Sổ Tay Nhân Vật" (chân dung NPC hoặc bóng đen), "Sổ Tay Kỷ Vật" (icon vật phẩm hoặc silhouette). Phía trên có thanh dải lọc 5 mốc thời kỳ `museum-filter-bar--3slice.png` (khi xem Thẻ Văn Hóa: Tất cả, 1888, 1934, 1962, 1982, 2026); các mục gắn huy hiệu trạng thái (Đã gặp / Chưa gặp; Đã tìm / Chưa tìm).
+- **Nửa bên phải (khoảng 400–420 px):** Khung thẻ đọc tư liệu `card-modal--9slice.png` mở sẵn hoặc hiển thị chi tiết. Đối với Thẻ Văn Hóa: tiêu đề cổ phục, ảnh minh họa phục dựng (128×128 px), nội dung khảo cứu, con dấu triện son `citation-seal.png`, nút "Đã hiểu (+15 Sen Ngọc)". Đối với Sổ Tay Nhân Vật: chân dung NPC (nếu đã gặp) hoặc bóng đen (chưa gặp), tên, chương gặp lần đầu, mô tả ngắn. Đối với Sổ Tay Kỷ Vật: icon vật phẩm (hoặc silhouette), tên, mô tả từ `items.json`, danh sách cách có được.
 
 ### Bố cục dọc (phụ)
 Màn hình mô phỏng các ngăn kệ sách gỗ pixel art ấm áp. Mỗi cuốn sách có gáy màu khác nhau đại diện cho từng thời kỳ, kèm tiêu đề ngắn gọn và chỉ số tiến độ đọc (ví dụ: "Đã đọc 4/8 thẻ").

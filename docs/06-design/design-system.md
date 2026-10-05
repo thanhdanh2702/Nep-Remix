@@ -75,7 +75,8 @@ Trong các màn hình giao diện (HUD, bảng điều khiển, thẻ chức nă
 
 ## 3. Quy Chuẩn UI Pixel (Pixel Grid, Layout & Dimensions)
 
-- **Artboard chuẩn desktop:** **1600 × 1000 pixel**, tỷ lệ **8:5** (được dựng từ lưới logic **800 × 500 px** và phóng to nguyên lần Integer Scaling ×2).
+- **Màn hình nền & screen:** Hiển thị ảnh gốc (hi-res raw generation) theo kích thước thật của tệp. Ảnh được vẽ chi tiết 1:1 và có smoothing (`image-rendering: auto`) khi thu nhỏ hoặc mở rộng để fit/cover viewport. Ví dụ: Studio `vietnamese-room--landscape.png` 1585×992, Bảo tàng `bookshelf-pink--landscape.png` 1586×992, Sảnh `garden-user--landscape.png` 1586×992. Không chuẩn hóa sang lưới cố định.
+- **Khu vực game (các phòng cốt truyện):** Thế giới (world) có kích thước = kích thước thật của nền. Ví dụ mở đầu prologue 890×500, chương 1 các phòng 640×360. Sảnh hub 1000×625. Nền được vẽ chi tiết 1:1, canvas có smoothing (`canvas.ctx.imageSmoothingEnabled = false` để vẽ An/NPC, nhưng ảnh nền tự smoothing khi scale).
 - **Đơn vị giao diện cơ sở (UI Base Unit):** **4 CSS px**; nhịp bước bố cục chính (Major Cadence): **8 px**.
 - **Hệ thống khoảng cách đồng bộ (Spacing System):** `4, 8, 12, 16, 24, 32, 48, 64 px`.
 - **Độ dày đường viền (Borders):**
@@ -94,7 +95,7 @@ Trong các màn hình giao diện (HUD, bảng điều khiển, thẻ chức nă
 - **Hoa văn thương hiệu (Brand Motif):** Hoa sen cách điệu pixel được sử dụng có tiết chế tại các góc viền khung panel (corner ornament) và trên các huy hiệu phần thưởng.
 - **Xử lý chất liệu nền (Textures):** Vân giấy dó mộc mạc, đường viền thớ gỗ mun hay nếp sợi vải chỉ xuất hiện điểm xuyết nhẹ ở vùng khung trang trí viền; vùng đặt văn bản đọc phải hoàn toàn sạch sẽ, không có texture gây nhiễu thị giác.
 - **Phân định rạch ròi giữa Pixel Nguồn và CSS px:**
-  - *Pixel nguồn của Sprite (Native Pixels):* Nhân vật 64×96, Mèo Nếp 48×48, Chân dung 128×128, Icon 48×48 được vẽ trên lưới pixel thật và chỉ phóng to theo số nguyên (2x, 3x, 4x) với cơ chế `image-rendering: pixelated` (Nearest-Neighbor).
+  - *Pixel nguồn của Sprite (An unit):** Nhân vật An 176×416, NPC 176×416, Mèo Nếp 128×128, Chân dung 128×128 được vẽ trên lưới pixel thật, chi tiết 1:1, khử răng cưa mềm. Hiển thị với smoothing (`image-rendering: auto`) khi thu nhỏ bởi scale. Icon UI (48×48 vật phẩm, 24×24 UI, 96×96 thumbnail) và 9-slice/3-slice khung là pixel art chuẩn, phóng theo bội số nguyên với `image-rendering: pixelated` (Nearest-Neighbor).
   - *CSS px của Giao diện UI:* Panel, nút bấm, chữ viết render bằng HTML/CSS thật trên lưới 4px, giữ nguyên độ nét từng nét chữ mà không bị thu phóng co kéo cưỡng bức toàn màn hình.
 
 ---
@@ -128,21 +129,25 @@ Toàn bộ hệ thống giao diện sử dụng tiếng Việt có dấu hoàn c
 
 ---
 
-## 5. Kích Thước Pixel Gốc Và Tỷ Lệ Đồ Họa
+## 5. Đơn Vị An & Kích Thước Pixel Gốc
 
-Bảng thông số dưới đây là nguồn chân lý tuân thủ nghiêm ngặt Quyết định số 20, 21, 22, 27, 28 tại `docs/01-overview/decisions.md`:
+Spec toàn bộ hệ thống lấy nhân vật chính An làm đơn vị chuẩn. Chi tiết bảng `HUMAN_HEIGHT` và định nghĩa khung assets xem tại `assets/README.md`.
 
-| Thành phần đồ họa | Kích thước lưới gốc (Width × Height) | Tỷ lệ khung hình | Mục đích & Quy cách hiển thị |
+**Mật độ pixel:**
+- **Nhân vật (An, NPC, mèo):** Vẽ chi tiết 1:1, khử răng cưa mềm, xuất đủ canvas. Được thu nhỏ có smoothing khi hiển thị trên canvas. Nền trong suốt.
+- **Nền & Screen:** Giữ ảnh gen gốc, vẽ có smoothing khi hiển thị. Không resize bắt buộc; kích thước thật của file đang có là spec.
+- **Icon, 9-slice, 3-slice, ui-pixel:** Pixel art 1:1, phóng theo bội số nguyên với `image-rendering: pixelated` (Nearest-Neighbor).
+
+| Thành phần đồ họa | Kích thước lưới gốc (Width × Height) | Ghi chú | Hiển thị |
 | :--- | :--- | :--- | :--- |
-| **Nền màn hình ngang** | **800 × 500 pixel** | **8:5 (×2 = 1600 × 1000)** | Bố cục chính, pixel art thật, phóng nguyên lần vừa vặn màn hình ngang |
-| **Nền màn hình dọc** | **270 × 480 pixel** | **9:16** | Bố cục phụ: HUD ghim trên, bottom sheet thẻ ở dưới |
-| **Khu vực game** | **800 × 500 pixel** | **8:5 (×2 = 1600 × 1000)** | Khung hình màn chơi cốt truyện và giải đố point-and-click |
-| **Người chơi / NPC** | **64 × 96 pixel** | Đứng thẳng (2:3) | Nhân vật pixel art chuẩn, phóng nguyên lần 2x - 4x |
-| **Mèo Nếp** | **48 × 48 pixel** | Vuông 1:1 | Biểu cảm nằm / ngủ / ngồi / nhắc bài |
-| **Chân dung (Portrait)** | **128 × 128 pixel** | Vuông 1:1 | Avatar hội thoại và hồ sơ nhân vật (thẻ manh mối thu nhỏ 64×64) |
-| **Icon vật phẩm / phụ kiện**| **48 × 48 pixel** | Vuông 1:1 | Icon pixel vật phẩm túi đồ, manh mối, phụ kiện tủ đồ |
-| **Icon UI** | **24 × 24 pixel** | Vuông 1:1 | Biểu tượng điều khiển giao diện do team UI phụ trách |
-| **Khung modal/thẻ & Thanh** | **Khung modal/thẻ: 9-slice; thanh: 3-slice** | Co giãn theo nội dung | 1 file dùng chung cho cả ngang và dọc, không vẽ hai bản |
+| **Nhân vật An** | **176 × 416 pixel** | Điểm chân (88, 400), dáng cao 380–392 px, tỷ lệ chibi, sheet 8×11=88 ô | Theo `characterScale(scene, bgH, footY)` |
+| **NPC / Mèo** | **176×416 / 128×128** | NPC 4 hướng view-front/left/right/back; mèo cao ~100 px | Theo `characterScale` |
+| **Áo & phụ kiện** | **528 × 416 pixel** | Dải 3 ô: front \| side(left) \| back; áo thang xám tô màu gradient-map | Lớp trên An |
+| **Bảo tàng (Portrait)** | **128 × 128 pixel** | Avatar hội thoại và Sổ tay nhân vật (thẻ manh mối 64×64) | Theo scale Scene |
+| **Icon vật phẩm / phụ kiện** | **48 × 48 pixel** | Túi đồ, manh mối, tủ đồ | Pixel art ×2 lên 96px |
+| **Icon UI** | **24 × 24 pixel** | Biểu tượng giao diện | Pixel art ×2–4 |
+| **Khung modal/thẻ & Thanh** | **9-slice / 3-slice** | 1 file cho cả ngang lẫn dọc | Khung viền co giãn |
+| **Nền & Screen** | **Kích thước thật của file** | Prologue 890×500, chương 1 640×360, screens bản raw | Giữ smoothing, không chuẩn hóa |
 
 ---
 

@@ -27,8 +27,8 @@ Bước 6: Thao tác nâng cao:
 ## 3. Các trạng thái màn hình
 
 ### Bố cục ngang (chính)
-- **Cảnh nền:** Nền `workbench-ui--landscape.png` trải rộng 800×500 px (tỷ lệ 8:5, hiển thị integer-scaling ×2 = 1600×1000 px) thể hiện không gian xưởng may Studio ấm cúng với kệ cuộn vải lụa, giá treo thước gỗ và ánh sáng tự nhiên từ cửa sổ bên.
-- **Nửa bên trái (khoảng 380 px):** Sân khấu bục đứng ma-nơ-canh Paperdoll thử đồ đặt chính giữa, hiển thị bóng chân và vòng hào quang lấp lánh khi đổi đồ, phía dưới có các nút xoay góc nhìn hoặc lật mặt vải áo.
+- **Cảnh nền:** Nền gốc `vietnamese-room--landscape.png` kích thước 1585×992, hiển thị theo kích thước thật với smoothing (`image-rendering: auto`) để fit/cover viewport, thể hiện không gian xưởng may Studio ấm cúng với kệ cuộn vải lụa, giá treo thước gỗ và ánh sáng tự nhiên từ cửa sổ bên.
+- **Nửa bên trái (khoảng 380 px):** Sân khấu bục đứng An thử đồ đặt chính giữa (khung 176×416, điểm chân 88,400), hiển thị bóng chân và vòng hào quang lấp lánh khi đổi đồ, phía dưới có các nút xoay góc nhìn hoặc lật mặt vải áo. Áo được vẽ theo lớp garment spec An (dải 528×416: front | side-left | back) tô màu gradient-map từ xám calibrated sang màu palette. Nếu chưa có asset mới thì hiển thị icon hoặc fallback bản 64×96.
 - **Nửa bên phải (khoảng 400 px):** Bảng điều khiển tab được bao bọc bởi khung `studio-panel-frame--9slice.png`:
   - Hàng trên: Dải chọn sự kiện `event-selector-strip--3slice.png` (Tết, Lễ cưới, Bế giảng, Đi lễ chùa, Tang lễ, Dạo phố).
   - Thanh tab chuyển danh mục: "Dáng áo", "Màu sắc", "Phụ kiện", "Họa tiết".

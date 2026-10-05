@@ -13,6 +13,7 @@ Bước 2: Xem đoạn mở đầu ngắn (có nút "Bỏ qua"). Người chơi 
 Bước 3: Khám phá khung cảnh point-and-click:
 - Chạm vào các đồ vật trên màn hình (khung cửi, cuộn chỉ, bức thư ố vàng, chiếc kéo đồng) để thu thập vật phẩm vào thanh túi đồ (Inventory) ở đáy màn hình.
 - Ghép nối hoặc sử dụng vật phẩm vào đúng vị trí để mở khóa các chi tiết tiếp theo.
+- An di chuyển tới vật được bấm, dừng cạnh vật rồi mới gọi lệnh tương tác. Nút hotspot được đặt theo hitbox của vật thể, An vẽ dưới lớp NPC phía trước nhưng trên nền.
 
 Bước 4: Sử dụng cơ chế "Lật vải" (Fabric Flip):
 Tắt ở bản nộp 10/10 — xem decisions.md

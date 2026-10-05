@@ -26,7 +26,7 @@ Thanh kem chứa logo ở trên luôn được giữ khi vào game. Thanh khám 
 
 - Token màu, khoảng cách, viền và bóng theo `docs/06-design/design-system.md` nằm ở `src/ui/tokens.css`. Mặc định cho phần tử (`src/ui/base.css`) nằm trong `@layer base`, nên CSS của từng màn luôn thắng.
 - Chỉ dùng hai font tự host, đã kiểm đủ 134 chữ cái tiếng Việt có dấu: **VT323** cho tiêu đề, HUD, nhãn; **Be Vietnam Pro** cho đoạn văn và hội thoại.
-- Ảnh vẽ độ phân giải cao dùng class `art-hires` (thu nhỏ mượt). Sprite pixel thật (NPC 64×96, áo, icon, khung 9-slice) dùng `pixel-native` và chỉ phóng theo bội số nguyên.
+- Ảnh vẽ độ phân giải cao dùng class `art-hires` (thu nhỏ mượt). Nhân vật An khung 176×416 với điểm chân (88,400), NPC khung 176×416 cùng spec; icon, 9-slice, 3-slice và ui-pixel là pixel art, phóng theo bội số nguyên với `pixelated`. Xem `assets/README.md` cho chi tiết.
 - Hiệu ứng (`src/ui/motion.css`, `src/ui/motion.ts`) chỉ dùng `transform`/`opacity` với `steps()`, gồm: hội thoại gõ chữ kèm chân dung, modal bật lên, toast trượt, rung khi chọn sai, Sen Ngọc đếm số. Tất cả tắt khi hệ điều hành bật giảm chuyển động.
 - Thiết bị cảm ứng (`pointer: coarse`), kể cả điện thoại xoay ngang, luôn có nút di chuyển và nút tương tác ≥ 44px.
 - Asset còn thiếu: tạo miễn phí trên Google AI Studio, rồi hậu xử lý bằng `python scripts/process-ai-asset.py`. Xem `docs/06-design/ai-studio/gemini-ui-asset-prompts.md`. Cấu hình MCP tạo ảnh bằng Gemini (cần key có billing) để sẵn ở `.mcp.json.example`.
