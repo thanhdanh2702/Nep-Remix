@@ -98,7 +98,7 @@ export function JourneyMap({ state, paused, onSelect, onHome }: {
             </button>
             <button className="journey-map-character" data-label-side={stop.labelSide} style={{ left: `${stop.feetX}%`, '--feet-y': `${stop.feetY}%`, '--label-top': `${stop.y}%`, '--label-bottom': `${stop.y + LABEL_HEIGHT}%` } as CSSProperties} disabled={locked} onClick={() => onSelect(stop.id)} aria-label={`Gặp ${stop.character} · ${label}${locked ? ' · Chưa mở khóa' : ''}`}>
               {!npcArt ? <AnPose preset={state.profile?.avatarPreset ?? 'an-default'} />
-                : assetRegistry[npcArt] && <img className="pixel-native" src={asset(npcArt)} alt="" draggable={false} />}
+                : assetRegistry[npcArt] && <img src={asset(npcArt)} alt="" draggable={false} />}
               <span>{stop.character}</span>
             </button>
           </div>;

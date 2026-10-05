@@ -102,7 +102,7 @@
 .dialogue-stage .dialogue-actions { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: var(--sp-3); }
 .dialogue-stage .dialogue-actions .actions { margin: 0; }
 
-/* Phones: An only appears while she speaks; NPC scale is fixed to ×3 in DialogueBox. */
+/* Phones: An only appears while she speaks; NPCs share her cell height (DialogueBox). */
 @media (max-width: 640px) {
   .standing-art { padding-inline: var(--sp-2); }
   .standing-slot.is-an.is-dim { display: none; }

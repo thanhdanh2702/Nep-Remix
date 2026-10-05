@@ -2,27 +2,20 @@ import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'rea
 import './standing-dialogue.css';
 import { Modal } from './Modal';
 import { AN, loadImage } from './assets';
+import { spriteScaleFor } from './character-scale';
 import { typewriter } from '../ui/motion';
 import { anLayerPath, standingSource } from './npc-portraits';
 
-/** Sprite height the layout is tuned for (NPC sheets are 64×96). */
-const REF_H = 96;
 /** Standing art may use about this share of the stage height. */
 const STAND_SHARE = 0.62;
-const PHONE_QUERY = '(max-width: 640px)';
 
-/** Whole-number scale so pixel art never blurs: ×3…×6, or ×3 on phones. */
-const pixelScale = (availableH: number, spriteH: number, phone: boolean) =>
-  phone ? 3 : Math.min(6, Math.max(3, Math.floor(availableH / spriteH)));
-
-/** Stage height and phone flag of the element that fills the stage; re-measured on resize. */
+/** Height of the element that fills the stage; re-measured on resize. */
 function useStageMetrics(ref: RefObject<HTMLElement | null>) {
-  const [metrics, setMetrics] = useState({ height: 0, phone: false });
+  const [height, setHeight] = useState(0);
   useEffect(() => {
     const el = ref.current!;
     const measure = () => {
-      const next = { height: el.clientHeight, phone: matchMedia(PHONE_QUERY).matches };
-      setMetrics(prev => (prev.height === next.height && prev.phone === next.phone ? prev : next));
+      setHeight(el.clientHeight);
     };
     measure();
     if (typeof ResizeObserver === 'undefined') {
@@ -33,30 +26,34 @@ function useStageMetrics(ref: RefObject<HTMLElement | null>) {
     observer.observe(el);
     return () => observer.disconnect();
   }, [ref]);
-  return metrics;
+  return height;
 }
 
-/** NPC: true pixel art, drawn unsmoothed at a whole-number scale from the sprite's real height. */
-function NpcCanvas({ path, availableH, phone }: { path: string; availableH: number; phone: boolean }) {
+/** NPC at An's spec: painted art on the same 176×416 grid, so the frame is drawn at An's cell height
+ *  (`cellH`) and the figures match. Legacy-size sprites are first normalised by `spriteScaleFor`. Smoothed. */
+function NpcCanvas({ path, cellH }: { path: string; cellH: number }) {
   const ref = useRef<HTMLCanvasElement>(null);
   useEffect(() => {
-    if (!availableH) return;
+    if (!cellH) return;
     let cancelled = false;
     loadImage(path).then(img => {
       const canvas = ref.current;
       if (cancelled || !canvas) return;
-      const n = pixelScale(availableH, img.height, phone);
-      canvas.width = img.width * n;
-      canvas.height = img.height * n;
+      const k = cellH / AN.cellHeight * spriteScaleFor(img);
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.style.width = `${Math.round(img.width * k)}px`;
+      canvas.style.height = `${Math.round(img.height * k)}px`;
+      canvas.width = Math.round(img.width * k * dpr);
+      canvas.height = Math.round(img.height * k * dpr);
       const ctx = canvas.getContext('2d')!;
-      ctx.imageSmoothingEnabled = false;
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-      canvas.dataset.scale = String(n);
       canvas.dataset.ready = 'true';
     }).catch(() => { if (!cancelled && ref.current) ref.current.dataset.ready = 'false'; });
     return () => { cancelled = true; };
-  }, [path, availableH, phone]);
-  return <canvas ref={ref} className="standing-npc pixel-native" />;
+  }, [path, cellH]);
+  return <canvas ref={ref} className="standing-npc art-hires" />;
 }
 
 /** An: hi-res layered sheet, cell 0 (front idle), all layers + preset variants, drawn smoothed. */
@@ -86,17 +83,17 @@ function AnCanvas({ preset, height }: { preset: string; height: number }) {
  *  Emblem speakers (narration, letters) have no NPC art, so only a dimmed An remains. */
 function StandingArt({ speaker, preset }: { speaker: string; preset: string }) {
   const ref = useRef<HTMLDivElement>(null);
-  const { height, phone } = useStageMetrics(ref);
+  const height = useStageMetrics(ref);
   const source = standingSource(speaker);
   const npc = source?.kind === 'sprite' ? source : null;
-  const availableH = height * STAND_SHARE;
-  const anHeight = REF_H * pixelScale(availableH, REF_H, phone);
+  // One cell height for everyone: An and An-spec NPCs are the same size (never upscaled past native).
+  const cellH = Math.min(AN.cellHeight, Math.floor(height * STAND_SHARE));
   return <div ref={ref} className="standing-art" aria-hidden="true">
     <div className={`standing-slot is-an${speaker === 'An' ? '' : ' is-dim'}`}>
-      {availableH > 0 && <AnCanvas preset={preset} height={anHeight} />}
+      {cellH > 0 && <AnCanvas preset={preset} height={cellH} />}
     </div>
     {npc && <div className={`standing-slot is-npc${npc.ghost ? ' is-ghost' : ''}`}>
-      <NpcCanvas path={npc.path} availableH={availableH} phone={phone} />
+      <NpcCanvas path={npc.path} cellH={cellH} />
     </div>}
   </div>;
 }

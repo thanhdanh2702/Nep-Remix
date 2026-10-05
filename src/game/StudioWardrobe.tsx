@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type 
 import type { GameState, StudioDraft } from '../core';
 import type { Garment } from '../content/schema';
 import { integerScale } from '../ui/pixel-scale';
-import { asset, accessoryAsset, assetInfo, assetRegistry, garmentAsset, loadImage } from './assets';
+import { AN, asset, accessoryAsset, assetInfo, assetRegistry, garmentAsset, loadImage } from './assets';
 import { content } from './store';
 import { recolorLayer } from './StudioCharacter';
 
@@ -23,6 +23,21 @@ function useFitScale(nativeHeight: number, max = 2) {
     return () => observer.disconnect();
   }, [nativeHeight, max]);
   return [slot, scale] as const;
+}
+
+// Painted garment thumbnails are shrunk (never upscaled) to the slot's height, so the slot height is measured, not rounded.
+function useSlotHeight() {
+  const slot = useRef<HTMLDivElement>(null);
+  const [height, setHeight] = useState(0);
+  useLayoutEffect(() => {
+    const element = slot.current!;
+    const measure = () => setHeight(element.clientHeight);
+    measure();
+    const observer = new ResizeObserver(measure);
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
+  return [slot, height] as const;
 }
 
 function LockBadge({ hint }: { hint: string }) {
@@ -48,35 +63,41 @@ function GarmentIconPreview({ garment, locked = false, hint = '' }: PreviewProps
   </div>;
 }
 
+// Front cell (176×416) of the garment strip, cropped to the garment's bounds and drawn smoothed, shrunk to the slot.
 function GarmentLayerPreview({ garment, colors, locked = false, hint = '' }: PreviewProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const path = garmentAsset(garment.id);
-  const [bx, by, bx2, by2] = assetInfo[path].bounds ?? [0, 0, 64, 96];
-  const width = bx2 - bx, height = by2 - by;
-  const [slot, scale] = useFitScale(height);
+  const [x0, y0, x1, y1] = assetInfo[path].bounds ?? [0, 0, AN.cellWidth, AN.cellHeight];
+  const bx = Math.max(0, x0), by = y0, width = Math.max(1, Math.min(AN.cellWidth, x1) - bx), height = y1 - y0;
+  const [slot, slotH] = useSlotHeight();
+  const k = Math.min(1, slotH / height); // CSS px per art px
+  const dpr = Math.min(2, window.devicePixelRatio || 1);
+  const shownW = Math.round(width * k), shownH = Math.round(height * k);
   useEffect(() => {
+    if (!shownH) return;
     let cancelled = false;
     const canvas = ref.current!;
     canvas.dataset.ready = 'false';
     loadImage(path).then(image => {
       if (cancelled) return;
-      const preview = canvas.getContext('2d')!; preview.imageSmoothingEnabled = false;
-      preview.clearRect(0, 0, width, height);
-      preview.drawImage(recolorLayer(image, path, colors), bx, by, width, height, 0, 0, width, height);
+      const preview = canvas.getContext('2d')!;
+      preview.imageSmoothingEnabled = true; preview.imageSmoothingQuality = 'high';
+      preview.clearRect(0, 0, canvas.width, canvas.height);
+      preview.drawImage(recolorLayer(image, path, colors), bx, by, width, height, 0, 0, canvas.width, canvas.height);
       if (locked) {
         // Locked garments read as a dark silhouette of the real shape (spec §6.4).
         preview.globalCompositeOperation = 'source-in';
         preview.fillStyle = getComputedStyle(canvas).color;
-        preview.fillRect(0, 0, width, height);
+        preview.fillRect(0, 0, canvas.width, canvas.height);
         preview.globalCompositeOperation = 'source-over';
       }
       canvas.dataset.ready = 'true';
     }).catch(() => { if (!cancelled) canvas.dataset.ready = 'error'; });
     return () => { cancelled = true; };
-  }, [path, colors, locked, bx, by, width, height]);
+  }, [path, colors, locked, bx, by, width, height, shownH, dpr]);
   return <div ref={slot} className="wardrobe-thumb">
-    <canvas ref={ref} className="wardrobe-garment pixel-native" width={width} height={height}
-      style={{ width: width * scale, height: height * scale }} aria-hidden="true" />
+    <canvas ref={ref} className="wardrobe-garment art-hires" width={Math.max(1, Math.round(shownW * dpr))} height={Math.max(1, Math.round(shownH * dpr))}
+      style={{ width: shownW, height: shownH }} aria-hidden="true" />
     {locked && <LockBadge hint={hint} />}
   </div>;
 }

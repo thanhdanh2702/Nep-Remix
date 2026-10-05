@@ -1,5 +1,6 @@
 import { useLayoutEffect, useRef, type ReactNode } from 'react';
 import { AN } from './assets';
+import { characterScale } from './character-scale';
 
 const clamp = (value: number, min: number, max: number) => Math.min(Math.max(value, min), Math.max(min, max));
 
@@ -42,9 +43,14 @@ export function MannequinStage({children,room}:{children:ReactNode;room:'studio'
       // Everything in the stage that is not the canvas (eyebrow, caption, buttons) is fixed-size.
       const other=stage.offsetHeight-canvas.offsetHeight;
       const canvasOffset=canvas.getBoundingClientRect().top-stage.getBoundingClientRect().top;
-      const height=Math.floor(clamp(bottomLimit-other-minTop,48,AN.cellHeight));
+      // Size from the floor depth her feet end up on (characterScale, same rule as the story rooms): place, re-size, re-place.
+      // Never above 1.2x the native cell (painted art blurs beyond that) nor taller than the free area.
+      const roomH=image.naturalHeight,artY=(y:number)=>(y-(h-roomH*scale)/2)/scale;
+      const sizeAt=(feet:number)=>Math.floor(clamp(characterScale(room,roomH,artY(feet))*AN.cellHeight*scale,48,Math.min(AN.cellHeight*1.2,bottomLimit-other-minTop)));
+      const place=(height:number)=>clamp(anchorY,minTop+footRatio*height,bottomLimit-other-(1-footRatio)*height);
+      let height=sizeAt(anchorY),feet=place(height);
+      height=sizeAt(feet);feet=place(height);
       stage.style.setProperty('--studio-character-height',`${height}px`);
-      const feet=clamp(anchorY,minTop+footRatio*height,bottomLimit-other-(1-footRatio)*height);
       const half=stage.offsetWidth/2;
       const x=clamp(anchorX,half+8,rightLimit-half-8);
       stage.style.left=`${Math.round(x-half)}px`;

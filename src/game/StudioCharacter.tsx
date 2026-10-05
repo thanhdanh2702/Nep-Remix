@@ -9,23 +9,13 @@ export const studioViews: { direction: Direction; label: string; filename: strin
   { direction: 'right', label: 'Nghiêng phải', filename: 'nghieng-phai' },
 ];
 
-// 64×96 modular garments are true pixel art. They are drawn as ONE band onto An's
-// painted body with whole-number factors so every cloth pixel is an even block.
-const GARMENT_BAND = { sy: 24, sh: 68 };
-const FRONT_X = 3, SIDE_X = 2, FACTOR_Y = 4;
-const GARMENT_TOP = 126; // where source row GARMENT_BAND.sy lands on An's cell
-// Horizontal centres measured from An's sprite layers (outfit/skirt, head, shoes) per view;
-// headwear and neck pieces follow the head, shoes follow the feet, everything else the garment.
-const ANCHOR_X: Record<Direction, { garment: number; head: number; feet: number }> = {
-  down: { garment: 94, head: 94, feet: 95 }, up: { garment: 94, head: 93, feet: 91 },
-  left: { garment: 81, head: 83, feet: 72 }, right: { garment: 95, head: 92, feet: 104 },
-};
-// Accessory art shares the garment's origin by default; hats and shoes sit where An's head and feet are.
-const ACCESSORY_TOP: Record<string, number> = { headwear: 13, footwear: 20 };
-const KEYS = [224, 158, 97, 33];
+// Garments and accessories follow An's spec: a 528×416 strip of three 176×416 cells (front, side facing
+// left, back) on An's own frame, so each cell is drawn 1:1 over her cell. `right` mirrors the side cell.
+const STRIP_W = AN.cellWidth * 3;
+const stripCell = (direction: Direction) => direction === 'down' ? 0 : direction === 'up' ? 2 : 1;
 const CACHE_LIMIT = 40;
 // Recolored layers are cached (LRU, ~40 each) so changing outfit/colour repaints without
-// re-scanning pixels. Small garment layers and large 176×416 outfit layers keep separate caches
+// re-scanning pixels. Garment strips and An's own 176×416 outfit layers keep separate caches
 // so the many wardrobe previews cannot evict the layers the model is using.
 const garmentCache = new Map<string, HTMLCanvasElement>();
 const outfitCache = new Map<string, HTMLCanvasElement>();
@@ -46,19 +36,24 @@ function parsePalette(palette: readonly string[]) {
   });
 }
 
-/** Recolor a 64×96 garment layer (grey ramp 224/158/97/33 -> the four palette colors). Cached by path + palette. */
+/** Gradient-map a grayscale garment strip: luminance runs through the palette dark -> light (the palette
+ *  is stored light -> dark), alpha untouched. Returns the whole 528×416 strip. Cached by path + palette. */
 export function recolorLayer(image: HTMLImageElement, path: string, palette: readonly string[]) {
   return remember(garmentCache, `${path}|${palette.join('')}`, () => {
-    const layer = document.createElement('canvas'); layer.width = 64; layer.height = 96;
+    const layer = document.createElement('canvas'); layer.width = STRIP_W; layer.height = AN.cellHeight;
     const ctx = layer.getContext('2d', { willReadFrequently: true })!; ctx.drawImage(image, 0, 0);
-    const pixels = ctx.getImageData(0, 0, 64, 96);
-    const colors = parsePalette(palette);
-    for (let p = 0; p < pixels.data.length; p += 4) {
-      if (!pixels.data[p + 3]) continue;
-      const color = KEYS.indexOf(pixels.data[p]);
-      if (color >= 0 && pixels.data[p] === pixels.data[p + 1] && pixels.data[p] === pixels.data[p + 2]) {
-        colors[color].forEach((value, channel) => { pixels.data[p + channel] = value; });
-      }
+    const pixels = ctx.getImageData(0, 0, layer.width, layer.height);
+    const stops = parsePalette(palette).reverse();
+    // 256-entry ramp: linear blend between the four stops keeps soft shading smooth.
+    const ramp = Array.from({ length: 256 }, (_, v) => {
+      const at = v / 255 * (stops.length - 1), i = Math.min(stops.length - 2, Math.floor(at)), f = at - i;
+      return stops[i].map((c, ch) => Math.round(c + (stops[i + 1][ch] - c) * f));
+    });
+    const data = pixels.data;
+    for (let p = 0; p < data.length; p += 4) {
+      if (!data[p + 3]) continue;
+      const color = ramp[Math.round(0.2126 * data[p] + 0.7152 * data[p + 1] + 0.0722 * data[p + 2])];
+      data[p] = color[0]; data[p + 1] = color[1]; data[p + 2] = color[2];
     }
     ctx.putImageData(pixels, 0, 0);
     return layer;
@@ -120,8 +115,11 @@ export function StudioCharacter({ draft, direction, preset, id = 'paperdoll', la
       if (images.slice(0, nativePaths.length).some(img => img.width !== AN.columns * AN.cellWidth || img.height !== AN.rows * AN.cellHeight)) {
         throw new Error('Không thể ghép các hướng nhìn của An.');
       }
+      for (const strip of images.slice(nativePaths.length)) {
+        if (strip.width !== STRIP_W || strip.height !== AN.cellHeight) throw new Error('Lớp trang phục không đúng dải 528 × 416.');
+      }
       const ctx = canvas.getContext('2d')!;
-      ctx.imageSmoothingEnabled = false;
+      ctx.imageSmoothingEnabled = false; // every layer is blitted 1:1 on An's grid
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       const index = AN.directions[direction];
       const drawNative = (name: string) => {
@@ -130,23 +128,20 @@ export function StudioCharacter({ draft, direction, preset, id = 'paperdoll', la
         ctx.drawImage(images[at], index % AN.columns * AN.cellWidth, Math.floor(index / AN.columns) * AN.cellHeight,
           AN.cellWidth, AN.cellHeight, 0, 0, AN.cellWidth, AN.cellHeight);
       };
+      // A strip cell sits exactly on An's cell; `right` is the side cell flipped about the cell centre.
+      const drawStrip = (strip: CanvasImageSource) => {
+        ctx.save();
+        if (direction === 'right') { ctx.translate(AN.cellWidth, 0); ctx.scale(-1, 1); }
+        ctx.drawImage(strip, stripCell(direction) * AN.cellWidth, 0, AN.cellWidth, AN.cellHeight, 0, 0, AN.cellWidth, AN.cellHeight);
+        ctx.restore();
+      };
+      // A modular garment replaces An's own outfit layers.
       nativeLayers.slice(0, 8).forEach(name => {
         if (direction === 'up' && name === 'hair_back') return;
-        if (name === 'body' && modular) {
-          // The native bare arms use a different pose from the modular sleeves.
-          // Keep the neck; the chosen garment supplies the torso and sleeves.
-          ctx.save(); ctx.beginPath(); ctx.rect(0, 0, AN.cellWidth, 151); ctx.clip();
-          drawNative(name); ctx.restore();
-        } else drawNative(name);
+        if (modular && name.startsWith('outfit_')) return;
+        drawNative(name);
       });
-
-      // One continuous band, whole-number factors, centred on An's body centre.
-      // Side views use a narrower factor; smoothing stays off for the pixel layer.
-      const side = direction === 'left' || direction === 'right';
-      const factor = side ? SIDE_X : FRONT_X;
-      const left = (x: number) => x - 64 * factor / 2;
-      if (modular) ctx.drawImage(recolorLayer(images[nativePaths.length], garmentPath, draft.colorPalette),
-        0, GARMENT_BAND.sy, 64, GARMENT_BAND.sh, left(ANCHOR_X[direction].garment), GARMENT_TOP, 64 * factor, GARMENT_BAND.sh * FACTOR_Y);
+      if (modular) drawStrip(recolorLayer(images[nativePaths.length], garmentPath, draft.colorPalette));
       const firstAccessory = nativePaths.length + (modular ? 1 : 0);
       nativeLayers.slice(8).forEach(name => {
         drawNative(name);
@@ -156,10 +151,7 @@ export function StudioCharacter({ draft, direction, preset, id = 'paperdoll', la
       accessories.forEach(([slot], i) => {
         // Handheld objects and front necklaces are hidden behind the wearer.
         if (direction === 'up' && (slot === 'handheld' || slot === 'jewelry')) return;
-        // Same whole-number factors as the garment; only the anchor differs per slot.
-        const anchor = ANCHOR_X[direction][slot === 'headwear' || slot === 'jewelry' ? 'head' : slot === 'footwear' ? 'feet' : 'garment'];
-        ctx.drawImage(images[firstAccessory + i], 0, 0, 64, 96,
-          left(anchor), ACCESSORY_TOP[slot] ?? GARMENT_TOP - GARMENT_BAND.sy * FACTOR_Y, 64 * factor, 96 * FACTOR_Y);
+        drawStrip(images[firstAccessory + i]);
       });
       canvas.dataset.ready = 'true';
       setError('');

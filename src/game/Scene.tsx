@@ -3,6 +3,7 @@ import type { GameState } from '../core';
 import { AN, brandingAssets, loadImage, type Direction } from './assets';
 import { move, worlds, type Point } from './physics';
 import { AreaSign } from './AreaSign';
+import { characterScale } from './character-scale';
 import { setupCanvas, setSmoothing } from '../ui/pixel-scale';
 import { prefersReducedMotion } from '../ui/motion';
 import { HUD_SELECTOR, computeCamera, measureInsets, signBox, type View } from './scene-view';
@@ -125,7 +126,7 @@ export function Scene({ state, portrait, blocked, onNavigate }: {
       const signButtons = signs.current ? Array.from(signs.current.querySelectorAll<HTMLButtonElement>('button')) : [];
       const written = { position: '', frame: '', motion: '', target: '', camera: '', signs: '' };
       let previous = 0, elapsed = 0, idle = 0, direction: Direction = 'down';
-      const spriteScale = .30;
+      const anScale = characterScale('hub', world.bounds.h); // world px per art px: An is 15% of the 625 high hub
       setStatus('');
       surface.dataset.ready = 'true';
       function render(time: number) {
@@ -145,7 +146,7 @@ export function Scene({ state, portrait, blocked, onNavigate }: {
         const step = walking ? AN.walk[Math.floor(elapsed * 9) % AN.walk.length]
           : AN.idle[reducedMotion.current ? 0 : Math.floor(idle * 4) % AN.idle.length];
         const index = AN.directions[direction] + step;
-        const cam = computeCamera(true, current.portrait, v, after, AN.anchor.y * spriteScale + 4);
+        const cam = computeCamera(true, current.portrait, v, after, AN.anchor.y * anScale + 4);
         const k = cam.scale * v.dpr;
         ctx!.setTransform(1,0,0,1,0,0);
         ctx!.clearRect(0,0,surface!.width,surface!.height);
@@ -158,7 +159,7 @@ export function Scene({ state, portrait, blocked, onNavigate }: {
         ctx!.setTransform(1,0,0,1,0,0);
         // An's 176×416 cells are painted art: smoothed, placed on a whole device pixel.
         setSmoothing(ctx!, true);
-        const size = spriteScale * k;
+        const size = anScale * k;
         const dx = Math.round((cam.x + after.x * cam.scale) * v.dpr) - Math.round(AN.anchor.x * size);
         const dy = Math.round((cam.y + after.y * cam.scale) * v.dpr) - Math.round(AN.anchor.y * size);
         const dw = Math.round(AN.cellWidth * size), dh = Math.round(AN.cellHeight * size);

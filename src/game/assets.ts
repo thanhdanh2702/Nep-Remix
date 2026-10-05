@@ -52,7 +52,7 @@ export function accessoryAsset(id: string, icon = false) {
 }
 export const AN = {
   columns: 8, rows: 11, cellWidth: 176, cellHeight: 416,
-  anchor: { x: 88, y: 400 }, scale: 0.25,
+  anchor: { x: 88, y: 400 },
   directions: { down: 0, left: 22, right: 44, up: 66 },
   idle: [0, 1, 2, 3], walk: [4, 5, 6, 7, 8, 9, 10, 11],
   layers: ['shadow', 'hair_back', 'outfit_back', 'legs', 'shoes', 'body', 'bottom', 'outfit_main', 'head', 'face', 'hair_front', 'hands', 'head_accessory'],
