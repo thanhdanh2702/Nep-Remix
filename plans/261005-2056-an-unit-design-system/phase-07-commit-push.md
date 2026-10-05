@@ -4,7 +4,7 @@
 - Plan: ../plan.md · CLAUDE.md § Git (conventional commits, clean messages)
 
 ## Overview
-- Priority: high · Status: pending · Effort: 0.5h
+- Priority: high · Status: completed · Effort: 0.5h
 
 ## Requirements
 - Commit theo từng nhóm logic, lên nhánh `main` của Nep-Remix (`origin` = `thanhdanh2702/Nep-Remix`). User đã yêu cầu commit và push trực tiếp.

@@ -1,6 +1,6 @@
 ---
 title: an-unit-design-system
-status: pending
+status: completed
 mode: hard
 scope: hold
 priority: critical
