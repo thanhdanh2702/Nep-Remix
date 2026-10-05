@@ -2,18 +2,29 @@
 
 Gian buồng hẹp vách đất trát rơm nứt nẻ nơi cụ Cầm bị giam lỏng để ép thủ tiết vào mùa đông năm 1888. Cửa chính phía trước bị xích sắt khóa chặt, cụ Cầm phải tìm cách mở then cửa chớp phía sau để thoát ra nhà thờ họ.
 
-## 1. Danh sách món cần vẽ trong cảnh này
+## 1. Art hiện có (vẽ bằng code)
 
-| Thư mục món | Tên tiếng Việt | Vai trò trong game | Kích thước | Trạng thái |
-| :--- | :--- | :--- | :--- | :---: |
-| `bg-mat-phai/` | Nền buồng dệt thế giới thực | Nền cảnh chính | 320 × 240 px | Chưa có |
-| `bg-mat-trai/` | Nền buồng dệt cõi Lật Vải | Nền Lật Vải tâm thức | 320 × 240 px | Chưa có |
-| `con-thoi-go-mun/` | Con thoi gỗ mun mũi bọc sừng nhọn | Vật phẩm túi đồ | 24 × 24 px | Chưa có |
-| `that-lung-lua-cham/`| Dải thắt lưng lụa chàm bện tơ dai | Vật phẩm túi đồ | 24 × 24 px | Chưa có |
-| `hitbox-back-window/`| Khung cửa chớp gỗ phía sau buồng | Điểm chạm giải đố thoát thân | 70 × 76 px | Chưa có |
-| `hitbox-cold-porridge/`| Bát cháo hoa nguội ngắt trên chõng | Điểm chạm suy tư | 32 × 28 px | Chưa có |
-| `hitbox-front-door/` | Cửa chính đằng trước bị xích khóa | Điểm chạm rào cản | 32 × 144 px | Chưa có |
+| Tệp | Nội dung | Kích thước | Trạng thái |
+| :--- | :--- | :--- | :---: |
+| `c1-s1-buong-det-khoa-kin--phai.png` | Nền buồng dệt thế giới thực (mặt `phai`) | 640 × 360 px (16:9) | Đã vẽ |
+| `layout.json` | bbox 0..1 của 5 vật tương tác + vị trí mũi tên lối ra `window` | — | Đã sinh |
 
-## 2. Nhân vật xuất hiện
+Cả hai do `scripts/pixel/draw-c1-rooms.py` tạo ra: không sửa PNG hay `layout.json` bằng tay, sửa script rồi chạy lại (xem `../README.md`). Rect trong `src/content/chapters/c1.json` được sao nguyên từ `layout.json`; `scripts/check-game.ts` kiểm hai bên khớp nhau.
+
+Không có mặt `trai` (cõi Lật Vải): Lật Vải tắt cho bản nộp 10/10, mọi vật trong cảnh nằm ở mặt `phai`.
+
+## 2. Vật tương tác (id trong `layout.json`)
+
+| id | Vai trò trong game |
+| :--- | :--- |
+| `hitbox-loom-shuttle` | Nhặt con thoi gỗ mun |
+| `hitbox-belt-rack` | Nhặt thắt lưng lụa chàm (ghép với con thoi thành dụng cụ móc then) |
+| `hitbox-cold-porridge` | Lời thoại bát cháo nguội |
+| `hitbox-front-door` | Lời thoại cửa chính bị xích khóa |
+| `hitbox-back-window` | Câu đố mở then cửa chớp sau (`p-c1-escape`) |
+
+Lối ra `window` (mũi tên lên) dẫn sang `c1-s2-ban-tho-nha-tho-ho`, mở sau khi giải `p-c1-escape`.
+
+## 3. Nhân vật xuất hiện
 - Cụ Cầm: Xem chi tiết sprite tại `docs/08-assets/characters/cu-cam/`
 - Bóng Trưởng tộc (in mờ qua khe vách cửa): Xem tại `docs/08-assets/characters/truong-toc-bui/`

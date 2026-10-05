@@ -1,0 +1,35 @@
+{
+  "id": "bai-vi",
+  "kind": "item",
+  "w": 10,
+  "h": 16,
+  "palette": "ui+garment",
+  "mirror": "x",
+  "outline": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "Y": "CFA449",
+    "R": "B83A24",
+    "E": "E9B66B",
+    "B": "6B4423"
+  },
+  "rows": [
+    "...KK",
+    ".KKYY",
+    "KYYRR",
+    "KYRRR",
+    "KYRER",
+    "KYRRR",
+    "KYRER",
+    "KYRRR",
+    "KYRER",
+    "KYRRR",
+    "KYRER",
+    "KYRRR",
+    "KYYYY",
+    "KBBBB",
+    "KBBBB",
+    ".KKKK"
+  ]
+}

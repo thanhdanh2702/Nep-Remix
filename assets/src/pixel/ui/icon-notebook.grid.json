@@ -1,0 +1,34 @@
+{
+  "id": "icon-notebook",
+  "kind": "icon",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "g": "E9B66B",
+    "c": "FFF1DF",
+    "r": "A72D60",
+    "d": "711B40"
+  },
+  "rows": [
+    "................",
+    "..KKKKKKKKKKKK..",
+    "..KddrrrrrrrrK..",
+    "..KddrrrrrrrrK..",
+    "..KddrrrggrrrK..",
+    "..KddrrggggrrK..",
+    "..KddrrrggrrrK..",
+    "..KddrrrrrrrrK..",
+    "..KddrrrrrrrrK..",
+    "..KddrrrrrrrrK..",
+    "..KddrrrrrrrrK..",
+    "..KKccccccccKK..",
+    "..KcccccccccKg..",
+    "..KKKKKKKKKKKg..",
+    "...........gg...",
+    "................"
+  ]
+}

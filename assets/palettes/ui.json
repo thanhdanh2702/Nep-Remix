@@ -1,0 +1,5 @@
+{
+  "name": "nep-ui",
+  "author": "Nep-Remix (UI_PALETTE in scripts/process-ai-asset.py + wood tokens from src/ui/tokens.css)",
+  "colors": ["D986A7", "F4CAD7", "FFF1DF", "FFF8EE", "2B2035", "74506E", "E9B66B", "A72D60", "8D234F", "711B40", "855064", "402036", "291021"]
+}

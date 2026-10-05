@@ -2,8 +2,8 @@ import type { Request, Response } from 'express';
 import { z } from 'zod';
 import { Type } from '@google/genai';
 import { ai } from './gemini-client.ts';
-import { aiCache } from './cache.ts';
 import { AI_MODELS } from '../../config/ai-models.ts';
+import { toFallbackReason, type FallbackReason } from './sanitize.ts';
 
 // ----------------------------------------------------
 // 1. Zod Enums & Validation Schemas
@@ -31,7 +31,8 @@ export interface AnalyzeSelfieFallback {
   hairColor: HairColor;
   glasses: Glasses;
   avatarPreset: string;
-  reason: string;
+  reason: FallbackReason;
+  message: string;
 }
 
 const DEFAULT_FALLBACK: AnalyzeSelfieFallback = {
@@ -39,7 +40,8 @@ const DEFAULT_FALLBACK: AnalyzeSelfieFallback = {
   hairColor: 'den',
   glasses: 'khong_kinh',
   avatarPreset: 'an-default',
-  reason: 'Tín hiệu AI gián đoạn hoặc ảnh chưa rõ, tiệm đã chọn sẵn nhân vật mẫu mặc định.'
+  reason: 'ai_unavailable',
+  message: 'Tín hiệu AI gián đoạn hoặc ảnh chưa rõ, tiệm đã chọn sẵn nhân vật mẫu mặc định.'
 };
 
 // ----------------------------------------------------
@@ -64,7 +66,7 @@ export async function handleAnalyzeSelfie(req: Request, res: Response) {
         ok: false,
         fallback: {
           ...DEFAULT_FALLBACK,
-          reason: 'Thiếu dữ liệu hình ảnh selfie.'
+          message: 'Thiếu dữ liệu hình ảnh selfie.'
         }
       });
     }
@@ -72,17 +74,7 @@ export async function handleAnalyzeSelfie(req: Request, res: Response) {
     // Strip data URL prefix if present
     const cleanBase64 = imageBase64.replace(/^data:image\/[a-z]+;base64,/, '');
 
-    // Check in-memory cache by hash of the image content
-    const cacheKey = `selfie_${aiCache.hashKey(cleanBase64)}`;
-    const cached = aiCache.get<SelfieResult>(cacheKey);
-    if (cached) {
-      return res.json({
-        ok: true,
-        data: cached,
-        cached: true
-      });
-    }
-
+    // No cache: results derive from a user photo and must not be retained server-side
     // Call Gemini with strict structured output schema
     const response = await ai.models.generateContent({
       model: AI_MODELS.VISION_MODEL,
@@ -143,20 +135,17 @@ export async function handleAnalyzeSelfie(req: Request, res: Response) {
     // Derive avatarPreset ID
     validated.avatarPreset = deriveAvatarPreset(validated.hairLength, validated.glasses);
 
-    // Save to cache (no image is stored)
-    aiCache.set(cacheKey, validated);
-
     return res.json({
       ok: true,
       data: validated
     });
   } catch (err) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error('[AI] analyze-selfie failed:', err);
     return res.json({
       ok: false,
       fallback: {
         ...DEFAULT_FALLBACK,
-        reason: `Lỗi xử lý hình ảnh: ${errorMsg}`
+        reason: toFallbackReason(err)
       }
     });
   }

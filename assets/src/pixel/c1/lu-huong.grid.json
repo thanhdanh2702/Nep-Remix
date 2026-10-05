@@ -1,0 +1,35 @@
+{
+  "id": "lu-huong",
+  "kind": "item",
+  "w": 20,
+  "h": 16,
+  "palette": "ui+garment",
+  "mirror": "x",
+  "outline": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "E": "E9B66B",
+    "Y": "CFA449",
+    "B": "6B4423",
+    "m": "74506E"
+  },
+  "rows": [
+    ".........K",
+    ".........K",
+    "....KKKKKK",
+    "..KKmmmmmm",
+    ".KEEEEEEEE",
+    "KEYYYYYYYY",
+    ".KYYEEYYYY",
+    ".KYYYYYYYY",
+    ".KBYYYYYYY",
+    "..KBYYYYYY",
+    "..KBBYYYYY",
+    "...KBBBBBB",
+    "....KKKKKK",
+    "...KBK....",
+    "...KBK....",
+    "..KKBKK..."
+  ]
+}

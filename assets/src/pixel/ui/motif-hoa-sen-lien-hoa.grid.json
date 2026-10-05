@@ -1,0 +1,34 @@
+{
+  "id": "motif-hoa-sen-lien-hoa",
+  "kind": "motif",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "p": "D986A7",
+    "L": "F4CAD7",
+    "c": "FFF1DF",
+    "m": "74506E"
+  },
+  "rows": [
+    "................",
+    "................",
+    "................",
+    ".......KK.......",
+    ".......KK.......",
+    "...KK.KccK.KK...",
+    "...KLKKccKKLK...",
+    "...KLLKccKLLK...",
+    "KKKKLLKccKLLKKKK",
+    ".KppKLKccKLKppK.",
+    "..KppKKccKKppK..",
+    "...KKKKKKKKKK...",
+    ".....KKKKKK.....",
+    "................",
+    "mm..mm..mm..mm..",
+    "..mm..mm..mm..mm"
+  ]
+}

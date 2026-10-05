@@ -1,0 +1,28 @@
+/* Code-drawn 16x16 HUD icons (assets/src/pixel/ui/*.grid.json), always shown at x2 so every
+   source pixel stays a whole 2x2 block. Add the .hud-ic class plus one .hud-ic-* modifier;
+   the button text stays, the icon is decoration only. */
+.hud-ic::before {
+  content: "";
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  margin-right: var(--sp-2);
+  vertical-align: middle;
+  background: center / 32px 32px no-repeat;
+  image-rendering: pixelated;
+}
+.hud-ic-bag::before { background-image: url("../../assets/ui-pixel/icon-bag.png"); }
+.hud-ic-notebook::before { background-image: url("../../assets/ui-pixel/icon-notebook.png"); }
+.hud-ic-map::before { background-image: url("../../assets/ui-pixel/icon-map.png"); }
+.hud-ic-soi::before { background-image: url("../../assets/ui-pixel/icon-soi.png"); }
+.hud-ic-settings::before { background-image: url("../../assets/ui-pixel/icon-settings.png"); }
+
+/* Modal heading for the bag + clue notebook: icon sits before the title. */
+.journal-modal .modal-heading h2::before { content: ""; display: inline-block; width: 32px; height: 32px; margin-right: var(--sp-2); vertical-align: middle; background: url("../../assets/ui-pixel/icon-notebook.png") center / 32px 32px no-repeat; image-rendering: pixelated; }
+
+/* Decorative strip: three code-drawn 16x16 motif tiles, each repeating across a third of the width. */
+.motif-strip { display: flex; height: 32px; margin: 0 0 var(--sp-3); overflow: hidden; background: var(--c-light-cream); border-block: var(--bw-thin) solid var(--c-sub-border); }
+.motif-strip > span { flex: 1 1 0; background-position: center; background-size: 32px 32px; background-repeat: repeat-x; image-rendering: pixelated; }
+.motif-cuc { background-image: url("../../assets/ui-pixel/motif-hoa-cuc-day.png"); }
+.motif-sen { background-image: url("../../assets/ui-pixel/motif-hoa-sen-lien-hoa.png"); }
+.motif-phuong { background-image: url("../../assets/ui-pixel/motif-chim-phuong-von-may.png"); }

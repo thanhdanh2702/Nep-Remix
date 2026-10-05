@@ -5,6 +5,7 @@
     "year": 2026,
     "historicalPeriod": "hien_dai",
     "summary": "An tiếp quản tiệm may của bà ngoại tại số nhà cổ phố Hàng Đào, khám phá chiếc rương gia bảo trên gác xép.",
+    "completionDialogueId": "d-c0-ba-dan-do",
     "reward": {
       "id": "reward-prologue",
       "chapterId": "prologue",
@@ -18,20 +19,20 @@
       "id": "c0-s1-tiem-may-chieu",
       "chapterId": "prologue",
       "title": "Sảnh chính Tiệm May Nếp trong nắng chiều",
-      "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
+      "aspect": "16:9",
+      "logicalSize": { "w": 890, "h": 500 },
       "notes": "Spawn và vùng tương tác đã đối chiếu nền 800×500; bản đồ va chạm chân nằm trong src/game/physics.ts.",
       "spawn": { "x": 0.175, "y": 0.76 },
       "sides": { "phai": true, "trai": false },
       "exits": { "stairs": "c0-s2-gac-xep-chiec-ruong" },
-      "exitArrows": [{ "exit": "stairs", "dir": "up", "via": "hitbox-stairs", "rect": { "x": 0.79, "y": 0.0, "w": 0.21, "h": 0.52 } }],
+      "exitArrows": [{ "exit": "stairs", "dir": "up", "via": "hitbox-stairs", "rect": { "x": 0.7607, "y": 0.0, "w": 0.1888, "h": 0.52 } }],
       "interactables": [
         {
           "id": "hitbox-cat",
           "kind": "npc",
           "pos": { "x": 0.79, "y": 0.916 },
           "radius": 0.08,
-          "rect": { "x": 0.75, "y": 0.84, "w": 0.10, "h": 0.12 },
+          "rect": { "x": 0.7247, "y": 0.84, "w": 0.0899, "h": 0.12 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-cat" }
         },
@@ -40,7 +41,7 @@
           "kind": "object",
           "pos": { "x": 0.91, "y": 0.90 },
           "radius": 0.08,
-          "rect": { "x": 0.801, "y": 0.0, "w": 0.199, "h": 0.512 },
+          "rect": { "x": 0.7706, "y": 0.0, "w": 0.1789, "h": 0.512 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-stairs" }
         },
@@ -49,7 +50,7 @@
           "kind": "object",
           "pos": { "x": 0.78, "y": 0.72 },
           "radius": 0.08,
-          "rect": { "x": 0.615, "y": 0.5, "w": 0.385, "h": 0.414 },
+          "rect": { "x": 0.6034, "y": 0.5, "w": 0.3461, "h": 0.414 },
           "side": "phai",
           "action": { "type": "item", "targetId": "phan_may_mau_xanh" }
         },
@@ -58,7 +59,7 @@
           "kind": "object",
           "pos": { "x": 0.15, "y": 0.56 },
           "radius": 0.08,
-          "rect": { "x": 0.033, "y": 0.126, "w": 0.109, "h": 0.668 },
+          "rect": { "x": 0.0802, "y": 0.126, "w": 0.098, "h": 0.668 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-mirror" }
         }
@@ -68,20 +69,20 @@
       "id": "c0-s2-gac-xep-chiec-ruong",
       "chapterId": "prologue",
       "title": "Căn gác xép phủ bụi và chiếc rương cũ",
-      "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
+      "aspect": "16:9",
+      "logicalSize": { "w": 890, "h": 500 },
       "notes": "Spawn và vùng tương tác đã đối chiếu nền 800×500; bản đồ va chạm chân nằm trong src/game/physics.ts.",
       "spawn": { "x": 0.14, "y": 0.776 },
       "sides": { "phai": true, "trai": true },
       "exits": { "back": "c0-s1-tiem-may-chieu" },
-      "exitArrows": [{ "exit": "back", "dir": "down", "rect": { "x": 0.40, "y": 0.86, "w": 0.20, "h": 0.14 } }],
+      "exitArrows": [{ "exit": "back", "dir": "down", "rect": { "x": 0.4101, "y": 0.86, "w": 0.1798, "h": 0.14 } }],
       "interactables": [
         {
           "id": "hitbox-chest-cloth",
           "kind": "object",
           "pos": { "x": 0.50, "y": 0.61 },
           "radius": 0.08,
-          "rect": { "x": 0.328, "y": 0.486, "w": 0.336, "h": 0.17 },
+          "rect": { "x": 0.3454, "y": 0.486, "w": 0.302, "h": 0.17 },
           "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c0-cloth" }
         },
@@ -90,7 +91,7 @@
           "kind": "object",
           "pos": { "x": 0.16, "y": 0.66 },
           "radius": 0.08,
-          "rect": { "x": 0.13, "y": 0.612, "w": 0.021, "h": 0.028 },
+          "rect": { "x": 0.1674, "y": 0.612, "w": 0.0189, "h": 0.028 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-wall-key" }
         },
@@ -99,7 +100,7 @@
           "kind": "object",
           "pos": { "x": 0.835, "y": 0.77 },
           "radius": 0.08,
-          "rect": { "x": 0.802, "y": 0.598, "w": 0.094, "h": 0.172 },
+          "rect": { "x": 0.7715, "y": 0.598, "w": 0.0845, "h": 0.172 },
           "side": "phai",
           "action": { "type": "item", "targetId": "kim_gut_bang_bac" }
         },
@@ -108,7 +109,7 @@
           "kind": "object",
           "pos": { "x": 0.25, "y": 0.66 },
           "radius": 0.08,
-          "rect": { "x": 0.163, "y": 0.23, "w": 0.07, "h": 0.424 },
+          "rect": { "x": 0.1971, "y": 0.23, "w": 0.0629, "h": 0.424 },
           "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c0-mannequin-hand" }
         },
@@ -117,7 +118,7 @@
           "kind": "object",
           "pos": { "x": 0.51, "y": 0.62 },
           "radius": 0.08,
-          "rect": { "x": 0.48, "y": 0.576, "w": 0.033, "h": 0.038 },
+          "rect": { "x": 0.482, "y": 0.576, "w": 0.0297, "h": 0.038 },
           "side": "phai",
           "action": { "type": "puzzle", "targetId": "p-c0-chest-unlock" }
         },
@@ -126,7 +127,7 @@
           "kind": "object",
           "pos": { "x": 0.88, "y": 0.695 },
           "radius": 0.08,
-          "rect": { "x": 0.931, "y": 0.45, "w": 0.069, "h": 0.182 },
+          "rect": { "x": 0.8874, "y": 0.45, "w": 0.062, "h": 0.182 },
           "side": "phai",
           "action": { "type": "dialogue", "targetId": "d-c0-hoop" }
         },
@@ -135,7 +136,7 @@
           "kind": "npc",
           "pos": { "x": 0.875, "y": 0.275 },
           "radius": 0.08,
-          "rect": { "x": 0.80, "y": 0.15, "w": 0.15, "h": 0.25 },
+          "rect": { "x": 0.7697, "y": 0.15, "w": 0.1348, "h": 0.25 },
           "side": "trai",
           "action": { "type": "dialogue", "targetId": "d-c0-ong-le-whisper" }
         }

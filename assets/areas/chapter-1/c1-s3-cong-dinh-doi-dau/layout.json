@@ -1,0 +1,47 @@
+{
+  "areaId": "c1-s3-cong-dinh-doi-dau",
+  "size": {
+    "w": 640,
+    "h": 360
+  },
+  "generatedBy": "scripts/pixel/draw-c1-rooms.py",
+  "interactables": {
+    "hitbox-village-gate-exit": {
+      "x": 0.0375,
+      "y": 0.1528,
+      "w": 0.175,
+      "h": 0.6111
+    },
+    "hitbox-stone-step": {
+      "x": 0.2172,
+      "y": 0.6694,
+      "w": 0.1953,
+      "h": 0.1556
+    },
+    "hitbox-village-officials": {
+      "x": 0.6813,
+      "y": 0.2667,
+      "w": 0.2406,
+      "h": 0.3778
+    },
+    "hitbox-ong-le-entity": {
+      "x": 0.5203,
+      "y": 0.3,
+      "w": 0.1203,
+      "h": 0.5
+    },
+    "hitbox-styling-cam": {
+      "x": 0.4,
+      "y": 0.4167,
+      "w": 0.1156,
+      "h": 0.3889
+    }
+  },
+  "exits": {
+    "exit": {
+      "x": 0.125,
+      "y": 0.5278,
+      "dir": "left"
+    }
+  }
+}

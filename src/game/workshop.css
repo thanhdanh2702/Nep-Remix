@@ -1,0 +1,21 @@
+/* Xưởng may tab inside the Closet panel. Tokens from src/ui/tokens.css; pixel look: hard borders, no blur. */
+.workshop { display: grid; gap: var(--sp-2); min-width: 0; }
+.workshop p { margin: 0; font-size: var(--fs-caption); line-height: 1.5; }
+.workshop .fine-print { margin: 0; font-size: var(--fs-min); }
+.workshop-drop {
+  position: relative; display: flex; align-items: center; justify-content: center; min-height: var(--target-min); padding: var(--sp-2) var(--sp-3);
+  text-align: center; font-size: var(--fs-caption); color: var(--c-deep-plum); background: var(--c-light-cream); border: var(--bw-thin) dashed var(--c-sub-border); cursor: pointer;
+}
+.workshop-drop:focus-within { outline: 2px solid var(--c-crimson); outline-offset: 2px; }
+.workshop-drop input { position: absolute; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.workshop-preview { display: block; width: 100%; max-height: 140px; object-fit: contain; background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border); }
+.workshop-go, .workshop-card .primary, .workshop-result > button { min-height: var(--target-min); }
+.workshop-error { color: var(--c-hint); font-weight: 600; }
+.workshop-result { display: grid; gap: var(--sp-2); }
+.workshop-card { padding: var(--sp-3); background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border); display: grid; gap: var(--sp-2); }
+.workshop-card h3 { margin: 0; font-size: var(--fs-dialogue); }
+.workshop-card .studio-ai-swatches { margin: 0; }
+/* Four tabs must wrap instead of overflowing the panel on narrow phones. */
+.closet-room .tabs { flex-wrap: wrap; }
+.closet-room .tabs button { flex: 1 1 auto; min-height: var(--target-min); }
+@media (max-width: 480px) { .closet-room .tabs button { flex-basis: 40%; } }

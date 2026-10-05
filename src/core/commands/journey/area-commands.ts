@@ -21,20 +21,20 @@ export const areaGoToCommand: CommandDef<AreaGoToPayload> = {
     const chProgress = state.journey[chId];
 
     if (!chData || !chProgress) {
-      return { ok: false, reason: `Invalid current chapter '${chId}'.` };
+      return { ok: false, reason: `Chương hiện tại '${chId}' không hợp lệ.` };
     }
 
     const areaDef = chData.areas.find((a) => a.id === areaId);
     if (!areaDef) {
-      return { ok: false, reason: `Area '${areaId}' does not belong to chapter '${chId}'.` };
+      return { ok: false, reason: `Khu vực '${areaId}' không thuộc chương '${chId}'.` };
     }
 
     if (!chProgress.unlockedAreaIds.includes(areaId)) {
-      return { ok: false, reason: `Area '${areaId}' is not unlocked yet.` };
+      return { ok: false, reason: 'Lối này còn khóa. Hãy giải câu đố trong phòng để mở đường.' };
     }
 
     if (chProgress.currentArea === areaId) {
-      return { ok: false, reason: `Already in area '${areaId}'.` };
+      return { ok: false, reason: 'An đang đứng ở khu vực này rồi.' };
     }
 
     return true;
@@ -91,7 +91,7 @@ export const areaGoBackCommand: CommandDef<AreaGoBackPayload> = {
   guard: (state: GameState, _payload: AreaGoBackPayload) => {
     const chProgress = state.journey[state.currentChapter];
     if (!chProgress || chProgress.navStack.length === 0) {
-      return { ok: false, reason: `Cannot go back: navigation stack is empty.` };
+      return { ok: false, reason: 'Không còn lối nào để quay lại.' };
     }
     return true;
   },

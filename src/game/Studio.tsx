@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties } from 'react';
+import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createScopedSession, dispatchSession, undoSession, redoSession, resetSession, commitSession, runCommand, evaluateOutfit, type GameState, type StudioDraft, type Command } from '../core';
 import type { Garment } from '../content/schema';
 import { content } from './store';
@@ -8,6 +8,8 @@ import { MannequinStage } from './MannequinStage';
 import { pop } from '../ui/motion';
 import { StudioCharacter, studioViews } from './StudioCharacter';
 import { StudioWardrobe, type WardrobeTab } from './StudioWardrobe';
+import { StudioStylist } from './StudioStylist';
+import { StudioLookbookAi } from './StudioLookbookAi';
 import './studio.css';
 
 export const events = [{id:'dao_pho',name:'Dạo phố'},{id:'tet',name:'Tết'},{id:'dam_cuoi',name:'Lễ cưới'},{id:'be_giang',name:'Bế giảng'},{id:'le_chua',name:'Lễ chùa'},{id:'vieng_tang',name:'Viếng tang'}];
@@ -22,7 +24,8 @@ const palettes: {name:string;colors:[string,string,string,string]}[] = [
 export function makeDraft(garment: Garment): StudioDraft {
   return {type:'studio',eventContextId:'dao_pho',silhouette:garment.silhouette,garmentId:garment.id,colorPalette:[...garment.defaultColorPalette],equippedAccessories:{}};
 }
-export function Studio({ state, send, notify, initial }: { state: GameState; send: (cmd:Command)=>GameState|null; notify:(message:string)=>void; initial?: StudioDraft }) {
+// `challenge` turns the room into a puzzle: it receives the live draft and renders the submit / cancel controls.
+export function Studio({ state, send, notify, initial, challenge }: { state: GameState; send: (cmd:Command)=>GameState|null; notify:(message:string)=>void; initial?: StudioDraft; challenge?: (draft:StudioDraft)=>ReactNode }) {
   const [session, setSession] = useState(() => createScopedSession(initial ?? makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds[0])!), 'studio'));
   const [tab,setTab] = useState<WardrobeTab>('garment');
   const [name,setName] = useState('');
@@ -77,29 +80,28 @@ export function Studio({ state, send, notify, initial }: { state: GameState; sen
         </div>
         {undo}{redo}
       </div>
+      <StudioStylist state={state} draft={draft} update={update} notify={notify} />
     </MannequinStage>
+    {challenge?.(draft)}
     <section className="studio-lookbook" aria-label="Lookbook của bạn">
       <h2 className="studio-lookbook-heading">Lookbook của bạn</h2>
-      <div className="studio-lookbook-board">
-        <div className="studio-lookbook-art" aria-hidden="true"><img className="art-hires" src={asset('assets/screens/studio/lookbook-frame.png')} alt="" /></div>
-        <div className="studio-lookbook-grid">
-          {([
-            {id:'front',direction:'down',label:'Chính diện'},
-            {id:'side',direction:'left',label:'Góc nghiêng'},
-            {id:'back',direction:'up',label:'Sau lưng'},
-            {id:'closeup',direction:'down',label:'Cận cảnh'},
-          ] as const).map(portrait=><figure key={portrait.id} className={`studio-lookbook-card ${portrait.id==='closeup'?'studio-lookbook-closeup':''}`}>
-            <div className="studio-lookbook-portrait">
-              <StudioCharacter id={`lookbook-${portrait.id}`} draft={draft} direction={portrait.direction} label={portrait.label} preset={preset}/>
-            </div>
-            <figcaption>{portrait.label}</figcaption>
-          </figure>)}
-        </div>
-      </div>
-      <div className="studio-actions" role="group" aria-label="Lưu và tùy chỉnh bộ phối">
-        <button onClick={()=>setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>
-        <button ref={saveRef} className="primary" onClick={save}>Lưu bộ phối</button>
-      </div>
+      <StudioLookbookAi draft={draft} eventTitle={events.find(e=>e.id===draft.eventContextId)?.name ?? events[0].name}
+        actions={<>
+          <button onClick={()=>setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>
+          <button ref={saveRef} className="primary" onClick={save}>Lưu bộ phối</button>
+        </>}>
+        {([
+          {id:'front',direction:'down',label:'Chính diện'},
+          {id:'side',direction:'left',label:'Góc nghiêng'},
+          {id:'back',direction:'up',label:'Sau lưng'},
+          {id:'closeup',direction:'down',label:'Cận cảnh'},
+        ] as const).map(portrait=><figure key={portrait.id} className={`studio-lookbook-card ${portrait.id==='closeup'?'studio-lookbook-closeup':''}`}>
+          <div className="studio-lookbook-portrait">
+            <StudioCharacter id={`lookbook-${portrait.id}`} draft={draft} direction={portrait.direction} label={portrait.label} preset={preset}/>
+          </div>
+          <figcaption>{portrait.label}</figcaption>
+        </figure>)}
+      </StudioLookbookAi>
     </section>
     {wardrobe('studio-wardrobe-dock')}
     {optionsOpen && <Modal title="Tùy chỉnh bộ phối" className="studio-options" onClose={()=>setOptionsOpen(false)}>

@@ -20,7 +20,7 @@ test('Welcome waits for explicit entry; upload previews locally and never calls 
   await (await chooserPromise).setFiles('assets/screens/welcome/welcome-courtyard.png');
   await expect(page.getByRole('img', { name: 'Ảnh bạn đã chọn' })).toBeVisible();
   await expect(page.getByRole('status')).toContainText('Đã chọn ảnh.');
-  await expect(page.getByRole('status')).toContainText('Sắp có');
+  await expect(page.getByRole('status')).toContainText('Tạo nhân vật từ ảnh · Gemini');
   await page.getByLabel('Chọn ảnh chân dung').setInputFiles({ name: 'not-an-image.txt', mimeType: 'text/plain', buffer: Buffer.from('not an image') });
   await expect(page.getByRole('alert')).toContainText('JPG, PNG hoặc WEBP');
   await page.getByLabel('Chọn ảnh chân dung').setInputFiles({ name: 'broken.png', mimeType: 'image/png', buffer: Buffer.from('broken image') });

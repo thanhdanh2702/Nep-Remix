@@ -1,6 +1,7 @@
 import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
+import { applyPuzzleSolved } from './puzzle-solution.ts';
 
 // Known item combinations from puzzles and game scripts
 const COMBINATION_RECIPES: Record<string, string> = {
@@ -95,6 +96,7 @@ export const itemUseCommand: CommandDef<ItemUsePayload> = {
     const events: any[] = [];
     let nextInventory = state.inventory.itemIds;
     let nextProgress = { ...chProgress };
+    let nextNotebook = state.notebook;
 
     if (targetPuzzleId && chData) {
       const puzzle = chData.puzzles.find((p) => p.id === targetPuzzleId);
@@ -104,50 +106,12 @@ export const itemUseCommand: CommandDef<ItemUsePayload> = {
         const isMatch = requiredItem === itemId || (requiredList && requiredList.includes(itemId as any));
 
         if (isMatch) {
-          // Solved puzzle!
-          if (!nextProgress.solvedPuzzleIds.includes(puzzle.id)) {
-            nextProgress.solvedPuzzleIds = [...nextProgress.solvedPuzzleIds, puzzle.id];
-          }
-
-          events.push({
-            type: 'puzzleSolved',
-            payload: { puzzleId: puzzle.id }
-          });
-
-          // Handle reward items from puzzle
-          if (puzzle.solution.rewardItemId && !nextInventory.includes(puzzle.solution.rewardItemId)) {
-            nextInventory = [...nextInventory, puzzle.solution.rewardItemId];
-            events.push({
-              type: 'itemPicked',
-              payload: { itemId: puzzle.solution.rewardItemId }
-            });
-          }
-          if (Array.isArray(puzzle.solution.rewardItemIds)) {
-            for (const rId of puzzle.solution.rewardItemIds) {
-              if (!nextInventory.includes(rId)) {
-                nextInventory = [...nextInventory, rId];
-                events.push({
-                  type: 'itemPicked',
-                  payload: { itemId: rId }
-                });
-              }
-            }
-          }
-
-          // Handle unlock area
-          if (puzzle.solution.unlocksAreaId && !nextProgress.unlockedAreaIds.includes(puzzle.solution.unlocksAreaId)) {
-            nextProgress.unlockedAreaIds = [...nextProgress.unlockedAreaIds, puzzle.solution.unlocksAreaId];
-          }
-
-          // Unlock adjacent area exits from current area upon puzzle solve
-          const currentAreaDef = chData.areas.find((a) => a.id === nextProgress.currentArea);
-          if (currentAreaDef?.exits) {
-            for (const exitTarget of Object.values(currentAreaDef.exits)) {
-              if (exitTarget && !nextProgress.unlockedAreaIds.includes(exitTarget)) {
-                nextProgress.unlockedAreaIds = [...nextProgress.unlockedAreaIds, exitTarget];
-              }
-            }
-          }
+          // Solved puzzle: shared rewards / unlocks / dialogue transition
+          const solved = applyPuzzleSolved(state, puzzle, content);
+          nextInventory = solved.state.inventory.itemIds;
+          nextProgress = solved.state.journey[chId];
+          nextNotebook = solved.state.notebook;
+          events.push(...solved.events);
 
           // Consume item if consumable
           if (itemDef.consumable) {
@@ -164,6 +128,7 @@ export const itemUseCommand: CommandDef<ItemUsePayload> = {
 
     const nextState: GameState = {
       ...state,
+      notebook: nextNotebook,
       inventory: {
         ...state.inventory,
         itemIds: nextInventory

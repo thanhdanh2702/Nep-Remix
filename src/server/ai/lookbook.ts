@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { ai } from './gemini-client.ts';
 import { aiCache } from './cache.ts';
 import { AI_MODELS } from '../../config/ai-models.ts';
+import { sanitizeUserText, toFallbackReason, UNTRUSTED_DATA_NOTICE } from './sanitize.ts';
 
 // ----------------------------------------------------
 // 1. Zod Request & Response Schemas
@@ -69,50 +70,41 @@ const ANGLES: Array<{
   }
 ];
 
-// Helper to run a single image generation promise with timeout
+// Helper to run a single image generation request, cancelled client-side after LOOKBOOK_TIMEOUT_MS
 async function generateSingleAngleImage(
   angleDef: typeof ANGLES[number],
-  lookbookReq: LookbookRequest,
-  signal: AbortSignal
+  lookbookReq: LookbookRequest
 ): Promise<LookbookImage> {
-  const accessoriesText =
-    lookbookReq.accessoryNames.length > 0
-      ? `paired with authentic traditional accessories: ${lookbookReq.accessoryNames.join(', ')}.`
-      : '';
-
-  const prompt = [
+  // Image models may not accept systemInstruction, so the untrusted-data rule and the DATA block are separate text parts
+  const instruction = [
     `High-end fashion editorial photography in an authentic 19th/20th-century Vietnamese courtyard studio.`,
-    `A fictional Vietnamese model elegantly dressed in ${lookbookReq.garmentName} (${lookbookReq.silhouette} silhouette).`,
-    `The garment features authentic natural silk fabric in palette: ${lookbookReq.colorPalette.join(', ')}.`,
-    accessoriesText,
-    `Context occasion: ${lookbookReq.eventTitle}.`,
+    `A fictional Vietnamese model elegantly dressed in the garment described by garmentName and silhouette in the DATA block.`,
+    `The garment features authentic natural silk fabric in the colorPalette from the DATA block, paired with the accessoryNames (if any) and suited to the eventTitle occasion.`,
     angleDef.promptSuffix,
-    `Soft natural lighting, warm aesthetic, photorealistic studio photography, 8k resolution, cinematic look, watermark-free.`
-  ].filter(Boolean).join(' ');
+    `Soft natural lighting, warm aesthetic, photorealistic studio photography, 8k resolution, cinematic look, watermark-free.`,
+    UNTRUSTED_DATA_NOTICE
+  ].join(' ');
+  const data = `DATA: ${JSON.stringify({
+    garmentName: lookbookReq.garmentName,
+    silhouette: lookbookReq.silhouette,
+    colorPalette: lookbookReq.colorPalette,
+    accessoryNames: lookbookReq.accessoryNames,
+    eventTitle: lookbookReq.eventTitle
+  })}`;
 
-  // Note: signal is handled via race
-  const responsePromise = ai.models.generateContent({
+  const response = await ai.models.generateContent({
     model: AI_MODELS.IMAGE_GENERATION_MODEL,
     contents: {
-      parts: [{ text: prompt }]
+      parts: [{ text: instruction }, { text: data }]
     },
     config: {
+      abortSignal: AbortSignal.timeout(AI_MODELS.LOOKBOOK_TIMEOUT_MS),
       imageConfig: {
         aspectRatio: '3:4',
         imageSize: '1K'
       }
     }
   });
-
-  const response = await Promise.race([
-    responsePromise,
-    new Promise<never>((_, reject) => {
-      if (signal.aborted) {
-        reject(new Error('Lookbook generation timeout'));
-      }
-      signal.addEventListener('abort', () => reject(new Error('Lookbook generation timeout')));
-    })
-  ]);
 
   let base64Image = '';
   if (response.candidates?.[0]?.content?.parts) {
@@ -140,7 +132,16 @@ async function generateSingleAngleImage(
 // ----------------------------------------------------
 export async function handleLookbook(req: Request, res: Response) {
   const parsedBody = LookbookRequestSchema.safeParse(req.body || {});
-  const lookbookReq = parsedBody.success ? parsedBody.data : LookbookRequestSchema.parse({});
+  const parsedReq = parsedBody.success ? parsedBody.data : LookbookRequestSchema.parse({});
+  // Free text from the client is echoed into prompts and fallback: normalize and cap it
+  const lookbookReq: LookbookRequest = {
+    garmentId: sanitizeUserText(parsedReq.garmentId, 60),
+    garmentName: sanitizeUserText(parsedReq.garmentName, 80),
+    silhouette: sanitizeUserText(parsedReq.silhouette, 40),
+    colorPalette: parsedReq.colorPalette.map((c) => sanitizeUserText(c, 16)),
+    accessoryNames: parsedReq.accessoryNames.slice(0, 10).map((n) => sanitizeUserText(n, 60)).filter(Boolean),
+    eventTitle: sanitizeUserText(parsedReq.eventTitle, 80)
+  };
 
   const fallback: LookbookFallbackResponse = {
     fallbackType: 'pixel_sketch',
@@ -163,44 +164,30 @@ export async function handleLookbook(req: Request, res: Response) {
       });
     }
 
-    // Set up overall timeout using LOOKBOOK_TIMEOUT_MS
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => {
-      controller.abort();
-    }, AI_MODELS.LOOKBOOK_TIMEOUT_MS);
+    // Generate all 4 angles in parallel; each request carries its own LOOKBOOK_TIMEOUT_MS abort signal
+    const images = await Promise.all(
+      ANGLES.map((angle) => generateSingleAngleImage(angle, lookbookReq))
+    );
 
-    try {
-      // Generate all 4 angles in parallel
-      const imagePromises = ANGLES.map((angle) =>
-        generateSingleAngleImage(angle, lookbookReq, controller.signal)
-      );
+    const result: LookbookSuccessResponse = {
+      images,
+      watermark: 'Ảnh do AI tạo - Tiệm May Nếp 2026',
+      disclosure: 'Bộ ảnh được mô phỏng bằng công nghệ Google Gemini dựa trên phong cách phối đồ của bạn.'
+    };
 
-      const images = await Promise.all(imagePromises);
-      clearTimeout(timeoutId);
+    aiCache.set(cacheKey, result);
 
-      const result: LookbookSuccessResponse = {
-        images,
-        watermark: 'Ảnh do AI tạo - Tiệm May Nếp 2026',
-        disclosure: 'Bộ ảnh được mô phỏng bằng công nghệ Google Gemini dựa trên phong cách phối đồ của bạn.'
-      };
-
-      aiCache.set(cacheKey, result);
-
-      return res.json({
-        ok: true,
-        data: result
-      });
-    } catch (innerErr) {
-      clearTimeout(timeoutId);
-      throw innerErr;
-    }
+    return res.json({
+      ok: true,
+      data: result
+    });
   } catch (err) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error('[AI] lookbook failed:', err);
     return res.json({
       ok: false,
       fallback: {
         ...fallback,
-        reason: `Thời gian chờ quá ${AI_MODELS.LOOKBOOK_TIMEOUT_MS / 1000}s hoặc gặp lỗi: ${errorMsg}`
+        reason: toFallbackReason(err)
       }
     });
   }

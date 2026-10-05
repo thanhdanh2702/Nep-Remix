@@ -3,6 +3,7 @@ import type { Command, GameState } from '../core';
 import { content } from './store';
 import { asset, garmentAsset } from './assets';
 import { Modal } from './Modal';
+import { MotifStrip } from './MotifStrip';
 import './museum.css';
 
 // Share the existing entries across the 12 physical notebooks.
@@ -88,6 +89,7 @@ export function Museum({ state, send, onReadingChange }: {
       </details>
     </aside>
     {volume && card && <Modal title={`Sổ tay ${String(volume.number).padStart(2, '0')}`} wide className="museum-reader" onClose={() => setSelected(null)}>
+      <MotifStrip />
       <div className="museum-open-book">
         <div className="museum-frontispiece" aria-hidden="true">
           <span className="eyebrow">TỦ SÁCH NẾP NHÀ</span><span className="museum-lotus">❋</span>

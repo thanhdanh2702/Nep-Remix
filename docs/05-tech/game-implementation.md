@@ -1,5 +1,17 @@
 # Game pixel đã triển khai
 
+## Cập nhật điểm-và-nhấp, Xưởng may, Chương 1 — 05/10/2026
+
+Phòng cốt truyện là point-and-click: bấm/chạm vật có viền sáng (hotspot là nút DOM trên canvas, tối thiểu 44 px, không che tâm hotspot lớn hơn), **Soi**/Space lộ mọi vật, mũi tên pixel để sang phòng; sân hub vẫn đi bằng WASD/mũi tên + E. Kích thước thế giới lấy theo ảnh nền từng phòng, mọi phòng đều 16:9. Nền Chương 1 vẽ bằng code (`scripts/pixel/draw-c1-rooms.py`); NPC dùng sprite 64×96 có sẵn.
+
+`npm run setup` hỏi GEMINI_API_KEY, ghi vào `.env`; bỏ qua để chơi game mà không AI. `npm run smoke:ai` test Gemini connection.
+
+**Xưởng may** (F12/F13): tab mới trong Tủ đồ, quét ảnh áo thật, gọi Gemini (`vision + structured output`) nhận diện dáng, cổ, hoa văn, màu rồi mở Phòng phối đồ với dáng + màu tương ứng; áo nước khác (hanbok/sườn xám) hiện thẻ giải thích khác biệt. **Selfie**: hộp thoại ở màn chờ, chỉ gọi `/api/ai/analyze-selfie` sau khi tick đồng ý và bấm Phân tích; ảnh thu nhỏ ≤ 768 px trên máy, server không cache.
+
+**Chương 1 chơi được**: prologue 890×500 (mở rộng 16:9), Chương 1 ba phòng 640×360 (16:9 native), point-and-click trong cảnh, kết hợp vật phẩm từ ba puzzle, hiển thị puzzle modal, styling challenge ở Studio, kết thúc cốt truyện qua `completionDialogueId`. NPC sprite 64×96 trong c1-s3.
+
+UI images được chuẩn hóa vào lưới pixel bằng `scripts/pixel/normalize-ui-images.py`; dialogue frame và HUD icons vẽ trong code; assets tại `assets/src/pixel/ui` được render ra `assets/ui-pixel/`. Pipeline pixel: `assets/palettes/*.json` (màu), `scripts/pixel/pixel-grid.py` (lưới), `.claude/skills/pixel-draw/SKILL.md` (hướng dẫn).
+
 ## Cập nhật màn chờ và header kem — 02/10/2026
 
 Lựa chọn nền cuối: dùng nguyên ảnh `image.png` do người dùng đặt ở thư mục gốc, sao chép vào `assets/screens/main-shop/garden-user--landscape.png`. Nền này thay bản ImageGen thử nghiệm bên dưới; bảo tàng nằm bên phải. Biển đặt trên thanh ngang phía trên cửa, xoay cả khung và chữ theo từng gian nhà; khoảng đệm tính cả góc xoay giữ biển trọn trong vùng chơi khi màn hình thấp. Vùng chân được giới hạn theo polygon sân gạch và ao sen của ảnh. Đường vào nhà, bồn cây và vườn ngoài sân không còn dùng các hình chữ nhật của nền cũ. Nguồn và phép ánh xạ tọa độ ghi tại `assets/screens/main-shop/garden-user.md`.
@@ -38,7 +50,7 @@ An ở hub dùng scale 0.36 để tương ứng với bố cục tham chiếu m�
 
 Màn mở đầu có tiệm may chiều, cầu thang, gác xép, các hội thoại/vật phẩm, ba câu đố, lời bà, manh mối và phần thưởng. Hub điều hướng đến Studio, Tủ đồ, Bảo tàng và Cốt truyện. Bản đồ chương hiển thị nội dung được cung cấp và tình trạng khả dụng; chưa bật phần chơi của chương 1–5.
 
-Không sửa file asset gốc, không sinh/tải ảnh ngoài. Không gọi luồng `src/server/ai/lookbook.ts`; Lookbook chỉ tải canvas paperdoll chính diện hiện tại. Không tạo hướng mới. Chưa phát âm thanh vì thư mục audio chỉ có tài liệu.
+Không sửa file asset gốc; chỉ sinh ảnh qua Gemini khi người dùng bấm "Chụp Lookbook AI". Phòng phối đồ gọi Gemini qua `/api/ai/stylist` để gợi ý trang phục khi bấm "Gợi ý từ Gemini"; Lookbook gọi `/api/ai/lookbook` để sinh 4 ảnh chân thực khi bấm "Chụp Lookbook AI", nhưng luôn hiển thị 4 ảnh pixel làm fallback. Không tạo hướng mới. Chưa phát âm thanh vì thư mục audio chỉ có tài liệu.
 
 ## Registry và render
 

@@ -1,36 +1,36 @@
 {
   "hitbox-chest-cloth": {
-    "x": 262,
+    "x": 307,
     "y": 243,
     "w": 269,
     "h": 85
   },
   "hitbox-wall-key": {
-    "x": 104,
+    "x": 149,
     "y": 306,
     "w": 17,
     "h": 14
   },
   "hitbox-sewing-basket": {
-    "x": 642,
+    "x": 687,
     "y": 299,
     "w": 75,
     "h": 86
   },
   "hitbox-mannequin-hand": {
-    "x": 130,
+    "x": 175,
     "y": 115,
     "w": 56,
     "h": 212
   },
   "hitbox-chest-lock": {
-    "x": 384,
+    "x": 429,
     "y": 288,
     "w": 26,
     "h": 19
   },
   "hitbox-sewing-hoop": {
-    "x": 745,
+    "x": 790,
     "y": 225,
     "w": 55,
     "h": 91

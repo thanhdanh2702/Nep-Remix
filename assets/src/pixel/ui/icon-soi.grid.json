@@ -1,0 +1,33 @@
+{
+  "id": "icon-soi",
+  "kind": "icon",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "x",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "c": "FFF1DF",
+    "C": "FFF8EE",
+    "r": "A72D60"
+  },
+  "rows": [
+    "........",
+    "........",
+    "........",
+    "....KKKK",
+    "..KKccCC",
+    ".KccKrrr",
+    "KccKrrKK",
+    "KccKrrKC",
+    ".KccKrrr",
+    "..KKccCC",
+    "....KKKK",
+    "........",
+    "........",
+    "........",
+    "........",
+    "........"
+  ]
+}

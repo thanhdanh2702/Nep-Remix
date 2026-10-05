@@ -374,10 +374,11 @@ export const AreaSchema = z.object({
   id: AreaIdSchema,
   chapterId: ChapterIdSchema,
   title: z.string(),
-  aspect: z.literal('8:5'),
+  aspect: z.enum(['8:5', '16:9']),
+  /** Background size in art px; the room engine reads the real size from the background image. */
   logicalSize: z.object({
-    w: z.literal(800),
-    h: z.literal(500)
+    w: z.number().int().positive(),
+    h: z.number().int().positive()
   }),
   notes: z.string().optional(),
   spawn: NormalizedCoordSchema,
@@ -575,6 +576,8 @@ export const ChapterMetaSchema = z.object({
   year: z.number().int(),
   historicalPeriod: z.enum(['thoi_le', 'thoi_nguyen', 'nam_1934', 'hien_dai']),
   summary: z.string(),
+  /** Dialogue whose completion (after every puzzle is solved) ends the chapter; the UI then runs chapter/complete + reward/claim. */
+  completionDialogueId: DialogueIdSchema.optional(),
   reward: RewardSchema
 });
 export type ChapterMeta = z.infer<typeof ChapterMetaSchema>;

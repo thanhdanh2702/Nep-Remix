@@ -67,9 +67,7 @@ test('An walks the hub, plays the prologue by clicking and restores the save wit
   await expect(page.locator('[data-chapter="c1"] .journey-map-label')).toBeEnabled();
   await expect(page.locator('[data-chapter="c1"] .journey-lock')).toHaveCount(0);
   await expect(page.locator('[data-chapter="c2"] .journey-map-label')).toBeDisabled();
-  await page.locator('[data-chapter="c1"] .journey-map-label').click();
-  await expect(page.getByRole('dialog')).toContainText('Cụ Nguyễn Thị Cầm');
-  await page.getByRole('button',{name:'Trở về bản đồ',exact:true}).click();
+  await expect(page.locator('[data-chapter="c1"]')).toHaveClass(/is-open/); // playable now; chapter1.spec plays it
   await page.getByRole('button',{name:'‹ Về sân nhà',exact:true}).click();
   await page.reload();await enterGame(page);
   expect((await savedState(page)).wallet.senNgoc).toBe(150);
@@ -124,7 +122,7 @@ test('Mobile camera, touch controls, input focus and corrupt saves work',async({
   await page.getByRole('button',{name:'Lưu diện mạo',exact:true}).click();
   expect((await savedState(page)).profile.name).toBe('An Nếpw');
   await page.getByRole('button',{name:'Cốt truyện',exact:true}).first().click();
-  await page.locator('[data-chapter="prologue"] .journey-map-label').click();await expect(room(page)).toHaveAttribute('data-world-width','800');
+  await page.locator('[data-chapter="prologue"] .journey-map-label').click();await expect(room(page)).toHaveAttribute('data-world-width','890');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.evaluate(()=>localStorage.setItem('tiem-may-nep-save-v1','broken-json'));await page.reload();await enterGame(page);
   expect((await savedState(page)).wallet.senNgoc).toBe(100);await expect(page.getByRole('status').filter({hasText:'Bản lưu không hợp lệ'})).toBeVisible();

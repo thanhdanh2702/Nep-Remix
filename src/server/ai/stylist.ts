@@ -4,6 +4,7 @@ import { Type } from '@google/genai';
 import { ai } from './gemini-client.ts';
 import { aiCache } from './cache.ts';
 import { AI_MODELS } from '../../config/ai-models.ts';
+import { sanitizeUserText, toFallbackReason, UNTRUSTED_DATA_NOTICE, type FallbackReason } from './sanitize.ts';
 import studioJson from '../../content/studio.json';
 import { CultureCardIdSchema } from '../../content/schema.ts';
 
@@ -315,8 +316,10 @@ export const STATIC_FALLBACK_SUGGESTIONS: Record<string, StylistOutfitSuggestion
 // 4. Request Handler: POST /api/ai/stylist
 // ----------------------------------------------------
 export async function handleStylist(req: Request, res: Response) {
-  const { eventId = 'dao_pho', weather = 'Nắng ấm nhẹ nhàng' } = req.body || {};
-  const normalizedEventId = (eventId in STATIC_FALLBACK_SUGGESTIONS) ? eventId : 'dao_pho';
+  const { eventId, weather: rawWeather } = req.body || {};
+  const weather = sanitizeUserText(rawWeather, 80) || 'Nắng ấm nhẹ nhàng';
+  const normalizedEventId =
+    typeof eventId === 'string' && Object.hasOwn(STATIC_FALLBACK_SUGGESTIONS, eventId) ? eventId : 'dao_pho';
   const fallback = STATIC_FALLBACK_SUGGESTIONS[normalizedEventId] || STATIC_FALLBACK_SUGGESTIONS.dao_pho;
 
   try {
@@ -332,9 +335,10 @@ export async function handleStylist(req: Request, res: Response) {
     }
 
     // Call Gemini with strict structured output schema
-    const prompt = [
+    const systemInstruction = [
       `Bạn là chú mèo Stylist Nếp thông thái trong Tiệm May Nếp.`,
-      `Người dùng đang chuẩn bị trang phục cho sự kiện: "${normalizedEventId}" với thời tiết: "${weather}".`,
+      `Người dùng đang chuẩn bị trang phục cho một sự kiện với một điều kiện thời tiết, cung cấp trong khối DATA (JSON) của tin nhắn người dùng.`,
+      UNTRUSTED_DATA_NOTICE,
       `Hãy đề xuất đúng 3 gợi ý phối đồ.`,
       `Mỗi gợi ý CHỈ được chọn các ID hợp lệ sau:`,
       `- garmentId: một trong [ao-tu-than, ao-ngu-than-tay-chen, ao-ngu-than-tay-thung, ao-dai-lemur, ao-dai-tan-thoi-vang-mo-ga, ao-dai-raglan, ao-dai-co-thuyen, ao-dai-cuoi-phin, ao-dai-popolin, ao-ngu-than-remix-2026]`,
@@ -343,11 +347,13 @@ export async function handleStylist(req: Request, res: Response) {
       `- templateId: một trong các mã template [tet_truyen_thong, tet_du_xuan, dam_cuoi_trang_trong, dam_cuoi_thanh_lich, be_giang_hoc_duong, be_giang_tuoi_tre, le_chua_thanh_tinh, le_chua_kin_dao, vieng_tang_trang_nghiem, dao_pho_cuoi_tuan, dao_pho_hien_dai, mac_dinh_nep]`,
       `TUYỆT ĐỐI KHÔNG tự bịa text nhận xét tự do.`
     ].join('\n');
+    const prompt = `DATA: ${JSON.stringify({ eventId: normalizedEventId, weather })}`;
 
     const response = await ai.models.generateContent({
       model: AI_MODELS.VISION_MODEL,
       contents: prompt,
       config: {
+        systemInstruction,
         responseMimeType: 'application/json',
         responseSchema: {
           type: Type.OBJECT,
@@ -386,7 +392,7 @@ export async function handleStylist(req: Request, res: Response) {
     if (rawSuggestions.length === 0) {
       return res.json({
         ok: false,
-        fallback: { suggestions: fallback }
+        fallback: { suggestions: fallback, reason: 'invalid_output' satisfies FallbackReason }
       });
     }
 
@@ -445,12 +451,13 @@ export async function handleStylist(req: Request, res: Response) {
       data: { suggestions: validatedSuggestions }
     });
   } catch (err) {
-    const errorMsg = err instanceof Error ? err.message : String(err);
+    console.error('[AI] stylist failed:', err);
     return res.json({
       ok: false,
       fallback: {
         suggestions: fallback,
-        reason: `Lỗi kết nối gợi ý stylist: ${errorMsg}`
+        reason: toFallbackReason(err),
+        message: 'Chú mèo Stylist đang bận, tiệm gửi bạn vài gợi ý có sẵn nhé!'
       }
     });
   }

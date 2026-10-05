@@ -1,0 +1,47 @@
+{
+  "areaId": "c1-s1-buong-det-khoa-kin",
+  "size": {
+    "w": 640,
+    "h": 360
+  },
+  "generatedBy": "scripts/pixel/draw-c1-rooms.py",
+  "interactables": {
+    "hitbox-back-window": {
+      "x": 0.5016,
+      "y": 0.1694,
+      "w": 0.2188,
+      "h": 0.3389
+    },
+    "hitbox-front-door": {
+      "x": 0.0125,
+      "y": 0.1556,
+      "w": 0.0844,
+      "h": 0.475
+    },
+    "hitbox-cold-porridge": {
+      "x": 0.4422,
+      "y": 0.6583,
+      "w": 0.1,
+      "h": 0.0889
+    },
+    "hitbox-loom-shuttle": {
+      "x": 0.1172,
+      "y": 0.3972,
+      "w": 0.2313,
+      "h": 0.3472
+    },
+    "hitbox-belt-rack": {
+      "x": 0.8078,
+      "y": 0.5194,
+      "w": 0.1469,
+      "h": 0.35
+    }
+  },
+  "exits": {
+    "window": {
+      "x": 0.6109,
+      "y": 0.3444,
+      "dir": "up"
+    }
+  }
+}

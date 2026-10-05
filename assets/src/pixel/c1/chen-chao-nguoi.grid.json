@@ -1,0 +1,29 @@
+{
+  "id": "chen-chao-nguoi",
+  "kind": "item",
+  "w": 18,
+  "h": 11,
+  "palette": "ui+garment",
+  "mirror": "x",
+  "outline": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "C": "FFF1DF",
+    "P": "F5EFEB",
+    "I": "2D3E50"
+  },
+  "rows": [
+    "...KKKKKK",
+    ".KKCCCCCC",
+    "KCCCPCCCC",
+    "KCCCCCCPC",
+    ".KIIIIIII",
+    ".KPPPPPPP",
+    ".KPPIIIII",
+    "..KPPPPPP",
+    "..KPPPPPP",
+    "...KKPPPP",
+    "....KKKKK"
+  ]
+}

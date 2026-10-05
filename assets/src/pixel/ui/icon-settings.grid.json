@@ -1,0 +1,34 @@
+{
+  "id": "icon-settings",
+  "kind": "icon",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "g": "E9B66B",
+    "c": "FFF1DF",
+    "b": "855064",
+    "M": "402036"
+  },
+  "rows": [
+    "......KccK......",
+    "...K.KccccK.K...",
+    "..KcKKcccgKKgK..",
+    ".KcccKccggKgggK.",
+    "..KccccggggggK..",
+    ".KKKccggggggKKK.",
+    "KccccgKKKKgggbbK",
+    "ccccggKMMKggbbbb",
+    "cccgggKMMKgbbbbb",
+    "KcggggKKKKbbbbbK",
+    ".KKKgggggbbbKKK.",
+    "..KgggggbbbbbK..",
+    ".KgggKgbbbKbbbK.",
+    "..KgKKbbbbKKbK..",
+    "...K.KbbbbK.K...",
+    "......KbbK......"
+  ]
+}

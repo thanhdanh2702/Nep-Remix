@@ -1,0 +1,36 @@
+{
+  "id": "icon-sen-ngoc",
+  "kind": "icon",
+  "w": 16,
+  "h": 16,
+  "palette": "ui",
+  "mirror": "none",
+  "legend": {
+    ".": null,
+    "K": "291021",
+    "g": "E9B66B",
+    "p": "D986A7",
+    "L": "F4CAD7",
+    "c": "FFF1DF",
+    "r": "A72D60",
+    "b": "855064"
+  },
+  "rows": [
+    "................",
+    "....KKKKKKKK....",
+    "...KKcccgggKK...",
+    "..KccccggggggK..",
+    ".KKcccgggggggKK.",
+    ".KcccggrggggggK.",
+    ".KccggrprgggggK.",
+    ".KcggrpLprgggbK.",
+    ".KggggrrrgggbbK.",
+    ".KgggggggggbbbK.",
+    ".KggggggggbbbbK.",
+    ".KKggggggbbbbKK.",
+    "..KgggggbbbbbK..",
+    "...KKggbbbbKK...",
+    "....KKKKKKKK....",
+    "................"
+  ]
+}
