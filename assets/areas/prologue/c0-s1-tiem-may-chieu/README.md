@@ -13,7 +13,7 @@
   - **Nhà thiết kế An:** Nhân vật chính do người chơi điều khiển đi lại và khám phá không gian (trỏ `characters/an`).
   - **Mèo Nếp:** Linh thú trợ thủ, ban đầu nằm ngủ cuộn tròn ở sàn nhà gần chân cầu thang, sau đó tỉnh giấc đứng dậy đi vòng tròn và nhảy lên các bậc cầu thang dẫn lối cho An (trỏ `characters/cat-nep`).
 - **Đồ vật và điểm tương tác:**
-  - **Bàn cắt may xà cừ trung tâm (gộp `hitbox-table`):** Đặt ở vị trí trung tâm sảnh tiệm, hơi chếch về phía trước. Người chơi chạm vào để quan sát súc lụa trắng dở dang, chạm vào kéo cắt vải và nhặt vật phẩm phụ `items/phan_may_mau_xanh` đặt trên mép bàn; sau khi nhặt kích hoạt lớp phủ trạng thái bàn cắt (trỏ lớp phủ `c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan`).
+  - **Bàn cắt may xà cừ trung tâm (gộp `hitbox-table`):** Đặt ở vị trí trung tâm sảnh tiệm, hơi chếch về phía trước. Người chơi chạm vào để quan sát súc lụa trắng dở dang, chạm vào kéo cắt vải và nhặt vật phẩm phụ `items/phan_may_mau_xanh` đặt trên mép bàn; sau khi nhặt kích hoạt lớp phủ trạng thái bàn cắt (lớp phủ `c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan` đã xóa 05/10 vì không khớp nền; trạng thái chỉ đổi trong logic).
   - **Gương lớn soi toàn thân (gộp `hitbox-mirror`):** Đặt áp sát tường ở phía bên trái sảnh tiệm. Người chơi chạm vào để mở giao diện ngắm nhìn phục trang và diện mạo của An.
   - **Chiếc máy khâu con bướm đạp chân:** Đặt ở góc phía sau bên trái, gần khung cửa sổ. Người chơi chạm vào để nghe An bộc bạch hoài niệm về người bà đã ngồi suốt sáu mươi năm nuôi nấng gia đình.
   - **Khung ảnh chân dung người bà:** Đặt trang trọng trên góc trên bên phải của bàn cắt may. Người chơi chạm vào để nghe An thầm hứa tiếp nối ngọn lửa nghề may di sản.
@@ -25,6 +25,6 @@
 | Tên tệp | Loại asset | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :--- | :---: |
 | `c0-s1-tiem-may-chieu--phai.png` | `area-background` | Nền sảnh chính tiệm may buổi chiều thu, ánh nắng xiên rọi qua cửa kính lên bàn cắt vải gỗ xà cừ và cầu thang gỗ, không có người, chừa lối đi rộng rãi ở giữa | ⬜ chưa gen |
-| `c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan.png` | `area-overlay` | Mặt bàn cắt may ở vị trí trung tâm sau khi người chơi đã nhặt viên phấn may, chỉ còn lại súc lụa trắng và kéo đồng | ⬜ chưa gen |
+| `c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan.png` | `area-overlay` | Mặt bàn cắt may ở vị trí trung tâm sau khi người chơi đã nhặt viên phấn may, chỉ còn lại súc lụa trắng và kéo đồng | Đã xóa 05/10 (không khớp nền) |
 | `c0-s1-tiem-may-chieu--trai.png` | `area-background` | Phân cảnh mặt trái lật vải cõi dệt tâm thức của sảnh tiệm may | ⬜ hoãn sau 10/10 |
-| `vfx-c0-s1-bui-nang-chieu.png` | `vfx` | Vệt ánh sáng chiều với các hạt bụi tơ tằm li ti màu vàng hoàng thổ bay lơ lửng bồng bềnh tạo chiều sâu không gian | ⬜ chưa gen |
+| `vfx-c0-s1-bui-nang-chieu.png` | `vfx` | Vệt ánh sáng chiều với các hạt bụi tơ tằm li ti màu vàng hoàng thổ bay lơ lửng bồng bềnh tạo chiều sâu không gian | Gỡ khỏi game 05/10 (theo yêu cầu) |

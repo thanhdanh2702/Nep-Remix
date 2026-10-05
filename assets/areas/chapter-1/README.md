@@ -4,7 +4,7 @@ Thư mục này quản lý tài nguyên hình ảnh pixel art của Chương 1, 
 
 ## 1. Nền phòng: vẽ bằng code, không dùng model sinh ảnh
 
-Ba nền phòng 16:9 (**640 × 360 px**, PNG RGB đục, ≤ 32 màu mỗi phòng) do `scripts/pixel/draw-c1-rooms.py` tạo ra (Pillow + numpy, palette khóa neo từ `assets/palettes/ui.json` + `garment.json`, ánh sáng từ phía trên bên phải). Không sửa PNG bằng tay: sửa script rồi chạy lại.
+Ba nền phòng tỉ lệ 16:9, PNG RGB đục, ≤ 32 màu mỗi phòng, do `scripts/pixel/draw-c1-rooms.py` tạo ra (Pillow + numpy, palette khóa neo từ `assets/palettes/ui.json` + `garment.json`, ánh sáng từ phía trên bên phải). Không sửa PNG bằng tay: sửa script rồi chạy lại.
 
 ```
 python scripts/pixel/draw-c1-rooms.py [s1|s2|s3 ...] [--preview DIR]   # ghi PNG + layout.json, preview x2 vào DIR
@@ -14,9 +14,9 @@ npm run audit:assets                                                   # cập n
 
 | Mã cảnh | Tên phân cảnh | Nền (`<mã cảnh>--phai.png`) | Vật tương tác trong `layout.json` |
 | :--- | :--- | :---: | :---: |
-| `c1-s1-buong-det-khoa-kin` | Gian buồng dệt khóa then | 640 × 360, đã vẽ | 5 + lối ra `window` |
-| `c1-s2-ban-tho-nha-tho-ho` | Gian nhà thờ họ Bùi | 640 × 360, đã vẽ | 3 + lối ra `yard`, `back` |
-| `c1-s3-cong-dinh-doi-dau` | Cổng đình làng Vạn Phúc (hoàng hôn) | 640 × 360, đã vẽ | 5 (3 vùng đứng cho NPC) + lối ra `exit` |
+| `c1-s1-buong-det-khoa-kin` | Gian buồng dệt khóa then | Đã vẽ | 5 + lối ra `window` |
+| `c1-s2-ban-tho-nha-tho-ho` | Gian nhà thờ họ Bùi | Đã vẽ | 3 + lối ra `yard`, `back` |
+| `c1-s3-cong-dinh-doi-dau` | Cổng đình làng Vạn Phúc (hoàng hôn) | Đã vẽ | 5 (3 vùng đứng cho NPC) + lối ra `exit` |
 
 Chưa có mặt `trai` (cõi Lật Vải) cho Chương 1: Lật Vải tắt cho bản nộp 10/10.
 
@@ -36,10 +36,10 @@ Mỗi phòng có `layout.json` do chính script vẽ ra: bbox chuẩn hóa 0..1 
 
 ## 4. Còn thiếu cho Chương 1
 
-| Mã món | Loại tài nguyên | Kích thước | Trạng thái |
-| :--- | :--- | :--- | :---: |
-| `con-thoi-go-mun`, `that-lung-lua-cham` | Icon vật phẩm túi đồ | 24 × 24 px | Chưa có |
-| `buc-thu-tay-chong-cu-cam`, `to-van-tu-cam-co-dat` | Icon vật phẩm cốt truyện / chứng cứ | 24 × 24 px | Chưa có |
+| Mã món | Loại tài nguyên | Trạng thái |
+| :--- | :--- | :---: |
+| `con-thoi-go-mun`, `that-lung-lua-cham` | Icon vật phẩm túi đồ | Chưa có |
+| `buc-thu-tay-chong-cu-cam`, `to-van-tu-cam-co-dat` | Icon vật phẩm cốt truyện / chứng cứ | Chưa có |
 
 ## 5. Nhân vật xuất hiện trong Chương 1
 Nhân vật không đặt trong thư mục cảnh, người vẽ xem chi tiết tại:

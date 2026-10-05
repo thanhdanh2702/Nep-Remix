@@ -10,5 +10,5 @@
 
 | Tên tệp | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :---: |
-| `hai-theu.png` | Lớp phụ kiện đeo/cầm trên người căn chuẩn canvas (loại accessory-layer) | ⬜ chưa gen |
-| `hai-theu--icon.png` | Biểu tượng phụ kiện trong cửa hàng và tủ đồ (loại accessory-icon) | ⬜ chưa gen |
+| `hai-theu.png` | accessory-layer | Lớp phụ kiện mặc trên người dạng thang xám | Chờ gen lại (spec An) |
+| `hai-theu--icon.png` | accessory-icon | Biểu tượng phụ kiện trong cửa hàng | ⬜ chưa gen |

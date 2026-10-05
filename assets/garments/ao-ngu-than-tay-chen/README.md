@@ -11,5 +11,5 @@
 
 | Tên tệp | Loại | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :--- | :---: |
-| `ao-ngu-than-tay-chen.png` | garment-layer | Lớp trang phục mặc trên người dạng thang xám căn chuẩn canvas | ⬜ chưa gen |
-| `ao-ngu-than-tay-chen--icon.png` | garment-thumb | Biểu tượng thu nhỏ tà áo hiển thị trong tủ đồ và cửa hàng | ⬜ chưa gen |
+| `ao-ngu-than-tay-chen.png` | garment-layer | Lớp trang phục mặc trên người dạng thang xám | Chờ gen lại (spec An) |
+| `ao-ngu-than-tay-chen--icon.png` | garment-icon | Biểu tượng thu nhỏ trong tủ đồ và cửa hàng | ⬜ chưa gen |

@@ -6,7 +6,7 @@ Gian chính giữa của nhà thờ họ Bùi ba gian uy nghiêm vào đêm đô
 
 | Tệp | Nội dung | Kích thước | Trạng thái |
 | :--- | :--- | :--- | :---: |
-| `c1-s2-ban-tho-nha-tho-ho--phai.png` | Nền nhà thờ họ thế giới thực (mặt `phai`) | 640 × 360 px (16:9) | Đã vẽ |
+| `c1-s2-ban-tho-nha-tho-ho--phai.png` | Nền nhà thờ họ thế giới thực (mặt `phai`) | bố cục code-drawn | Đã vẽ |
 | `layout.json` | bbox 0..1 của 3 vật tương tác + vị trí mũi tên lối ra `back`, `yard` | — | Đã sinh |
 
 Cả hai do `scripts/pixel/draw-c1-rooms.py` tạo ra: không sửa PNG hay `layout.json` bằng tay, sửa script rồi chạy lại (xem `../README.md`). Rect trong `src/content/chapters/c1.json` được sao nguyên từ `layout.json`; `scripts/check-game.ts` kiểm hai bên khớp nhau.

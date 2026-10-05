@@ -1,12 +1,9 @@
 """Normalize hi-res painted UI images onto a pixel grid (code only, no image model).
 
-For every image in TARGETS: back up the original to <dir>/_raw/<stem>-hires.png (first run only; later
-runs re-read that backup so the result is idempotent), median-cell downscale to the target grid, quantize
-to <= --colors colors snapped to assets/palettes/ui.json, hard alpha. Reuses median_downscale/quantize
-from scripts/process-ai-asset.py. After running: npm run audit:assets.
-
-Usage: python scripts/pixel/normalize-ui-images.py [--only STEM ...] [--colors 32] [--dry-run]
+DEPRECATED (as of 05/10/2026): screens now use original generation resolution; no normalization needed.
 """
+import sys
+sys.exit("Đã bãi bỏ ngày 05/10, screens dùng bản gen gốc")
 import argparse
 import importlib.util
 import json

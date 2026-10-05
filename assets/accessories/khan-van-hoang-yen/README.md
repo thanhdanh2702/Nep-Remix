@@ -10,5 +10,5 @@
 
 | Tên tệp | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :---: |
-| `khan-van-hoang-yen.png` | Lớp phụ kiện đeo/cầm trên người căn chuẩn canvas (loại accessory-layer) | ⬜ chưa gen |
-| `khan-van-hoang-yen--icon.png` | Biểu tượng phụ kiện trong cửa hàng và tủ đồ (loại accessory-icon) | ⬜ chưa gen |
+| `khan-van-hoang-yen.png` | accessory-layer | Lớp phụ kiện mặc trên người dạng thang xám | Chờ gen lại (spec An) |
+| `khan-van-hoang-yen--icon.png` | accessory-icon | Biểu tượng phụ kiện trong cửa hàng | ⬜ chưa gen |

@@ -13,7 +13,7 @@ Kho tài nguyên này chuyên biệt phục vụ các thành phần đồ họa,
 Cấu trúc phân mục chuẩn hóa:
 
 - `characters/`: Sprite nhân vật người chơi và các nhân vật phụ/NPC qua các thời kỳ (đứng, bước đi, tương tác, biểu cảm).
-- `paperdoll/`: Khung cơ thể chuẩn (body base), bóng chân, quần lót và các lớp đế cho hệ thống búp bê giấy.
+- `paperdoll/`: Khung cơ thể chuẩn và 13 lớp ghép với hệ thống búp bê giấy cho nhân vật chính An.
 - `garments/`: Các lớp áo dài mặc được (ghép trên khung paperdoll) và ảnh đại diện thu nhỏ (thumbnail) trong Tủ đồ.
 - `accessories/`: Các lớp phụ kiện mặc được trên nhân vật và biểu tượng phụ kiện (icon) trong Tủ đồ / Cửa hàng.
 - `motifs/`: Hoa văn dệt truyền thống vẽ theo ô lặp liền viền (seamless tile) dùng phủ chất liệu vải.
@@ -51,16 +51,25 @@ $$\text{Prompt hoàn chỉnh} = [\text{Cụm kỹ thuật theo loại}] + [\text
 
 ## 4. Cụm Kỹ Thuật Chuẩn Hóa (Technical Prefix)
 
-Khi ghép prompt, sử dụng đoạn văn bản kỹ thuật gốc sau:
+### Nhân vật (Character Sprites & Portraits)
+
+Dành cho nhân vật chính An và NPC, sử dụng cụm kỹ thuật được tối ưu cho chibi pixel-art mục tiêu:
 
 ```text
-pixel art, <size> pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing
+chibi pixel-art style matching the reference, 1:1 detail, soft anti-aliased edges, 176x416 frame, feet at y=400
 ```
 
-*(Thay thế `<size>` bằng kích thước lưới điểm ảnh quy định tại Mục 5, ví dụ: `64x96`, `32x32`, `128x128`, `800x500`)*.
+### Nền và Screens
+
+**Không cần prefix resize.** Dùng:
+
+```text
+pixel art, limited palette, hard edges
+```
+
+thêm `, dithering` nếu là nền khu vực (`area-background`, `area-overlay`) hoặc tài liệu (`doc`).
 
 ### Quy tắc bổ sung:
-- **Kỹ thuật chấm hạt (`dithering`):** Chỉ thêm đoạn `, dithering` vào sau cụm kỹ thuật đối với loại **nền khu vực (`area-background`, `area-overlay`)** và **tài liệu (`doc`)** để tạo chiều sâu nếp gấp vải và bề mặt giấy dó cổ. Không dùng cho sprite nhân vật và biểu tượng nhỏ.
 - **Tách phông nền trong suốt (Chroma Key):** Đối với các asset cần tách phông trong suốt, thêm vào cuối cụm kỹ thuật:
   ```text
   flat solid #FF00FF background with no shadow
@@ -72,55 +81,105 @@ pixel art, <size> pixel grid, every pixel a crisp square block, limited palette,
 
 ---
 
-## 5. Bảng Chuẩn Hóa Loại Asset (Asset Specifications)
+## 5. Đơn Vị An & humanHeight
 
-Các thông số dưới đây tuân thủ nghiêm ngặt Quyết định số 20, 21, 22 tại `docs/01-overview/decisions.md`:
+### 5.1. Khung nhân vật chuẩn (Character Frame)
 
-| Loại Asset | Kích thước chuẩn (px) | Tỷ lệ khung khi gen | Cách cắt chuẩn hóa nếu AI không có tỷ lệ | Số màu tối đa | Số khung hình | Cần tách nền |
-| :--- | :---: | :---: | :--- | :---: | :---: | :---: |
-| `area-background` | 800 × 500 | 16:9 | Gen ở 16:9 (hoặc tỷ lệ gần nhất), crop trung tâm theo tỷ lệ 8:5 về đúng 800 × 500 px (nearest-neighbor) | 32 màu | 1 tĩnh | Không |
-| `area-overlay` | 800 × 500 | 16:9 | Cắt góc tương ứng với tọa độ nền 800 × 500 px, giữ đúng vị trí trên canvas chuẩn | 16 màu | 1–4 khung | Có |
-| `cg` | 800 × 500 | 16:9 | Gen ở 16:9, crop bố cục 8:5 về 800 × 500 px | 32 màu | 1 tĩnh | Không |
-| `doc` | 400 × 250 | 16:9 | Crop trung tâm hoặc căn theo lề tài liệu về 400 × 250 px | 16 màu | 1 tĩnh | Có |
-| `character-sprite` | 64 × 96 | 2:3 (hoặc 1:1 sheet) | Căn giữa nhân vật trên khung 64 × 96 px mỗi frame | 16 màu | 1 (idle) hoặc 3–6 (bước đi) | Có |
-| `cat-sprite` | 32 × 32 | 1:1 | Căn giữa khung 32 × 32 px mỗi frame | 12 màu | 2–4 khung | Có |
-| `portrait` | 128 × 128 | 1:1 | Căn giữa mặt và ngực áo, bản cho thẻ manh mối thu nhỏ còn 64 × 64 px | 16 màu | 1–2 khung | Có |
-| `paperdoll-layer` | 64 × 96 | 2:3 | Căn đúng vị trí khối người trên canvas chuẩn 64 × 96 px, không cắt xén viền trong suốt | 8–12 màu | 1 tĩnh | Có |
-| `garment-layer` | 64 × 96 | 2:3 | Vẽ thang xám, căn chuẩn khung 64 × 96 px khớp thân người, xuất đủ canvas | 4 cấp xám | 1 tĩnh | Có |
-| `garment-thumb` | 96 × 96 | 1:1 | Căn giữa tà áo thu nhỏ hiển thị trọn vẹn trong khung 96 × 96 px | 16 màu | 1 tĩnh | Có |
-| `accessory-layer` | 64 × 96 | 2:3 | Đặt đúng tọa độ đeo/cầm trên canvas 64 × 96 px, xuất đủ canvas không trim | 8–12 màu | 1 tĩnh | Có |
-| `accessory-icon` | 48 × 48 | 1:1 | Căn giữa vật thể trong khung 48 × 48 px | 8–12 màu | 1 tĩnh | Có |
-| `item-icon` | 48 × 48 | 1:1 | Căn giữa vật thể trong khung 48 × 48 px | 8–12 màu | 1 tĩnh | Có |
-| `motif` | 32 × 32 | 1:1 | Vẽ họa tiết lặp vô tận (seamless repeat) trên lưới 32 × 32 px | 4–8 màu | 1 tĩnh | Có |
-| `vfx` | Tùy biến (32×32 / 64×96 / 800×500) | 1:1 hoặc 16:9 | Cắt theo từng ô hoạt cảnh (frame cell) trên dải sprite sheet | 8–16 màu | 3–8 khung | Có |
-| `screen-background-landscape` | 800 × 500 | 16:9 | Gen ở 16:9, crop bố cục 8:5 về 800 × 500 px (thuộc team UI) | 32 màu | 1 tĩnh | Không |
-| `screen-background-portrait` | 270 × 480 | 9:16 | Giữ nguyên kích thước dọc hiện có (thuộc team UI) | 32 màu | 1 tĩnh | Không |
-| `ui-frame-9slice` | Tùy biến | Tùy biến | Khung modal/thẻ 9-slice: 4 góc cố định, 4 cạnh co giãn/lặp, 1 tâm (thuộc team UI) | 16 màu | 1 tĩnh | Có |
-| `ui-bar-3slice` | Tùy biến | Tùy biến | Thanh HUD/thanh màu/dải chọn 3-slice: 2 đầu cố định, 1 thân co giãn (thuộc team UI) | 16 màu | 1 tĩnh | Có |
+- **Kích thước:** 176 × 416 pixel mỗi frame
+- **Điểm chân (foot anchor):** (88, 400) — trung tâm ngang, chân của nhân vật ở hàng y = 400
+- **Dáng cao:** 380–392 px (chiều cao nhân vật từ chân tới đỉnh đầu)
+- **Tỉ lệ chibi:** Đầu và tóc khoảng 1/3 chiều cao nhân vật
+- **Chi tiết:** Vẽ 1:1, khử răng cưa mềm (soft anti-aliased edges), nền trong suốt 100%, xuất đủ canvas
 
-*Ghi chú:* Các loại asset giao diện gồm `screen-background-landscape`, `screen-background-portrait`, `ui-frame-9slice`, `ui-bar-3slice` và `icon UI` (24 × 24 px) thuộc team UI phụ trách (kho asset game không quản lý trực tiếp file ảnh nhưng tuân thủ đặc tả này).
+### 5.2. Mèo Nếp (Cat Sprite)
+
+- **Khung:** 128 × 128 pixel
+- **Kích thước mèo:** Cao khoảng 100 px trong khung
+
+### 5.3. Áo và phụ kiện (Garment & Accessory Layers)
+
+- **Kích thước:** dải 528 × 416 pixel
+- **Bố cục 3 ô:** front (trái), side — left view (giữa), back (phải), mỗi ô 176 × 416 px
+- **Kỹ thuật:** Áo vẽ thang xám theo độ sáng, được tô màu bằng **gradient-map 4 màu** của palette
+- **Xuất:** Đủ canvas, không trim
+
+### 5.4. Bảng humanHeight theo cảnh
+
+Tỷ lệ chiều cao dáng An / chiều cao ảnh nền, đã căn bằng ảnh chụp ngày 05/10 (`src/game/character-scale.ts`, bảng `HUMAN_HEIGHT`). Chiều cao trượt tuyến tính từ `back` (chân ở mép sau dải sàn) đến `front` (chân ở mép trước); dải sàn tính theo tỷ lệ chiều cao nền.
+
+| Cảnh (`CharacterScene`) | Nền | back | front | Dải sàn (trên → dưới) | Vật tham chiếu |
+| :--- | :--- | :---: | :---: | :---: | :--- |
+| Mở đầu (`c0`) | `c0-s1`, `c0-s2` | 0.38 | 0.50 | 0.60 → 0.95 | bàn may chạm hông An |
+| Chương 1 (`c1`) | `c1-s1..s3` | 0.42 | 0.42 | 0.60 → 0.95 | An vừa ngang khung cửa |
+| Sảnh (`hub`) | `garden-user--landscape` | 0.15 | 0.15 | cả nền | An xấp xỉ cửa nhà |
+| Phòng phối đồ (`studio`) | `vietnamese-room--landscape` | 0.34 | 0.48 | 0.47 → 0.73 | ghế tựa ≈ 1 m |
+| Tủ đồ (`closet`) | `closet-shelf--landscape` | 0.31 | 0.55 | 0.71 → 1.00 | bàn trang điểm ≈ 75 cm |
+| Xưởng may (`workshop`) | (chưa dùng nền) | 0.31 | 0.55 | 0.71 → 1.00 | theo Tủ đồ |
+
+Phòng phối đồ/Tủ đồ: chiều cao lấy theo độ sâu nơi chân An đứng, rồi giới hạn ≤ 1.2 lần khung gốc và không vượt vùng trống trên màn hình. Trong phòng truyện, chân An không đứng trong "vùng vật cản" của bàn/rương (`OBSTACLES` trong `src/game/room-walker.ts`); điểm rơi vào đó được đẩy ra sàn ngay phía trước.
+
+*Quy tắc: Không làm tròn hệ số, chỉ làm tròn px màn hình.*
 
 ---
 
-## 6. Quy Chuẩn Paperdoll & Hoán Đổi Màu (Palette Swapping)
+## 6. Bảng Chuẩn Hóa Loại Asset (Asset Specifications)
 
-### 6.1. Thứ tự 8 lớp đồ họa (Layer Stacking Order)
-Hệ thống hiển thị nhân vật búp bê giấy trên khung lưới chuẩn **64 × 96 pixel**, xếp chồng từ dưới lên trên theo đúng thứ tự:
+Các thông số dưới đây tuân thủ chính sách An làm đơn vị chuẩn:
 
-1. `layer-0-shadow`: Bóng chân nhân vật in trên mặt đất.
-2. `layer-1-body`: Khối cơ thể, dáng đứng, tông màu da cơ bản.
-3. `layer-2-pants`: Quần lụa dài hai ống (trắng hoặc đen, rủ chạm mu bàn chân).
-4. `layer-3-inner`: Lớp áo lót trong (áo yếm đối với áo tứ thân; áo lót trắng cổ viền đối với ngũ thân và áo tấc).
-5. `layer-4-garment-back`: Tà áo sau rủ dài sau lưng.
-6. `layer-5-garment-front`: Tà áo trước, thân áo chính, cổ đứng/cổ sen, hàng khuy cài và đường xẻ tà bên sườn.
-7. `layer-6-head`: Khuôn mặt, tóc và phục sức đội đầu (khăn vấn, khăn đóng, nón lá, nón quai thao).
-8. `layer-7-accessories`: Phụ kiện trang sức đeo thêm hoặc cầm tay (kiềng bạc, chuỗi ngọc, quạt lụa, thước thợ may, guốc mộc).
+| Loại Asset | Kích thước chuẩn (px) | Tỷ lệ khung khi gen | Cách cắt chuẩn hóa nếu AI không có tỷ lệ | Bảo Tàng | Số khung hình | Cần tách nền |
+| :--- | :---: | :---: | :--- | :---: | :---: | :---: |
+| `character-sprite` | 176 × 416 | 3:8 | Căn giữa nhân vật trên khung 176 × 416 px mỗi frame | An, NPC 4 hướng | 1 (idle) hoặc 4 (facing) | Có |
+| `cat-sprite` | 128 × 128 | 1:1 | Căn giữa khung 128 × 128 px mỗi frame | Cat Nep | 2–4 khung | Có |
+| `portrait` | crop từ front view | — | Dùng ô front của character-sprite, crop phần ngực trở lên | Sổ tay Nhân vật | 1–2 khung | Có |
+| `paperdoll-layer` | 176 × 416 | 3:8 | (bãi bỏ; lớp cơ sở chính là 13 layer của An) | — | — | — |
+| `garment-layer` | dải 528 × 416 | — | 3 ô front, side, back mỗi 176 × 416, xuất đủ canvas | — | 1 tĩnh | Có |
+| `garment-icon` | 96 × 96 | 1:1 | Căn giữa tà áo thu nhỏ hiển thị trọn vẹn trong khung 96 × 96 px | Wardrobe UI | 1 tĩnh | Có |
+| `accessory-layer` | dải 528 × 416 | — | 3 ô front, side, back mỗi 176 × 416, xuất đủ canvas | — | 1 tĩnh | Có |
+| `accessory-icon` | 48 × 48 | 1:1 | Căn giữa vật thể trong khung 48 × 48 px | UI | 1 tĩnh | Có |
+| `item-icon` | 48 × 48 | 1:1 | Căn giữa vật thể trong khung 48 × 48 px | Codex | 1 tĩnh | Có |
+| `motif` | 32 × 32 | 1:1 | Vẽ họa tiết lặp vô tận (seamless repeat) trên lưới 32 × 32 px | — | 1 tĩnh | Có |
+| `area-background` | kích thước thật của file | — | Gen theo kích thước thực tế của file đã khôi phục | — | 1 tĩnh | Không |
+| `area-overlay` | kích thước thật của file | — | Gen theo kích thước thực tế của file đã khôi phục | — | 1–4 khung | Có |
+| `cg` | kích thước thật của file | — | Gen theo kích thước thực tế của file đã khôi phục | — | 1 tĩnh | Không |
+| `doc` | kích thước thật của file | — | Gen theo kích thước thực tế của file đã khôi phục | Codex | 1 tĩnh | Có |
+| `screen-background` | kích thước thật của file (gốc AI) | — | Giữ nguyên bản gen gốc không downscale | UI | 1 tĩnh | Không |
+| `icon UI` | 16 × 16 | 1:1 | Icon UI hiển thị theo bội số nguyên, độc lập với An unit | UI | 1 tĩnh | Có |
+| `ui-frame-9slice` | kích thước thật của file | — | Giữ nguyên kích thước gốc | UI | 1 tĩnh | Có |
+| `ui-bar-3slice` | kích thước thật của file | — | Giữ nguyên kích thước gốc | UI | 1 tĩnh | Có |
 
-### 6.2. Quy tắc xuất đủ canvas (No Trim)
-Tất cả các tệp hình ảnh của `garment-layer` và `accessory-layer` **BẮT BUỘC** phải được lưu trữ trên canvas kích thước đầy đủ đúng **64 × 96 pixel**. Tuyệt đối không xén bớt (trim/crop) phần trong suốt thừa. Khi UI vẽ lên màn hình tại tọa độ gốc `(0, 0)`, mọi lớp áo và phụ kiện sẽ khớp tuyệt đối từng điểm ảnh với cơ thể nhân vật.
+*Ghi chú:* 
+- **Bãi bỏ `paperdoll-layer`:** Hệ thống búp bê giấy dùng 13 lớp của An trực tiếp, không cần lớp base riêng.
+- **Background & screens:** Ghi đúng kích thước thật của file đang có, không bắt resize. Files đã khôi phục bản gen gốc ngày 05/10 được giữ nguyên kích thước, không downscale.
 
-### 6.3. Bảng mã Key hoán đổi màu thời gian thực (Palette Swapping Keys)
-Trang phục gốc trong kho được lưu dưới định dạng PNG Thang độ xám (Grayscale). Động cơ render trên HTML5 Canvas sẽ quét dữ liệu điểm ảnh và thay thế 8 mã màu chuẩn này sang màu sắc người dùng lựa chọn:
+---
+
+## 7. Quy Chuẩn Paperdoll & Gradient-Map Màu (13 Lớp An)
+
+### 7.1. Thứ tự 13 lớp đồ họa (Layer Stacking Order)
+
+Hệ thống hiển thị nhân vật búp bê giấy trên khung lưới chuẩn **176 × 416 pixel**, xếp chồng từ dưới lên trên theo đúng thứ tự (từ `src/game/assets.ts` -> `AN.layers`):
+
+1. `shadow` — Bóng chân nhân vật in trên mặt đất
+2. `hair_back` — Tóc sau (phần tóc mặt lưng)
+3. `outfit_back` — Tà áo sau rủ dài sau lưng
+4. `legs` — Đùi (phần chân trên quần)
+5. `shoes` — Giày (phần chân dưới)
+6. `body` — Khối cơ thể, dáng đứng, tông màu da cơ bản
+7. `bottom` — Quần lụa dài hai ống (trắng hoặc đen, rủ chạm mu bàn chân)
+8. `outfit_main` — Thân áo chính, cổ đứng/cổ sen, hàng khuy cài, đường xẻ tà bên sườn
+9. `head` — Khuôn mặt (phần đầu không bao gồm tóc)
+10. `face` — Mặt chi tiết (mũi, miệng, nếp mắt)
+11. `hair_front` — Tóc trước (phần tóc che trán)
+12. `hands` — Bàn tay (tay cầm, tay chạm áo)
+13. `head_accessory` — Phụ kiện đội đầu (khăn vấn, khăn đóng, nón lá, nón quai thao)
+
+### 7.2. Quy tắc xuất đủ canvas (No Trim)
+
+Tất cả các tệp hình ảnh của `garment-layer` và `accessory-layer` **BẮT BUỘC** phải được lưu trữ trên canvas kích thước đầy đủ đúng **528 × 416 pixel** (3 ô × 176 × 416). Tuyệt đối không xén bớt (trim/crop) phần trong suốt thừa. Khi UI vẽ lên màn hình tại tọa độ gốc `(0, 0)`, mọi lớp áo và phụ kiện sẽ khớp tuyệt đối từng điểm ảnh với cơ thể nhân vật.
+
+### 7.3. Bảng mã Gradient-Map Màu (Palette Swapping Keys)
+
+Trang phục gồm lớp `garment-layer` và `accessory-layer` được lưu dưới định dạng PNG Thang độ xám (Grayscale). Động cơ render trên HTML5 Canvas sẽ quét dữ liệu điểm ảnh và thay thế 4 mã màu chuẩn này sang màu sắc người dùng lựa chọn (gradient-map):
 
 - **4 Key màu thân áo chính (Garment Base):**
   1. `Highlight` (Vùng sáng phản quang vải): `#E0E0E0`
@@ -128,15 +187,11 @@ Trang phục gốc trong kho được lưu dưới định dạng PNG Thang đ�
   3. `Shadow Tone` (Vùng tối nếp gấp vải): `#616161`
   4. `Outline` (Đường viền nét vẽ viền áo): `#212121`
 
-- **4 Key màu chi tiết phụ (Accent / Trims & Buttons):**
-  5. `Accent Highlight` (Điểm sáng khuy cài, viền cườm, hoa văn nhỏ): `#FFFFFF`
-  6. `Accent Base` (Màu cúc vải, viền cổ, đường nẹp trong): `#D0C8B8`
-  7. `Accent Shadow` (Bóng đổ chân cúc, viền tối chi tiết): `#8C8275`
-  8. `Accent Outline` (Viền sắc cạnh của chi tiết phụ): `#3A342C`
+*Các chi tiết phụ (khuy cài, viền cỏ, đường chỉ) được vẽ đầy đủ màu trong layer, không cần gradient-map.*
 
 ---
 
-## 7. Bảng Màu Chuẩn Hóa Của Dự Án (Palette Mapping)
+## 8. Bảng Màu Chuẩn Hóa Của Dự Án (Palette Mapping)
 
 Tất cả các tệp `README.md` mô tả asset con chỉ được phép gọi tên màu bằng **TÊN TIẾNG VIỆT** quy định dưới đây; mã Hex chỉ lưu trữ tại bảng này:
 
@@ -173,16 +228,16 @@ Tất cả các tệp `README.md` mô tả asset con chỉ được phép gọi 
 
 ---
 
-## 8. Khối Từ Khóa Loại Trừ (Negative) & Quy Tắc Nội Dung
+## 9. Khối Từ Khóa Loại Trừ (Negative) & Quy Tắc Nội Dung
 
-### 8.1. Negative chung bắt buộc ghép vào prompt
+### 9.1. Negative chung bắt buộc ghép vào prompt
 Mọi yêu cầu sinh ảnh bắt buộc đính kèm đoạn từ khóa loại trừ sau:
 
 ```text
 photorealistic, realistic, hyperrealistic, 3D render, CGI, unreal engine, smooth gradients, anti-aliased, blurry, soft focus, bokeh, drop shadow, modern text, english text, chinese characters, kanji, hanzi, letters, signature, watermark, logo, western clothing, chinese qipao, korean hanbok, japanese kimono
 ```
 
-### 8.2. Bốn quy tắc nội dung bất khả xâm phạm
+### 9.2. Bốn quy tắc nội dung bất khả xâm phạm
 1. **Tuyệt đối không để AI vẽ chữ vào ảnh:**
    - Không sinh chữ Hán, chữ Nôm, chữ Quốc ngữ, thư pháp, chữ ký, ấn triện hay biển hiệu có chữ.
    - Toàn bộ nội dung văn bản trên các bức thư, văn tự, bài vị, gia phả, hoành phi và chứng cứ sẽ do giao diện (UI Text Engine) phủ văn bản lên trên ảnh nền/vật phẩm khi hiển thị cho người chơi đọc.
@@ -195,7 +250,7 @@ photorealistic, realistic, hyperrealistic, 3D render, CGI, unreal engine, smooth
 
 ---
 
-## 9. Quy Trình 9 Bước Sản Xuất & Tinh Chỉnh Asset
+## 10. Quy Trình 9 Bước Sản Xuất & Tinh Chỉnh Asset
 
 Mọi hình ảnh trước khi tích hợp vào app đều phải trải qua quy trình 9 bước tiêu chuẩn:
 
@@ -207,7 +262,7 @@ Mọi hình ảnh trước khi tích hợp vào app đều phải trải qua quy
 - **Bước 2: Dò lưới (Grid Snapping):** Đưa ảnh vào phần mềm chuyên dụng (Aseprite / Photoshop), căn chỉnh tỷ lệ pixel scale để từng hạt pixel ăn khớp hoàn hảo vào lưới lưới vuông (Pixel Grid).
 - **Bước 3: Ép Palette (Color Quantization):** Giới hạn số lượng màu về đúng số lượng quy định (tối đa 4, 12, 16 hoặc 32 màu tùy loại asset), chuyển đổi sang bảng màu chuẩn của dự án.
 - **Bước 4: Xóa nền (Chroma Key):** Khử hoàn toàn màu phông nền `#FF00FF` hoặc `#00FF00` thành kênh Alpha trong suốt 100%, không để lại viền lem hạt màu phông.
-- **Bước 5: Đưa về Canvas chuẩn (Canvas Sizing):** Đặt hình vào kích thước khung hình chuẩn theo bảng kỹ thuật (ví dụ: 64 × 96, 48 × 48, 800 × 500 px), căn đúng trọng tâm hoặc vị trí offset, không cắt tỉa (no trim).
+- **Bước 5: Đưa về Canvas chuẩn (Canvas Sizing):** Đặt hình vào kích thước khung hình chuẩn theo bảng kỹ thuật (ví dụ: 176 × 416, 528 × 416, 48 × 48 px), căn đúng trọng tâm hoặc vị trí offset, không cắt tỉa (no trim).
 - **Bước 6: Sửa tay (Pixel Cleanup):** Họa sĩ dùng bút 1px chỉnh sửa thủ công: tỉa sắc nét đường viền (crisp outline), loại bỏ pixel thừa lạc lõng (stray pixels), chỉnh lại nếp vải và khuôn mặt.
 - **Bước 7: QA Kỹ thuật:** Kiểm tra kích thước chính xác, kiểm tra độ sâu màu, xác nhận không có hiệu ứng anti-aliasing làm mờ viền.
 - **Bước 8: Duyệt văn hóa (Cultural Review):** Đối chiếu hồ sơ nhân vật và tư liệu lịch sử: kiểm tra hàng khuy 5 hạt bên hữu, độ đứng của cổ lập lĩnh, chiều dài vạt áo, bảo đảm tính xác thực di sản.
@@ -217,9 +272,9 @@ Mọi hình ảnh trước khi tích hợp vào app đều phải trải qua quy
 
 ---
 
-## 10. Quy Chuẩn Đặt Tên & Quản Lý Trạng Thái
+## 11. Quy Chuẩn Đặt Tên & Quản Lý Trạng Thái
 
-### 10.1. Cú pháp đặt tên tệp
+### 11.1. Cú pháp đặt tên tệp
 - Toàn bộ dùng chữ thường, không dấu tiếng Việt, nối nhau bằng dấu gạch ngang (`kebab-case`), định dạng tệp luôn là `.png`.
 - **Nền khu vực:** `<area-id>--phai.png` (mặt phải thế giới thực).
 - **Mặt trái khu vực:** `<area-id>--trai.png` (cõi dệt lật vải; trạng thái ghi chú: *"hoãn sau 10/10"*).
@@ -229,10 +284,10 @@ Mọi hình ảnh trước khi tích hợp vào app đều phải trải qua quy
   - Chân dung biểu cảm: `portrait-<bien-the>-<bieu-cam>.png` (ví dụ: `portrait-smile.png`, `portrait-determined.png`).
 - **Trang phục & Phụ kiện:**
   - Lớp paperdoll mặc trên người: `<id>.png` (ví dụ: `ao-tu-than.png`, `khan-van-den.png`).
-  - Ảnh đại diện hiển thị: `<id>--thumb.png` (cho áo trong tủ đồ) hoặc `<id>--icon.png` (cho phụ kiện/vật phẩm).
+  - Ảnh đại diện hiển thị: `<id>--icon.png` (cho phụ kiện/vật phẩm hoặc áo trong tủ).
 - **Thư mục ảnh nháp:** Mỗi asset có một thư mục `_raw/` nằm cạnh file `README.md` để lưu trữ các lần tạo ảnh của AI (`<ten>-v1.png`, `<ten>-v2.png`).
 
-### 10.2. Bốn trạng thái tiến độ chuẩn
+### 11.2. Bốn trạng thái tiến độ chuẩn
 Mọi tệp trong bảng danh mục của README asset đều mang một trong bốn trạng thái sau:
 - ⬜ **chưa gen:** Mới có tài liệu mô tả, chưa tiến hành chạy AI.
 - 🟨 **nháp AI:** Đã sinh ảnh thô từ Google AI Studio, đang lưu trong `_raw/`.
@@ -241,7 +296,71 @@ Mọi tệp trong bảng danh mục của README asset đều mang một trong b
 
 ---
 
-## 11. Mẫu Chuẩn Cho README Của Từng Asset Con
+## 12. Danh Sách Asset Chờ Gen Lại
+
+### Nhân vật (Characters) — 7 NPC + An chính
+
+#### 4 NPC × 4 hướng (view-front, view-left, view-right, view-back)
+- `cat-nep` — mèo nếp, khung 128×128
+- `ong-le` — ông Lê dạng bóng mờ (silhouette + whisper effect), khung 176×416
+- `cu-cam` — Cú Cam, khung 176×416
+- `truong-toc-bui` — Trưởng tóc bụi, khung 176×416
+
+#### 3 NPC chỉ mặt trước (portrait-only)
+- `cu-loan` — Cú Loan, khung 176×416
+- `ba-mai` — Bà Mai, khung 176×416
+- `me-phuong` — Mẹ Phương, khung 176×416
+
+| NPC | Loại | Tệp Cần Gen | Trạng Thái |
+| :--- | :--- | :--- | :---: |
+| `cat-nep` | cat-sprite | `assets/characters/cat-nep/view-front.png`, `view-left.png`, `view-right.png`, `view-back.png` (mỗi 128×128) | Chờ gen lại |
+| `ong-le` | character-sprite (shadow) | `assets/characters/ong-le/view-front.png`, `view-left.png`, `view-right.png`, `view-back.png` (mỗi 176×416, silhouette mờ) | Chờ gen lại |
+| `cu-cam` | character-sprite | `assets/characters/cu-cam/view-front.png`, `view-left.png`, `view-right.png`, `view-back.png` (mỗi 176×416) | Chờ gen lại |
+| `truong-toc-bui` | character-sprite | `assets/characters/truong-toc-bui/view-front.png`, `view-left.png`, `view-right.png`, `view-back.png` (mỗi 176×416) | Chờ gen lại |
+| `cu-loan` | character-sprite | `assets/characters/cu-loan/view-front.png` (176×416) | Chờ gen lại |
+| `ba-mai` | character-sprite | `assets/characters/ba-mai/view-front.png` (176×416) | Chờ gen lại |
+| `me-phuong` | character-sprite | `assets/characters/me-phuong/view-front.png` (176×416) | Chờ gen lại |
+
+### Trang phục (Garments) — 10 áo dài
+
+| Áo | ID | Loại | Tệp Cần Gen | Trạng Thái |
+| :--- | :--- | :--- | :--- | :---: |
+| Áo Tứ Thân | `ao-tu-than` | garment-layer | `assets/garments/ao-tu-than/ao-tu-than.png` (dải 528×416, 3 ô front/side/back) | Chờ gen lại |
+| Áo Ngũ Thân Tay Chẽn | `ao-ngu-than-tay-chen` | garment-layer | `assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen.png` (dải 528×416) | Chờ gen lại |
+| Áo Ngũ Thân Tay Thùng | `ao-ngu-than-tay-thung` | garment-layer | `assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung.png` (dải 528×416) | Chờ gen lại |
+| Áo Dài Lemur | `ao-dai-lemur` | garment-layer | `assets/garments/ao-dai-lemur/ao-dai-lemur.png` (dải 528×416) | Chờ gen lại |
+| Áo Dài Tân Thời Vàng Mỡ Gà | `ao-dai-tan-thoi-vang-mo-ga` | garment-layer | `assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga.png` (dải 528×416) | Chờ gen lại |
+| Áo Dài Raglan | `ao-dai-raglan` | garment-layer | `assets/garments/ao-dai-raglan/ao-dai-raglan.png` (dải 528×416) | Chờ gen lại |
+| Áo Dài Cổ Thuyền | `ao-dai-co-thuyen` | garment-layer | `assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen.png` (dải 528×416) | Chờ gen lại |
+| Áo Dài Cưới Phin | `ao-dai-cuoi-phin` | garment-layer | `assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin.png` (dải 528×416) | Chờ gen lại |
+| Áo Dài Popolin | `ao-dai-popolin` | garment-layer | `assets/garments/ao-dai-popolin/ao-dai-popolin.png` (dải 528×416) | Chờ gen lại |
+| Áo Ngũ Thân Remix 2026 | `ao-ngu-than-remix-2026` | garment-layer | `assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026.png` (dải 528×416) | Chờ gen lại |
+
+### Phụ kiện (Accessories) — 10 phụ kiện
+
+| Phụ Kiện | ID | Loại | Tệp Cần Gen | Trạng Thái |
+| :--- | :--- | :--- | :--- | :---: |
+| Nón Lá | `non-la` | accessory-layer | `assets/accessories/non-la/non-la.png` (dải 528×416) | Chờ gen lại |
+| Quạt Lụa | `quat-lua` | accessory-layer | `assets/accessories/quat-lua/quat-lua.png` (dải 528×416) | Chờ gen lại |
+| Khăn Vấn Đen | `khan-van-den` | accessory-layer | `assets/accessories/khan-van-den/khan-van-den.png` (dải 528×416) | Chờ gen lại |
+| Khăn Vấn Hoàng Yến | `khan-van-hoang-yen` | accessory-layer | `assets/accessories/khan-van-hoang-yen/khan-van-hoang-yen.png` (dải 528×416) | Chờ gen lại |
+| Khăn Mở Quạ | `khan-mo-qua` | accessory-layer | `assets/accessories/khan-mo-qua/khan-mo-qua.png` (dải 528×416) | Chờ gen lại |
+| Kiềng Bạc | `kieng-bac` | accessory-layer | `assets/accessories/kieng-bac/kieng-bac.png` (dải 528×416) | Chờ gen lại |
+| Nón Quai Thao | `non-quai-thao` | accessory-layer | `assets/accessories/non-quai-thao/non-quai-thao.png` (dải 528×416) | Chờ gen lại |
+| Guốc Mộc | `guoc-moc` | accessory-layer | `assets/accessories/guoc-moc/guoc-moc.png` (dải 528×416) | Chờ gen lại |
+| Hài Thêu | `hai-theu` | accessory-layer | `assets/accessories/hai-theu/hai-theu.png` (dải 528×416) | Chờ gen lại |
+| Kính Mắt Mèo | `kinh-mat-meo` | accessory-layer | `assets/accessories/kinh-mat-meo/kinh-mat-meo.png` (dải 528×416) | Chờ gen lại |
+
+### Ghi chú
+
+- NPC chương 2–5 (`ca-nghi`, `vinh`, `chu-suu`, `hoang-lam`, `ba-lon`, `thay-ba-can`) đợi sau phase 01.
+- Mỗi tệp garment và accessory là **dải 528 × 416 px** chứa 3 ô: front, side (trái), back, mỗi ô 176 × 416 px.
+- Áo vẽ thang xám, tô màu bằng gradient-map 4 màu.
+- **Trạng thái:** "Chờ gen lại" cho tất cả các tệp ở mục này.
+
+---
+
+## 13. Mẫu Chuẩn Cho README Của Từng Asset Con
 
 Mọi tệp `README.md` của từng asset con trong toàn kho phải tuân thủ chính xác cấu trúc mẫu dưới đây:
 
@@ -250,7 +369,7 @@ Mọi tệp `README.md` của từng asset con trong toàn kho phải tuân th�
 
 - **Loại:** <chọn chính xác một loại trong Bảng loại asset tại assets/README.md>
 - **Dùng ở đâu:** <ghi rõ phân cảnh cốt truyện, màn hình ứng dụng hoặc tính năng sử dụng>
-- **Mô tả:** <Mô tả chi tiết bằng lời văn: nhân vật/sự vật là ai/cái gì, hình dáng, cử chỉ, nếp áo, chất liệu lụa/gỗ/đồng, cảm xúc, chuyển động. Màu sắc chỉ được gọi bằng TÊN TIẾNG VIỆT trong Bảng màu của assets/README.md (ví dụ: màu đỏ son, màu chàm, màu vàng mỡ gà). Kích thước chỉ gọi bằng LOẠI asset, tuyệt đối không ghi số px, không ghi dấu x, không ghi mã hex, không ghi tọa độ hay tỷ lệ số>.
+- **Mô tả:** <Mô tả chi tiết bằng lời văn: nhân vật/sự vật là ai/cái gì, hình dáng, cử chỉ, nếp áo, chất liệu lụa/gỗ/đồng, cảm xúc, chuyển động. Màu sắc chỉ được gọi bằng TÊN TIẾNG VIỆT trong Bảng màu của assets/README.md. **TUYỆT ĐỐI KHÔNG GHI SỐ PIXEL, KHÔNG GHI DẤU X, KHÔNG GHI MÃ HEX, KHÔNG GHI TỌA ĐỘ, KHÔNG GHI TỶ LỆ SỐ.** >
 - **Mô tả chủ thể (EN):** <Đoạn văn tiếng Anh đặc tả đối tượng: subject, pose, clothing details, traditional craftsmanship, fabric texture, colors by english common name, lighting mood. Không chứa các thông số kỹ thuật px hay mã hex>.
 - **Ghi chú văn hóa (nếu có):** <Ý nghĩa lịch sử, phong tục cổ truyền, quy tắc ngũ thường, nguồn gốc trang phục>.
 - **Tên cũ (nếu có):** <Đường dẫn hoặc tên gọi cũ trong các tài liệu trước đây để tiện truy vết>.
@@ -264,4 +383,4 @@ Mọi tệp `README.md` của từng asset con trong toàn kho phải tuân th�
 
 ---
 
-*Tài liệu này có hiệu lực áp dụng thống nhất cho toàn bộ quy trình sản xuất và chuẩn hóa tài nguyên của dự án Tiệm May Nếp.*
+*Tài liệu này có hiệu lực áp dụng thống nhất cho toàn bộ quy trình sản xuất và chuẩn hóa tài nguyên của dự án Tiệm May Nếp kể từ ngày 05/10/2026.*

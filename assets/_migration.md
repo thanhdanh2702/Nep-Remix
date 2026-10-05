@@ -2,6 +2,17 @@
 
 Tài liệu này ghi nhận nhật ký chuyển đổi và hợp nhất cấu trúc kho tài nguyên từ `docs/08-assets/` và các thư mục cũ sang cây thư mục chuẩn hóa tại `assets/` theo quy định tại Task A2.
 
+## Nhật Ký Cập Nhật Đặc Biệt
+
+### 05/10/2026: Chuyển sang đơn vị An
+
+- **Spec cũ:** Nhân vật 64×96 px, nền 800×500 px (không khớp tỉ lệ)
+- **Spec mới:** Nhân vật An 176×416 px (chibi pixel-art), humanHeight tỷ lệ động theo cảnh
+- **Xóa:** 90 asset nhân vật 64×96, 5 overlay hỏng, paperdoll base layers
+- **Khôi phục:** 9 screens bản gen gốc (không downscale)
+- **Tài liệu:** Viết lại `assets/README.md` (13 lớp An, gradient-map 4 màu, danh sách gen lại)
+- **Hiệu lực:** Áp dụng từ phase 01 trở đi
+
 ## 1. Danh Sách Tệp Đã Di Chuyển
 
 | Đường Dẫn Cũ | Đường Dẫn Mới | Phân Loại & Ghi Chú |

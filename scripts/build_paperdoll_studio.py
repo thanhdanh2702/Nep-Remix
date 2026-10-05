@@ -1,3 +1,5 @@
+import sys
+sys.exit("Đã bãi bỏ ngày 05/10, screens dùng bản gen gốc")
 import os, json, shutil
 
 # 1. assets/paperdoll/README.md

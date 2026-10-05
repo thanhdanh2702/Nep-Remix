@@ -6,7 +6,7 @@ Gian buồng hẹp vách đất trát rơm nứt nẻ nơi cụ Cầm bị giam 
 
 | Tệp | Nội dung | Kích thước | Trạng thái |
 | :--- | :--- | :--- | :---: |
-| `c1-s1-buong-det-khoa-kin--phai.png` | Nền buồng dệt thế giới thực (mặt `phai`) | 640 × 360 px (16:9) | Đã vẽ |
+| `c1-s1-buong-det-khoa-kin--phai.png` | Nền buồng dệt thế giới thực (mặt `phai`) | bố cục code-drawn | Đã vẽ |
 | `layout.json` | bbox 0..1 của 5 vật tương tác + vị trí mũi tên lối ra `window` | — | Đã sinh |
 
 Cả hai do `scripts/pixel/draw-c1-rooms.py` tạo ra: không sửa PNG hay `layout.json` bằng tay, sửa script rồi chạy lại (xem `../README.md`). Rect trong `src/content/chapters/c1.json` được sao nguyên từ `layout.json`; `scripts/check-game.ts` kiểm hai bên khớp nhau.
