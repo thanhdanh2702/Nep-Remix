@@ -4,6 +4,7 @@ import { content } from './store';
 import { asset, garmentAsset } from './assets';
 import { Modal } from './Modal';
 import { MotifStrip } from './MotifStrip';
+import { MuseumCodex, type CodexKind } from './MuseumCodex';
 import './museum.css';
 
 // Share the existing entries across the 12 physical notebooks.
@@ -24,6 +25,7 @@ export function Museum({ state, send, onReadingChange }: {
   const [selected, setSelected] = useState<number | null>(null);
   const [page, setPage] = useState(0);
   const [direction, setDirection] = useState('next');
+  const [codex, setCodex] = useState<CodexKind | null>(null);
   const volume = selected === null ? null : volumes[selected];
   const pageCount = (volume?.cards.length ?? 2) * 2 + 2;
   const card = volume?.cards[Math.min(Math.floor(page / 2), volume.cards.length - 1)];
@@ -32,9 +34,9 @@ export function Museum({ state, send, onReadingChange }: {
   const options = content.cultureCards.filter(c => (period === 'all' || c.timePeriod.includes(period)) && `${c.title} ${c.historicalFact}`.toLocaleLowerCase('vi').includes(search.toLocaleLowerCase('vi')));
 
   useEffect(() => {
-    onReadingChange(selected !== null);
+    onReadingChange(selected !== null || codex !== null);
     return () => onReadingChange(false);
-  }, [selected, onReadingChange]);
+  }, [selected, codex, onReadingChange]);
 
   function turn(delta: number) {
     setDirection(delta > 0 ? 'next' : 'previous');
@@ -76,6 +78,10 @@ export function Museum({ state, send, onReadingChange }: {
       <span className="eyebrow">THƯ PHÒNG · TIỆM MAY NẾP</span>
       <h2>Bảo tàng nếp áo</h2>
       <p className="museum-invitation">Một nếp nhà, bao câu chuyện.<br />Chọn một cuốn sách trên kệ để mở từng trang ký ức.</p>
+      <div className="museum-guide-codex">
+        <button type="button" aria-label="Mở sổ tay Nhân vật" onClick={() => setCodex('characters')}>Nhân vật</button>
+        <button type="button" aria-label="Mở sổ tay Kỷ vật" onClick={() => setCodex('items')}>Kỷ vật</button>
+      </div>
       <details className="museum-catalog">
         <summary>Tra cứu tư liệu <span>{state.museum.readCardIds.length}/{content.cultureCards.length} đã đọc</span></summary>
         <div className="museum-catalog-content">
@@ -88,6 +94,7 @@ export function Museum({ state, send, onReadingChange }: {
         </div>
       </details>
     </aside>
+    {codex && <MuseumCodex kind={codex} state={state} onClose={() => setCodex(null)} />}
     {volume && card && <Modal title={`Sổ tay ${String(volume.number).padStart(2, '0')}`} wide className="museum-reader" onClose={() => setSelected(null)}>
       <MotifStrip />
       <div className="museum-open-book">

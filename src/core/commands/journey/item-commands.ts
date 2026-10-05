@@ -4,7 +4,7 @@ import type { GameContent } from '../../../content/index.ts';
 import { applyPuzzleSolved } from './puzzle-solution.ts';
 
 // Known item combinations from puzzles and game scripts
-const COMBINATION_RECIPES: Record<string, string> = {
+export const COMBINATION_RECIPES: Record<string, string> = {
   // c1: con_thoi_go_mun + that_lung_lua_cham -> dung_cu_moc_then_cua
   'con_thoi_go_mun+that_lung_lua_cham': 'dung_cu_moc_then_cua',
   'that_lung_lua_cham+con_thoi_go_mun': 'dung_cu_moc_then_cua'

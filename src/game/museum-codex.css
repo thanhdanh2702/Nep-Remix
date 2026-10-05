@@ -1,0 +1,30 @@
+/* Codex (Nhân vật / Kỷ vật): 3 columns on phones, 6 from 900px. Item icons are 48px art shown at x2. */
+.museum-codex .modal { color: var(--c-deep-plum); }
+.codex-count { margin: 0 0 8px; font-size: var(--fs-caption); color: var(--c-muted-plum); }
+.codex-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.codex-grid li { min-width: 0; }
+.museum-codex .codex-cell {
+  display: flex; flex-direction: column; align-items: center; gap: 4px; width: 100%; min-height: var(--target-min); padding: 6px 2px;
+  border: var(--bw-thin) solid var(--c-sub-border); background: var(--c-paper-cream); color: var(--c-deep-plum); box-shadow: none; text-align: center;
+}
+.museum-codex .codex-cell:hover, .museum-codex .codex-cell:focus-visible, .museum-codex .codex-cell.is-selected { border-color: var(--c-crimson); background: var(--c-light-cream); }
+.museum-codex .codex-cell:focus-visible { outline: 3px solid var(--c-warm-gold); outline-offset: 2px; }
+.museum-codex .codex-cell.is-locked { color: var(--c-muted-plum); }
+.codex-art { display: flex; align-items: center; justify-content: center; flex: 0 0 auto; max-width: 100%; overflow: hidden; background: var(--c-soft-pink); }
+.codex-icon { width: 96px; height: 96px; }
+.codex-icon img { width: 96px; height: 96px; image-rendering: pixelated; }
+.codex-portrait { width: 96px; height: 144px; }
+.codex-portrait img { width: auto; height: 100%; max-width: 100%; object-fit: contain; }
+.codex-emblem { display: block; width: 48px; height: 48px; }
+.codex-emblem .nep-icon { width: 48px; height: 48px; }
+/* Not yet found: pure black silhouette on the pink tile. */
+.codex-art.is-locked img, .codex-art.is-locked .codex-emblem { filter: brightness(0); opacity: .75; }
+.codex-label { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; max-width: 100%; font-size: var(--fs-caption); line-height: 1.25; overflow-wrap: anywhere; }
+.codex-detail { min-height: 3.6em; margin: 12px 0 0; padding: 8px 10px; border: 1px solid var(--c-sub-border); background: var(--c-light-cream); font-size: var(--fs-caption); line-height: 1.5; }
+.museum-reader.museum-codex .modal { max-height: calc(100% - 16px); overflow: auto; }
+@media (min-width: 900px) { .codex-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+/* The fixed 'Về sân nhà' button sits top-left; keep the sheet clear of it on small screens. */
+@media (max-width: 640px), (max-height: 520px) { .codex-grid { gap: 4px; } .museum-reader.museum-codex.modal-backdrop { padding-top: 64px; } .museum-reader.museum-codex .modal { max-height: 100%; } }
+.museum-guide-codex { display: flex; gap: 8px; margin: 12px 0; }
+.museum-guide-codex button { flex: 1 1 0; min-height: var(--target-min); font-size: var(--fs-caption); }
+@media (max-width: 640px) { .museum-guide-codex { margin: 6px 0 0; } }
