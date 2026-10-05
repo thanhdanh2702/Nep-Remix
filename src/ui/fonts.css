@@ -1,0 +1,29 @@
+/* Self-hosted, subset to Latin + Vietnamese; both cover all 134 accented Vietnamese letters. */
+@font-face {
+  font-family: "VT323";
+  src: url("../../assets/fonts/vt323/VT323-Regular.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  src: url("../../assets/fonts/be-vietnam-pro/BeVietnamPro-400.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  src: url("../../assets/fonts/be-vietnam-pro/BeVietnamPro-600.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 500 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Be Vietnam Pro";
+  src: url("../../assets/fonts/be-vietnam-pro/BeVietnamPro-700.woff2") format("woff2");
+  font-style: normal;
+  font-weight: 700 900;
+  font-display: swap;
+}

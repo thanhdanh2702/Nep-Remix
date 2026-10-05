@@ -49,8 +49,8 @@ try {
     await page.locator('.room-background img').waitFor();
     await page.waitForFunction(() => [...document.querySelectorAll('.room img')].every(img => img.complete && img.naturalWidth > 0));
     if (slug !== 'museum') await page.waitForFunction(() => {
-      const canvas = document.querySelector('#paperdoll');
-      return canvas && canvas.getContext('2d').getImageData(0, 0, 64, 96).data.some((value, index) => index % 4 === 3 && value);
+      const canvas = document.querySelector('.studio-character');
+      return canvas && canvas.getContext('2d').getImageData(0, 0, canvas.width, canvas.height).data.some((value, index) => index % 4 === 3 && value);
     });
     assert(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), `${slug}: mobile horizontal overflow`);
     await page.screenshot({ path: `artifacts/mobile-${slug}.png`, fullPage: true });

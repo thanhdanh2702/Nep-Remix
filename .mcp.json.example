@@ -1,0 +1,17 @@
+{
+  "_comment": "VÍ DỤ - không tự chạy. Cần GEMINI_API_KEY BẬT BILLING (Gemini API tạo ảnh không có free tier). KHÔNG commit key. Muốn dùng: copy thành .mcp.json, xoá dòng _comment và disabled của server cần bật, đặt biến môi trường GEMINI_API_KEY trong shell (file chỉ tham chiếu ${GEMINI_API_KEY}, không chứa key). Miễn phí: dùng Google AI Studio web + scripts/process-ai-asset.py, xem docs/06-design/ai-studio/gemini-ui-asset-prompts.md.",
+  "mcpServers": {
+    "nanobanana": {
+      "disabled": true,
+      "command": "uvx",
+      "args": ["nanobanana-mcp-server@0.4.6"],
+      "env": { "GEMINI_API_KEY": "${GEMINI_API_KEY}" }
+    },
+    "pixelforge": {
+      "disabled": true,
+      "command": "npx",
+      "args": ["-y", "pixelforge-mcp@0.2.0"],
+      "env": { "GEMINI_API_KEY": "${GEMINI_API_KEY}" }
+    }
+  }
+}

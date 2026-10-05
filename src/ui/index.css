@@ -1,0 +1,8 @@
+/* Layer order: anything unlayered (screen stylesheets, components.css) still wins over
+   these layers, so element defaults never fight a screen's own class rules. */
+@layer reset, base, motion;
+@import "./tokens.css";
+@import "./fonts.css";
+@import "./base.css";
+@import "./components.css";
+@import "./motion.css";

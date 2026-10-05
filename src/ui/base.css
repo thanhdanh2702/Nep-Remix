@@ -1,0 +1,105 @@
+/* Element defaults live in a layer so any unlayered screen class overrides them
+   without fighting specificity (e.g. a disabled button keeping its own background). */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    font-family: var(--font-body);
+    font-size: var(--fs-body);
+    line-height: var(--lh-body);
+    color: var(--c-deep-plum);
+    background: var(--c-page);
+    font-synthesis: none;
+  }
+
+  h1, h2, h3, h4 {
+    margin-top: 0;
+    font-family: var(--font-display);
+    font-weight: 400;
+    line-height: var(--lh-tight);
+    letter-spacing: .5px;
+  }
+  h1 { font-size: var(--fs-screen-title); margin-bottom: 0; }
+  h2 { font-size: 28px; margin-bottom: var(--sp-3); }
+  h3 { font-size: var(--fs-panel-title); }
+  p { margin-top: 0; line-height: 1.65; }
+
+  /* Secondary button is the default (§6.1); `.primary` is the single main action. */
+  button {
+    font: inherit;
+    font-family: var(--font-body);
+    font-weight: 600;
+    cursor: pointer;
+    min-height: var(--target-min);
+    padding: var(--sp-2) var(--sp-4);
+    border: var(--bw-thin) solid var(--c-deep-plum);
+    background: var(--c-light-cream);
+    color: var(--c-deep-plum);
+    box-shadow: var(--shadow-sm);
+    transition: background-color var(--dur-fast) steps(2), transform var(--dur-fast) steps(2), box-shadow var(--dur-fast) steps(2);
+  }
+  button:hover:not(:disabled) { background: var(--c-soft-pink); }
+  button:active:not(:disabled) { transform: translateY(2px); box-shadow: var(--shadow-pressed); }
+  button:disabled, button[aria-disabled="true"] {
+    cursor: not-allowed;
+    color: var(--c-disabled-fg);
+    background: var(--c-disabled-bg);
+    border-color: var(--c-disabled-fg);
+    box-shadow: none;
+  }
+  button.primary {
+    background: var(--c-crimson);
+    border-color: var(--c-deep-plum);
+    color: var(--c-light-cream);
+    box-shadow: var(--shadow-sm-primary);
+  }
+  button.primary:hover:not(:disabled) { background: var(--c-primary-hover); }
+  button.primary:active:not(:disabled) { background: var(--c-primary-pressed); box-shadow: 0 2px 0 var(--c-primary-pressed); }
+  button.primary:disabled { color: var(--c-disabled-fg); background: var(--c-disabled-bg); border-color: var(--c-disabled-fg); box-shadow: none; }
+
+  /* Spec asks for a gold dashed ring, but gold on cream is ~1.6:1; crimson keeps the ring ≥3:1. */
+  :focus-visible { outline: 3px solid var(--c-crimson); outline-offset: 2px; }
+
+  input, select, textarea {
+    font: inherit;
+    min-height: var(--target-min);
+    width: 100%;
+    padding: var(--sp-2) var(--sp-3);
+    border: var(--bw-thin) solid var(--c-sub-border);
+    background: var(--c-light-cream);
+    color: var(--c-deep-plum);
+  }
+  label { display: block; font-size: var(--fs-caption); font-weight: 600; }
+  label > input, label > select { display: block; margin: var(--sp-2) 0 var(--sp-4); }
+
+  kbd {
+    display: inline-block;
+    padding: 0 var(--sp-2);
+    background: var(--c-deep-plum);
+    color: var(--c-paper-cream);
+    font-family: var(--font-display);
+    font-size: 18px;
+    line-height: 1.2;
+    letter-spacing: 1px;
+  }
+
+  img { max-width: 100%; }
+
+  /* Render policy: hi-res painted art scales smoothly; true pixel sprites opt in to
+     nearest-neighbour and must only be shown at whole-number multiples. */
+  .art-hires { image-rendering: auto; }
+  .pixel-native { image-rendering: pixelated; }
+
+  .screen-reader-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+  }
+}

@@ -5,14 +5,18 @@ import { AN, asset, loadImage } from './assets';
 import { content } from './store';
 import './journey-map.css';
 
-// Label rectangles measured against the supplied 1672 × 941 map.
-const stops: { id: ChapterId; place: string; character: string; sprite?: string; x: number; y: number; width: number; feetX: number; feetY: number }[] = [
-  { id: 'prologue', place: 'Căn Gác Thu', character: 'An', x: 44.9, y: 90.2, width: 10.5, feetX: 49.6, feetY: 88.5 },
-  { id: 'c1', place: 'Làng lụa Vạn Phúc', character: 'Cụ Cầm', sprite: 'cu-cam', x: 19.8, y: 8.1, width: 12.3, feetX: 28, feetY: 27.5 },
-  { id: 'c2', place: 'Phố Cổ Hà Nội', character: 'Cụ Loan', sprite: 'cu-loan', x: 66, y: 17.5, width: 11.5, feetX: 75, feetY: 36 },
-  { id: 'c3', place: 'Sài Gòn · Đa Kao', character: 'Bà Mai', sprite: 'ba-mai', x: 53.6, y: 45, width: 10.5, feetX: 62, feetY: 60.5 },
-  { id: 'c4', place: 'Nam Định', character: 'Mẹ Phương', sprite: 'me-phuong', x: 13.9, y: 69.1, width: 7.9, feetX: 25, feetY: 78.5 },
-  { id: 'c5', place: 'Nếp Áo Hồi Sinh', character: 'An', x: 83.6, y: 84.2, width: 8.6, feetX: 79.7, feetY: 89.5 },
+// Label rectangles measured against the supplied 1672 × 941 map. The plaque text is painted into the
+// art, so labels stay on their plaque; `labelSide` pushes the portrait clear of it ('top' = plaque sits
+// above the portrait, 'bottom' = below). Portraits are fixed px tall, so the clamp is done in CSS.
+const LABEL_HEIGHT = 5.4;
+type Stop = { id: ChapterId; place: string; character: string; sprite?: string; x: number; y: number; width: number; feetX: number; feetY: number; labelSide?: 'top' | 'bottom' };
+const stops: Stop[] = [
+  { id: 'prologue', place: 'Căn Gác Thu', character: 'An', x: 44.9, y: 90.2, width: 10.5, feetX: 49.6, feetY: 88.5, labelSide: 'bottom' },
+  { id: 'c1', place: 'Làng lụa Vạn Phúc', character: 'Cụ Cầm', sprite: 'cu-cam', x: 19.8, y: 8.1, width: 12.3, feetX: 28, feetY: 27.5, labelSide: 'top' },
+  { id: 'c2', place: 'Phố Cổ Hà Nội', character: 'Cụ Loan', sprite: 'cu-loan', x: 66, y: 17.5, width: 11.5, feetX: 75, feetY: 36, labelSide: 'top' },
+  { id: 'c3', place: 'Sài Gòn · Đa Kao', character: 'Bà Mai', sprite: 'ba-mai', x: 53.6, y: 45, width: 10.5, feetX: 62, feetY: 60.5, labelSide: 'top' },
+  { id: 'c4', place: 'Nam Định', character: 'Mẹ Phương', sprite: 'me-phuong', x: 13.9, y: 69.1, width: 7.9, feetX: 27.5, feetY: 78.5 },
+  { id: 'c5', place: 'Nếp Áo Hồi Sinh', character: 'An', x: 83.6, y: 84.2, width: 8.6, feetX: 76, feetY: 89.5 },
 ];
 
 function AnPose({ preset }: { preset: string }) {
@@ -34,7 +38,7 @@ function AnPose({ preset }: { preset: string }) {
     }).catch(() => { if (!cancelled && ref.current) ref.current.dataset.ready = 'false'; });
     return () => { cancelled = true; };
   }, [preset]);
-  return <canvas ref={ref} width={AN.cellWidth} height={AN.cellHeight} aria-hidden="true" />;
+  return <canvas ref={ref} className="art-hires" width={AN.cellWidth} height={AN.cellHeight} aria-hidden="true" />;
 }
 
 export function JourneyLock() {
@@ -56,6 +60,7 @@ export function JourneyMap({ state, paused, onSelect, onHome }: {
 }) {
   const [revealing, setRevealing] = useState(true);
   const [artworkReady, setArtworkReady] = useState(false);
+  const [artworkFailed, setArtworkFailed] = useState(false);
   const scroll = useRef<HTMLDivElement>(null);
   const heading = useRef<HTMLHeadingElement>(null);
   useEffect(() => {
@@ -63,20 +68,22 @@ export function JourneyMap({ state, paused, onSelect, onHome }: {
     if (scroll.current) scroll.current.scrollLeft = (scroll.current.scrollWidth - scroll.current.clientWidth) / 2;
   }, []);
   useEffect(() => {
-    if (!artworkReady) return;
+    if (!artworkReady && !artworkFailed) return;
     const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const timer = setTimeout(() => setRevealing(false), reduced ? 50 : 1800);
+    // A broken map must not leave the screen inert behind the clouds.
+    const timer = setTimeout(() => setRevealing(false), reduced || artworkFailed ? 50 : 1800);
     return () => clearTimeout(timer);
-  }, [artworkReady]);
+  }, [artworkReady, artworkFailed]);
   return <section className="journey-map-screen" aria-labelledby="journey-map-title" data-revealing={revealing}>
     <header className="journey-map-heading">
       <button disabled={paused} onClick={onHome}>‹ Về sân nhà</button>
       <div><span className="eyebrow">MỘT TÀ ÁO. MUÔN CÂU CHUYỆN.</span><h2 id="journey-map-title" ref={heading} tabIndex={-1}>Năm nếp áo · Năm thế hệ</h2></div>
       <span className="journey-map-legend"><JourneyLock /> Hoàn thành từng chương để mở nếp áo tiếp theo</span>
     </header>
-    <div className="journey-map-scroll" ref={scroll} aria-label="Bản đồ các chương cốt truyện" tabIndex={0}>
+    {artworkFailed && <p className="journey-map-error" role="alert">Không tải được ảnh bản đồ. Bạn vẫn có thể chọn chương bên dưới.</p>}
+    <div className="journey-map-scroll" ref={scroll} role="region" aria-label="Bản đồ các chương cốt truyện" tabIndex={0}>
       <div className="journey-map-art" inert={paused || revealing}>
-        <img className="journey-map-background" src={asset('map.png')} onLoad={() => setArtworkReady(true)} alt="Bản đồ hành trình từ làng lụa Vạn Phúc, phố cổ Hà Nội, Sài Gòn Đa Kao, Nam Định đến Tiệm May Nếp" draggable={false} />
+        <img className="journey-map-background art-hires" src={asset('map.png')} onLoad={() => setArtworkReady(true)} onError={() => setArtworkFailed(true)} alt="Bản đồ hành trình từ làng lụa Vạn Phúc, phố cổ Hà Nội, Sài Gòn Đa Kao, Nam Định đến Tiệm May Nếp" draggable={false} />
         {stops.map((stop, index) => {
           const progress = state.journey[stop.id];
           const locked = progress.status === 'locked';
@@ -84,12 +91,12 @@ export function JourneyMap({ state, paused, onSelect, onHome }: {
           const label = stop.id === 'prologue' ? 'Mở đầu' : `Chương ${index}`;
           const previous = content.chapters[stops[index - 1]?.id]?.chapter.title;
           return <div key={stop.id} className={`journey-map-stop ${locked ? 'is-locked' : completed ? 'is-completed' : 'is-open'}`} data-chapter={stop.id}>
-            <button className="journey-map-label" style={{ left: `${stop.x}%`, top: `${stop.y}%`, width: `${stop.width}%` }} disabled={locked} onClick={() => onSelect(stop.id)} aria-label={`${label}: ${stop.place} · ${stop.character} · ${locked ? 'Chưa mở khóa' : completed ? 'Đã hoàn thành' : 'Đã mở khóa'}`} title={locked ? `Hoàn thành ${previous} để mở khóa` : content.chapters[stop.id].chapter.title}>
+            <button className="journey-map-label" style={{ left: `${stop.x}%`, top: `${stop.y + LABEL_HEIGHT / 2}%`, minWidth: `${stop.width}%` }} disabled={locked} onClick={() => onSelect(stop.id)} aria-label={`${label}: ${stop.place} · ${stop.character} · ${locked ? 'Chưa mở khóa' : completed ? 'Đã hoàn thành' : 'Đã mở khóa'}`} title={locked ? `Hoàn thành ${previous} để mở khóa` : content.chapters[stop.id].chapter.title}>
               <strong>{locked && <JourneyLock />}{stop.place}{completed && <span aria-hidden="true"> ✓</span>}</strong>
               <span>{label} · {content.chapters[stop.id].chapter.year}</span>
             </button>
-            <button className="journey-map-character" style={{ left: `${stop.feetX}%`, top: `${stop.feetY}%` } as CSSProperties} disabled={locked} onClick={() => onSelect(stop.id)} aria-label={`Gặp ${stop.character} · ${label}${locked ? ' · Chưa mở khóa' : ''}`}>
-              {stop.sprite ? <img src={asset(`assets/characters/${stop.sprite}/view-front.png`)} alt="" draggable={false} /> : <AnPose preset={state.profile?.avatarPreset ?? 'an-default'} />}
+            <button className="journey-map-character" data-label-side={stop.labelSide} style={{ left: `${stop.feetX}%`, '--feet-y': `${stop.feetY}%`, '--label-top': `${stop.y}%`, '--label-bottom': `${stop.y + LABEL_HEIGHT}%` } as CSSProperties} disabled={locked} onClick={() => onSelect(stop.id)} aria-label={`Gặp ${stop.character} · ${label}${locked ? ' · Chưa mở khóa' : ''}`}>
+              {stop.sprite ? <img className="pixel-native" src={asset(`assets/characters/${stop.sprite}/view-front.png`)} alt="" draggable={false} /> : <AnPose preset={state.profile?.avatarPreset ?? 'an-default'} />}
               <span>{stop.character}</span>
             </button>
           </div>;

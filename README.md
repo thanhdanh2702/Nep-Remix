@@ -21,6 +21,15 @@ Thanh kem chứa logo ở trên luôn được giữ khi vào game. Thanh khám 
 - **Bảo tàng:** tìm/đọc nội dung văn hóa có sẵn; thưởng mỗi thẻ một lần.
 - **Cài đặt:** chọn tên, tóc và màu áo có sẵn; bắt đầu lại sau khi xác nhận.
 
+### Giao diện
+
+- Token màu, khoảng cách, viền và bóng theo `docs/06-design/design-system.md` nằm ở `src/ui/tokens.css`. Mặc định cho phần tử (`src/ui/base.css`) nằm trong `@layer base`, nên CSS của từng màn luôn thắng.
+- Chỉ dùng hai font tự host, đã kiểm đủ 134 chữ cái tiếng Việt có dấu: **VT323** cho tiêu đề, HUD, nhãn; **Be Vietnam Pro** cho đoạn văn và hội thoại.
+- Ảnh vẽ độ phân giải cao dùng class `art-hires` (thu nhỏ mượt). Sprite pixel thật (NPC 64×96, áo, icon, khung 9-slice) dùng `pixel-native` và chỉ phóng theo bội số nguyên.
+- Hiệu ứng (`src/ui/motion.css`, `src/ui/motion.ts`) chỉ dùng `transform`/`opacity` với `steps()`, gồm: hội thoại gõ chữ kèm chân dung, modal bật lên, toast trượt, rung khi chọn sai, Sen Ngọc đếm số. Tất cả tắt khi hệ điều hành bật giảm chuyển động.
+- Thiết bị cảm ứng (`pointer: coarse`), kể cả điện thoại xoay ngang, luôn có nút di chuyển và nút tương tác ≥ 44px.
+- Asset còn thiếu: tạo miễn phí trên Google AI Studio, rồi hậu xử lý bằng `python scripts/process-ai-asset.py`. Xem `docs/06-design/ai-studio/gemini-ui-asset-prompts.md`. Cấu hình MCP tạo ảnh bằng Gemini (cần key có billing) để sẵn ở `.mcp.json.example`.
+
 Tiến trình tự lưu trên thiết bị vào `localStorage` với khóa `tiem-may-nep-save-v1`, bằng bộ serialize/restore của core. Hội thoại và modal chặn di chuyển; nhập văn bản và mất focus cũng dừng input.
 
 ## Build và kiểm tra

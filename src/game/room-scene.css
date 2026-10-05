@@ -1,0 +1,39 @@
+/* Point-and-click room: an 8:5 stage contained in the scene, plum letterbox around it.
+   The canvas only paints; every hotspot is a transparent DOM button laid over it. */
+.room-scene{position:absolute;inset:0;overflow:hidden;background:var(--c-deep-plum);cursor:var(--cursor-default,auto)}
+.room-stage{position:absolute}
+.room-stage canvas{display:block;width:100%;height:100%}
+.room-hotspots{position:absolute;inset:0}
+.room-hotspots button{position:absolute;margin:0;padding:0;min-height:0;border:0;border-radius:0;background:none;box-shadow:none;transition:none;cursor:var(--cursor-hand,pointer)}
+.room-hotspots button:hover:not(:disabled),.room-hotspots button:active:not(:disabled){background:none;transform:none;box-shadow:none}
+.room-hotspots button:disabled{background:none;cursor:var(--cursor-default,auto)}
+.room-hotspots button:focus-visible{outline:3px solid var(--c-warm-gold);outline-offset:-3px}
+
+/* Exit arrows: the pixel arrow (rotated in code) bobs in two steps; the button is the whole exit zone. */
+.room-hotspots .room-exit{display:flex;align-items:center;justify-content:center;cursor:var(--cursor-exit,pointer)}
+.room-exit img{display:block;image-rendering:pixelated;animation:px-bob 1s infinite}
+.room-exit.dir-up{align-items:flex-end}.room-exit.dir-down{align-items:flex-start}
+.room-exit:hover:not(:disabled) img,.room-exit:focus-visible img{filter:brightness(1.18) drop-shadow(0 0 0 var(--c-warm-gold))}
+.room-exit:disabled img{animation:none;opacity:.5}
+
+/* Pixel tooltip anchored above (or below, near the top edge) the hotspot. */
+.room-tip{position:absolute;transform:translate(-50%,-100%);z-index:3;pointer-events:none;white-space:nowrap;max-width:min(320px,90%);overflow:hidden;text-overflow:ellipsis;
+  padding:var(--sp-1) var(--sp-2);background:var(--c-deep-plum);color:var(--c-warm-gold);border:var(--bw-thin) solid var(--c-warm-gold);box-shadow:0 2px 0 var(--c-muted-plum);
+  font-family:var(--font-display);font-size:20px;line-height:1}
+.room-tip.below{transform:translate(-50%,0)}
+
+/* "Soi": reveal every hotspot for a moment. Sits under the back-home button, clear of the stage corners. */
+
+.room-soi{position:absolute;z-index:var(--z-hud);left:var(--sp-4);top:calc(var(--header-h,64px) + var(--sp-2));min-width:var(--target-min);padding:var(--sp-1) var(--sp-3);
+  background:var(--c-deep-plum);color:var(--c-warm-gold);border:var(--bw-thin) solid var(--c-warm-gold);box-shadow:var(--shadow-sm);font-family:var(--font-display);font-size:22px;font-weight:400;line-height:1}
+.room-soi:hover:not(:disabled){background:var(--c-muted-plum)}
+.room-soi[aria-pressed="true"]{background:var(--c-warm-gold);color:var(--c-deep-plum)}
+.room-soi:disabled{background:var(--c-deep-plum);color:var(--c-disabled-fg);border-color:var(--c-disabled-fg)}
+
+/* Area change: four-step fade from black (reduced motion collapses it through motion.css). */
+@keyframes room-unfade{from{opacity:1}to{opacity:0}}
+.room-fade{position:absolute;inset:0;z-index:4;pointer-events:none;background:#000;opacity:1}
+.room-fade[data-state="clear"]{opacity:0;animation:room-unfade var(--dur-base) steps(4,end)}
+.room-status{position:absolute;inset:auto 0 50% 0;z-index:5;margin-inline:auto;width:max-content;max-width:calc(100% - var(--sp-5));padding:var(--sp-2) var(--sp-4);
+  background:var(--c-paper-cream);border:var(--bw-thin) solid var(--c-sub-border);font-family:var(--font-display);font-size:22px;text-align:center}
+.room-status.error{color:var(--c-error)}
