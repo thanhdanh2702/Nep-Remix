@@ -2,7 +2,7 @@ import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties, type 
 import type { GameState, StudioDraft } from '../core';
 import type { Garment } from '../content/schema';
 import { integerScale } from '../ui/pixel-scale';
-import { asset, accessoryAsset, assetInfo, garmentAsset, loadImage } from './assets';
+import { asset, accessoryAsset, assetInfo, assetRegistry, garmentAsset, loadImage } from './assets';
 import { content } from './store';
 import { recolorLayer } from './StudioCharacter';
 
@@ -32,7 +32,23 @@ function LockBadge({ hint }: { hint: string }) {
   </span>;
 }
 
-function GarmentPreview({ garment, colors, locked = false, hint = '' }: { garment: Garment; colors: StudioDraft['colorPalette']; locked?: boolean; hint?: string }) {
+type PreviewProps = { garment: Garment; colors: StudioDraft['colorPalette']; locked?: boolean; hint?: string };
+
+// Garment layers are being regenerated to An's spec; until one ships, show its catalogue icon.
+function GarmentPreview(props: PreviewProps) {
+  return assetRegistry[garmentAsset(props.garment.id)] ? <GarmentLayerPreview {...props} /> : <GarmentIconPreview {...props} />;
+}
+
+function GarmentIconPreview({ garment, locked = false, hint = '' }: PreviewProps) {
+  const [slot, scale] = useFitScale(96);
+  return <div ref={slot} className="wardrobe-thumb">
+    <img className="pixel-native" src={asset(garmentAsset(garment.id, true))} alt="" width={96} height={96}
+      style={{ width: 96 * scale, height: 96 * scale, filter: locked ? 'brightness(0) opacity(.55)' : undefined }} />
+    {locked && <LockBadge hint={hint} />}
+  </div>;
+}
+
+function GarmentLayerPreview({ garment, colors, locked = false, hint = '' }: PreviewProps) {
   const ref = useRef<HTMLCanvasElement>(null);
   const path = garmentAsset(garment.id);
   const [bx, by, bx2, by2] = assetInfo[path].bounds ?? [0, 0, 64, 96];

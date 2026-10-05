@@ -29,7 +29,7 @@
 .nep-menu-toggle { display: none; }
 
 .nep-welcome { position: relative; min-width: 0; min-height: 0; overflow: hidden; container-type: size; }
-.nep-welcome-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left center; image-rendering: pixelated; }
+.nep-welcome-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: left center; }
 .nep-introduction { position: absolute; z-index: 1; left: 3.3%; top: 7.5%; width: 39%; max-width: 640px; }
 .nep-eyebrow { display: flex; align-items: center; width: max-content; gap: 10px; color: var(--c-primary-hover); }
 .nep-eyebrow > span:nth-child(2) { border-top: 2px solid var(--c-lotus-pink); padding: 6px 12px 0; font-family: var(--font-display); font-size: 22px; letter-spacing: 5px; }

@@ -1,16 +1,22 @@
+import { assetRegistry } from './assets';
+
 // Standing dialogue art reuses sprites the game already ships, so no new art is needed:
-// NPCs are 64×96 pixel sprites (cat-nep is 32×32) drawn at a whole-number scale,
+// NPC sprites are drawn at a whole-number scale,
 // An is the layered hi-res sheet (composited, then drawn smoothed).
+// NPC art is being regenerated to An's spec; a speaker whose sprite is not shipped gets the emblem.
 export type Portrait =
   | { kind: 'sprite'; path: string; ghost?: boolean }
   | { kind: 'an' }
   | { kind: 'emblem' };
 
-const sprite = (id: string, ghost = false): Portrait => ({ kind: 'sprite', path: `assets/characters/${id}/view-front.png`, ghost });
+const sprite = (id: string, ghost = false): Portrait => {
+  const path = `assets/characters/${id}/view-front.png`;
+  return assetRegistry[path] ? { kind: 'sprite', path, ghost } : { kind: 'emblem' };
+};
 
 const bySpeaker: Record<string, Portrait> = {
   'An': { kind: 'an' },
-  'Mèo Nếp': { kind: 'sprite', path: 'assets/characters/cat-nep/view-front.png' },
+  'Mèo Nếp': sprite('cat-nep'),
   'Bóng mờ Ông Lệ': sprite('ong-le', true),
   'Cụ Cầm': sprite('cu-cam'),
   'Cụ Loan': sprite('cu-loan'),

@@ -138,7 +138,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const ids = Object.keys(boxesFor(chapterId, areaId)).filter(id => assetRegistry[`${folder}/hotspot-${id}.png`]);
     const npcIds = area.interactables.map(i => i.id).filter(id => ROOM_NPCS[id]);
     Promise.all([
-      Promise.all([loadImage(areaAsset(chapterId, areaId)), s1 ? loadImage(CAT_SPRITE) : undefined, vfxFile ? loadImage(`${folder}/${vfxFile}`) : undefined]),
+      Promise.all([loadImage(areaAsset(chapterId, areaId)), s1 && assetRegistry[CAT_SPRITE] ? loadImage(CAT_SPRITE) : undefined, vfxFile ? loadImage(`${folder}/${vfxFile}`) : undefined]),
       Promise.allSettled(ids.map(id => loadImage(`${folder}/hotspot-${id}.png`))),
       Promise.allSettled(npcIds.map(id => loadImage(ROOM_NPCS[id]!.path))),
     ]).then(([[bg, cat, vfx], cuts, people]) => {

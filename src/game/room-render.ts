@@ -3,6 +3,7 @@ import { bakeOutline, drawBrackets, drawSparkle, outlinePad } from './hotspot-hi
 import { setSmoothing } from '../ui/pixel-scale';
 import { drawPixelSprite } from './scene-view';
 import { portraitFor } from './npc-portraits';
+import { assetRegistry } from './assets';
 
 // Canvas drawing for point-and-click rooms. Everything is pure canvas math over loaded images;
 // RoomScene owns state, DOM and timing. The stage canvas is exactly the room background, so world px
@@ -26,8 +27,9 @@ export interface RoomFrame {
 /** Interactables that stand an NPC in the room (c1 content has no npc field): sprite path + ghost flag, by interactable id.
  *  Speaker-backed ones reuse npc-portraits so a sprite is named once. */
 const speakerSprite = (speaker: string) => { const p = portraitFor(speaker); return p.kind === 'sprite' ? { path: p.path, ghost: p.ghost } : undefined; };
+const OFFICIALS = 'assets/characters/truong-toc-bui/view-front.png';
 export const ROOM_NPCS: Record<string, { path: string; ghost?: boolean } | undefined> = {
-  'hitbox-village-officials': { path: 'assets/characters/truong-toc-bui/view-front.png' },
+  'hitbox-village-officials': assetRegistry[OFFICIALS] ? { path: OFFICIALS } : undefined,
   'hitbox-ong-le-entity': speakerSprite('Bóng mờ Ông Lệ'),
   'hitbox-styling-cam': speakerSprite('Cụ Cầm'),
 };

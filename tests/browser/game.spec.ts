@@ -233,19 +233,14 @@ test.describe('point-and-click room',()=>{
     await expect.poll(()=>frame(page)).toBe(idle);
   });
 
-  test('dialogue shows the standing stage with An dimmed and pixel-native NPC art',async({page})=>{
+  test('dialogue shows the standing stage; a speaker without shipped art gets the emblem',async({page})=>{
     await openRoom(page);
     await spot(page,'hitbox-cat').click();
     const dialog=page.getByRole('dialog',{name:'Mèo Nếp',exact:true});
     await expect(dialog).toBeVisible();
-    await expect(page.locator('.dialogue-stage')).toBeVisible();
-    await expect(page.locator('.standing-art .standing-slot.is-an.is-dim')).toHaveCount(1);
-    await expect(page.locator('canvas.standing-an')).toHaveAttribute('data-ready','true');
-    const npc=page.locator('canvas.standing-npc');
-    await expect(npc).toHaveAttribute('data-ready','true');
-    const scale=Number(await npc.getAttribute('data-scale'));
-    expect(scale).toBeGreaterThanOrEqual(3);
-    expect(await npc.evaluate(canvas=>canvas.clientHeight)).toBe(32*scale); // cat-nep is a 32x32 sprite, drawn whole-number scaled
+    // NPC sprites are being regenerated to An's spec; until cat-nep ships, the cat speaks over the emblem.
+    await expect(page.locator('.dialogue-stage.is-emblem')).toBeVisible();
+    await expect(page.locator('canvas.standing-npc')).toHaveCount(0);
     await expect(dialog.locator('.dialogue-text')).toContainText('Ngoao');
     await expect(dialog.locator('.dialogue-actions').getByRole('button',{name:'Khép lời kể'})).toBeVisible();
     await page.screenshot({path:'artifacts/ui-polish/dialogue-npc.png'});

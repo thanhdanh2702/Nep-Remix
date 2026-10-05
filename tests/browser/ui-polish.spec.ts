@@ -104,7 +104,6 @@ test('room and dialogue keep the two UI fonts and no text under 12px at 1366×76
   await check('room');
   await page.screenshot({ path: 'artifacts/ui-polish/1366-room.png' });
   await page.locator('.room-hotspots button[data-hotspot="hitbox-cat"]').click();
-  await expect(page.locator('canvas.standing-npc')).toHaveAttribute('data-ready', 'true');
   await expect(page.getByRole('dialog', { name: 'Mèo Nếp' }).locator('.dialogue-text')).toContainText('Ngoao');
   await check('dialogue');
   await page.screenshot({ path: 'artifacts/ui-polish/1366-dialogue.png' });

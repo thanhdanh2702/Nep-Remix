@@ -19,25 +19,6 @@
     "sha256": "ad72cb699c1f647979cf55ff912b3138e2a18b236dcf93fa439aea52d0d96960"
   },
   {
-    "path": "assets/accessories/guoc-moc/guoc-moc.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      24,
-      90,
-      40,
-      95
-    ],
-    "sha256": "3e22131f85008d82f29f364a869759706e06a3fdee9e4001af86e261bc2ac033"
-  },
-  {
     "path": "assets/accessories/hai-theu/hai-theu--icon.png",
     "kind": "accessory-icon",
     "width": 48,
@@ -55,25 +36,6 @@
       39
     ],
     "sha256": "989f9d8af70f3fff03f4647fc54e702dcd526ca9a8624e7724124e706d59274b"
-  },
-  {
-    "path": "assets/accessories/hai-theu/hai-theu.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      89,
-      41,
-      95
-    ],
-    "sha256": "18c19ca1e95322c7e0645b855c0006101a372c170ba47252d9e42263461efa86"
   },
   {
     "path": "assets/accessories/khan-mo-qua/khan-mo-qua--icon.png",
@@ -95,25 +57,6 @@
     "sha256": "7fd237f141534dee32cb9a8d1928bd13a59ace52b68aa063da16990b9c46b0d1"
   },
   {
-    "path": "assets/accessories/khan-mo-qua/khan-mo-qua.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      5,
-      41,
-      26
-    ],
-    "sha256": "d313bc00c26f9cbe635e067ee7789410e4286276d7869cedae2129f61956fb65"
-  },
-  {
     "path": "assets/accessories/khan-van-den/khan-van-den--icon.png",
     "kind": "accessory-icon",
     "width": 48,
@@ -131,25 +74,6 @@
       41
     ],
     "sha256": "5d624f412d4a75d9c44f674cbe4f6bf409872bbfe59bfc639269d59d8d372b36"
-  },
-  {
-    "path": "assets/accessories/khan-van-den/khan-van-den.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      24,
-      4,
-      40,
-      13
-    ],
-    "sha256": "830620ecbef97b0ed41583ad1322e8a8a9b6a1c2f0524b790ca3166b9cf3b0e7"
   },
   {
     "path": "assets/accessories/khan-van-hoang-yen/khan-van-hoang-yen--icon.png",
@@ -171,25 +95,6 @@
     "sha256": "16bf745a98a830d11b2d4ad2ac70a936b4486e04aee3a93ee913d78dbfd4b4c4"
   },
   {
-    "path": "assets/accessories/khan-van-hoang-yen/khan-van-hoang-yen.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      3,
-      41,
-      13
-    ],
-    "sha256": "d341be948cc203c9a43373c738c7ac7013076cdcec841310087efa2fbb4e5dbb"
-  },
-  {
     "path": "assets/accessories/kieng-bac/kieng-bac--icon.png",
     "kind": "accessory-icon",
     "width": 48,
@@ -207,25 +112,6 @@
       44
     ],
     "sha256": "6a1a288e009830982c42e6cf26aceb70f3423c76ce2a33ff85d06fbd7a53a629"
-  },
-  {
-    "path": "assets/accessories/kieng-bac/kieng-bac.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      27,
-      24,
-      37,
-      29
-    ],
-    "sha256": "e47acfefac0aaaec2c9cc0faf46cb1d3d1df538fb45d39e7dc17e2f8a7e820bb"
   },
   {
     "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo--icon.png",
@@ -247,25 +133,6 @@
     "sha256": "f23b02caa3a6d8d5d7bebd116e0358cd4b26a50c76bac46560414914922e661d"
   },
   {
-    "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      26,
-      12,
-      38,
-      16
-    ],
-    "sha256": "7d0e5cd56cf4d481487e3f87cafdaf3eceaee16cdc9ae37f43b1af1fb5a2c42c"
-  },
-  {
     "path": "assets/accessories/non-la/non-la--icon.png",
     "kind": "accessory-icon",
     "width": 48,
@@ -283,25 +150,6 @@
       43
     ],
     "sha256": "eaca458640f802fa78ab844582c59e8b3464d9cd04316dd6d5aba6427482ebc0"
-  },
-  {
-    "path": "assets/accessories/non-la/non-la.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      1,
-      49,
-      19
-    ],
-    "sha256": "7aa82e866279fa5b2daa10224a25b68921e886895f2124e805653b48758600d5"
   },
   {
     "path": "assets/accessories/non-quai-thao/non-quai-thao--icon.png",
@@ -323,25 +171,6 @@
     "sha256": "ab4e3d4bce8f516b5c1a21ac37f30897865e595051db2d73fc076f3a86303a30"
   },
   {
-    "path": "assets/accessories/non-quai-thao/non-quai-thao.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      11,
-      1,
-      53,
-      34
-    ],
-    "sha256": "92f839b9bf4b13ebc8d593218b694cbe5991eaf3ba3a3a1ebbc49cbef85ce2bd"
-  },
-  {
     "path": "assets/accessories/quat-lua/quat-lua--icon.png",
     "kind": "accessory-icon",
     "width": 48,
@@ -359,25 +188,6 @@
       46
     ],
     "sha256": "6a6c4e32f6a1cad8f6659aa68c67441b9c56e059f8f35c03293aaa294b071220"
-  },
-  {
-    "path": "assets/accessories/quat-lua/quat-lua.png",
-    "kind": "accessory-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      41,
-      46,
-      54,
-      62
-    ],
-    "sha256": "c183218dafc33dba11a19a9439084a7c9315d45a6f7180cb653df4edce30654f"
   },
   {
     "path": "assets/areas/chapter-1/c1-s1-buong-det-khoa-kin/c1-s1-buong-det-khoa-kin--phai.png",
@@ -435,25 +245,6 @@
       360
     ],
     "sha256": "68fb0bd426037aabc15262f2ab846c483dbf243dedc78ae44b7babf1926a9939"
-  },
-  {
-    "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--ban-cat-sau-nhat-phan.png",
-    "kind": "area-asset",
-    "width": 890,
-    "height": 500,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      95,
-      35,
-      830,
-      485
-    ],
-    "sha256": "59e117810c7d57c7f43e4f2c32141930643279776ae493ab0cbb4a1bbedf72f0"
   },
   {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--phai.png",
@@ -589,44 +380,6 @@
     "sha256": "fa60c030b1a3487bc6fdafdf477fa7b8ab41fe88019edd5fbf1094a5474362bc"
   },
   {
-    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--ruong-he-mo.png",
-    "kind": "area-asset",
-    "width": 890,
-    "height": 500,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      65,
-      117,
-      825,
-      439
-    ],
-    "sha256": "032d836149fe80dc56c736c696b7505f2344b96ace6fc8878e08bb3a7b61b4ff"
-  },
-  {
-    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--ruong-mo-toang.png",
-    "kind": "area-asset",
-    "width": 890,
-    "height": 500,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      183,
-      41,
-      708,
-      469
-    ],
-    "sha256": "5107a1df188518f9d38340facf2796679dc9c17e8507fe645955394bae55903f"
-  },
-  {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--trai.png",
     "kind": "area-asset",
     "width": 890,
@@ -644,44 +397,6 @@
       500
     ],
     "sha256": "8634de403dd80242517123a78ed6a570ef57a33a8cf858a32291eaf7cf16f77a"
-  },
-  {
-    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--tuong-go-mo-tay.png",
-    "kind": "area-asset",
-    "width": 890,
-    "height": 500,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      225,
-      2,
-      548,
-      488
-    ],
-    "sha256": "c8801a0c66cfe5cfbda7658bb8b7dbdc86cf876c16b944ac89c328c460279dad"
-  },
-  {
-    "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/c0-s2-gac-xep-chiec-ruong--vai-phu-roi.png",
-    "kind": "area-asset",
-    "width": 890,
-    "height": 500,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      51,
-      135,
-      839,
-      418
-    ],
-    "sha256": "f3293359bb7421c760e0a8cb08c7e96be8019c2561e38be42d611a249f8f9108"
   },
   {
     "path": "assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/cg-prologue-mo-ruong-hoi-sinh.png",
@@ -1406,994 +1121,6 @@
     "sha256": "3dbb46bc01ca0cf5b73cc984a4dc3598f0827dcbde9758e00cd2780aceb85f62"
   },
   {
-    "path": "assets/characters/ba-lon/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      0,
-      49,
-      95
-    ],
-    "sha256": "cbdc2d4b3ef739f72f964529c6231d378f611397eaf857fcd85580439fa9bb9f"
-  },
-  {
-    "path": "assets/characters/ba-lon/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      14,
-      0,
-      49,
-      94
-    ],
-    "sha256": "79ff6cedceb40be1934667572c4caefd1ae0e00aea82e1986a6ebfee6211301b"
-  },
-  {
-    "path": "assets/characters/ba-lon/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      1,
-      47,
-      95
-    ],
-    "sha256": "5a9f6554bc08ca73f3efdd6ad598a190ce5c451a5021318266fa5207e970e06a"
-  },
-  {
-    "path": "assets/characters/ba-lon/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      19,
-      1,
-      46,
-      95
-    ],
-    "sha256": "8b05c41cbfa2d28abda25e0457f2194d23d216ec0e649d7655d7551811d3e489"
-  },
-  {
-    "path": "assets/characters/ba-mai/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      21,
-      3,
-      45,
-      93
-    ],
-    "sha256": "9db205f12372ef0ab37f15a2b073aafaa5c6cf294a10cd41181daa0fa2c5eb60"
-  },
-  {
-    "path": "assets/characters/ba-mai/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      20,
-      2,
-      44,
-      94
-    ],
-    "sha256": "78f1644d6399388c923bb159f550c3b571114c8e35a12a280564d89a2c1586e3"
-  },
-  {
-    "path": "assets/characters/ba-mai/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      20,
-      1,
-      44,
-      95
-    ],
-    "sha256": "428a5d79e9908544c969a81c6381375af160a9dec654a453e614e83c2f816af3"
-  },
-  {
-    "path": "assets/characters/ba-mai/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      22,
-      1,
-      43,
-      95
-    ],
-    "sha256": "92d59c8a55de69113bbdceb5356f86b91976450ebe3124957bf9c0d87707b900"
-  },
-  {
-    "path": "assets/characters/ca-nghi/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      11,
-      5,
-      57,
-      92
-    ],
-    "sha256": "9de4ab35fcbeee1677ec8db412f22c2866fb2042694c6a1729ad814eb6b29534"
-  },
-  {
-    "path": "assets/characters/ca-nghi/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      11,
-      5,
-      54,
-      93
-    ],
-    "sha256": "e09ba5f4d00a3596dd9e8e4dd27013c85beaee497c8847564a0bcab65bbb475d"
-  },
-  {
-    "path": "assets/characters/ca-nghi/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      12,
-      4,
-      51,
-      93
-    ],
-    "sha256": "e9ac130bc583624e43bc443673679ee4cf71e7318671a86cb727651388d9696c"
-  },
-  {
-    "path": "assets/characters/ca-nghi/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      2,
-      50,
-      95
-    ],
-    "sha256": "e97605652a1eb381048953132d0fd006089b2d1324b76bd0182f8013a1b64835"
-  },
-  {
-    "path": "assets/characters/cat-nep/view-back.png",
-    "kind": "character-sprite",
-    "width": 32,
-    "height": 32,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      8,
-      3,
-      28,
-      30
-    ],
-    "sha256": "b52eb11fcaf04fa1a61b2deed6e5f5f14fb7800811cd2573bf72898f57db4667"
-  },
-  {
-    "path": "assets/characters/cat-nep/view-front.png",
-    "kind": "character-sprite",
-    "width": 32,
-    "height": 32,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      4,
-      3,
-      25,
-      30
-    ],
-    "sha256": "a611c5cdcb29addab78d180b87bdb061d3fbe3189a05f106f9451df64f107962"
-  },
-  {
-    "path": "assets/characters/cat-nep/view-left.png",
-    "kind": "character-sprite",
-    "width": 32,
-    "height": 32,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      8,
-      3,
-      29,
-      30
-    ],
-    "sha256": "f962d1b74c2e50e80b82e00d3511a33725a34589d564cc67787f3a08c8a9fb53"
-  },
-  {
-    "path": "assets/characters/cat-nep/view-right.png",
-    "kind": "character-sprite",
-    "width": 32,
-    "height": 32,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      4,
-      3,
-      25,
-      30
-    ],
-    "sha256": "11a919d22e7f4432a7ea99b17d7e7b82dfb05a81dae61e53967022372a771b14"
-  },
-  {
-    "path": "assets/characters/chu-suu/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      3,
-      50,
-      93
-    ],
-    "sha256": "dac0f9559cddad03e44de1f292dd9efc9135708c4305c204aba363b69bb2b718"
-  },
-  {
-    "path": "assets/characters/chu-suu/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      14,
-      2,
-      50,
-      94
-    ],
-    "sha256": "d495f20c9ccc36d3708c70e8980ab796445ff90feec430d09744e03cb256117a"
-  },
-  {
-    "path": "assets/characters/chu-suu/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      20,
-      3,
-      45,
-      94
-    ],
-    "sha256": "b74f01ff6a1fe5bced961de6b90db7caaaf4ecc73fb202903a43f44faea96189"
-  },
-  {
-    "path": "assets/characters/chu-suu/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      21,
-      1,
-      45,
-      95
-    ],
-    "sha256": "29df12c981c0061cda940450c204e891b6029cae9d53cdfec3a1c5880e73b619"
-  },
-  {
-    "path": "assets/characters/cu-cam/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      0,
-      47,
-      95
-    ],
-    "sha256": "5afe71559d401752c568d8f4d60cee03671bb3854cd14f5f2f3e41cdcd2d257b"
-  },
-  {
-    "path": "assets/characters/cu-cam/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      2,
-      46,
-      94
-    ],
-    "sha256": "0da9fc21bd4e98b2b8019c53b08d49fb3674a0691b6364d84dab8650f2641c8e"
-  },
-  {
-    "path": "assets/characters/cu-cam/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      20,
-      1,
-      46,
-      95
-    ],
-    "sha256": "65788e0fe38d93008805736486ec3d76424e58db085252531b3cfe66baa58ece"
-  },
-  {
-    "path": "assets/characters/cu-cam/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      19,
-      1,
-      43,
-      95
-    ],
-    "sha256": "38c0b9b62208ab6cb6571be5280d4d6da3b9284d991022683c066d6dd5b81873"
-  },
-  {
-    "path": "assets/characters/cu-loan/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      16,
-      3,
-      45,
-      94
-    ],
-    "sha256": "8b04d320d4d33ee4d3b82bfc14734fa953f9c5e27630f43eca47614bad71484f"
-  },
-  {
-    "path": "assets/characters/cu-loan/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      20,
-      2,
-      47,
-      95
-    ],
-    "sha256": "b1a5b78cc196009768788a39e035987928e46da536c8cbaf1c75cfa26149faf9"
-  },
-  {
-    "path": "assets/characters/cu-loan/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      21,
-      2,
-      46,
-      95
-    ],
-    "sha256": "bfd97caec3bf3ecc96a77d82d84750f4f3c2e9709db8dbf09b57df796a11abfe"
-  },
-  {
-    "path": "assets/characters/cu-loan/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      21,
-      3,
-      46,
-      95
-    ],
-    "sha256": "9208f86016c306c39f8d76e83eebacb1552c18afeee052ad8eb2b931a3fa4843"
-  },
-  {
-    "path": "assets/characters/hoang-lam/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      16,
-      4,
-      51,
-      92
-    ],
-    "sha256": "36d14d04d58911d112d3723775f232b794e7d2b4a580816db4cc08d4a25c4200"
-  },
-  {
-    "path": "assets/characters/hoang-lam/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      16,
-      6,
-      48,
-      91
-    ],
-    "sha256": "8127b15c2680d3b57ae5dfa1cef3d40e8bd8a0fb3b77ee77d159357aaa1a23e0"
-  },
-  {
-    "path": "assets/characters/hoang-lam/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      6,
-      45,
-      93
-    ],
-    "sha256": "ceeb44210cb6c95850a109e6d673bcc6a3b85b8bde9c13858cd0430ba4e13ea5"
-  },
-  {
-    "path": "assets/characters/hoang-lam/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      20,
-      3,
-      47,
-      93
-    ],
-    "sha256": "5351b8a3e5ca855795332ec9de87e97059bcbf23949acc2e7674f4d0f0627f33"
-  },
-  {
-    "path": "assets/characters/me-phuong/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      18,
-      2,
-      44,
-      94
-    ],
-    "sha256": "b05c3389f5c30066392956609e9860db2502c3b3de19a1c231ad4392ab4d375f"
-  },
-  {
-    "path": "assets/characters/me-phuong/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      19,
-      2,
-      45,
-      94
-    ],
-    "sha256": "8fdcf02531832b58123fed7c1e68860de338b53e7dcb8e77c2d1dc077fd3e9c7"
-  },
-  {
-    "path": "assets/characters/me-phuong/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      20,
-      1,
-      44,
-      94
-    ],
-    "sha256": "9753a1c598adc95e341b6723c259e1751a2c947942578317a0b6e773641b90a4"
-  },
-  {
-    "path": "assets/characters/me-phuong/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      21,
-      2,
-      47,
-      94
-    ],
-    "sha256": "a7a41b0822e28a3d9f71d038331e2ac4dc6d773444d59fe985b0516c419d0874"
-  },
-  {
-    "path": "assets/characters/ong-le/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      7,
-      1,
-      60,
-      95
-    ],
-    "sha256": "63fd8bd054902384b9ea88aa628c3638090a4afc6a29bbb92ec0ed303ea700eb"
-  },
-  {
-    "path": "assets/characters/ong-le/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      6,
-      1,
-      60,
-      95
-    ],
-    "sha256": "f08f3e3360f6730045393d1e13971a3f6feeff5f137870007b1c833b551e8c9a"
-  },
-  {
-    "path": "assets/characters/ong-le/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      2,
-      54,
-      95
-    ],
-    "sha256": "1dbf7a8b08171480a7ad69eb67b8cb0492c05be7342429aaed89ac83f67b9846"
-  },
-  {
-    "path": "assets/characters/ong-le/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      14,
-      1,
-      50,
-      95
-    ],
-    "sha256": "66678aeb1c2e6e2df2d84faed969b4234a4dc01a02f9f6cde52e2d6753c30855"
-  },
-  {
-    "path": "assets/characters/thay-ba-can/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      14,
-      4,
-      49,
-      93
-    ],
-    "sha256": "b19b0027cb40c7a2d1a4f37b0dfe419ce110799434baad2ce7e916a66d70f8e6"
-  },
-  {
-    "path": "assets/characters/thay-ba-can/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      2,
-      49,
-      93
-    ],
-    "sha256": "8fb7697d134d3a5b9a32a6edde951e528f011fc7444146bd9f89393dc8358b44"
-  },
-  {
-    "path": "assets/characters/thay-ba-can/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      1,
-      46,
-      95
-    ],
-    "sha256": "003565375a2c069057372ea6ba5c1b74a4ad6f4b19dbf800364dccf65dcea159"
-  },
-  {
-    "path": "assets/characters/thay-ba-can/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      21,
-      1,
-      46,
-      95
-    ],
-    "sha256": "11e408df0fedee011402c81216616581fa2119f85c806c2524b4b6c2a87ef31f"
-  },
-  {
-    "path": "assets/characters/truong-toc-bui/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      13,
-      3,
-      53,
-      93
-    ],
-    "sha256": "7a52e919b13c754a4d6aadb3534944f7ee248d45d55f510e5782df5597bad70d"
-  },
-  {
-    "path": "assets/characters/truong-toc-bui/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      12,
-      3,
-      51,
-      92
-    ],
-    "sha256": "1f31cbdddf23aa5efe692591c88cfd70dfd3433c9bc8ac2dd19c4237496c9fe7"
-  },
-  {
-    "path": "assets/characters/truong-toc-bui/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      13,
-      3,
-      48,
-      94
-    ],
-    "sha256": "d20b3ac4f0dd3d5a9f24439338090a0317afb3a852dd61f16354a98b89ca6df8"
-  },
-  {
-    "path": "assets/characters/truong-toc-bui/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      1,
-      48,
-      94
-    ],
-    "sha256": "8397cc8fb4c6e115e730f82305545bb6d804ec3f84b8cc132e7a6164d81d9ec5"
-  },
-  {
-    "path": "assets/characters/vinh/view-back.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      3,
-      47,
-      92
-    ],
-    "sha256": "7f94caac5aa79766c295f184f8c3fc5be6402dd751f0875deb54090769cd3d22"
-  },
-  {
-    "path": "assets/characters/vinh/view-front.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      4,
-      47,
-      93
-    ],
-    "sha256": "534bbf5703180c06e5024c2fdf750f78b9549636144aa7d832f9ca265810f8a6"
-  },
-  {
-    "path": "assets/characters/vinh/view-left.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      3,
-      42,
-      94
-    ],
-    "sha256": "3b19819dcdac2cf2be0cf73747e7f01eb0baa30d05fb4bc915b7fafdf5525f30"
-  },
-  {
-    "path": "assets/characters/vinh/view-right.png",
-    "kind": "character-sprite",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      3,
-      42,
-      93
-    ],
-    "sha256": "a019b1f3bc8f9e141e15b206d5255d90b89fc9d251e8155d478289668ddc37be"
-  },
-  {
     "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen--icon.png",
     "kind": "garment-thumb",
     "width": 96,
@@ -2411,25 +1138,6 @@
       93
     ],
     "sha256": "d647b4da802970458d9e38bdce0604ed1426db1aa1bfab8fbe667e79c51620b0"
-  },
-  {
-    "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      25,
-      48,
-      90
-    ],
-    "sha256": "cf26aad732f70b67eb2e78375b2368105a72a48cacc3ec1be279711987816842"
   },
   {
     "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin--icon.png",
@@ -2451,25 +1159,6 @@
     "sha256": "f4b416187eaa3caadc6035f1add64dabd78b52d0dc44a2a8cd2ef56d41701277"
   },
   {
-    "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      25,
-      47,
-      90
-    ],
-    "sha256": "4f84d341f4e0163262efe9bc664072a164bf77b5deee9b77fdc06259c8edb30a"
-  },
-  {
     "path": "assets/garments/ao-dai-lemur/ao-dai-lemur--icon.png",
     "kind": "garment-thumb",
     "width": 96,
@@ -2487,25 +1176,6 @@
       94
     ],
     "sha256": "1a9cc3da84f5726c31968d24a32a2309f15fd46440cec8f1b560c3ff61828c5c"
-  },
-  {
-    "path": "assets/garments/ao-dai-lemur/ao-dai-lemur.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      16,
-      25,
-      48,
-      90
-    ],
-    "sha256": "d8f389714702c4dfc12281de3aaf76fbf833bade1e18de646ba676d89273ef2e"
   },
   {
     "path": "assets/garments/ao-dai-popolin/ao-dai-popolin--icon.png",
@@ -2527,25 +1197,6 @@
     "sha256": "f11671dcf271b925f57a4ea6e2fa54fe072136f987b2e16122c998ffe54c35b1"
   },
   {
-    "path": "assets/garments/ao-dai-popolin/ao-dai-popolin.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      25,
-      47,
-      90
-    ],
-    "sha256": "739f51e9c51ae3512ad0c6abad48289ee1f4ab89e38204d90cfdac5031e26232"
-  },
-  {
     "path": "assets/garments/ao-dai-raglan/ao-dai-raglan--icon.png",
     "kind": "garment-thumb",
     "width": 96,
@@ -2563,25 +1214,6 @@
       94
     ],
     "sha256": "c83e7c3e7e60d56274de908971a6a6878d3999aafa50d247a16e3228ba805ceb"
-  },
-  {
-    "path": "assets/garments/ao-dai-raglan/ao-dai-raglan.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      25,
-      48,
-      90
-    ],
-    "sha256": "cd08249d0b0d5844d0e9a9c5e6bdd090ec7bc5144f172ee5290c6ae67d8d9e28"
   },
   {
     "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga--icon.png",
@@ -2603,25 +1235,6 @@
     "sha256": "77d99b79d6cfee5778fb3cd3e17ecf18e2faf7c2afa6880ab9b7eda32dc97c07"
   },
   {
-    "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      17,
-      25,
-      47,
-      90
-    ],
-    "sha256": "1b9c74ed92f914ba8eadbf2579289aa76ecdf199d7b92c73b403df81e7253676"
-  },
-  {
     "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026--icon.png",
     "kind": "garment-thumb",
     "width": 96,
@@ -2639,25 +1252,6 @@
       93
     ],
     "sha256": "0bd04c49f2c02acbc5f9470042f6575586b0837d6d2d85b775f3f12775689ce8"
-  },
-  {
-    "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      10,
-      25,
-      53,
-      90
-    ],
-    "sha256": "5ac4752ab017cfe7316beea287156b1a2f9e6522f70499de82033210aeaa9b06"
   },
   {
     "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen--icon.png",
@@ -2679,25 +1273,6 @@
     "sha256": "9eaf3f6f6a8330299527ae3baedc6b4ee7b4080ffe5215af09bc549649984567"
   },
   {
-    "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      14,
-      25,
-      50,
-      90
-    ],
-    "sha256": "43384eb1b516d4b2787540612c3cf7c9cea48911ba654b0854c8a70264825277"
-  },
-  {
     "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--icon.png",
     "kind": "garment-thumb",
     "width": 96,
@@ -2717,25 +1292,6 @@
     "sha256": "60461f92f7b7d2f9b0a03d5b2e57efc6405eea4ea0366130a95d33696eecb21e"
   },
   {
-    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      8,
-      25,
-      55,
-      90
-    ],
-    "sha256": "856d6abd42ba42f3e1adc9d46c62dd4982eba0cb20931b6c7945bc45e8f65ade"
-  },
-  {
     "path": "assets/garments/ao-tu-than/ao-tu-than--icon.png",
     "kind": "garment-thumb",
     "width": 96,
@@ -2753,25 +1309,6 @@
       92
     ],
     "sha256": "2dc264583f9a61dd59ae5eacdd7c0e09ad676fe0396d476a7e82355584f27532"
-  },
-  {
-    "path": "assets/garments/ao-tu-than/ao-tu-than.png",
-    "kind": "garment-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      15,
-      25,
-      49,
-      90
-    ],
-    "sha256": "fe21d01c68a15f00ee8120c1b43a986982dd90ddb798c284760e2d6900b7156e"
   },
   {
     "path": "assets/items/ban-giao-keo-ep-hon/ban-giao-keo-ep-hon.png",
@@ -3344,348 +1881,6 @@
     "sha256": "fb667a7038cc1687b0f19e924743844810f4300da5fc1ee0a631ed65309eefc5"
   },
   {
-    "path": "assets/paperdoll/body-female.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      18,
-      6,
-      46,
-      93
-    ],
-    "sha256": "a351b576622248935e130eff56f72cb242f456f6c8f02a5f8512a1500465d776"
-  },
-  {
-    "path": "assets/paperdoll/body-male.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      14,
-      4,
-      50,
-      93
-    ],
-    "sha256": "b554aa22cadc345086245c9f04df8c3058f723b2b70368529ec75523886eed4f"
-  },
-  {
-    "path": "assets/paperdoll/face-blink.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      28,
-      11,
-      36,
-      20
-    ],
-    "sha256": "7c9f1be6e2acdcd24680dafca19f5045646bff5d6d5b989d713104f1e4f29bbc"
-  },
-  {
-    "path": "assets/paperdoll/face-neutral.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      28,
-      11,
-      36,
-      20
-    ],
-    "sha256": "d130ece30e0050c71a49aac2baae3e1f0cc38e6c35a659533e13aea2cce1c4a5"
-  },
-  {
-    "path": "assets/paperdoll/face-smile.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      28,
-      11,
-      36,
-      16
-    ],
-    "sha256": "d28a7bd36fe844aafd9475f6728787bafbd5167417378962e15c50b4c6278502"
-  },
-  {
-    "path": "assets/paperdoll/hair-long-female-back.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      22,
-      4,
-      42,
-      48
-    ],
-    "sha256": "2aa75f7c973a668a70254eef08af18eb5499795cd98f7f18586b2964bec4a95b"
-  },
-  {
-    "path": "assets/paperdoll/hair-long-female-front.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      4,
-      41,
-      27
-    ],
-    "sha256": "515cba23e3cac0735b1c7054af63e8aab76db7e4d6d98f7cd74ac43f535e8e17"
-  },
-  {
-    "path": "assets/paperdoll/hair-male-back.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      24,
-      3,
-      40,
-      21
-    ],
-    "sha256": "25b9cef5dc019f165be632b382b2832326f86b21187a5bd4885aa9e0c7094bfa"
-  },
-  {
-    "path": "assets/paperdoll/hair-male-front.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      24,
-      3,
-      40,
-      17
-    ],
-    "sha256": "75725f15b53507c032061621fba53142b5b467712b81e6a7bb39347cf9f05c12"
-  },
-  {
-    "path": "assets/paperdoll/hair-short-female-back.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      24,
-      4,
-      40,
-      22
-    ],
-    "sha256": "38a8d909277053a1db1d8e056698c6b9737f29bb95b2b5c13fe0761d4c77e595"
-  },
-  {
-    "path": "assets/paperdoll/hair-short-female-front.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      24,
-      4,
-      40,
-      18
-    ],
-    "sha256": "dd1afa37a528f35b13b04d1b4fa77bbf6cf4563efc6c5a4dceb298c6b0b498eb"
-  },
-  {
-    "path": "assets/paperdoll/hair-shoulder-female-back.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      4,
-      41,
-      29
-    ],
-    "sha256": "c5352d16a59695143bb929f0ffcaea4e2b3f7d24cf7b8793bf59bbf0c8592ed0"
-  },
-  {
-    "path": "assets/paperdoll/hair-shoulder-female-front.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      4,
-      41,
-      26
-    ],
-    "sha256": "42abb2c53542cee39c7fd594dd4b5c83d07d1f547fe751367a8570adc345400c"
-  },
-  {
-    "path": "assets/paperdoll/layer-0-shadow.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      19,
-      91,
-      45,
-      95
-    ],
-    "sha256": "df3487627cde910d5572bb2b8cda7083f71ee00fd7db8b1ceb4315943984648e"
-  },
-  {
-    "path": "assets/paperdoll/pants-female-black.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      46,
-      41,
-      93
-    ],
-    "sha256": "44e336e2e8ace12a3d6e56ad5dba2f84452f274750180edb7a2956992abd02c2"
-  },
-  {
-    "path": "assets/paperdoll/pants-female-white.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      23,
-      46,
-      41,
-      93
-    ],
-    "sha256": "025b0574f7332e39927e8594bd2a68331d59dcd00ebcb215e2dc6922292c6fdd"
-  },
-  {
-    "path": "assets/paperdoll/pants-male-black.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      22,
-      46,
-      42,
-      93
-    ],
-    "sha256": "7f2a595510ed766a92ed5a7fc00166a6a2aa1a6a541aafd583abd42bfd48425e"
-  },
-  {
-    "path": "assets/paperdoll/pants-male-white.png",
-    "kind": "paperdoll-layer",
-    "width": 64,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      22,
-      46,
-      42,
-      93
-    ],
-    "sha256": "a0562ef09ea9ad535e0cf52e79b73fd5d83aeb8366846ef073694d38de633fed"
-  },
-  {
     "path": "assets/screens/main-shop/action-card-frame--9slice.png",
     "kind": "screen-asset",
     "width": 64,
@@ -3707,21 +1902,21 @@
   {
     "path": "assets/screens/main-shop/area-sign-frame.png",
     "kind": "screen-asset",
-    "width": 512,
-    "height": 171,
+    "width": 2048,
+    "height": 683,
     "format": "PNG",
     "mode": "RGBA",
     "alphaRange": [
       0,
-      255
+      254
     ],
     "bounds": [
-      10,
-      17,
-      502,
-      161
+      31,
+      34,
+      2016,
+      683
     ],
-    "sha256": "6d54e087c9206392bf4eacef9e145dacf68da8fd9ceca8f1f44a6ba26dd50494"
+    "sha256": "93a04275b087c683cae0774dd892c11eabffd41b44db0693d332fefac280523b"
   },
   {
     "path": "assets/screens/main-shop/background--landscape.png",
@@ -3764,21 +1959,21 @@
   {
     "path": "assets/screens/main-shop/currency-hud.png",
     "kind": "screen-asset",
-    "width": 384,
-    "height": 128,
+    "width": 2048,
+    "height": 683,
     "format": "PNG",
     "mode": "RGBA",
     "alphaRange": [
       0,
-      255
+      254
     ],
     "bounds": [
-      14,
-      10,
-      370,
-      115
+      67,
+      52,
+      1983,
+      683
     ],
-    "sha256": "f3229fa40f89913fc58c528efc48ffbb4f24eca1908b7e1900ec3cd0d0f6cd1b"
+    "sha256": "77b8d3b45cf0a673e2fbf7d3fc405abf24845258e03638f6a1178d05ec0d1348"
   },
   {
     "path": "assets/screens/main-shop/door-entrance-glow.png",
@@ -3802,10 +1997,10 @@
   {
     "path": "assets/screens/main-shop/garden-user--landscape.png",
     "kind": "screen-asset",
-    "width": 793,
-    "height": 496,
+    "width": 1586,
+    "height": 992,
     "format": "PNG",
-    "mode": "P",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -3813,16 +2008,16 @@
     "bounds": [
       0,
       0,
-      793,
-      496
+      1586,
+      992
     ],
-    "sha256": "2ca3c5976611d4cf5f012e60d87fd876aa6172796288beea4addcb793ea57f55"
+    "sha256": "7c5e4fe3e251e6d33363fcc2699b24f86b523e48cdc34f81971eff2b19558857"
   },
   {
     "path": "assets/screens/main-shop/settings-button.png",
     "kind": "screen-asset",
-    "width": 128,
-    "height": 128,
+    "width": 1254,
+    "height": 1254,
     "format": "PNG",
     "mode": "RGBA",
     "alphaRange": [
@@ -3830,12 +2025,12 @@
       255
     ],
     "bounds": [
-      12,
-      14,
-      116,
-      114
+      105,
+      103,
+      1135,
+      1117
     ],
-    "sha256": "746cca76538cf4383937e2c58553778c81c028d466ae6989c9a8e068865244d3"
+    "sha256": "d6b44ef1729a22c1faab3ebec1f175ed6843e7603159a9f871f4764b8c7a523f"
   },
   {
     "path": "assets/screens/main-shop/ui-hud--3slice.png",
@@ -3859,10 +2054,10 @@
   {
     "path": "assets/screens/museum/bookshelf-pink--landscape.png",
     "kind": "screen-asset",
-    "width": 793,
-    "height": 496,
+    "width": 1586,
+    "height": 992,
     "format": "PNG",
-    "mode": "P",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -3870,10 +2065,10 @@
     "bounds": [
       0,
       0,
-      793,
-      496
+      1586,
+      992
     ],
-    "sha256": "af7af8aaa67cb1976981a5eb955e6517c412ade5f3f2be3840430258dfe81769"
+    "sha256": "9c86545ccf2be51589ef70c8f8f0e63f494a706bc3be692a2fc176fdaa8e96f5"
   },
   {
     "path": "assets/screens/museum/bookshelf-view--landscape.png",
@@ -4011,10 +2206,10 @@
   {
     "path": "assets/screens/studio/lookbook-frame.png",
     "kind": "screen-asset",
-    "width": 572,
-    "height": 688,
+    "width": 1144,
+    "height": 1375,
     "format": "PNG",
-    "mode": "P",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -4022,10 +2217,10 @@
     "bounds": [
       0,
       0,
-      572,
-      688
+      1144,
+      1375
     ],
-    "sha256": "ae507f7aca0028e064247800ad53f301c5a43c7b65b03449b2ad45654b2ef1de"
+    "sha256": "1d17c6b26d44c246e7cce564d235df7fa078ea64b2882f7d36f846b10058604b"
   },
   {
     "path": "assets/screens/studio/lookbook-modal--9slice.png",
@@ -4068,10 +2263,10 @@
   {
     "path": "assets/screens/studio/vietnamese-room--landscape.png",
     "kind": "screen-asset",
-    "width": 793,
-    "height": 496,
+    "width": 1585,
+    "height": 992,
     "format": "PNG",
-    "mode": "P",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -4079,18 +2274,18 @@
     "bounds": [
       0,
       0,
-      793,
-      496
+      1585,
+      992
     ],
-    "sha256": "8ac3aa655f94f28748d60d3cdaa9dcf47e3d1a09761c1a073bbd66c206a58bdc"
+    "sha256": "4db9de28dbcdadd8fb6832809bf168e257476c16269d371c6704fc683a7ef089"
   },
   {
     "path": "assets/screens/studio/wardrobe-frame--landscape.png",
     "kind": "screen-asset",
-    "width": 724,
-    "height": 241,
+    "width": 2172,
+    "height": 724,
     "format": "PNG",
-    "mode": "P",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -4098,10 +2293,10 @@
     "bounds": [
       0,
       0,
-      724,
-      241
+      2172,
+      724
     ],
-    "sha256": "ee921a2f3ae58cde92a6d69c9f7f08ef7c46a911f51967cd3e2828713d5107e6"
+    "sha256": "1e1fb1d7735d83767f162caccc71d5a73538a3f2f9237b72145eaa32d8115c50"
   },
   {
     "path": "assets/screens/studio/workbench-ui--landscape.png",
@@ -4182,10 +2377,10 @@
   {
     "path": "assets/screens/welcome/welcome-courtyard.png",
     "kind": "screen-asset",
-    "width": 887,
-    "height": 443,
+    "width": 1774,
+    "height": 887,
     "format": "PNG",
-    "mode": "P",
+    "mode": "RGB",
     "alphaRange": [
       255,
       255
@@ -4193,10 +2388,10 @@
     "bounds": [
       0,
       0,
-      887,
-      443
+      1774,
+      887
     ],
-    "sha256": "4e1a308a01bb12d2253cb3d549e03011a2e2552cf6638139972d496f90ebd042"
+    "sha256": "3b9539c44076860c3d5b72f3669253d0e21104cb69c8ac121d81c8d8edd7b3c1"
   },
   {
     "path": "assets/screens/workshop/sewing-machine--landscape.png",

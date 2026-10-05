@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { StudioDraft } from '../core';
-import { AN, accessoryAsset, garmentAsset, loadImage, type Direction } from './assets';
+import { AN, accessoryAsset, assetRegistry, garmentAsset, loadImage, type Direction } from './assets';
 
 export const studioViews: { direction: Direction; label: string; filename: string }[] = [
   { direction: 'down', label: 'Chính diện', filename: 'chinh-dien' },
@@ -106,9 +106,13 @@ export function StudioCharacter({ draft, direction, preset, id = 'paperdoll', la
     const nativePaths = nativeLayers.map(layer => `assets/characters/an/${
       preset.includes('bob') && layer.startsWith('hair_') ? `${layer}__bob` : layer
     }.png`);
-    const accessories = Object.entries(draft.equippedAccessories).filter((entry): entry is [string, string] => Boolean(entry[1]));
+    // Garment and accessory layers are being regenerated to An's spec; until one ships, An keeps
+    // her own (recoloured) outfit and the missing accessory is simply not drawn.
+    const accessories = Object.entries(draft.equippedAccessories)
+      .filter((entry): entry is [string, string] => Boolean(entry[1]) && Boolean(assetRegistry[accessoryAsset(entry[1]!)]));
     const garmentPath = garmentAsset(draft.garmentId);
-    const paths = [...nativePaths, garmentPath, ...accessories.map(([, id]) => accessoryAsset(id))];
+    const modular = Boolean(assetRegistry[garmentPath]);
+    const paths = [...nativePaths, ...(modular ? [garmentPath] : []), ...accessories.map(([, id]) => accessoryAsset(id))];
     const canvas = ref.current!;
     canvas.dataset.ready = 'false';
     Promise.all(paths.map(loadImage)).then(images => {
@@ -128,7 +132,7 @@ export function StudioCharacter({ draft, direction, preset, id = 'paperdoll', la
       };
       nativeLayers.slice(0, 8).forEach(name => {
         if (direction === 'up' && name === 'hair_back') return;
-        if (name === 'body') {
+        if (name === 'body' && modular) {
           // The native bare arms use a different pose from the modular sleeves.
           // Keep the neck; the chosen garment supplies the torso and sleeves.
           ctx.save(); ctx.beginPath(); ctx.rect(0, 0, AN.cellWidth, 151); ctx.clip();
@@ -141,8 +145,9 @@ export function StudioCharacter({ draft, direction, preset, id = 'paperdoll', la
       const side = direction === 'left' || direction === 'right';
       const factor = side ? SIDE_X : FRONT_X;
       const left = (x: number) => x - 64 * factor / 2;
-      ctx.drawImage(recolorLayer(images[nativePaths.length], garmentPath, draft.colorPalette),
+      if (modular) ctx.drawImage(recolorLayer(images[nativePaths.length], garmentPath, draft.colorPalette),
         0, GARMENT_BAND.sy, 64, GARMENT_BAND.sh, left(ANCHOR_X[direction].garment), GARMENT_TOP, 64 * factor, GARMENT_BAND.sh * FACTOR_Y);
+      const firstAccessory = nativePaths.length + (modular ? 1 : 0);
       nativeLayers.slice(8).forEach(name => {
         drawNative(name);
         if (direction === 'up' && name === 'face') drawNative('hair_back');
@@ -153,7 +158,7 @@ export function StudioCharacter({ draft, direction, preset, id = 'paperdoll', la
         if (direction === 'up' && (slot === 'handheld' || slot === 'jewelry')) return;
         // Same whole-number factors as the garment; only the anchor differs per slot.
         const anchor = ANCHOR_X[direction][slot === 'headwear' || slot === 'jewelry' ? 'head' : slot === 'footwear' ? 'feet' : 'garment'];
-        ctx.drawImage(images[nativePaths.length + 1 + i], 0, 0, 64, 96,
+        ctx.drawImage(images[firstAccessory + i], 0, 0, 64, 96,
           left(anchor), ACCESSORY_TOP[slot] ?? GARMENT_TOP - GARMENT_BAND.sy * FACTOR_Y, 64 * factor, 96 * FACTOR_Y);
       });
       canvas.dataset.ready = 'true';

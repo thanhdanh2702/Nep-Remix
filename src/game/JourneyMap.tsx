@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import type { GameState } from '../core';
 import type { ChapterId } from '../content/schema';
-import { AN, asset, loadImage } from './assets';
+import { AN, asset, assetRegistry, loadImage } from './assets';
 import { content } from './store';
 import './journey-map.css';
 
@@ -90,13 +90,15 @@ export function JourneyMap({ state, paused, onSelect, onHome }: {
           const completed = progress.status === 'completed';
           const label = stop.id === 'prologue' ? 'Mở đầu' : `Chương ${index}`;
           const previous = content.chapters[stops[index - 1]?.id]?.chapter.title;
+          const npcArt = stop.sprite && `assets/characters/${stop.sprite}/view-front.png`;
           return <div key={stop.id} className={`journey-map-stop ${locked ? 'is-locked' : completed ? 'is-completed' : 'is-open'}`} data-chapter={stop.id}>
             <button className="journey-map-label" style={{ left: `${stop.x}%`, top: `${stop.y + LABEL_HEIGHT / 2}%`, minWidth: `${stop.width}%` }} disabled={locked} onClick={() => onSelect(stop.id)} aria-label={`${label}: ${stop.place} · ${stop.character} · ${locked ? 'Chưa mở khóa' : completed ? 'Đã hoàn thành' : 'Đã mở khóa'}`} title={locked ? `Hoàn thành ${previous} để mở khóa` : content.chapters[stop.id].chapter.title}>
               <strong>{locked && <JourneyLock />}{stop.place}{completed && <span aria-hidden="true"> ✓</span>}</strong>
               <span>{label} · {content.chapters[stop.id].chapter.year}</span>
             </button>
             <button className="journey-map-character" data-label-side={stop.labelSide} style={{ left: `${stop.feetX}%`, '--feet-y': `${stop.feetY}%`, '--label-top': `${stop.y}%`, '--label-bottom': `${stop.y + LABEL_HEIGHT}%` } as CSSProperties} disabled={locked} onClick={() => onSelect(stop.id)} aria-label={`Gặp ${stop.character} · ${label}${locked ? ' · Chưa mở khóa' : ''}`}>
-              {stop.sprite ? <img className="pixel-native" src={asset(`assets/characters/${stop.sprite}/view-front.png`)} alt="" draggable={false} /> : <AnPose preset={state.profile?.avatarPreset ?? 'an-default'} />}
+              {!npcArt ? <AnPose preset={state.profile?.avatarPreset ?? 'an-default'} />
+                : assetRegistry[npcArt] && <img className="pixel-native" src={asset(npcArt)} alt="" draggable={false} />}
               <span>{stop.character}</span>
             </button>
           </div>;

@@ -7,8 +7,6 @@
   background: var(--c-wood-dark);
 }
 .game-stage .studio-room .room-background img { object-position: center; }
-/* Pixel-grid art (normalized to ~2x cells) scales up with hard edges. */
-.studio-room .room-background img, .studio-lookbook-art img, .wardrobe-art img { image-rendering: pixelated; }
 
 /* ---- model (shared by Studio and Closet) ---- */
 .game-stage .room .mannequin-stage {

@@ -1,6 +1,6 @@
 /* Courtyard HUD: wallet, settings and the painted area signs. Fonts come from ui/fonts.css.
-   The wallet, gear and sign art is pixel-grid art (384×128 / 128² / 512×171) shown smaller than its
-   source, so it is drawn smoothed at fixed pixel sizes; hover and press move whole pixels. */
+   The wallet, gear and sign art is painted hi-res (2048×683 / 1254² / 2048×683), so it is
+   drawn smoothed at fixed pixel sizes; hover and press move whole pixels. */
 .screen-hub .hub-wallet {
   position: relative;
   display: flex;
