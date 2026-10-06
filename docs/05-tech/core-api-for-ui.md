@@ -191,7 +191,7 @@ Tuần tự hóa và phục hồi Cây Lịch Sử ra/vào chuỗi JSON có đó
      - Hiện thông báo Toast nhận manh mối mới (`clueCollected`).
      - Phát âm thanh chiến thắng khi giải đố xong (`puzzleSolved`).
      - Chạy hoạt ảnh hoa sen bay vào ví tiền (`rewardGranted`).
-     - Phát tia sáng hào quang trên ma-nơ-canh (`outfitChanged`).
+     - Phát tia sáng hào quang quanh An trên bục (`outfitChanged`).
 3. **Sự kiện `stateRestored`:**
    - Khi người chơi thực hiện `undo`, `redo`, `checkout` hoặc tải lại game từ `localStorage`, Core Engine phát ra sự kiện `stateRestored`.
    - UI lắng nghe sự kiện này để đồng bộ và vẽ lại toàn bộ màn hình theo đúng snapshot của `headId`.
@@ -273,7 +273,7 @@ export type DomainEvent =
 - **`puzzleSolved` (`{ puzzleId }`):** Phát hiệu ứng pháo hoa hoa sen, mở chốt khóa cửa hoặc hiện vầng sáng mở đường.
 - **`puzzleFeedback` (`{ puzzleId, result }`):** Khi `result === 'incorrect'`, rung lắc nhẹ khung câu đố trong 0.3s; khi `result === 'hint'`, hiện bóng thoại của Nếp.
 - **`rewardGranted` (`{ rewardId, amount }`):** Hiện biểu tượng `+X Sen Ngọc` bay vút lên biểu tượng ví tiền ở góc trên màn hình.
-- **`outfitChanged` (`{ garmentId, slot }`):** Bụi sao lấp lánh (sparkles) xuất hiện quanh ma-nơ-canh trên bục đứng Studio.
+- **`outfitChanged` (`{ garmentId, slot }`):** Bụi sao lấp lánh (sparkles) xuất hiện quanh An trên bục đứng Studio.
 - **`outfitSaved` (`{ outfitId }`):** Hiển thị toast thông báo: *"Đã lưu bộ phối vào Tủ đồ!"*.
 - **`areaEntered` (`{ areaId }`):** Làm mờ màn hình (fade-out 150ms) rồi hiện phòng mới (fade-in 150ms), cập nhật tiêu đề khu vực.
 - **`stateRestored` (`{ saveVersion }`):** UI tái lập toàn bộ trạng thái render từ snapshot nút đầu.
