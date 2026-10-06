@@ -1,4 +1,4 @@
-import { useRef, useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { createScopedSession, dispatchSession, undoSession, redoSession, resetSession, commitSession, runCommand, evaluateOutfit, type GameState, type StudioDraft, type Command } from '../core';
 import type { Garment } from '../content/schema';
 import { content } from './store';
@@ -24,9 +24,32 @@ const palettes: {name:string;colors:[string,string,string,string]}[] = [
 export function makeDraft(garment: Garment): StudioDraft {
   return {type:'studio',eventContextId:'dao_pho',silhouette:garment.silhouette,garmentId:garment.id,colorPalette:[...garment.defaultColorPalette],equippedAccessories:{}};
 }
+// The Core draft stores strings. Keep palette and optional fields alongside solution fields.
+function resumeChallenge(state: GameState, fallback: StudioDraft): StudioDraft {
+  const active = state.activeSession;
+  if (active?.type !== 'puzzle') return fallback;
+  const saved = state.journey[state.currentChapter].puzzleDrafts?.[active.puzzleId];
+  if (saved?.type !== 'styling') return fallback;
+  const answer = saved.answer;
+  const garment = content.garmentsById.get(answer.garmentId);
+  if (!garment) return fallback;
+  const colors = [answer.color0, answer.color1, answer.color2, answer.color3];
+  const palette = colors.every(c => typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c))
+    ? colors as StudioDraft['colorPalette'] : garment.defaultColorPalette;
+  const equippedAccessories: StudioDraft['equippedAccessories'] = {};
+  for (const [slot, field] of Object.entries({ headwear: 'headwearId', footwear: 'footwearId', handheld: 'handheldId', jewelry: 'jewelryId' })) {
+    if (content.accessoriesById.has(answer[field])) equippedAccessories[slot] = answer[field];
+  }
+  return { ...fallback, garmentId: garment.id, silhouette: garment.silhouette,
+    colorPalette: [...palette], equippedAccessories, eventContextId: answer.eventContextId ?? fallback.eventContextId,
+    motifId: answer.motifId };
+}
 // `challenge` turns the room into a puzzle: it receives the live draft and renders the submit / cancel controls.
 export function Studio({ state, send, notify, initial, challenge }: { state: GameState; send: (cmd:Command)=>GameState|null; notify:(message:string)=>void; initial?: StudioDraft; challenge?: (draft:StudioDraft)=>ReactNode }) {
-  const [session, setSession] = useState(() => createScopedSession(initial ?? makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds[0])!), 'studio'));
+  const [session, setSession] = useState(() => {
+    const fallback = initial ?? makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds[0])!);
+    return createScopedSession(challenge ? resumeChallenge(state, fallback) : fallback, 'studio');
+  });
   const [tab,setTab] = useState<WardrobeTab>('garment');
   const [name,setName] = useState('');
   const [comparison,setComparison] = useState<StudioDraft | null>(null);
@@ -38,6 +61,18 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
   const preset = state.profile?.avatarPreset ?? 'an-default';
   const turn = (step:number) => setViewIndex(index => (index + step + studioViews.length) % studioViews.length);
   const draft = session.current;
+  const puzzleId = challenge && state.activeSession?.type === 'puzzle' ? state.activeSession.puzzleId : undefined;
+  useEffect(() => {
+    if (!puzzleId) return;
+    const answer = Object.fromEntries(Object.entries({
+      garmentId: draft.garmentId, silhouette: draft.silhouette,
+      headwearId: draft.equippedAccessories.headwear, footwearId: draft.equippedAccessories.footwear,
+      handheldId: draft.equippedAccessories.handheld, jewelryId: draft.equippedAccessories.jewelry,
+      color0: draft.colorPalette[0], color1: draft.colorPalette[1], color2: draft.colorPalette[2], color3: draft.colorPalette[3],
+      eventContextId: draft.eventContextId, motifId: draft.motifId,
+    }).filter((entry): entry is [string, string] => typeof entry[1] === 'string'));
+    send({ type: 'puzzle/updateDraft', payload: { puzzleId, draft: { type: 'styling', answer } } });
+  }, [draft, puzzleId]);
   const evaluation = evaluateOutfit(draft, {eventId:draft.eventContextId},content);
   const update = (cmd:Command) => {
     const result = runCommand({...state,activeSession:draft},cmd,content);
@@ -46,14 +81,10 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
     // Garment/colour/accessory changes get the star-dust halo (design-system §7.2).
     if (cmd.type !== 'studio/selectEvent') setSparkle(count => count + 1);
   };
-  const chapterData = content.chapters[state.currentChapter].chapter;
-  const loanGarmentIds = challenge ? (chapterData.reward.garmentIds as string[] ?? []) : [];
-  const loanAccessoryIds = challenge ? (chapterData.reward.accessoryIds as string[] ?? []) : [];
   const selectGarment = (garment:Garment) => update({type:'studio/applyPreset',payload:{preset:{...draft,garmentId:garment.id,silhouette:garment.silhouette,colorPalette:garment.defaultColorPalette}}});
   const wardrobe = (className:string) => <StudioWardrobe className={className} state={state} draft={draft} tab={tab} onTab={setTab} palettes={palettes} onGarment={selectGarment}
     onColor={palette=>update({type:'studio/setColor',payload:{colorPalette:palette.colors}})}
-    onAccessory={accessoryId=>update({type:'studio/equip',payload:{accessoryId}})}
-    loanGarmentIds={loanGarmentIds} loanAccessoryIds={loanAccessoryIds} />;
+    onAccessory={accessoryId=>update({type:'studio/equip',payload:{accessoryId}})} />;
   const save = () => {
     const result = commitSession(session);
     if (!result.ok) { notify(result.reason); return; }
