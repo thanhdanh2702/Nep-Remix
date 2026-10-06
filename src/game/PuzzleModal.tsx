@@ -1,5 +1,4 @@
-import { useState } from 'react';
-import type { StudioDraft } from '../core';
+import type { StudioDraft, PuzzleAnswerDraft } from '../core';
 import type { ChapterId, Puzzle } from '../content/schema';
 import { content } from './store';
 import { asset, itemAsset } from './assets';
@@ -29,29 +28,22 @@ const Hints = ({ puzzle, tier }: { puzzle: Puzzle; tier: number }) => <>{puzzle.
 const Feedback = ({ text }: { text: string }) => text ? <p role="status" className="puzzle-feedback is-error">{text}</p> : null;
 
 export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubmit, onHint, onClose, onUpdateDraft }: {
-  puzzle: Puzzle; itemIds: string[]; hintTier: number; feedback: string; draft?: any;
-  onSubmit: (answer: unknown) => void; onHint: () => void; onClose: () => void; onUpdateDraft?: (draft: any) => void;
+  puzzle: Puzzle; itemIds: string[]; hintTier: number; feedback: string; draft?: PuzzleAnswerDraft;
+  onSubmit: (answer: unknown) => void; onHint: () => void; onClose: () => void; onUpdateDraft: (draft: PuzzleAnswerDraft) => void;
 }) {
   const isMulti = puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemIds);
-  const [picked, setPicked] = useState<string | string[]>(() => {
-    if (draft && draft.picked) return draft.picked;
-    return isMulti ? [] : '';
-  });
+  const answer = draft?.answer;
+  const picked = isMulti ? (Array.isArray(answer) ? answer : []) : (typeof answer === 'string' ? answer : '');
   const pick = needsItem(puzzle);
   const label = ACTION_LABEL[puzzle.id] ?? (puzzle.type === 'present' ? 'Đưa chứng cứ' : pick ? 'Dùng vật phẩm' : 'Thực hiện');
   const prompt = puzzle.type === 'present' ? 'Chọn chứng cứ trong túi đồ để đưa ra trước mặt họ.' : 'Chọn thao tác hoặc vật phẩm An đang mang theo.';
   
   const togglePicked = (id: string) => {
     if (isMulti) {
-      setPicked(prev => {
-        const arr = prev as string[];
-        const next = arr.includes(id) ? arr.filter(i => i !== id) : [...arr, id];
-        onUpdateDraft?.({ picked: next });
-        return next;
-      });
+      const arr = picked as string[];
+      onUpdateDraft({ type: 'use', answer: arr.includes(id) ? arr.filter(i => i !== id) : [...arr, id] });
     } else {
-      setPicked(id);
-      onUpdateDraft?.({ picked: id });
+      onUpdateDraft({ type: puzzle.type === 'present' ? 'present' : 'use', answer: id });
     }
   };
 
@@ -113,7 +105,8 @@ export function ChapterEnding({ chapter, clueIds, onHome, onMap, onClose }: {
         {reward.senNgoc ? <li>+{reward.senNgoc} Sen Ngọc</li> : null}
         {reward.garmentIds?.map(gId => <li key={gId}>{content.garmentsById.get(gId)?.name}</li>)}
         {reward.accessoryIds?.map(aId => <li key={aId}>{content.accessoriesById.get(aId)?.name}</li>)}
-        {reward.cardIds?.map(cId => <li key={cId}>Thẻ bảo tàng: {content.cardsById.get(cId)?.title}</li>)}
+        {reward.itemIds?.map(iId => <li key={iId}>{content.itemsById.get(iId)?.name}</li>)}
+        {reward.cardIds?.map(cId => <li key={cId}>Thẻ bảo tàng: {content.cultureCardsById.get(cId)?.title}</li>)}
       </ul>
     </div>
     <div className="actions">

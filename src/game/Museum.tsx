@@ -89,7 +89,7 @@ export function Museum({ state, send, onReadingChange }: {
           <label>Thời kỳ<select value={period} onChange={e => setPeriod(e.target.value)}><option value="all">Tất cả</option>{['Nguyễn', '1888', '1934', '1960', '1962', '1980', '1982', '2026'].map(p => <option key={p}>{p}</option>)}</select></label>
           <div className="museum-catalog-results">{options.map(c => {
             const index = content.cultureCards.indexOf(c);
-            return <button key={c.id} onClick={() => open(Math.floor(index / 2), index % 2 * 2)}><strong>{c.title}</strong><small>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc' : c.timePeriod}</small></button>;
+            return <button key={c.id} onClick={() => open(Math.floor(index / 2), index % 2 * 2)}><strong>{c.title}</strong><small>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc' : state.museum.unlockedCardIds?.includes(c.id) ? 'Ký vật đã nhận từ cốt truyện' : c.timePeriod}</small></button>;
           })}{!options.length && <p>Chưa tìm thấy tư liệu phù hợp. Hãy thử từ khóa khác.</p>}</div>
         </div>
       </details>
@@ -117,6 +117,7 @@ export function Museum({ state, send, onReadingChange }: {
         <span role="status" aria-live="polite" aria-atomic="true">Trang {page + 1} / {pageCount}</span>
         <button disabled={page === pageCount - 1} onClick={() => turn(1)}>Trang sau ›</button>
       </nav>
+      <p className="fine-print">Đọc mỗi thẻ lần đầu nhận 15 Sen Ngọc. Thẻ được mở từ cốt truyện chưa được tính là đã đọc.</p>
       <p className="museum-key-hint">Dùng phím ← → để lật trang · Esc để khép sách</p>
     </Modal>}
   </div>;
