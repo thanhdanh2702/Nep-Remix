@@ -47,7 +47,6 @@ async function advanceDialogue(page: Page) {
 }
 async function closeDialogue(page: Page) {
   await advanceDialogue(page);
-  await expect(dialog(page)).toHaveCount(0);
 }
 // Every button in the open dialog / challenge bar must be a comfortable touch target.
 async function expectTouchTargets(page: Page, scope: string) {
@@ -93,6 +92,8 @@ async function playToYard(page: Page, mobile = false) {
   await dialog(page).getByRole('button', { name: 'Kéo may bằng đồng', exact: true }).click();
   await page.getByRole('button', { name: 'Dùng vật phẩm', exact: true }).click();
   await closeDialogue(page);
+  await closeDialogue(page);
+  await expect(dialog(page)).toHaveCount(0);
   const state = await saved(page);
   expect(state.inventory.itemIds).toEqual(expect.arrayContaining(['buc_thu_tay_chong_cu_Cam', 'to_van_tu_cam_co_dat']));
   expect(state.notebook.unlockedClueIds).toEqual(expect.arrayContaining(['clue-thu-chong-cu-cam', 'clue-van-tu-ban-dat']));
