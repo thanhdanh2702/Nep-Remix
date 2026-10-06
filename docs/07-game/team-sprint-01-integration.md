@@ -1,5 +1,13 @@
 # Sprint 01 — Review, tích hợp và bàn giao Tester
 
+## Follow-up báo lỗi Tester — 07/10/2026
+
+- Đã merge `agent/tester` đến `3bcad6d` bằng `55bf2f6`, giữ checklist và các cập nhật test của Tester. Những kết quả ở các phần bên dưới là lịch sử lượt tích hợp đầu, không phải kết quả mới nhất.
+- Xác nhận RED: `npm run test:core` thất bại vì `guardPuzzle` trả `Puzzle is already solved.`. Checkpoint `13cc853` thêm regression dispatch cho cả `puzzle/submit` và `item/use`, kiểm tra tree không đổi. Sửa reason thành `Câu đố '<id>' đã được giải.` trong `gate.ts`.
+- Softlock modal S2 **chưa tái hiện trên bản Leader**: trước khi sửa runtime, cả ba case `chapter1.spec.ts` mới của Tester đã PASS (hai desktop và mobile 844×390). Không sửa UI/queue khi chưa có reproducer thất bại. Thêm regression browser đọc thư → chuyển văn tự → reload → đọc xong → assert không còn dialog, activeDialogue=null, queue=[], đủ hai completed IDs/clue → click cửa sang S3. Ca này PASS.
+- GREEN mới: `npm run test:core` PASS toàn bộ; `node --import tsx --test src/core/sprint-01.test.ts tests/leader-core-integration.test.ts` PASS 16/16; `npm run lint` và `npm run build` PASS (warning chunk >500 kB vẫn còn); `npx playwright test tests/browser/chapter1.spec.ts tests/browser/sprint01-integration.spec.ts` PASS **9/9** với timeout mặc định. `npm audit --omit=dev`: 0 vulnerabilities. Chưa chạy lại full browser suite, asset hoặc đo coverage trong follow-up chỉ sửa text này.
+- Tester: merge `main` mới, chạy lại hai file browser và `test:core`. Nếu modal vẫn kẹt, đính kèm trace và activeDialogue/dialogueQueue/currentArea từ snapshot tại lúc kẹt; ghi rõ `QA_BASE_URL`, worktree và server đang chạy vì Playwright có `reuseExistingServer=true`. Không dùng kết quả cũ hoặc bỏ assertion đóng modal. Các quyết định thiết kế chưa duyệt và vấn đề runtime khác trong bảng bên dưới vẫn giữ trạng thái cũ.
+
 Ngày: 07/10/2026. Worktree Leader: `Nep-Remix`, nhánh `main`. Trạng thái: **đã tích hợp để kiểm thử, chưa nghiệm thu sprint**. Không triển khai C2–C5, không push/publish, không khởi tạo agent.
 
 ## Commit và kết luận review

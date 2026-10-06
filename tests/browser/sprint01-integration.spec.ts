@@ -123,3 +123,40 @@ test('styling garment and accessories resume after reload and cancel/reopen', as
   await page.getByRole('tab', { name: 'Giày', exact: true }).click();
   await expect(page.locator('.wardrobe-card', { hasText: 'Guốc mộc quai nhung' }).first()).toHaveAttribute('aria-pressed', 'true');
 });
+
+test('C1 two-paper queue closes completely after reloading between the papers', async ({ page }) => {
+  await start(page);
+  // Session fixture isolates the reported S2 queue; chapter1.spec covers the fresh W0/W1 route.
+  await page.evaluate(key => {
+    const envelope = JSON.parse(localStorage.getItem(key)!);
+    const state = envelope.tree.nodes[envelope.tree.headId].snapshot;
+    state.currentChapter = 'c1';
+    state.journey.c1.status = 'in_progress';
+    state.journey.c1.currentArea = 'c1-s2-ban-tho-nha-tho-ho';
+    state.journey.c1.unlockedAreaIds.push('c1-s2-ban-tho-nha-tho-ho');
+    state.activeSession = { type: 'puzzle', puzzleId: 'p-c1-altar-cut-threads', chapterId: 'c1', puzzleType: 'use', valid: false, data: {}, history: [] };
+    localStorage.setItem(key, JSON.stringify(envelope));
+  }, saveKey);
+  await page.reload();
+  await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
+  await page.getByRole('dialog').getByRole('button', { name: 'Kéo may bằng đồng', exact: true }).click();
+  await page.getByRole('button', { name: 'Dùng vật phẩm', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveAccessibleName('Chồng Cụ Cầm');
+  await page.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  await page.getByRole('button', { name: 'Khép lời kể', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveAccessibleName('Cụ Cầm');
+  expect((await saved(page)).journey.c1.dialogueQueue).toEqual([]);
+  await page.reload();
+  await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
+  await expect(page.getByRole('dialog')).toHaveAccessibleName('Cụ Cầm');
+  await page.getByRole('button', { name: 'Tiếp tục', exact: true }).click();
+  await page.getByRole('button', { name: 'Khép lời kể', exact: true }).click();
+  await expect(page.getByRole('dialog')).toHaveCount(0);
+  const state = await saved(page);
+  expect(state.journey.c1.activeDialogue).toBeNull();
+  expect(state.journey.c1.dialogueQueue).toEqual([]);
+  expect(state.journey.c1.completedDialogueIds).toEqual(['d-c1-thu-chong', 'd-c1-van-tu']);
+  expect(state.notebook.unlockedClueIds).toEqual(['clue-thu-chong-cu-cam', 'clue-van-tu-ban-dat']);
+  await page.locator('[data-exit="yard"]').click();
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', 'c1-s3-cong-dinh-doi-dau');
+});

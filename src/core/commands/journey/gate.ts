@@ -20,7 +20,7 @@ export function guardPuzzle(state: GameState, puzzleId: unknown, content: GameCo
   const hotspot = area?.interactables.find(i => i.action.type === 'puzzle' && i.action.targetId === puzzleId
     && (i.side === 'ca_hai' || i.side === (progress.side === 'mat_phai' ? 'phai' : 'trai')));
   if (!hotspot) return { ok: false, reason: 'Puzzle is not accessible in this room and side.' };
-  if (progress.solvedPuzzleIds.includes(puzzle.id)) return { ok: false, reason: 'Puzzle is already solved.' };
+  if (progress.solvedPuzzleIds.includes(puzzle.id)) return { ok: false, reason: `Câu đố '${puzzle.id}' đã được giải.` };
   if (!isGateSatisfied(state, puzzle.when) || !isGateSatisfied(state, hotspot.when)
     || puzzle.prerequisitePuzzleIds?.some(id => !progress.solvedPuzzleIds.includes(id))) return { ok: false, reason: 'Puzzle prerequisites are not completed.' };
   const required = puzzle.type === 'present' ? [puzzle.solution.presentedItemId]
