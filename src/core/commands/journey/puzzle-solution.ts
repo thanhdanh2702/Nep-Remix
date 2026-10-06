@@ -21,7 +21,6 @@ export function applyPuzzleSolved(
   content: GameContent
 ): { state: GameState; events: DomainEvent[] } {
   const chId = state.currentChapter;
-  const chData = content.chapters[chId];
   const chProgress = state.journey[chId];
 
   if (chProgress.solvedPuzzleIds.includes(puzzle.id)) return { state, events: [] };
@@ -47,7 +46,8 @@ export function applyPuzzleSolved(
   return {
     state: {
       ...state,
-
+      activeSession: state.activeSession?.type === 'puzzle' && state.activeSession.puzzleId === puzzle.id
+        ? null : state.activeSession,
       inventory: { ...state.inventory, itemIds },
       journey: {
         ...state.journey,
