@@ -366,9 +366,9 @@
       "title": "Thử thách phối y phục tự chủ cho Cụ Cầm",
       "hasSession": true,
       "hints": [
-        "Phom dáng y phục ngũ thân chuẩn mực thời Nguyễn (năm 1888), đoan trang nhưng kiên cường.",
-        "Chọn áo ngũ thân tay chẽn hoặc áo tấc tay thụng; không chọn áo tân thời chưa ra đời.",
-        "Màu lam khói hoặc nâu sồng; phối khăn vấn đen và thước gỗ thợ may 1888 cầm tay."
+        "Xem brief: Cầm muốn áo ngũ thân tay chẽn, khăn vấn đen và guốc mộc.",
+        "Chọn áo ngũ thân tay chẽn cùng khăn vấn đen; màu áo do bạn chọn.",
+        "Đáp án: áo ngũ thân tay chẽn, khăn vấn đen và guốc mộc. Không chấm màu áo."
       ],
       "solution": {
         "silhouette": "ngu_than_tay_chen",

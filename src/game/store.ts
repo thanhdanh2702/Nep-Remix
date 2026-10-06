@@ -30,6 +30,7 @@ export function execute(tree: HistoryTree, command: Command) {
   return { ...result, tree: prune(result.tree, 200) };
 }
 export function saveGame(tree: HistoryTree): boolean {
+  if (tree.replayOfChapter) return false;
   try {
     // Check existing bytes even before restoreGame, and preserve rather than overwrite invalid saves.
     const existing = localStorage.getItem(SAVE_KEY);

@@ -145,7 +145,7 @@ export const interactCommand: CommandDef<InteractPayload> = {
 
     if (!isGateSatisfied(state, interactable.when)) return { ok: false, reason: 'Interaction prerequisites are not completed.' };
     if (interactable.action.type === 'puzzle') {
-      const guarded = guardPuzzle(state, interactable.action.targetId, content);
+      const guarded = guardPuzzle(state, interactable.action.targetId, content, false);
       if (guarded !== true) return guarded;
     }
     if (interactable.action.type === 'dialogue') {

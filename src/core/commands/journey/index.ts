@@ -25,6 +25,9 @@ export * from './item-commands.ts';
 export * from './puzzle-commands.ts';
 export * from './reward-commands.ts';
 
+export * from './draft-commands.ts';
+import { puzzleUpdateDraftCommand, puzzleResetDraftCommand } from './draft-commands.ts';
+
 export const allJourneyCommands: CommandDef<any>[] = [
   chapterEnterCommand,
   chapterReplayCommand,
@@ -44,6 +47,8 @@ export const allJourneyCommands: CommandDef<any>[] = [
   puzzleSolveCommand,
   puzzleHintCommand,
   puzzleSkipCommand,
+  puzzleUpdateDraftCommand,
+  puzzleResetDraftCommand,
   rewardClaimCommand
 ];
 

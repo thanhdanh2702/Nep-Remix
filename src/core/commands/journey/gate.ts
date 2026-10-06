@@ -11,7 +11,7 @@ export function isGateSatisfied(state: GameState, gate?: Gate): boolean {
     : state.inventory.itemIds.includes(r.itemId));
 }
 
-export function guardPuzzle(state: GameState, puzzleId: unknown, content: GameContent): GuardResult {
+export function guardPuzzle(state: GameState, puzzleId: unknown, content: GameContent, requireOwned = true): GuardResult {
   const chapter = content.chapters[state.currentChapter];
   const progress = state.journey[state.currentChapter];
   const puzzle = chapter?.puzzles.find(p => p.id === puzzleId);
@@ -26,6 +26,6 @@ export function guardPuzzle(state: GameState, puzzleId: unknown, content: GameCo
   const required = puzzle.type === 'present' ? [puzzle.solution.presentedItemId]
     : puzzle.type === 'use' ? [puzzle.solution.requiredItemId, ...(puzzle.solution.requiredItemIds ?? [])].filter((id): id is NonNullable<typeof id> => !!id)
     : puzzle.type === 'order' ? puzzle.solution.requiredItemIds ?? [] : [];
-  if (required.some(id => !state.inventory.itemIds.includes(id))) return { ok: false, reason: 'Required evidence or items are missing.' };
+  if (requireOwned && required.some(id => !state.inventory.itemIds.includes(id))) return { ok: false, reason: 'Required evidence or items are missing.' };
   return true;
 }

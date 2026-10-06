@@ -82,56 +82,9 @@ export const chapterReplayCommand: CommandDef<ChapterReplayPayload> = {
   type: 'chapter/replay',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: ChapterReplayPayload, content: GameContent) => {
-    const { chapterId } = payload;
-    if (!chapterId || !content.chapters[chapterId]) {
-      return { ok: false, reason: `Chapter '${chapterId}' does not exist.` };
-    }
-    const chProgress = state.journey[chapterId];
-    if (!chProgress || chProgress.status !== 'completed') {
-      return {
-        ok: false,
-        reason: `Cannot replay chapter '${chapterId}' because it has not been completed yet.`
-      };
-    }
-    return true;
-  },
+  guard: () => ({ ok: false, reason: 'Use createChapterReplayTree to replay without changing the main journey.' }),
 
-  apply: (state: GameState, payload: ChapterReplayPayload, content: GameContent) => {
-    const { chapterId } = payload;
-    const chData = content.chapters[chapterId];
-    const initialArea = chData.areas[0]?.id ?? `${chapterId}-s1`;
-    const oldProgress = state.journey[chapterId];
-
-    const nextState: GameState = {
-      ...state,
-      currentChapter: chapterId,
-      journey: {
-        ...state.journey,
-        [chapterId]: {
-          ...oldProgress,
-          currentArea: initialArea,
-          side: 'mat_phai',
-          navStack: [],
-          completedDialogueIds: [],
-          solvedPuzzleIds: [],
-          hintTiers: {},
-          activeDialogue: null,
-          claimed: oldProgress.claimed // Giữ nguyên cờ claimed vĩnh viễn
-        }
-      }
-    };
-
-    return {
-      state: nextState,
-      events: [
-        {
-          type: 'areaEntered',
-          payload: { areaId: initialArea }
-        }
-      ]
-    };
-  },
+  apply: state => ({ state, events: [] }),
 
   invert: (state: GameState, _payload: ChapterReplayPayload) => {
     return {

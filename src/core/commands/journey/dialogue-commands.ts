@@ -9,7 +9,7 @@ export interface ClueCollectPayload { clueId: string; internalToken?: string; fr
 export const clueCollectCommand: CommandDef<ClueCollectPayload> = {
   type: 'clue/collect', kind: 'reversible',
   guard: () => ({ ok: false, reason: 'Acknowledge the dialogue node to collect its clue.' }),
-  apply: state => ({ state }), invert: () => null
+  apply: state => ({ state }), invert: (_state, payload) => ({ type: 'clue/remove', payload: { clueId: payload.clueId } })
 };
 
 function current(state: GameState, content: GameContent) {

@@ -145,7 +145,7 @@ export const puzzleOpenCommand: CommandDef<PuzzleOpenPayload> = {
 
   guard: (state: GameState, payload: PuzzleOpenPayload, content: GameContent) => {
     if (state.activeSession !== null) return { ok: false, reason: 'Another session is open.' };
-    return guardPuzzle(state, payload.puzzleId, content);
+    return guardPuzzle(state, payload.puzzleId, content, false);
   },
 
   apply: (state: GameState, payload: PuzzleOpenPayload, content: GameContent) => {

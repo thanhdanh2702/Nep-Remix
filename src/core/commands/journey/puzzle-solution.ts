@@ -14,12 +14,7 @@ interface SolutionExtras {
   unlocksAreaId?: string;
 }
 
-/**
- * Shared "puzzle solved" transition for puzzle/submit and item/use:
- * marks the puzzle solved, grants reward items, unlocks areas (explicit target + every exit of the
- * current area), collects the first-node clue of each triggered dialogue and opens the first one.
- * Idempotent: an already solved puzzle returns the state untouched (no double reward).
- */
+/** Shared idempotent solve transition: explicit rewards/unlocks and ordered dialogue queue. */
 export function applyPuzzleSolved(
   state: GameState,
   puzzle: Puzzle,

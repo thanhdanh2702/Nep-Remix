@@ -75,3 +75,24 @@ test('migration rejects malformed non-head snapshots, unsupported versions and c
   const tree=createInitialTree(fresh());
   for(const value of [{...tree,version:'999'}, {...tree,nodes:{...tree.nodes,[tree.rootId]:{...tree.nodes[tree.rootId],parentId:tree.rootId}}}, {...tree,nodes:{...tree.nodes,[tree.rootId]:{...tree.nodes[tree.rootId],snapshot:{}}}}]) assert.equal(fromJSON(JSON.stringify(value),content).ok,false);
 });
+test('pickup, hints and exits cannot target another room/chapter', () => {
+  const state=fresh();
+  for (const command of [
+    {type:'item/pick',payload:{itemId:'chia_khoa_dong_ba_chau'}},
+    {type:'puzzle/hint',payload:{puzzleId:'p-c1-escape'}},
+    {type:'area/goTo',payload:{areaId:'c1-s1-buong-det-khoa-kin'}}
+  ]) { const result=runCommand(state,command,content);assert.equal(result.ok,false);assert.equal(result.state,state); }
+});
+test('save preserves original legacy bytes, refuses corrupt overwrite and reports storage failures', async () => {
+  const {restoreGame,saveGame,SAVE_KEY,SAVE_BACKUP_KEY}=await import('../game/store.ts');
+  const bytes = new Map<string,string>();
+  const storage = {getItem:(key:string)=>bytes.get(key)??null,setItem:(key:string,value:string)=>{bytes.set(key,value)}};
+  Object.defineProperty(globalThis,'localStorage',{value:storage,configurable:true});
+  try {
+    const legacy=JSON.stringify(createInitialTree(fresh()));bytes.set(SAVE_KEY,legacy);
+    const restored=restoreGame();assert.equal(restored.status,'migrated');assert.equal(saveGame(restored.tree),true);assert.equal(bytes.get(SAVE_BACKUP_KEY),legacy);
+    bytes.set(SAVE_KEY,'{bad');assert.equal(restoreGame().status,'invalid');assert.equal(saveGame(createInitialTree(fresh())),false);assert.equal(bytes.get(SAVE_KEY),'{bad');
+    Object.defineProperty(globalThis,'localStorage',{value:{...storage,getItem:()=>{throw new Error('blocked')}},configurable:true});
+    assert.equal(restoreGame().status,'unavailable');assert.equal(saveGame(createInitialTree(fresh())),false);
+  } finally {delete (globalThis as any).localStorage;}
+});
