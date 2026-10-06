@@ -202,7 +202,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   useEffect(() => { // Hold Space (desktop) to reveal. On a focused button Space keeps its normal click meaning.
     const down = (e: KeyboardEvent) => {
       const target = e.target as HTMLElement;
-      if (e.code !== 'Space' || e.repeat || live.current.blocked || target.closest('button,input,textarea,select,[contenteditable="true"]')) return;
+      if (e.code !== 'Space' || e.repeat || live.current.blocked || target.closest('button,input,textarea,select,[contenteditable="true"],.modal')) return;
       e.preventDefault(); setSoi(true);
     };
     window.addEventListener('keydown', down);

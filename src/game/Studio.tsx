@@ -46,10 +46,14 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
     // Garment/colour/accessory changes get the star-dust halo (design-system §7.2).
     if (cmd.type !== 'studio/selectEvent') setSparkle(count => count + 1);
   };
+  const chapterData = content.chapters[state.currentChapter].chapter;
+  const loanGarmentIds = challenge ? (chapterData.reward.garmentIds as string[] ?? []) : [];
+  const loanAccessoryIds = challenge ? (chapterData.reward.accessoryIds as string[] ?? []) : [];
   const selectGarment = (garment:Garment) => update({type:'studio/applyPreset',payload:{preset:{...draft,garmentId:garment.id,silhouette:garment.silhouette,colorPalette:garment.defaultColorPalette}}});
   const wardrobe = (className:string) => <StudioWardrobe className={className} state={state} draft={draft} tab={tab} onTab={setTab} palettes={palettes} onGarment={selectGarment}
     onColor={palette=>update({type:'studio/setColor',payload:{colorPalette:palette.colors}})}
-    onAccessory={accessoryId=>update({type:'studio/equip',payload:{accessoryId}})} />;
+    onAccessory={accessoryId=>update({type:'studio/equip',payload:{accessoryId}})}
+    loanGarmentIds={loanGarmentIds} loanAccessoryIds={loanAccessoryIds} />;
   const save = () => {
     const result = commitSession(session);
     if (!result.ok) { notify(result.reason); return; }

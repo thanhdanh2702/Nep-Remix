@@ -199,3 +199,4 @@
   .wardrobe-colors { top: 32%; height: 54%; }
   .wardrobe-colors > strong { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 }
+.loan-tag { display: block; font-size: 0.75rem; color: var(--color-brand-primary); }

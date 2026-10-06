@@ -28,24 +28,46 @@ export function unlockerOf(chapter: Chapter, area: Chapter['areas'][number], sol
 const Hints = ({ puzzle, tier }: { puzzle: Puzzle; tier: number }) => <>{puzzle.hints.slice(0, tier).map((hint, i) => <p key={i} className="hint">{hint}</p>)}</>;
 const Feedback = ({ text }: { text: string }) => text ? <p role="status" className="puzzle-feedback is-error">{text}</p> : null;
 
-export function PuzzleModal({ puzzle, itemIds, hintTier, feedback, onSubmit, onHint, onClose }: {
-  puzzle: Puzzle; itemIds: string[]; hintTier: number; feedback: string;
-  onSubmit: (answer: unknown) => void; onHint: () => void; onClose: () => void;
+export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubmit, onHint, onClose, onUpdateDraft }: {
+  puzzle: Puzzle; itemIds: string[]; hintTier: number; feedback: string; draft?: any;
+  onSubmit: (answer: unknown) => void; onHint: () => void; onClose: () => void; onUpdateDraft?: (draft: any) => void;
 }) {
-  const [picked, setPicked] = useState('');
+  const isMulti = puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemIds);
+  const [picked, setPicked] = useState<string | string[]>(() => {
+    if (draft && draft.picked) return draft.picked;
+    return isMulti ? [] : '';
+  });
   const pick = needsItem(puzzle);
   const label = ACTION_LABEL[puzzle.id] ?? (puzzle.type === 'present' ? 'Đưa chứng cứ' : pick ? 'Dùng vật phẩm' : 'Thực hiện');
   const prompt = puzzle.type === 'present' ? 'Chọn chứng cứ trong túi đồ để đưa ra trước mặt họ.' : 'Chọn thao tác hoặc vật phẩm An đang mang theo.';
+  
+  const togglePicked = (id: string) => {
+    if (isMulti) {
+      setPicked(prev => {
+        const arr = prev as string[];
+        const next = arr.includes(id) ? arr.filter(i => i !== id) : [...arr, id];
+        onUpdateDraft?.({ picked: next });
+        return next;
+      });
+    } else {
+      setPicked(id);
+      onUpdateDraft?.({ picked: id });
+    }
+  };
+
+  const isPicked = (id: string) => isMulti ? (picked as string[]).includes(id) : picked === id;
+  const canSubmit = pick ? (isMulti ? (picked as string[]).length > 0 : !!picked) : true;
+
   return <Modal title={puzzle.title} onClose={onClose}>
     <p>{prompt}</p>
     {pick && <div className="puzzle-items">
       {!itemIds.length && <p className="fine-print">Túi đồ còn trống. Hãy khám phá căn phòng.</p>}
-      {itemIds.map(id => <button key={id} className={picked === id ? 'selected' : ''} aria-pressed={picked === id} onClick={() => setPicked(id)}>
+      {itemIds.map(id => <button key={id} className={isPicked(id) ? 'selected' : ''} aria-pressed={isPicked(id)} onClick={() => togglePicked(id)}>
         {itemAsset(id) && <img src={asset(itemAsset(id)!)} alt="" />}{content.itemsById.get(id)?.name}
       </button>)}
     </div>}
     <div className="actions">
-      <button className="primary" disabled={pick && !picked} onClick={() => onSubmit(pick ? picked : 'interact')}>{label}</button>
+      <button className="primary" disabled={!canSubmit} onClick={() => onSubmit(pick ? picked : 'interact')}>{label}</button>
       <button disabled={hintTier >= 3} onClick={onHint}>Nếp gợi ý ({hintTier}/3)</button>
     </div>
     <Hints puzzle={puzzle} tier={hintTier} />
@@ -84,7 +106,16 @@ export function ChapterEnding({ chapter, clueIds, onHome, onMap, onClose }: {
   return <Modal title={art?.title ?? title} wide onClose={onClose}>
     {art ? <img className="ending-art" src={asset(art.src)} alt={art.alt} /> : <p className="ending-ribbon">Hoàn thành chương</p>}
     {clues.map(clue => <article key={clue!.id} className="ending-clue"><h4>{clue!.title}</h4><p>{clue!.description}</p></article>)}
-    <strong>Đã hoàn thành {art ? 'Màn mở đầu' : title} · +{reward.senNgoc} Sen Ngọc</strong>
+    <strong>Đã hoàn thành {art ? 'Màn mở đầu' : title}</strong>
+    <div className="ending-rewards">
+      <h4>Phần thưởng nhận được:</h4>
+      <ul>
+        {reward.senNgoc ? <li>+{reward.senNgoc} Sen Ngọc</li> : null}
+        {reward.garmentIds?.map(gId => <li key={gId}>{content.garmentsById.get(gId)?.name}</li>)}
+        {reward.accessoryIds?.map(aId => <li key={aId}>{content.accessoriesById.get(aId)?.name}</li>)}
+        {reward.cardIds?.map(cId => <li key={cId}>Thẻ bảo tàng: {content.cardsById.get(cId)?.title}</li>)}
+      </ul>
+    </div>
     <div className="actions">
       {art && <button className="primary" onClick={onHome}>Về sân nhà</button>}
       <button className={art ? '' : 'primary'} onClick={onMap}>{art ? 'Xem bản đồ chương' : 'Trở về bản đồ'}</button>
