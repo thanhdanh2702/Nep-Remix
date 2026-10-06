@@ -11,6 +11,7 @@
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "test:core": "tsx scripts/check-core.ts && tsx scripts/check-game.ts",
+    "test:docs": "node scripts/check-docs.mjs",
     "test:browser": "playwright test",
     "test:assets": "node scripts/check-built-assets.mjs",
     "audit:assets": "python scripts/audit-assets.py",

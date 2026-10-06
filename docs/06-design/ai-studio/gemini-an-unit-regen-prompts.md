@@ -1,6 +1,6 @@
 # Gói prompt gen lại asset nhân vật theo đơn vị An (176×416)
 
-**Mục tiêu:** Gen lại ~79 ảnh nhân vật, áo dài và phụ kiện theo spec An (khung 176×416, điểm chân 88,400) để thay thế bộ 64×96 cũ. Dùng Google AI Studio hoặc script Gemini với Structured Output (nếu có API key có billing).
+**Mục tiêu:** Gen lại ~79 ảnh nhân vật, áo dài và phụ kiện theo spec An (khung 176×416, điểm chân 88,400). Dùng Google AI Studio hoặc script Gemini với Structured Output (nếu có API key có billing). *(Lịch sử: bộ 64×96 cũ được thay thế bằng đơn vị An tại quyết định #32, 05/10/2026)*
 
 **Khối negative chung** (dán cuối mọi prompt):
 
@@ -156,7 +156,7 @@ View: front, poised posture.
 {... style/background ...}
 ```
 
-**Hậu xử lý:** Mỗi nhân vật 1 file `view-front.png`.
+**Hậu xử lý:** Mỗi nhân vật 1 file theo format `<id>/view-front.png`.
 
 ---
 
@@ -253,7 +253,7 @@ Background: flat #FF00FF, 8px margin per cell.
 4. Alpha: giữ nguyên (không tách alpha).
 5. Không watermark, không chữ, không logo.
 
-**Lưu prompt log:** Mỗi ảnh ghi tại `docs/06-design/ai-studio/prompt-log.md` hoặc tệp `assets/characters/<id>/README.md` (nếu có mục "AI Prompt"):
+**Lưu prompt log:** Mỗi ảnh ghi tại tệp README của từng asset (ví dụ `assets/characters/<id>/README.md` hoặc `assets/garments/<id>/README.md` nếu có mục "AI Prompt"), hoặc tệp prompt log tập trung *(dự kiến)*:
 - Model & version (ví dụ `Gemini Flash Image`)
 - Prompt đầy đủ (hoặc liên kết)
 - Timestamp gen

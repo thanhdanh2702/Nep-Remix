@@ -1,6 +1,6 @@
 # Danh Mục Tài Nguyên Âm Thanh Trò Chơi (assets/audio/README.md)
 
-Tài liệu này lưu trữ danh mục thiết kế toàn bộ tài nguyên âm thanh (nhạc nền, môi trường, hiệu ứng tương tác) được nhắc đến trong kịch bản và thiết lập phân cảnh (`setup.md` và `script.md`) của trò chơi **Tiệm May Nếp**.
+Tài liệu này lưu trữ danh mục thiết kế toàn bộ tài nguyên âm thanh (nhạc nền, môi trường, hiệu ứng tương tác) được nhắc đến trong các tài liệu thiết kế trò chơi **Tiệm May Nếp**.
 
 Tất cả các tài nguyên âm thanh ở đây chỉ quản lý danh mục và mô tả bằng lời, không sinh tệp âm thanh thực tế trong phạm vi kho đồ họa pixel.
 

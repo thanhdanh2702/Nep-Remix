@@ -1,7 +1,7 @@
 # Đặc Tả API Lõi Trò Chơi Dành Cho Giao Diện Người Dùng (Core API for UI)
 
 > **Tham chiếu hợp đồng:** Tài liệu này là đặc tả kỹ thuật chi tiết về các hàm, kiểu dữ liệu, quy tắc giao tiếp và luồng gọi API giữa tầng Giao diện người dùng (UI) và Lõi xử lý logic (Core Engine).  
-> Mọi nguyên tắc thiết kế tổng quát và phân định trách nhiệm đã được chốt tại [`docs/05-tech/ui-core-contract.md`](./ui-core-contract.md) và [`docs/01-overview/decisions.md`](../01-overview/decisions.md). File này tập trung đặc tả **chính xác các chữ ký hàm API** để đội ngũ UI triển khai mà không làm xáo trộn tính bất biến của lõi.
+> Mọi nguyên tắc thiết kế tổng quát và phân định trách nhiệm đã được chốt tại [`docs/01-overview/decisions.md`](../01-overview/decisions.md) (mục 25, ranh giới trách nhiệm UI và Core Engine). File này tập trung đặc tả **chính xác các chữ ký hàm API** để đội ngũ UI triển khai mà không làm xáo trộn tính bất biến của lõi.
 
 ---
 

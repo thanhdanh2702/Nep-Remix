@@ -29,4 +29,4 @@ Mọi màn hình tuân thủ nguyên tắc thiết kế thích ứng hai hướn
 
 ---
 
-Tài liệu đặc tả chi tiết giao diện và luồng màn hình xem tại `docs/03-features/` và `docs/06-design/user-flows.md`.
+Tài liệu đặc tả chi tiết giao diện xem tại `docs/03-features/`.
