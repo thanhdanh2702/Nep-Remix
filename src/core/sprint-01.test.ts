@@ -96,3 +96,19 @@ test('save preserves original legacy bytes, refuses corrupt overwrite and report
     assert.equal(restoreGame().status,'unavailable');assert.equal(saveGame(createInitialTree(fresh())),false);
   } finally {delete (globalThis as any).localStorage;}
 });
+test('content gate schema rejects cross-chapter references and dependency cycles', async () => {
+  const {ChapterContentSchema}=await import('../content/schema.ts');
+  const chapter=structuredClone(content.chapters.prologue);
+  chapter.puzzles[0].when={all:[{kind:'puzzleSolved',puzzleId:'p-c1-escape'}]};
+  assert.equal(ChapterContentSchema.safeParse(chapter).success,false);
+  chapter.puzzles[0].when={all:[{kind:'puzzleSolved',puzzleId:'p-c0-mannequin-hand'}]};
+  chapter.puzzles[1].when={all:[{kind:'puzzleSolved',puzzleId:'p-c0-cloth'}]};
+  assert.equal(ChapterContentSchema.safeParse(chapter).success,false);
+});
+test('invalid queued dialogue snapshots are rejected; readCard retains unlocked cards', () => {
+  const state=fresh();state.journey.prologue.dialogueQueue=['d-c1-van-tu'];
+  assert.equal(fromJSON(toJSON(createInitialTree(state)),content).ok,false);
+  const reading=fresh();reading.museum.unlockedCardIds=['card-ngu-than-nguyen-dynasty'];
+  const result=runCommand(reading,{type:'museum/readCard',payload:{cardId:'card-ngu-than-nguyen-dynasty'}},content);
+  assert.ok(result.ok);if(result.ok)assert.deepEqual(result.state.museum.unlockedCardIds,reading.museum.unlockedCardIds);
+});

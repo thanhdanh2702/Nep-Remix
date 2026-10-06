@@ -250,7 +250,9 @@ export const puzzleHintCommand: CommandDef<PuzzleHintPayload> = {
   type: 'puzzle/hint',
   kind: 'compensable',
 
-  guard: (state: GameState, payload: PuzzleHintPayload) => {
+  guard: (state: GameState, payload: PuzzleHintPayload, content: GameContent) => {
+    const guarded = guardPuzzle(state, payload.puzzleId, content, false);
+    if (guarded !== true) return guarded;
     const { puzzleId } = payload;
     const chId = state.currentChapter;
     const chProgress = state.journey[chId];

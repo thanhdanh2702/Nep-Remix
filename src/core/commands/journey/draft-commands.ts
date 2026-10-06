@@ -47,5 +47,9 @@ export const puzzleResetDraftCommand: CommandDef<{ puzzleId: string }> = {
         ? { ...state.activeSession, valid: false, data: {} } : state.activeSession,
       journey: { ...state.journey, [state.currentChapter]: { ...progress, puzzleDrafts: drafts } }
     } };
-  }, invert: () => null
+  }, invert: (state, payload) => {
+    const previous = state.journey[state.currentChapter].puzzleDrafts?.[payload.puzzleId];
+    return previous ? { type: 'puzzle/updateDraft', payload: { puzzleId: payload.puzzleId, draft: previous } }
+      : { type: 'puzzle/resetDraft', payload: { puzzleId: payload.puzzleId } };
+  }
 };

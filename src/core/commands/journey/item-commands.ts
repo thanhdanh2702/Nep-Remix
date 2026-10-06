@@ -1,7 +1,7 @@
 import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
-import { guardPuzzle } from './gate.ts';
+import { guardPuzzle, isGateSatisfied } from './gate.ts';
 import { puzzleSubmitCommand } from './puzzle-commands.ts';
 
 // Known item combinations from puzzles and game scripts
@@ -31,6 +31,11 @@ export const itemPickCommand: CommandDef<ItemPickPayload> = {
     if (state.inventory.itemIds.includes(itemId)) {
       return { ok: false, reason: `Item '${itemId}' is already in inventory.` };
     }
+    const progress = state.journey[state.currentChapter];
+    const area = content.chapters[state.currentChapter].areas.find(a => a.id === progress.currentArea);
+    const hotspot = area?.interactables.find(i => i.action.type === 'item' && i.action.targetId === itemId
+      && (i.side === 'ca_hai' || i.side === (progress.side === 'mat_phai' ? 'phai' : 'trai')) && isGateSatisfied(state, i.when));
+    if (!hotspot || progress.status === 'locked') return { ok: false, reason: 'Item is not available for pickup in this room.' };
     return true;
   },
 
