@@ -2,6 +2,7 @@ import type { GameState } from './state.ts';
 import type { Command, CommandDef, DomainEvent } from './command.ts';
 import type { GameContent } from '../content/index.ts';
 import { validateState } from './invariants.ts';
+import type { ChapterId } from '../content/schema.ts';
 
 // ==========================================
 // 1. Result Types
@@ -99,6 +100,12 @@ export function runCommand(
 
   // 2. Apply transition
   const applied = def.apply(state, cmd.payload, content);
+
+  // Inverse snapshot commands must obey the same irreversible claim boundary as undo/checkout.
+  if ((state.claimedRewardIds ?? []).some(id => !applied.state.claimedRewardIds?.includes(id))
+    || Object.entries(state.journey).some(([id, progress]) => progress.claimed && !applied.state.journey[id as ChapterId]?.claimed)) {
+    return { ok: false, reason: 'Cannot restore a state before a claimed reward.', state };
+  }
 
   // 3. Invariants validation
   const validation = validateState(applied.state, content);
