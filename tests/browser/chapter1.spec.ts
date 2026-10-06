@@ -51,6 +51,8 @@ async function closeDialogue(page: Page) {
 }
 // Every button in the open dialog / challenge bar must be a comfortable touch target.
 async function expectTouchTargets(page: Page, scope: string) {
+  // Give the modal's 1ms entrance animation a frame to finish so scale(.96) is gone
+  await page.waitForTimeout(50);
   const heights = await page.locator(`${scope} button`).evaluateAll(buttons => buttons.map(b => ({ name: b.textContent, h: b.getBoundingClientRect().height })));
   expect(heights.length).toBeGreaterThan(0);
   for (const { name, h } of heights) expect(h, `button "${name}"`).toBeGreaterThanOrEqual(43.5);

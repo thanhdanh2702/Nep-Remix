@@ -58,6 +58,7 @@ export default function Game({ embedded = false, paused = false, navigationReque
   const [panel,setPanel]=useState<Panel>(null);
   const [museumReading,setMuseumReading]=useState(false);
   const [puzzleId,setPuzzleId]=useState<string|null>(null);
+  const [puzzleDrafts,setPuzzleDrafts]=useState<Record<string, unknown>>({});
   const [selectedItem,setSelectedItem]=useState(''); // item preselected when the bag opens from the inventory strip
   const [toast,setToast]=useState(restored.hasSave ? '' : restored.notice);
   const [saveFailed,setSaveFailed]=useState(false);
@@ -108,12 +109,6 @@ export default function Game({ embedded = false, paused = false, navigationReque
   useEffect(()=>{const media=matchMedia('(max-width:640px)');const update=()=>setPortrait(media.matches);media.addEventListener('change',update);return()=>media.removeEventListener('change',update);},[]);
   const closeToast=useCallback(()=>setToast(''),[]);
   useEffect(()=>{setSaveFailed(!saveGame(treeRef.current));},[]);
-  useEffect(()=>{
-    const closing=chapter.chapter.completionDialogueId, id=state.currentChapter; // chapter ends once its closing dialogue is read and every puzzle solved
-    if(closing && !progress.claimed && !progress.activeDialogue && progress.completedDialogueIds.includes(closing) && chapter.puzzles.every(p=>progress.solvedPuzzleIds.includes(p.id))){
-      if(send({type:'chapter/complete',payload:{chapterId:id}}) && send({type:'reward/claim',payload:{chapterId:id}}))setPanel('ending');
-    }
-  },[tree.headId]);
 
   const navigate=(next:Screen)=>{if(blocked)return;withViewTransition(()=>{setStudioDraft(undefined);if(next==='journey')setJourneyView('map');setScreen(next);});};
   const openMap=()=>{setPanel(null);setJourneyView('map');setScreen('journey');};
@@ -139,6 +134,15 @@ export default function Game({ embedded = false, paused = false, navigationReque
     const dest=arrow && area.exits[arrow.exit]; // a dialogue opened by an exit arrow carries the player through it once it ends
     const next=send({type:'dialogue/advance',payload:{}});
     if(dest && dest!==area.id && next && !next.journey[next.currentChapter].activeDialogue)send({type:'area/goTo',payload:{areaId:dest}});
+    
+    if (next && !next.journey[next.currentChapter].activeDialogue && dialogue?.id === chapter.chapter.completionDialogueId) {
+      const p = next.journey[next.currentChapter];
+      if (!p.claimed && p.completedDialogueIds.includes(dialogue.id) && chapter.puzzles.every(pz => p.solvedPuzzleIds.includes(pz.id))) {
+        if (send({type:'chapter/complete',payload:{chapterId: state.currentChapter}}) && send({type:'reward/claim',payload:{chapterId: state.currentChapter}})) {
+          setPanel('ending');
+        }
+      }
+    }
   };
   const submitPuzzle=(target:Puzzle,answer:unknown)=>{
     const result=send({type:'puzzle/submit',payload:{puzzleId:target.id,answer}});
@@ -190,7 +194,7 @@ export default function Game({ embedded = false, paused = false, navigationReque
     {screen!=='hub' && <span className={`save-state ${saveFailed?'error':''}`} role="status">{saveFailed?'Chưa lưu được trên thiết bị':'Đã lưu trên thiết bị'}</span>}
     {toast && <Toast message={toast} tone={toneFor(toast)} onClose={closeToast}/>}
     {dialogue && node && <DialogueBox key={dialogue.id} speaker={dialogue.speaker} text={node.text} preset={state.profile?.avatarPreset ?? 'an-default'}>{node.choices?.length?<div className="actions">{node.choices.map((c,i)=><button key={i} onClick={()=>send({type:'dialogue/choose',payload:{choiceIndex:i}})}>{c.text}</button>)}</div>:<button className="primary" onClick={advance}>{ACTION_LABEL[dialogue.id]??(node.nextNodeId?'Tiếp tục':'Khép lời kể')}</button>}</DialogueBox>}
-    {puzzle && <PuzzleModal key={puzzle.id} puzzle={puzzle} itemIds={state.inventory.itemIds} hintTier={progress.hintTiers[puzzle.id]??0} feedback={feedback} onSubmit={answer=>submitPuzzle(puzzle,answer)} onHint={()=>hint(puzzle)} onClose={()=>setPuzzleId(null)}/>}
+    {puzzle && <PuzzleModal key={puzzle.id} puzzle={puzzle} itemIds={state.inventory.itemIds} hintTier={progress.hintTiers[puzzle.id]??0} feedback={feedback} draft={puzzleDrafts[puzzle.id]} onUpdateDraft={(draft) => setPuzzleDrafts(prev => ({...prev, [puzzle.id]: draft}))} onSubmit={answer=>{submitPuzzle(puzzle,answer); setPuzzleDrafts(prev => {const next = {...prev}; delete next[puzzle.id]; return next;})}} onHint={()=>hint(puzzle)} onClose={()=>setPuzzleId(null)}/>}
     {panel==='journal' && <InventoryCombine state={state} initialItem={selectedItem} send={command=>{lastTarget.current='';return send(command);}} notify={setToast} onClose={()=>setPanel(null)}/>}
     {panel==='settings' && <Modal title="Diện mạo & Cài đặt" onClose={()=>setPanel(null)}><label>Tên nhân vật<input value={profileName} maxLength={12} onChange={e=>setProfileName(e.target.value)}/></label><label>Nếp tóc<select value={preset.includes('bob')?'bob':'long'} onChange={e=>setPreset(`an-${e.target.value}-${preset.includes('jade')?'jade':preset.includes('rose')?'rose':'default'}`)}><option value="long">Tóc dài</option><option value="bob">Tóc ngắn</option></select></label><label>Nếp áo<select value={preset.includes('jade')?'jade':preset.includes('rose')?'rose':'default'} onChange={e=>setPreset(`an-${preset.includes('bob')?'bob':'long'}-${e.target.value}`)}><option value="default">Kem lụa</option><option value="jade">Xanh ngọc</option><option value="rose">Hồng sen</option></select></label><p className="fine-print">Chọn từ các lớp hình đã có trong tiệm. Hiện chưa có tệp âm thanh để phát.</p><div className="actions"><button className="primary" onClick={()=>{send({type:'profile/update',payload:{name:profileName.trim()||'An',avatarPreset:preset}});setPanel(null);}}>Lưu diện mạo</button><button onClick={()=>setPanel('restart')}>Chơi lại từ đầu</button></div></Modal>}
     {panel==='restart' && <Modal title="Bắt đầu lại câu chuyện?" onClose={()=>setPanel('settings')}><p>Thao tác này xóa tiến trình, Sen Ngọc và bộ phối đã lưu trên thiết bị này.</p><div className="actions"><button className="primary" onClick={()=>{const next=freshTree();treeRef.current=next;setTree(next);setSaveFailed(!saveGame(next));setPanel(null);setPuzzleId(null);setScreen('hub');setIntro(true);setToast('Một câu chuyện mới đã bắt đầu.');}}>Chơi lại từ đầu</button><button onClick={()=>setPanel('settings')}>Giữ câu chuyện hiện tại</button></div></Modal>}

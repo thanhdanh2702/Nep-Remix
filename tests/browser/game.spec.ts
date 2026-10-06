@@ -98,9 +98,9 @@ test('Studio saves one committed outfit, museum reward is single-use, shop owns 
   await page.getByRole('button',{name:'Bảo tàng',exact:true}).first().click();
   await page.getByRole('button',{name:/^Mở sách 1:/}).click();
   for(let i=0;i<5;i++)await page.getByRole('button',{name:'Trang sau ›',exact:true}).click();
-  await page.getByRole('button',{name:'Đã hiểu · +15 Sen Ngọc',exact:true}).first().click();
-  await expect(page.getByRole('button',{name:'Đã đọc và nhận thưởng',exact:true})).toBeDisabled();
-  expect((await savedState(page)).wallet.senNgoc).toBe(115);
+  await page.getByRole('button',{name:'Đã hiểu',exact:true}).first().click();
+  await expect(page.getByRole('button',{name:'Đã đọc',exact:true})).toBeDisabled();
+  expect((await savedState(page)).wallet.senNgoc).toBe(115); // Core still gives 15, we only updated UI text, so state still has 115
   await page.getByRole('dialog').getByRole('button',{name:'Đóng',exact:true}).click();
   await page.getByRole('button',{name:'‹ Về sân nhà',exact:true}).click();
   await page.getByRole('button',{name:'Tủ đồ',exact:true}).first().click();
