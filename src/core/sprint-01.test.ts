@@ -50,3 +50,28 @@ test('completion requires ending and reward grants every gift once; legacy repai
 test('malformed payload is a rejected command, not an exception',()=>{
   for(const type of ['puzzle/submit','item/use','interact','dialogue/choose']) assert.equal(runCommand(fresh(),{type,payload:null},content).ok,false);
 });
+test('persistent typed drafts survive close/reopen and reject wrong discriminators', () => {
+  const state=fresh(); state.journey.prologue.currentArea='c0-s2-gac-xep-chiec-ruong';
+  const draft={type:'use',answer:'kim_gut_bang_bac'};
+  const result=runCommand(state,{type:'puzzle/updateDraft',payload:{puzzleId:'p-c0-mannequin-hand',draft}},content);
+  assert.ok(result.ok);if(!result.ok)return;
+  assert.equal(runCommand(state,{type:'puzzle/updateDraft',payload:{puzzleId:'p-c0-mannequin-hand',draft:{type:'code',answer:'12'}}},content).ok,false);
+  const opened=runCommand(result.state,{type:'puzzle/open',payload:{puzzleId:'p-c0-mannequin-hand'}},content);assert.ok(opened.ok);if(!opened.ok)return;
+  const closed=runCommand(opened.state,{type:'puzzle/close',payload:{}},content);assert.ok(closed.ok);if(!closed.ok)return;
+  assert.deepEqual(closed.state.journey.prologue.puzzleDrafts?.['p-c0-mannequin-hand'],draft);
+  const reset=runCommand(closed.state,{type:'puzzle/resetDraft',payload:{puzzleId:'p-c0-mannequin-hand'}},content);assert.ok(reset.ok);if(reset.ok)assert.equal(reset.state.journey.prologue.puzzleDrafts?.['p-c0-mannequin-hand'],undefined);
+});
+test('claimed rewards cannot be erased by replay or history travel', async () => {
+  const {undo,checkout}=await import('./index.ts');
+  const state=fresh(); state.journey.prologue.status='completed';
+  let tree=createInitialTree(state);
+  const result=dispatch(tree,{type:'reward/claim',payload:{chapterId:'prologue'}},content);assert.ok(result.ok);if(!result.ok)return;tree=result.tree;
+  assert.equal(undo(tree).ok,false);
+  assert.equal(checkout(tree,tree.rootId,content).ok,false);
+  const replay=runCommand(tree.nodes[tree.headId].snapshot,{type:'chapter/replay',payload:{chapterId:'prologue'}},content);
+  assert.equal(replay.ok,false);
+});
+test('migration rejects malformed non-head snapshots, unsupported versions and cyclic links', () => {
+  const tree=createInitialTree(fresh());
+  for(const value of [{...tree,version:'999'}, {...tree,nodes:{...tree.nodes,[tree.rootId]:{...tree.nodes[tree.rootId],parentId:tree.rootId}}}, {...tree,nodes:{...tree.nodes,[tree.rootId]:{...tree.nodes[tree.rootId],snapshot:{}}}}]) assert.equal(fromJSON(JSON.stringify(value),content).ok,false);
+});

@@ -81,6 +81,9 @@ export function runCommand(
     };
   }
 
+  if (!cmd.payload || typeof cmd.payload !== 'object' || Array.isArray(cmd.payload)) {
+    return { ok: false, reason: 'Command payload must be an object.', state };
+  }
   // 1. Guard check
   const guardRes = def.guard(state, cmd.payload, content);
   if (guardRes === false || (typeof guardRes === 'object' && !guardRes.ok)) {

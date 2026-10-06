@@ -57,3 +57,5 @@ export function registerJourneyCommands(registry: CommandRegistry = defaultRegis
 
 // Auto-register journey commands to defaultRegistry
 registerJourneyCommands(defaultRegistry);
+
+export * from './gate.ts';

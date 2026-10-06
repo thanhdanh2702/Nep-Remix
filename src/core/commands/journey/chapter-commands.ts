@@ -166,6 +166,10 @@ export const chapterCompleteCommand: CommandDef<ChapterCompletePayload> = {
       return { ok: false, reason: `Chapter '${chId}' reward has already been claimed.` };
     }
 
+    if (chId !== state.currentChapter || chProgress.status === 'locked') return { ok: false, reason: 'Chapter is not currently playable.' };
+    const ending = chData.chapter.completionDialogueId;
+    if (ending && !chProgress.completedDialogueIds.includes(ending)) return { ok: false, reason: 'Read the ending before completing the chapter.' };
+
     // Verify all declared puzzles in the chapter are solved
     const solvedSet = new Set(chProgress.solvedPuzzleIds);
     for (const puzzle of chData.puzzles) {

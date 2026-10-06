@@ -351,6 +351,15 @@ export const InteractableActionSchema = z.discriminatedUnion('type', [
 ]);
 export type InteractableAction = z.infer<typeof InteractableActionSchema>;
 
+export const RequirementSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('puzzleSolved'), puzzleId: PuzzleIdSchema }),
+  z.object({ kind: z.literal('dialogueCompleted'), dialogueId: DialogueIdSchema }),
+  z.object({ kind: z.literal('itemOwned'), itemId: ItemIdSchema })
+]);
+export const GateSchema = z.object({ all: z.array(RequirementSchema) });
+export type Requirement = z.infer<typeof RequirementSchema>;
+export type Gate = z.infer<typeof GateSchema>;
+
 export const InteractableSchema = z.object({
   id: InteractableIdSchema,
   kind: z.enum(['npc', 'object']),
@@ -358,6 +367,7 @@ export const InteractableSchema = z.object({
   radius: z.number().min(0).max(1),
   rect: NormalizedRectSchema.optional(),
   side: z.enum(['phai', 'trai', 'ca_hai']),
+  when: GateSchema.optional(),
   action: InteractableActionSchema
 });
 export type Interactable = z.infer<typeof InteractableSchema>;
@@ -387,6 +397,7 @@ export const AreaSchema = z.object({
     trai: z.boolean()
   }),
   exits: z.record(z.string(), z.string()),
+  exitGates: z.record(z.string(), GateSchema).optional(),
   /** Point-and-click exit arrows; `via` routes the click through an interactable (e.g. a dialogue before the stairs). */
   exitArrows: z.array(ExitArrowSchema).optional(),
   interactables: z.array(InteractableSchema)
@@ -414,6 +425,7 @@ export const DialogueNodeSchema = z.object({
 export const DialogueSchema = z.object({
   id: DialogueIdSchema,
   speaker: z.string(),
+  when: GateSchema.optional(),
   nodes: z.array(DialogueNodeSchema).nonempty()
 });
 export type Dialogue = z.infer<typeof DialogueSchema>;
@@ -431,6 +443,7 @@ export const PuzzleBaseSchema = z.object({
   id: PuzzleIdSchema,
   title: z.string(),
   hasSession: z.boolean(),
+  when: GateSchema.optional(),
   prerequisitePuzzleIds: z.array(PuzzleIdSchema).optional(),
   hints: z.tuple([z.string(), z.string(), z.string()])
 });

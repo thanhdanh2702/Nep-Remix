@@ -1,3 +1,4 @@
+import { enqueueDialogues } from './dialogue-queue.ts';
 import type { DomainEvent } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
@@ -43,37 +44,15 @@ export function applyPuzzleSolved(
     }
   }
 
-  // Area unlocks: explicit target, then every exit of the room the player solved it in
-  let unlockedAreaIds = chProgress.unlockedAreaIds;
-  const currentArea = chData.areas.find((a) => a.id === chProgress.currentArea);
-  const unlocks = [solution.unlocksAreaId, ...Object.values(currentArea?.exits ?? {})];
-  for (const areaId of unlocks) {
-    if (areaId && !unlockedAreaIds.includes(areaId)) unlockedAreaIds = [...unlockedAreaIds, areaId];
-  }
-
-  // Dialogues: every triggered dialogue yields its first-node clue; the first one becomes active.
-  let notebook = state.notebook;
-  let activeDialogue = chProgress.activeDialogue;
-  const triggerIds = [...new Set([solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])])];
-  let opened = false;
-  for (const dialogueId of triggerIds) {
-    const dialogue = chData.dialogues.find((d) => d.id === dialogueId);
-    const firstNode = dialogue?.nodes[0];
-    if (!dialogue || !firstNode) continue;
-    if (firstNode.clueId && !notebook.unlockedClueIds.includes(firstNode.clueId)) {
-      notebook = { ...notebook, unlockedClueIds: [...notebook.unlockedClueIds, firstNode.clueId] };
-      events.push({ type: 'clueCollected', payload: { clueId: firstNode.clueId } });
-    }
-    if (!opened) {
-      activeDialogue = { dialogueId: dialogue.id, currentNodeId: firstNode.id, history: [firstNode.id] };
-      opened = true;
-    }
-  }
+  // Unlock only an explicit solution target; never infer all exits from any solve.
+  const unlockedAreaIds = solution.unlocksAreaId && !chProgress.unlockedAreaIds.includes(solution.unlocksAreaId)
+    ? [...chProgress.unlockedAreaIds, solution.unlocksAreaId] : chProgress.unlockedAreaIds;
+  const queued = enqueueDialogues(state, [solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])], content);
 
   return {
     state: {
       ...state,
-      notebook,
+
       inventory: { ...state.inventory, itemIds },
       journey: {
         ...state.journey,
@@ -81,7 +60,8 @@ export function applyPuzzleSolved(
           ...chProgress,
           solvedPuzzleIds: [...chProgress.solvedPuzzleIds, puzzle.id],
           unlockedAreaIds,
-          activeDialogue
+          activeDialogue: queued.journey[chId].activeDialogue,
+          dialogueQueue: queued.journey[chId].dialogueQueue
         }
       }
     },

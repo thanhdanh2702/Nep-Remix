@@ -1,3 +1,5 @@
+import { enqueueDialogues } from './dialogue-queue.ts';
+import { guardPuzzle, isGateSatisfied } from './gate.ts';
 import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
@@ -141,6 +143,15 @@ export const interactCommand: CommandDef<InteractPayload> = {
       };
     }
 
+    if (!isGateSatisfied(state, interactable.when)) return { ok: false, reason: 'Interaction prerequisites are not completed.' };
+    if (interactable.action.type === 'puzzle') {
+      const guarded = guardPuzzle(state, interactable.action.targetId, content);
+      if (guarded !== true) return guarded;
+    }
+    if (interactable.action.type === 'dialogue') {
+      const dialogue = chData.dialogues.find(d => d.id === interactable.action.targetId);
+      if (!dialogue || !isGateSatisfied(state, dialogue.when)) return { ok: false, reason: 'Dialogue prerequisites are not completed.' };
+    }
     const { inRange } = isPlayerInRange(interactable, playerPos);
     if (!inRange) {
       return {
@@ -167,38 +178,7 @@ export const interactCommand: CommandDef<InteractPayload> = {
       const dialogueId = interactable.action.targetId;
       const dialogueDef = chData.dialogues.find((d) => d.id === dialogueId);
 
-      if (dialogueDef) {
-        const firstNode = dialogueDef.nodes[0];
-        let nextNotebook = state.notebook;
-
-        // If first node immediately dispenses a clue
-        if (firstNode.clueId && !state.notebook.unlockedClueIds.includes(firstNode.clueId)) {
-          nextNotebook = {
-            ...state.notebook,
-            unlockedClueIds: [...state.notebook.unlockedClueIds, firstNode.clueId]
-          };
-          events.push({
-            type: 'clueCollected',
-            payload: { clueId: firstNode.clueId }
-          });
-        }
-
-        nextState = {
-          ...nextState,
-          notebook: nextNotebook,
-          journey: {
-            ...nextState.journey,
-            [chId]: {
-              ...chProgress,
-              activeDialogue: {
-                dialogueId,
-                currentNodeId: firstNode.id,
-                history: [firstNode.id]
-              }
-            }
-          }
-        };
-      }
+      if (dialogueDef) nextState = enqueueDialogues(state, [dialogueId], content);
     } else if (interactable.action.type === 'item') {
       const itemId = interactable.action.targetId;
       if (!state.inventory.itemIds.includes(itemId)) {

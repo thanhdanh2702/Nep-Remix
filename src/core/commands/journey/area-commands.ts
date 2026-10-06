@@ -1,3 +1,4 @@
+import { isGateSatisfied } from './gate.ts';
 import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
@@ -29,8 +30,11 @@ export const areaGoToCommand: CommandDef<AreaGoToPayload> = {
       return { ok: false, reason: `Khu vực '${areaId}' không thuộc chương '${chId}'.` };
     }
 
-    if (!chProgress.unlockedAreaIds.includes(areaId)) {
-      return { ok: false, reason: 'Lối này còn khóa. Hãy giải câu đố trong phòng để mở đường.' };
+    const fromArea = chData.areas.find(a => a.id === chProgress.currentArea);
+    const exits = Object.entries(fromArea?.exits ?? {}).filter(([, target]) => target === areaId);
+    if (!exits.length || !exits.some(([key]) => isGateSatisfied(state, fromArea?.exitGates?.[key])
+      && (fromArea?.exitGates?.[key] !== undefined || chProgress.unlockedAreaIds.includes(areaId)))) {
+      return { ok: false, reason: 'This exit is locked or not adjacent to the current room.' };
     }
 
     if (chProgress.currentArea === areaId) {
@@ -52,6 +56,7 @@ export const areaGoToCommand: CommandDef<AreaGoToPayload> = {
         [chId]: {
           ...chProgress,
           currentArea: areaId,
+          unlockedAreaIds: [...new Set([...chProgress.unlockedAreaIds, areaId])],
           navStack: [...chProgress.navStack, chProgress.currentArea]
         }
       }
