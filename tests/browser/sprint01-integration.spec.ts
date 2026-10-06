@@ -94,3 +94,32 @@ test('corrupt save is preserved and the UI reports that the new session is unsav
   await expect(page.locator('.toast')).toContainText('Bản gốc được giữ lại');
   expect(await page.evaluate(key => localStorage.getItem(key), saveKey)).toBe('{broken-save');
 });
+
+test('styling garment and accessories resume after reload and cancel/reopen', async ({ page }) => {
+  await start(page);
+  // Focused session fixture; the fresh-story walkthrough above never injects progress.
+  await page.evaluate(key => {
+    const envelope = JSON.parse(localStorage.getItem(key)!);
+    const state = envelope.tree.nodes[envelope.tree.headId].snapshot;
+    state.currentChapter = 'c1';
+    state.journey.c1.status = 'in_progress';
+    state.journey.c1.currentArea = 'c1-s3-cong-dinh-doi-dau';
+    state.journey.c1.unlockedAreaIds.push('c1-s3-cong-dinh-doi-dau');
+    state.activeSession = { type: 'puzzle', puzzleId: 'p-c1-styling-cam', chapterId: 'c1', puzzleType: 'styling', valid: false, data: {}, history: [] };
+    localStorage.setItem(key, JSON.stringify(envelope));
+  }, saveKey);
+  await page.reload();
+  await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
+  await page.getByRole('tab', { name: 'Áo dài', exact: true }).click();
+  await page.locator('.wardrobe-card', { hasText: 'Áo ngũ thân tay chẽn' }).first().click();
+  await page.getByRole('tab', { name: 'Giày', exact: true }).click();
+  await page.locator('.wardrobe-card', { hasText: 'Guốc mộc quai nhung' }).first().click();
+  await page.reload();
+  await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
+  await page.getByRole('tab', { name: 'Giày', exact: true }).click();
+  await expect(page.locator('.wardrobe-card', { hasText: 'Guốc mộc quai nhung' }).first()).toHaveAttribute('aria-pressed', 'true');
+  await page.getByRole('button', { name: 'Hủy thử thách', exact: true }).click();
+  await spot(page, 'hitbox-styling-cam').click();
+  await page.getByRole('tab', { name: 'Giày', exact: true }).click();
+  await expect(page.locator('.wardrobe-card', { hasText: 'Guốc mộc quai nhung' }).first()).toHaveAttribute('aria-pressed', 'true');
+});
