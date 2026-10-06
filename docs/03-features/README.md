@@ -4,6 +4,8 @@ Thư mục này chứa toàn bộ các bản đặc tả chức năng chi tiết
 
 ## Danh sách tài liệu
 
+- [Hồ sơ build Cốt truyện hoàn chỉnh](../07-game/README.md): thiết kế Mở đầu + 5 chương, 17 phòng, 25 câu đố, kịch bản, gameplay, văn hóa, backlog kỹ thuật và tiêu chí nghiệm thu.
+
 - `docs/03-features/feature-list.md`: Bảng tổng hợp mã hóa toàn bộ 20 tính năng (F01 đến F20), đánh dấu rõ các tính năng bắt buộc phải chạy được trên bản demo nộp ngày 10/10/2026.
 - `docs/03-features/onboarding.md`: Đặc tả luồng khởi tạo diện mạo nhân vật tích hợp ngay tại sảnh sân nhà qua chọn mẫu hoặc ảnh selfie, tự chọn giới tính, không yêu cầu tài khoản, kèm kịch bản dự phòng khi AI quá tải.
 - `docs/03-features/hub.md`: Đặc tả sảnh sân nhà hoàng hôn pixel art, 4 biển gỗ điều hướng trực quan bốn phân khu, hiển thị số Sen Ngọc và tương tác với mèo mướp Nếp.

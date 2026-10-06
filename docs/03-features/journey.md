@@ -1,5 +1,7 @@
 # Đặc Tả Tính Năng Game Cốt Truyện (Journey)
 
+> Hồ sơ triển khai toàn bộ Mở đầu + 5 chương nằm tại [docs/07-game](../07-game/README.md): kịch bản từng phòng, gameplay, kế hoạch kỹ thuật, văn hóa và nghiệm thu. Đây là đặc tả đề xuất ngày 06/10/2026; không mở rộng mặc định phạm vi demo 10/10. Các mô tả Lật vải dưới đây thuộc hướng thiết kế mở rộng, không phải điều kiện của bản cơ sở.
+
 ## 1. Mục đích của khu vực
 
 Cốt truyện (Journey, được mở ra từ biển gỗ gắn trên cổng vòm ở giữa sân nhà, gắn liền với hành trình khám phá chiếc rương cũ trên gác xép) là phân khu trò chơi giải đố theo thể loại tương tác tĩnh (point-and-click) kết hợp visual novel ngắn. Tính năng này mang lại tính sáng tạo độc đáo cho ứng dụng, dẫn dắt người chơi vào hành trình khám phá ký ức của các thế hệ phụ nữ qua từng thời kỳ áo dài. Thông qua cơ chế tương tác và tính năng cốt lõi "Lật vải" (Fabric Flip), người chơi tự mình tháo gỡ các khúc mắc định kiến trong đời sống mà không có yếu tố kinh dị hay áp lực thời gian.
@@ -52,7 +54,7 @@ Trò chơi point-and-click được lập trình hoàn toàn bằng logic trạn
 ## 4. Tiêu chí để coi là làm xong cho bản 10/10 (Acceptance Criteria)
 
 - Hoàn thành trọn vẹn Chương 1 của trò chơi với đầy đủ cốt truyện và câu đố.
-- Cơ chế nút bấm "Lật vải" hoạt động mượt mà, chuyển đổi qua lại giữa hai mặt cảnh vật mà không bị lỗi giao diện.
+- Chơi hết Mở đầu và Chương 1 khi "Lật vải" tắt theo decisions.md; không đặt manh mối bắt buộc ở mặt trái. Lật vải không phải tiêu chí nghiệm thu bản 10/10.
 - Hệ thống túi đồ cho phép nhặt, chọn và sử dụng ít nhất 3 vật phẩm khác nhau để giải đố.
 - Màn hình kết chương có thử thách phối đồ, thưởng 100 Sen Ngọc và mở khóa thành công mẫu áo thưởng vào Tủ đồ chính của app.
 - Lưu lại tiến trình chơi vào localStorage (nếu người dùng thoát ra giữa chừng, khi quay lại vẫn tiếp tục đúng bước đang dở).
