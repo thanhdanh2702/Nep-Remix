@@ -600,5 +600,58 @@ export const ChapterContentSchema = z.object({
   areas: z.array(AreaSchema),
   dialogues: z.array(DialogueSchema),
   puzzles: z.array(PuzzleSchema)
+}).superRefine((chapter, ctx) => {
+  const error = (message: string) => ctx.addIssue({ code: 'custom', message });
+  const puzzles = new Set<string>(chapter.puzzles.map(p => p.id));
+  const dialogues = new Set<string>(chapter.dialogues.map(d => d.id));
+  const areas = new Set<string>(chapter.areas.map(a => a.id));
+  const dependencies = new Map<string, string[]>();
+  const checkGate = (owner: string, gate?: Gate) => {
+    const deps = dependencies.get(owner) ?? [];
+    for (const requirement of gate?.all ?? []) {
+      if (requirement.kind === 'puzzleSolved') {
+        if (!puzzles.has(requirement.puzzleId)) error(`${owner}: foreign puzzle requirement ${requirement.puzzleId}`);
+        deps.push(requirement.puzzleId);
+      } else if (requirement.kind === 'dialogueCompleted') {
+        if (!dialogues.has(requirement.dialogueId)) error(`${owner}: foreign dialogue requirement ${requirement.dialogueId}`);
+        deps.push(requirement.dialogueId);
+      }
+    }
+    dependencies.set(owner, deps);
+  };
+  for (const puzzle of chapter.puzzles) {
+    checkGate(puzzle.id, puzzle.when);
+    checkGate(puzzle.id, { all: (puzzle.prerequisitePuzzleIds ?? []).map(puzzleId => ({kind: 'puzzleSolved', puzzleId})) });
+    const solution = puzzle.solution as { requiredItemIds?: string[]; points?: string[]; dialogueTriggerId?: string; dialogueTriggerIds?: string[]; unlocksAreaId?: string };
+    for (const values of [solution.requiredItemIds, solution.points]) {
+      if (values && (!values.length || new Set(values).size !== values.length)) error(`${puzzle.id}: solution must be nonempty and unique`);
+    }
+    for (const id of [solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])]) if (id && !dialogues.has(id)) error(`${puzzle.id}: foreign dialogue trigger ${id}`);
+    if (solution.unlocksAreaId && !areas.has(solution.unlocksAreaId)) error(`${puzzle.id}: foreign area unlock`);
+  }
+  for (const dialogue of chapter.dialogues) {
+    checkGate(dialogue.id, dialogue.when);
+    const nodes = new Set(dialogue.nodes.map(n => n.id));
+    if (nodes.size !== dialogue.nodes.length) error(`${dialogue.id}: duplicate node`);
+    for (const node of dialogue.nodes) for (const id of [node.nextNodeId, ...(node.choices ?? []).map(c => c.nextNodeId)]) if (id && !nodes.has(id)) error(`${dialogue.id}: invalid node link ${id}`);
+  }
+  for (const area of chapter.areas) {
+    if (area.chapterId !== chapter.chapter.id) error(`${area.id}: wrong chapter`);
+    for (const [key, gate] of Object.entries(area.exitGates ?? {})) {
+      if (!area.exits[key] || !areas.has(area.exits[key])) error(`${area.id}: invalid gated exit ${key}`);
+      checkGate(`${area.id}/${key}`, gate);
+    }
+    for (const hotspot of area.interactables) checkGate(hotspot.id, hotspot.when);
+  }
+  const visiting = new Set<string>();
+  const visited = new Set<string>();
+  const visit = (id: string) => {
+    if (visiting.has(id)) { error(`Cyclic gate dependency at ${id}`); return; }
+    if (visited.has(id)) return;
+    visiting.add(id);
+    for (const dependency of dependencies.get(id) ?? []) visit(dependency);
+    visiting.delete(id); visited.add(id);
+  };
+  for (const id of dependencies.keys()) visit(id);
 });
 export type ChapterContent = z.infer<typeof ChapterContentSchema>;

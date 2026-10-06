@@ -112,3 +112,37 @@ test('invalid queued dialogue snapshots are rejected; readCard retains unlocked 
   const result=runCommand(reading,{type:'museum/readCard',payload:{cardId:'card-ngu-than-nguyen-dynasty'}},content);
   assert.ok(result.ok);if(result.ok)assert.deepEqual(result.state.museum.unlockedCardIds,reading.museum.unlockedCardIds);
 });
+test('fresh Mở đầu/C1 walkthrough grants exactly 150 Sen and complete reward catalogs', () => {
+  let tree=createInitialTree(fresh());
+  const state=()=>tree.nodes[tree.headId].snapshot;
+  const send=(type:string,payload:unknown)=>{const result=dispatch(tree,{type,payload},content);assert.ok(result.ok,!result.ok?result.reason:'');if(result.ok)tree=result.tree;};
+  const tap=(id:string)=>{const p=state().journey[state().currentChapter];const hotspot=content.chapters[state().currentChapter].areas.find(a=>a.id===p.currentArea)!.interactables.find(i=>i.id===id)!;send('interact',{targetId:id,playerPos:hotspot.pos});};
+  const read=()=>{let budget=50;while(state().journey[state().currentChapter].activeDialogue){assert.ok(budget-->0);send('dialogue/advance',{});}};
+  const submit=(puzzleId:string,answer:unknown)=>send('puzzle/submit',{puzzleId,answer});
+  const go=(areaId:string)=>send('area/goTo',{areaId});
+  tap('hitbox-stairs');read();go('c0-s2-gac-xep-chiec-ruong');submit('p-c0-cloth','interact');tap('hitbox-sewing-basket');
+  submit('p-c0-mannequin-hand','kim_gut_bang_bac');submit('p-c0-chest-unlock','chia_khoa_dong_ba_chau');read();
+  send('chapter/complete',{chapterId:'prologue'});send('reward/claim',{chapterId:'prologue'});send('chapter/enter',{chapterId:'c1'});
+  tap('hitbox-loom-shuttle');tap('hitbox-belt-rack');send('item/combine',{itemIds:['con_thoi_go_mun','that_lung_lua_cham']});
+  send('item/use',{itemId:'dung_cu_moc_then_cua',targetPuzzleId:'p-c1-escape'});go('c1-s2-ban-tho-nha-tho-ho');
+  submit('p-c1-altar-cut-threads','keo_may_bang_dong');read();go('c1-s3-cong-dinh-doi-dau');
+  submit('p-c1-present-contract','to_van_tu_cam_co_dat');submit('p-c1-present-letter','buc_thu_tay_chong_cu_Cam');tap('hitbox-stone-step');read();
+  submit('p-c1-styling-cam',{silhouette:'ngu_than_tay_chen',garmentId:'ao-ngu-than-tay-chen',headwearId:'khan-van-den',footwearId:'guoc-moc'});
+  tap('hitbox-village-gate-exit');read();send('chapter/complete',{chapterId:'c1'});
+  const pending=fromJSON(toJSON(tree),content);assert.ok(pending.ok);if(pending.ok)tree=pending.tree;
+  send('reward/claim',{chapterId:'c1'});
+  assert.equal(state().wallet.senNgoc,250);
+  assert.equal(state().inventory.itemIds.filter(id=>id==='thuoc_go_tho_may_1888').length,1);
+  for(const chapterId of ['prologue','c1']) {
+    const reward=content.chapters[chapterId].chapter.reward;
+    assert.ok((reward.garmentIds??[]).every(id=>state().closet.unlockedGarmentIds.includes(id)));
+    assert.ok((reward.cardIds??[]).every(id=>state().museum.unlockedCardIds?.includes(id)));
+  }
+});
+
+test('successful submit closes only the matching puzzle session', () => {
+  const state=fresh();state.journey.prologue.currentArea='c0-s2-gac-xep-chiec-ruong';
+  state.activeSession={type:'puzzle',puzzleId:'p-c0-cloth',chapterId:'prologue',valid:false,data:{}};
+  const result=runCommand(state,{type:'puzzle/submit',payload:{puzzleId:'p-c0-cloth',answer:'interact'}},content);
+  assert.ok(result.ok);if(result.ok)assert.equal(result.state.activeSession,null);
+});

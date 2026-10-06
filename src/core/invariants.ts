@@ -351,6 +351,7 @@ export interface ValidationResult {
 }
 
 export function validateState(state: GameState, content: GameContent): ValidationResult {
+  try {
   const errors: string[] = [
     ...validateAreaAndChapter(state, content),
     ...validateFabricFlipFlag(state, content),
@@ -363,11 +364,32 @@ export function validateState(state: GameState, content: GameContent): Validatio
     ...validateSingleActiveSession(state),
     ...validateOneWayRewardClaim(state, content),
     ...validateHintTierBounds(state),
-    ...validateMuseumProgress(state, content)
+    ...validateMuseumProgress(state, content),
+    ...validateJourneyQueues(state, content)
   ];
 
   return {
     valid: errors.length === 0,
     errors
   };
+  } catch { return { valid: false, errors: ['Invalid state structure.'] }; }
+}
+
+export function validateJourneyQueues(state: GameState, content: GameContent): string[] {
+  const errors: string[] = [];
+  for (const chapterId of content.chapterOrder) {
+    const progress = state.journey[chapterId as ChapterId];
+    if (!progress) { errors.push(`Missing chapter progress: ${chapterId}`); continue; }
+    const chapter = content.chapters[chapterId];
+    const ids = new Set<string>(chapter.dialogues.map(d => d.id));
+    const queue = progress.dialogueQueue ?? [];
+    if (!Array.isArray(queue) || new Set(queue).size !== queue.length || queue.some(id => !ids.has(id) || progress.completedDialogueIds.includes(id) || progress.activeDialogue?.dialogueId === id)) errors.push(`Invalid dialogue queue: ${chapterId}`);
+    if (progress.completedDialogueIds.some(id => !ids.has(id))) errors.push(`Unknown completed dialogue: ${chapterId}`);
+    if (progress.activeDialogue) {
+      const dialogue = chapter.dialogues.find(d => d.id === progress.activeDialogue!.dialogueId);
+      if (!dialogue?.nodes.some(n => n.id === progress.activeDialogue!.currentNodeId)) errors.push(`Invalid active dialogue: ${chapterId}`);
+    }
+  }
+  for (const id of state.museum.unlockedCardIds ?? []) if (!content.cultureCardsById.has(id)) errors.push(`Unknown unlocked card: ${id}`);
+  return errors;
 }
