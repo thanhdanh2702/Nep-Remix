@@ -11,6 +11,8 @@
     "preview": "vite preview",
     "lint": "tsc --noEmit",
     "test:core": "tsx scripts/check-core.ts && tsx scripts/check-game.ts",
+    "test:c2": "node --import tsx --test src/core/c2-*.test.ts src/game/c2-*.test.ts src/game/asset-registry.test.ts tests/c2-regression.test.ts",
+    "test:c2:playtest": "playwright test tests/browser/c2-playtest.spec.ts",
     "test:browser": "playwright test",
     "test:assets": "node scripts/check-built-assets.mjs",
     "audit:assets": "python scripts/audit-assets.py",

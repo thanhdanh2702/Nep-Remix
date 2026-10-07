@@ -93,7 +93,10 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   const chapter = content.chapters[chapterId], area = chapter.areas.find(a => a.id === areaId)!;
   const s1 = areaId === SHOP_AREA;
   // Room world = its background image (registry knows the size before the image loads); logicalSize only backs a missing asset.
-  const info = assetInfo[areaAsset(chapterId, areaId)], world = info ? { w: info.width, h: info.height } : area.logicalSize;
+  const info = assetInfo[areaAsset(chapterId, areaId)];
+  // Effects depend on this identity: hover/resize must not reload art and cancel an active walk.
+  const world = useMemo(() => info ? { w: info.width, h: info.height } : area.logicalSize,
+    [info, area.logicalSize]);
   const [box, setBox] = useState({ x: 0, y: 0, w: 0, h: 0, dpr: 1 });
   const [ready, setReady] = useState(false), [failure, setFailure] = useState('');
   const [hoverId, setHoverId] = useState<string | null>(null), [soi, setSoi] = useState(false);
