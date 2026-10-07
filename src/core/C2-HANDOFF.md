@@ -1,5 +1,7 @@
 # C2 Core checkpoint M1/M2
 
+**Cập nhật M3–M4 ở cuối báo cáo.** Phần đầu giữ bằng chứng checkpoint M1.
+
 Baseline chính thức `main@10d1f88fe20f4577757ad6ce2311eb60d28f7db4`, merge
 vào agent/core tại `5998e0baf963c82df95a5b0d4a9e6a3dc0deba80`, không conflict.
 RED loan checkpoint `5266661`; gates/order RED checkpoint `2d58e18`.
@@ -98,3 +100,115 @@ mở rộng sau migration/M3–M4. Build có warning chunk >500kB.
 - Leader nối suite Node hai file C2 vào package scripts sau review, không sửa
   `package.json` từ Core. Đề xuất `test:c2:core` chạy hai file, mở rộng thêm
   migration suite ở checkpoint kế tiếp.
+
+## M3–M4 Core GREEN (07/10/2026)
+
+M1 GREEN commit `97c183d85703547c2c9e069a7b31e7e1a6771e7c`.
+Migration RED commit `496ebab`: 4 FAIL/4 PASS trước sửa version/recovery/claim.
+Ca bổ sung bắt lỗi replay thiếu D0 và queue legacy thiếu trường chọn D1 trước
+intro: 2 FAIL trước sửa, sau sửa đều GREEN. Content strip labels: 1 FAIL/1 PASS
+trước sửa catalog, sau sửa GREEN. Không nới 36 assertion gốc.
+
+Đã hoàn thành logic:
+
+- P2 cấp hai giấy nguyên tử; chỉ acknowledge mới cấp clue, queue D2→D3 giữ
+  qua reload. P5 enqueue ending hai node; chưa đọc hết không complete/claim.
+- Claim C2 kiểm lại chapter hiện tại, đủ puzzle/ending và gates đọc chứng cứ,
+  kể cả legacy `status=completed`. Không grandfather pending claim.
+- `CONTENT_VERSION='sprint-02-core-1'`; `fromJSON` nhận version này,
+  `sprint-01-core-1` và unversioned, từ chối version lạ. Signature không đổi.
+- Migration trên mọi snapshot: giữ room/navStack/solved/completed/claimed,
+  wallet và reread mode. Typed order draft hợp lệ giữ nguyên; draft trùng/ID
+  lạ/chưa sở hữu bị loại, matching session answer được vô hiệu hóa.
+- Legacy C2 thiếu queue hoặc queue rỗng được enqueue intro và trigger chưa
+  đọc theo thứ tự; giữ active node/mode và queue sẵn có, không auto-read.
+  Repair chứng cứ đã earned từ solved P1/P2 khi engine cũ thiếu plural gifts.
+- Legacy C2 mặt trái được chuyển sang `mat_phai` vì C2 v4 không hỗ trợ trái;
+  không reset phòng hoặc tiến trình. Đây là normalization duy nhất của side.
+- Claimed legacy120 giữ nguyên tiền/ledger, repair quà phi tiền tệ, không grant
+  khăn/guốc từ loan. Pending legacy ở S3 đọc phục hồi rồi claim +100 được.
+- Replay C2 riêng enqueue D0 để không softlock trước collect; reward vẫn chặn,
+  không thay main tree. Không mở rộng reset/replay UX.
+- Items bốn dải mang nhãn 1–2–3–4, bỏ cách gán từng mảnh cho cổ/thân/tay/chữ ký;
+  clues/giấy hư cấu giữ ID cũ, sửa wording gợi ý vị trí và năm 1935.
+
+### Adapter / contract delta gửi Leader và Frontend
+
+1. Đánh dấu API mục 4 implemented; bổ sung `validateChallengeStudioDraft`
+   với chữ ký ở trên cho local undo/redo/resume. `createChallengeStudioDraft`
+   trả lỗi rõ nếu saved draft không hợp lệ, không âm thầm cấp đồ để resume.
+2. Đánh dấu entry/ending/gates/schema/native size/reward100 implemented; rect
+   hotspot/spawn/exit vẫn pending báo cáo Frontend. Không coi legacy rect là
+   native đã nghiệm thu.
+3. Đánh dấu version/migration mục 6/7 implemented với side normalization và
+   phục hồi chứng cứ đã earned. Store nhận `migrated:true`, backup bytes gốc
+   trước ghi; **không cần đổi signature hoặc SAVE_KEY**. Hai ca adapter thực
+   chạy xác nhận backup nguyên bytes và lỗi backup không ghi đè slot gốc.
+4. Leader nối package script, Core không ghi `package.json`:
+
+```json
+"test:c2:core": "node --import tsx --test src/core/c2-*.test.ts"
+```
+
+Nối script này vào suite chuẩn sau review. File `.red.test.ts` giữ tên để theo
+dấu checkpoint RED nhưng toàn bộ 36 ca nay PASS, không exclude/skip.
+
+### Verification cuối M3–M4
+
+| Lệnh | Kết quả thực chạy |
+| --- | --- |
+| `npm run lint` | PASS |
+| `npm run test:core` | PASS 15 checks + walkthrough/self checks |
+| Node baseline 4 file nêu trên | PASS 26/26 |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 80/80, không skip |
+| `npx tsx scripts/validate-content.ts` | PASS `Valid:true` |
+| `npm run build` | PASS; warning chunk >500kB |
+| `npm audit --json` | PASS 0 vulnerabilities, gồm dev dependencies |
+
+Walkthrough unit mới đi từ state khởi tạo qua toàn bộ Mở đầu/C1→C2 bằng
+command thật, không seed inventory/solved C2: reload order partial/sai rồi
+sửa, hai giấy, styling mượn Lemur, từng node ending, pending claim reload,
+reward/reload. Wallet 250→350; cards chỉ unlock, không auto-read.
+
+Coverage có threshold **80% lines/branches/functions**, trên 10 module Core
+có production logic mới/sửa (tính cả code cũ trong các module, không chỉ các
+dòng dễ cover): `closet-commands.ts`, `area-commands.ts`, `chapter-commands.ts`,
+`draft-commands.ts`, `puzzle-commands.ts`, `reward-commands.ts`,
+`challenge-wardrobe.ts`, `studio-commands.ts`, `chapter-replay.ts`, `serialize.ts`.
+Kết quả tổng: **87.56% lines, 80.95% branches, 82.47% functions**. Đây là
+threshold tổng của phạm vi trên, không tuyên bố từng file cũ đều ≥80%.
+Schema/catalog JSON được kiểm bằng parse/validator/content regression,
+không gộp vào runtime coverage; state type/export barrel không có logic.
+
+Lệnh coverage đầy đủ, không cần cài dependency mới:
+
+```sh
+node --import tsx --experimental-test-coverage \
+  --test-coverage-include='src/core/commands/studio/challenge-wardrobe.ts' \
+  --test-coverage-include='src/core/commands/studio/studio-commands.ts' \
+  --test-coverage-include='src/core/commands/closet/closet-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/area-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/chapter-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/draft-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/puzzle-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/reward-commands.ts' \
+  --test-coverage-include='src/core/history/serialize.ts' \
+  --test-coverage-include='src/core/history/chapter-replay.ts' \
+  --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-functions=80 \
+  --test --test-reporter=tap src/core/c2-*.test.ts \
+  src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts \
+  src/core/sprint-01.test.ts tests/leader-core-integration.test.ts \
+  scripts/check-core.ts scripts/check-game.ts
+```
+
+### Chưa nghiệm thu / dependency còn lại
+
+- Bảng rect/spawn/exit native chưa được gửi. Đã kiểm read-only cả Frontend
+  `7d1c1c8` và `16778b3`: không có report tọa độ trong commit/worktree lúc kiểm.
+  Core chưa tự đo từ placeholder hoặc lấy full-canvas overlay làm hit rect.
+- Layer áo phụ vẫn thiếu; giữ cả hai reward garment IDs. Không tạo/đổi art.
+- Chưa merge Frontend, chưa browser/gameplay QA trên bản tích hợp, chưa bật
+  candidate/release C2. M2/M3/M4 nghiệm thu UI vẫn cần Leader/Frontend/Tester.
+- `src/game/`, browser tests, PNG, registry, exporter và package không bị Core
+  sửa trong các commit implement. Mọi thay đổi ngoài ownership chỉ đến từ
+  merge checkpoint chính thức được người dùng cho phép.

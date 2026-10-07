@@ -30,22 +30,22 @@
   {
     "id": "clue-ban-ve-lemur-mat-ma",
     "chapterId": "c2",
-    "title": "Mật mã trên bản vẽ Lemur",
-    "description": "Dòng chữ chì than góc bản vẽ: 'Giao kèo bán tạ - Hòm sắt tiệm vải Hàng Đào - Chìa giấu sau đồng hồ quả lắc'.",
+    "title": "Gợi ý vị trí chìa khóa trên bản vẽ Lemur",
+    "description": "Góc bản vẽ ghi chìa két tiệm vải Hàng Đào được giấu sau đồng hồ quả lắc. Đây là gợi ý vị trí, không phải mã số.",
     "discoveredInDialogueId": "d-c2-mat-ma"
   },
   {
     "id": "clue-bien-lai-goc-1935",
     "chapterId": "c2",
     "title": "Biên lai trả nợ gốc năm 1935",
-    "description": "Biên lai thu tiền gốc chứng minh khoản nợ 500 đồng bạc Đông Dương đã được cha Cụ Loan trả hết từ 6 tháng trước.",
+    "description": "Biên lai thu tiền gốc chứng minh khoản nợ 500 đồng bạc Đông Dương đã được cha Cụ Loan trả hết từ 6 tháng trước. Chứng cứ hư cấu năm 1935 trong câu chuyện.",
     "discoveredInDialogueId": "d-c2-bien-lai"
   },
   {
     "id": "clue-giao-keo-ep-hon",
     "chapterId": "c2",
     "title": "Bản giao kèo ép hôn Cụ Loan",
-    "description": "Văn bản Cả Nghị giấu kín để ép Cụ Loan làm kế thất quan Huyện hòng giành độc quyền thầu vải sợi.",
+    "description": "Văn bản Cả Nghị giấu kín để ép Cụ Loan làm kế thất quan Huyện hòng giành độc quyền thầu vải sợi. Chứng cứ hư cấu năm 1935 trong câu chuyện.",
     "discoveredInDialogueId": "d-c2-giao-keo"
   },
   {

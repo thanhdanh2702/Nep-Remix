@@ -122,7 +122,60 @@ test('new C2 completion/reward cannot farm via reload, undo, checkout or replay'
   assert.equal(runCommand(snapshot,{type:'reward/claim',payload:{chapterId:'c2'}},content).ok,false);
   const replay = createChapterReplayTree(tree,'c2',content); assert.ok(replay.ok);
   if(replay.ok) {
+    assert.equal(replay.tree.nodes[replay.tree.headId].snapshot.journey.c2.activeDialogue?.dialogueId,'d-c2-ca-nghi');
     assert.equal(dispatch(replay.tree,{type:'reward/claim',payload:{chapterId:'c2'}},content).ok,false);
     assert.equal(snapshot.wallet.senNgoc,state.wallet.senNgoc+100);
   }
+});
+test('legacy missing queue repairs earned evidence and supported side without changing wallet', () => {
+  const state = ready(); state.journey.c2.solvedPuzzleIds.push(P2);
+  state.journey.c2.side = 'mat_trai'; state.features.latVai = true;
+  state.journey.c2.completedDialogueIds = [];
+  delete state.journey.c2.dialogueQueue;
+  const restored = fromJSON(legacyBytes(state),content); assert.ok(restored.ok); if(!restored.ok)return;
+  const snapshot = restored.tree.nodes[restored.tree.headId].snapshot;
+  assert.equal(snapshot.journey.c2.side,'mat_phai');
+  assert.equal(snapshot.journey.c2.activeDialogue?.dialogueId,'d-c2-ca-nghi');
+  for (const item of ['bien_lai_tra_no_goc_1935','ban_giao_keo_ep_hon','ban_ve_ao_dai_tan_thoi']) assert.equal(snapshot.inventory.itemIds.filter(id=>id===item).length,1);
+  assert.equal(snapshot.wallet.senNgoc,state.wallet.senNgoc);
+});
+test('legacy unclaimed at S3 can read recovery queue then claim exactly 100 without losing solves', () => {
+  const state = ready(); state.journey.c2.currentArea=S3;state.journey.c2.status='completed';
+  state.journey.c2.solvedPuzzleIds=[P1,P2,P3,P4,P5];state.journey.c2.completedDialogueIds=[];
+  const loaded=fromJSON(legacyBytes(state),content);assert.ok(loaded.ok);if(!loaded.ok)return;
+  let tree=loaded.tree;let budget=20;
+  while(tree.nodes[tree.headId].snapshot.journey.c2.activeDialogue){
+    assert.ok(budget-->0);const advanced=dispatch(tree,{type:'dialogue/advance',payload:{}},content);assert.ok(advanced.ok);if(advanced.ok)tree=advanced.tree;
+  }
+  const snapshot=tree.nodes[tree.headId].snapshot;
+  assert.deepEqual(snapshot.journey.c2.solvedPuzzleIds,[P1,P2,P3,P4,P5]);
+  assert.equal(snapshot.journey.c2.currentArea,S3);assert.equal(snapshot.wallet.senNgoc,state.wallet.senNgoc);
+  const claimed=dispatch(tree,{type:'reward/claim',payload:{chapterId:'c2'}},content);assert.ok(claimed.ok);
+  if(claimed.ok)assert.equal(claimed.tree.nodes[claimed.tree.headId].snapshot.wallet.senNgoc,state.wallet.senNgoc+100);
+});
+test('Frontend store adapter backs up exact old-version bytes before writing migrated C2', async () => {
+  const {restoreGame,saveGame,SAVE_KEY,SAVE_BACKUP_KEY}=await import('../game/store.ts');
+  const original=legacyBytes();const bytes=new Map([[SAVE_KEY,original]]);
+  Object.defineProperty(globalThis,'localStorage',{configurable:true,value:{
+    getItem:(key:string)=>bytes.get(key)??null,setItem:(key:string,value:string)=>bytes.set(key,value),
+  }});
+  try {
+    const restored=restoreGame();assert.equal(restored.status,'migrated');
+    assert.equal(saveGame(restored.tree),true);assert.equal(bytes.get(SAVE_BACKUP_KEY),original);
+    assert.equal(JSON.parse(bytes.get(SAVE_KEY)!).contentVersion,CONTENT_VERSION);
+  } finally {delete (globalThis as {localStorage?:unknown}).localStorage;}
+});
+test('backup write failure leaves old C2 save untouched and reports save failure', async () => {
+  const {restoreGame,saveGame,SAVE_KEY,SAVE_BACKUP_KEY}=await import('../game/store.ts');
+  const original=legacyBytes();const bytes=new Map([[SAVE_KEY,original]]);const writes:string[]=[];
+  Object.defineProperty(globalThis,'localStorage',{configurable:true,value:{
+    getItem:(key:string)=>bytes.get(key)??null,setItem:(key:string,value:string)=>{
+      writes.push(key);if(key===SAVE_BACKUP_KEY)throw new Error('backup blocked');bytes.set(key,value);
+    },
+  }});
+  try {
+    const restored=restoreGame();assert.equal(restored.status,'migrated');
+    assert.equal(saveGame(restored.tree),false);assert.equal(bytes.get(SAVE_KEY),original);
+    assert.deepEqual(writes,[SAVE_BACKUP_KEY]);
+  } finally {delete (globalThis as {localStorage?:unknown}).localStorage;}
 });

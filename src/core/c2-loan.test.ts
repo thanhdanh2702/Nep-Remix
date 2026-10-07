@@ -121,3 +121,13 @@ test('loan helper rejects catalog drift and cannot build a draft with an empty w
   state.closet.unlockedGarmentIds = [];
   assert.equal(createChallengeStudioDraft(state,P5,drift).ok,false);
 });
+for (const puzzleId of ['p-c2-safe-open','p-c2-present-receipt','p-c2-present-sketch',P5]) {
+  for(const invalid of ['room','side','chapter']) test(`direct ${puzzleId} rejects wrong ${invalid}`,()=>{
+    const state=ready();state.journey.c2.solvedPuzzleIds=[];
+    if(invalid==='room')state.journey.c2.currentArea='c2-s1-gac-lung-ve-tranh';
+    if(invalid==='side')state.journey.c2.side='mat_trai';
+    if(invalid==='chapter')state.currentChapter='prologue';
+    const result=runCommand(state,{type:'puzzle/submit',payload:{puzzleId,answer}},content);
+    assert.equal(result.ok,false);assert.equal(result.state,state);
+  });
+}

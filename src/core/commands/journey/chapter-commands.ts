@@ -3,6 +3,7 @@ import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 import type { ChapterId } from '../../../content/schema.ts';
 import { enqueueDialogues } from './dialogue-queue.ts';
+import { isGateSatisfied } from './gate.ts';
 
 // ==========================================
 // 1. chapter/enter (reversible)
@@ -124,6 +125,9 @@ export const chapterCompleteCommand: CommandDef<ChapterCompletePayload> = {
     if (chId !== state.currentChapter || chProgress.status === 'locked') return { ok: false, reason: 'Chapter is not currently playable.' };
     const ending = chData.chapter.completionDialogueId;
     if (ending && !chProgress.completedDialogueIds.includes(ending)) return { ok: false, reason: 'Read the ending before completing the chapter.' };
+    if (chId === 'c2' && !isGateSatisfied(state, chData.puzzles.find(p => p.id === 'p-c2-styling-loan')?.when)) {
+      return { ok: false, reason: 'Read the C2 evidence and finish the presentations before completing.' };
+    }
 
     // Verify all declared puzzles in the chapter are solved
     const solvedSet = new Set(chProgress.solvedPuzzleIds);
