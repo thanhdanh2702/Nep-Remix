@@ -9,9 +9,14 @@ const files = typeof process !== 'undefined' && !process.env.VITE
   : import.meta.glob<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
       eager: true, query: '?url', import: 'default',
     });
-export const assetRegistry: Record<string, string> = Object.fromEntries(
-  Object.entries(files).map(([path, url]) => [path.replace('../../', ''), url])
-);
+/** Only metadata-backed assets may enter runtime; local art drafts stay untouched. */
+export function registeredAssetUrls(files: Record<string, string>, paths: readonly string[]): Record<string, string> {
+  const registered = new Set(paths);
+  return Object.fromEntries(Object.entries(files)
+    .map(([path, url]) => [path.replace('../../', ''), url])
+    .filter(([path]) => registered.has(path)));
+}
+export const assetRegistry = registeredAssetUrls(files, assetMetadata.map(entry => entry.path));
 export const assetInfo = Object.fromEntries(assetMetadata.map(entry => [entry.path, entry]));
 export function asset(path: string): string {
   const url = assetRegistry[path];
