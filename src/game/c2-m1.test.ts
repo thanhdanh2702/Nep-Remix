@@ -15,7 +15,16 @@ import {
   handleOrderSlotKey,
 } from './order-puzzle';
 import { freshTree, execute, content } from './store';
-import { createInitialTree, toJSON, fromJSON } from '../core';
+import {
+  createInitialTree,
+  toJSON,
+  fromJSON,
+  getChallengeWardrobe,
+  createChallengeStudioDraft,
+  validateChallengeStudioDraft,
+  validateStudioDraft,
+} from '../core';
+import { stylingAnswer } from './styling-answer';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -607,15 +616,29 @@ test('walker interaction passes normalized arrived walker feet to interact handl
 test('Studio challenge detects loan wardrobe items and guards Closet save', () => {
   const tree = freshTree();
   const state = tree.nodes[tree.headId].snapshot;
-  const loanGarmentIds = ['ao-dai-lemur'];
-  const loanAccessoryIds = ['khan-van-den', 'guoc-moc'];
+  state.currentChapter = 'c2';
+  Object.assign(state.journey.c2, {
+    status: 'in_progress',
+    currentArea: 'c2-s3-phong-trien-lam-doi-dau',
+    solvedPuzzleIds: ['p-c2-sketch-assemble', 'p-c2-safe-open', 'p-c2-present-receipt', 'p-c2-present-sketch'],
+    completedDialogueIds: ['d-c2-ca-nghi', 'd-c2-mat-ma', 'd-c2-bien-lai', 'd-c2-giao-keo'],
+  });
+  state.closet.unlockedAccessoryIds = [];
+  const res = getChallengeWardrobe(state, 'p-c2-styling-loan', content);
+  assert.equal(res.ok, true);
+  if (!res.ok) return;
+  const loanGarmentIds = res.borrowedGarmentIds;
+  const loanAccessoryIds = res.borrowedAccessoryIds;
+  assert.deepEqual(loanGarmentIds, ['ao-dai-lemur']);
+  assert.deepEqual(loanAccessoryIds, ['khan-van-den', 'guoc-moc']);
 
-  // Draft with loan garment
+  // Draft with loan garment using real catalog silhouette 'tan_thoi'
   const draftWithLoan: import('../core').StudioDraft = {
     type: 'studio',
+    challengePuzzleId: 'p-c2-styling-loan',
     eventContextId: 'dao_pho',
     garmentId: 'ao-dai-lemur',
-    silhouette: 'ao_dai_lemur',
+    silhouette: content.garmentsById.get('ao-dai-lemur')!.silhouette,
     colorPalette: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
     equippedAccessories: {},
   };
@@ -624,6 +647,12 @@ test('Studio challenge detects loan wardrobe items and guards Closet save', () =
     && !state.closet.unlockedGarmentIds.includes(draftWithLoan.garmentId);
 
   assert.ok(hasBorrowedGarment, 'ao-dai-lemur should be identified as a borrowed item');
+
+  // Core guards validateChallengeStudioDraft accepts loan, while permanent validateStudioDraft rejects
+  const challengeCheck = validateChallengeStudioDraft(state, 'p-c2-styling-loan', draftWithLoan, content);
+  assert.equal(challengeCheck.ok, true, 'Loan items are valid in challenge context');
+  const permanentCheck = validateStudioDraft(state, draftWithLoan, content, true);
+  assert.equal(permanentCheck.ok, false, 'Permanent save of outfit with borrowed items must be rejected');
 
   // Guard blocks saving
   const canSave = !hasBorrowedGarment;
@@ -643,5 +672,293 @@ test('Studio challenge detects loan wardrobe items and guards Closet save', () =
     && !state.closet.unlockedGarmentIds.includes(draftOwned.garmentId);
   assert.equal(isBorrowedOwned, false);
 });
+
+test('challenge styling draft persistence, revalidation, and submit via stylingAnswer', () => {
+  let tree = freshTree();
+  let snap = tree.nodes[tree.headId].snapshot;
+  snap.currentChapter = 'c2';
+  Object.assign(snap.journey.c2, {
+    status: 'in_progress',
+    currentArea: 'c2-s3-phong-trien-lam-doi-dau',
+    solvedPuzzleIds: ['p-c2-sketch-assemble', 'p-c2-safe-open', 'p-c2-present-receipt', 'p-c2-present-sketch'],
+    completedDialogueIds: ['d-c2-ca-nghi', 'd-c2-mat-ma', 'd-c2-bien-lai', 'd-c2-giao-keo'],
+  });
+  tree = createInitialTree(snap);
+
+  // 1. Create initial challenge draft from Core API
+  const opened = createChallengeStudioDraft(snap, 'p-c2-styling-loan', content);
+  assert.equal(opened.ok, true);
+  if (!opened.ok) return;
+
+  const initialDraft = opened.draft;
+  assert.equal(initialDraft.challengePuzzleId, 'p-c2-styling-loan');
+  assert.equal(initialDraft.garmentId, 'ao-dai-lemur');
+  assert.equal(initialDraft.silhouette, 'tan_thoi');
+
+  // 2. Customize draft with loan accessories, specific palette, and event context
+  const customizedDraft: import('../core').StudioDraft = {
+    ...initialDraft,
+    colorPalette: ['#c4a482', '#6b4423', '#50321a', '#2c1608'],
+    equippedAccessories: {
+      headwear: 'khan-van-den',
+      footwear: 'guoc-moc',
+    },
+    eventContextId: 'le_chua',
+  };
+
+  // 3. Revalidate before persistence
+  const validCheck = validateChallengeStudioDraft(snap, 'p-c2-styling-loan', customizedDraft, content);
+  assert.equal(validCheck.ok, true);
+
+  // 4. Persist draft via puzzle/updateDraft using stylingAnswer (all strings)
+  const answer = stylingAnswer(customizedDraft);
+  assert.equal(typeof answer.silhouette, 'string');
+  assert.equal(typeof answer.garmentId, 'string');
+  assert.equal(typeof answer.headwearId, 'string');
+  assert.equal(typeof answer.footwearId, 'string');
+  assert.equal(typeof answer.color0, 'string');
+  assert.equal(typeof answer.color1, 'string');
+  assert.equal(typeof answer.color2, 'string');
+  assert.equal(typeof answer.color3, 'string');
+  assert.equal(typeof answer.eventContextId, 'string');
+
+  tree = execute(tree, {
+    type: 'puzzle/updateDraft',
+    payload: {
+      puzzleId: 'p-c2-styling-loan',
+      draft: { type: 'styling', answer },
+    },
+  }).tree;
+
+  // 5. Verify roundtrip through JSON serialization / reload
+  const json = toJSON(tree);
+  const reloaded = fromJSON(json, content);
+  assert.equal(reloaded.ok, true);
+  if (!reloaded.ok) return;
+
+  const reloadedState = reloaded.tree.nodes[reloaded.tree.headId].snapshot;
+  const resumed = createChallengeStudioDraft(reloadedState, 'p-c2-styling-loan', content);
+  assert.equal(resumed.ok, true);
+  if (!resumed.ok) return;
+
+  assert.equal(resumed.draft.garmentId, 'ao-dai-lemur');
+  assert.equal(resumed.draft.silhouette, 'tan_thoi');
+  assert.deepEqual(resumed.draft.colorPalette, ['#c4a482', '#6b4423', '#50321a', '#2c1608']);
+  assert.equal(resumed.draft.equippedAccessories.headwear, 'khan-van-den');
+  assert.equal(resumed.draft.equippedAccessories.footwear, 'guoc-moc');
+  assert.equal(resumed.draft.eventContextId, 'le_chua');
+
+  // 6. Submit solution via stylingAnswer
+  const submitRes = execute(reloaded.tree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-styling-loan',
+      answer: stylingAnswer(resumed.draft),
+    },
+  });
+  assert.equal(submitRes.ok, true);
+  const solvedSnap = submitRes.tree.nodes[submitRes.tree.headId].snapshot;
+  assert.ok(solvedSnap.journey.c2.solvedPuzzleIds.includes('p-c2-styling-loan'));
+  // Ending dialogue D4 enqueued upon styling solve
+  assert.ok(
+    Boolean(solvedSnap.journey.c2.dialogueQueue?.includes('d-c2-ending')) ||
+    solvedSnap.journey.c2.activeDialogue?.dialogueId === 'd-c2-ending'
+  );
+});
+
+test('full Chapter 2 walkthrough: D0 -> 4 strips -> P1 -> D1 -> S2 -> key -> P2 -> D2/D3 -> S3 -> P3 -> P4 -> P5 -> D4 -> complete -> claim +100', () => {
+  let tree = freshTree();
+  let snap = tree.nodes[tree.headId].snapshot;
+
+  // Unlock C2 as if C1 was completed
+  snap.journey.c1 = {
+    ...snap.journey.c1,
+    status: 'completed',
+    claimed: true,
+  };
+  snap.journey.c2 = {
+    ...snap.journey.c2,
+    status: 'in_progress',
+  };
+  tree = createInitialTree(snap);
+
+  // 1. Enter C2 -> Enqueues D0 ('d-c2-ca-nghi')
+  tree = execute(tree, { type: 'chapter/enter', payload: { chapterId: 'c2' } }).tree;
+  let cur = tree.nodes[tree.headId].snapshot;
+  assert.equal(cur.currentChapter, 'c2');
+  assert.equal(cur.journey.c2.activeDialogue?.dialogueId, 'd-c2-ca-nghi');
+
+  // Picking pieces before completing D0 is rejected by guard
+  const earlyPickup = execute(tree, {
+    type: 'interact',
+    payload: { targetId: 'hitbox-drawing-desk', playerPos: { x: 0.38, y: 0.469 } },
+  });
+  assert.equal(earlyPickup.ok, false);
+
+  // Complete D0
+  while (tree.nodes[tree.headId].snapshot.journey.c2.activeDialogue) {
+    tree = execute(tree, { type: 'dialogue/advance', payload: {} }).tree;
+  }
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.ok(cur.journey.c2.completedDialogueIds.includes('d-c2-ca-nghi'));
+
+  // 2. Pick up 4 drawing strips in S1
+  const stripPickups = [
+    { targetId: 'hitbox-drawing-desk', item: 'manh_ban_ve_ao_dai_1', pos: { x: 0.38, y: 0.469 } },
+    { targetId: 'hitbox-fabric-basket', item: 'manh_ban_ve_ao_dai_2', pos: { x: 0.606, y: 0.574 } },
+    { targetId: 'hitbox-gas-lamp', item: 'manh_ban_ve_ao_dai_3', pos: { x: 0.09, y: 0.454 } },
+    { targetId: 'hitbox-french-window', item: 'manh_ban_ve_ao_dai_4', pos: { x: 0.767, y: 0.502 } },
+  ];
+  for (const p of stripPickups) {
+    tree = execute(tree, { type: 'interact', payload: { targetId: p.targetId, playerPos: p.pos } }).tree;
+    assert.ok(tree.nodes[tree.headId].snapshot.inventory.itemIds.includes(p.item));
+  }
+
+  // 3. Assemble sketch P1 ('p-c2-sketch-assemble')
+  // Wrong order submit gives feedback without solve
+  const wrongOrder = execute(tree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-sketch-assemble',
+      answer: ['manh_ban_ve_ao_dai_4', 'manh_ban_ve_ao_dai_3', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_1'],
+    },
+  });
+  assert.equal(wrongOrder.tree.nodes[wrongOrder.tree.headId].snapshot.journey.c2.solvedPuzzleIds.includes('p-c2-sketch-assemble'), false);
+
+  // Correct order submit
+  tree = execute(tree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-sketch-assemble',
+      answer: ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3', 'manh_ban_ve_ao_dai_4'],
+    },
+  }).tree;
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.ok(cur.journey.c2.solvedPuzzleIds.includes('p-c2-sketch-assemble'));
+  assert.ok(cur.inventory.itemIds.includes('ban_ve_ao_dai_tan_thoi'));
+
+  // Exiting to S2 before reading D1 ('d-c2-mat-ma') is blocked by G1 exitGate
+  const earlyExitS2 = execute(tree, { type: 'area/goTo', payload: { areaId: 'c2-s2-kho-vai-hang-dao' } });
+  assert.equal(earlyExitS2.ok, false);
+
+  // Complete D1
+  while (tree.nodes[tree.headId].snapshot.journey.c2.activeDialogue) {
+    tree = execute(tree, { type: 'dialogue/advance', payload: {} }).tree;
+  }
+  assert.ok(tree.nodes[tree.headId].snapshot.journey.c2.completedDialogueIds.includes('d-c2-mat-ma'));
+
+  // 4. Move to S2
+  tree = execute(tree, { type: 'area/goTo', payload: { areaId: 'c2-s2-kho-vai-hang-dao' } }).tree;
+  assert.equal(tree.nodes[tree.headId].snapshot.journey.c2.currentArea, 'c2-s2-kho-vai-hang-dao');
+
+  // 5. In S2: Pick up brass safe key
+  tree = execute(tree, {
+    type: 'interact',
+    payload: { targetId: 'hitbox-grandfather-clock', playerPos: { x: 0.248, y: 0.425 } },
+  }).tree;
+  assert.ok(tree.nodes[tree.headId].snapshot.inventory.itemIds.includes('chia_khoa_ket_sat_bang_thau'));
+
+  // 6. Open safe P2 ('p-c2-safe-open')
+  tree = execute(tree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-safe-open',
+      answer: 'chia_khoa_ket_sat_bang_thau',
+    },
+  }).tree;
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.ok(cur.journey.c2.solvedPuzzleIds.includes('p-c2-safe-open'));
+  // Both papers granted atomically
+  assert.ok(cur.inventory.itemIds.includes('bien_lai_tra_no_goc_1935'));
+  assert.ok(cur.inventory.itemIds.includes('ban_giao_keo_ep_hon'));
+
+  // Advance D2 ('d-c2-bien-lai') and D3 ('d-c2-giao-keo') in queue
+  while (tree.nodes[tree.headId].snapshot.journey.c2.activeDialogue) {
+    tree = execute(tree, { type: 'dialogue/advance', payload: {} }).tree;
+  }
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.ok(cur.journey.c2.completedDialogueIds.includes('d-c2-bien-lai'));
+  assert.ok(cur.journey.c2.completedDialogueIds.includes('d-c2-giao-keo'));
+
+  // 7. Move to S3
+  tree = execute(tree, { type: 'area/goTo', payload: { areaId: 'c2-s3-phong-trien-lam-doi-dau' } }).tree;
+  assert.equal(tree.nodes[tree.headId].snapshot.journey.c2.currentArea, 'c2-s3-phong-trien-lam-doi-dau');
+
+  // 8. Present Receipt P3 ('p-c2-present-receipt')
+  tree = execute(tree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-present-receipt',
+      answer: 'bien_lai_tra_no_goc_1935',
+    },
+  }).tree;
+  assert.ok(tree.nodes[tree.headId].snapshot.journey.c2.solvedPuzzleIds.includes('p-c2-present-receipt'));
+
+  // 9. Present Sketch P4 ('p-c2-present-sketch')
+  tree = execute(tree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-present-sketch',
+      answer: 'ban_ve_ao_dai_tan_thoi',
+    },
+  }).tree;
+  assert.ok(tree.nodes[tree.headId].snapshot.journey.c2.solvedPuzzleIds.includes('p-c2-present-sketch'));
+
+  // 10. Styling Challenge P5 ('p-c2-styling-loan')
+  const p5Draft: import('../core').StudioDraft = {
+    type: 'studio',
+    challengePuzzleId: 'p-c2-styling-loan',
+    eventContextId: 'dao_pho',
+    garmentId: 'ao-dai-lemur',
+    silhouette: 'tan_thoi',
+    colorPalette: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+    equippedAccessories: {
+      headwear: 'khan-van-den',
+      footwear: 'guoc-moc',
+    },
+  };
+  tree = execute(tree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-styling-loan',
+      answer: stylingAnswer(p5Draft),
+    },
+  }).tree;
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.ok(cur.journey.c2.solvedPuzzleIds.includes('p-c2-styling-loan'));
+
+  // Trying to complete chapter before finishing D4 ending dialogue is blocked
+  const earlyComplete = execute(tree, { type: 'chapter/complete', payload: { chapterId: 'c2' } });
+  assert.equal(earlyComplete.ok, false);
+
+  // 11. Read D4 Ending dialogue ('d-c2-ending')
+  while (tree.nodes[tree.headId].snapshot.journey.c2.activeDialogue) {
+    tree = execute(tree, { type: 'dialogue/advance', payload: {} }).tree;
+  }
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.ok(cur.journey.c2.completedDialogueIds.includes('d-c2-ending'));
+
+  // 12. Complete C2
+  const initialWallet = cur.wallet.senNgoc;
+  tree = execute(tree, { type: 'chapter/complete', payload: { chapterId: 'c2' } }).tree;
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.equal(cur.journey.c2.status, 'completed');
+
+  // 13. Claim Reward (+100 Sen Ngọc exactly)
+  tree = execute(tree, { type: 'reward/claim', payload: { chapterId: 'c2' } }).tree;
+  cur = tree.nodes[tree.headId].snapshot;
+  assert.equal(cur.journey.c2.claimed, true);
+  assert.equal(cur.wallet.senNgoc, initialWallet + 100);
+
+  // Second claim attempt is idempotent (rejected)
+  const doubleClaim = execute(tree, { type: 'reward/claim', payload: { chapterId: 'c2' } });
+  assert.equal(doubleClaim.ok, false);
+  assert.equal(doubleClaim.tree.nodes[doubleClaim.tree.headId].snapshot.wallet.senNgoc, initialWallet + 100);
+
+  // Progression unlocked next chapter metadata
+  assert.ok(cur.journey.c3);
+  assert.equal(cur.journey.c3.status, 'in_progress');
+});
+
 
 

@@ -354,6 +354,41 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   const n = box.w >= 1000 ? 4 : 3;
   const pos = (b: Box) => ({ left: b.x, top: b.y, width: b.w, height: b.h });
 
+  const handleExitClick = (arrow: ExitArrow) => {
+    const target = arrow.via && area.interactables.find(i => i.id === arrow.via);
+    if (target) {
+      go(target);
+      return;
+    }
+    const w = walker.current;
+    if (!scene || !w) {
+      onExit(arrow);
+      return;
+    }
+    const floor = floorOf(scene, world.h);
+    const arrowBox = {
+      x: arrow.rect.x * world.w,
+      y: arrow.rect.y * world.h,
+      w: arrow.rect.w * world.w,
+      h: arrow.rect.h * world.h,
+    };
+    const aim = targetFor(arrowBox, w, floor, world.w, STAND_GAP * world.w);
+    const to = standClear(areaId, aim.to, floor, world);
+    const face = aim.face;
+    const fire = () => {
+      onExit(arrow);
+    };
+    if (prefersReducedMotion()) {
+      stop();
+      walker.current = arriveNow(w, to, face);
+      paint();
+      return fire();
+    }
+    pending.current = { id: `exit:${arrow.exit}`, fire };
+    walker.current = { ...w, goal: { to, face } };
+    run();
+  };
+
   return <div ref={container} className="room-scene">
     <div className="room-stage" style={{ left: box.x, top: box.y, width: box.w, height: box.h }}>
       <canvas ref={canvas} role="img" aria-label={`${area.title}. Bấm vào vật có viền sáng, hoặc dùng Tab rồi Enter.`} data-world-width={world.w} data-world-height={world.h}
@@ -363,7 +398,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
           style={pos(s.hit)} onClick={() => go(s.i)} {...hover(s.i.id)} />)}
         {effectiveExitArrows.map(arrow => <button key={arrow.exit} type="button" className={`room-exit dir-${arrow.dir}`} data-exit={arrow.exit} aria-label={exitLabel(arrow)} disabled={blocked}
           style={pos(hitOf(arrow.rect, box))} {...hover(arrow.via ?? `exit:${arrow.exit}`)}
-          onClick={() => { const target = arrow.via && area.interactables.find(i => i.id === arrow.via); if (target) onInteract(target.id, target.pos); else onExit(arrow); }}>
+          onClick={() => handleExitClick(arrow)}>
           <img src={arrowUrl(arrow.dir, n)} alt="" draggable={false} />
         </button>)}
         {tip && <span className={`room-tip${tip.below ? ' below' : ''}`} style={{ left: tip.left, top: tip.top }} aria-hidden="true">{tip.text}</span>}

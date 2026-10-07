@@ -103,11 +103,14 @@ export function c2RoomNpcs(
   const npcBox = (footNormX: number, footNormY: number): Box => {
     const footX = Math.round(footNormX * W);
     const footY = Math.round(footNormY * H);
+    // NPC visible bounds in manifest (e.g. cu-loan [31, 17, 145, 401]): width 114px, height 384px
+    const w = 114;
+    const h = 384;
     return {
-      x: footX - 88,
-      y: footY - 416,
-      w: 176,
-      h: 416,
+      x: footX - Math.round(w / 2),
+      y: footY - h,
+      w,
+      h,
     };
   };
 

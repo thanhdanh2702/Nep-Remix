@@ -28,11 +28,9 @@ export const ACTION_LABEL: Record<string, string> = {
 };
 // 'use' puzzles that name a required item and every 'present' puzzle are answered with an inventory item.
 const needsItem = (puzzle: Puzzle) => puzzle.type === 'present' || (puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemId || puzzle.solution.requiredItemIds));
-// Shape that evaluatePuzzleAnswer expects for a 'styling' puzzle.
-export const stylingAnswer = (draft: StudioDraft) => ({
-  silhouette: draft.silhouette, garmentId: draft.garmentId, headwearId: draft.equippedAccessories.headwear,
-  jewelryId: draft.equippedAccessories.jewelry, footwearId: draft.equippedAccessories.footwear, handheldId: draft.equippedAccessories.handheld,
-});
+
+import { stylingAnswer } from './styling-answer';
+export { stylingAnswer };
 
 // Hotspot of the unsolved puzzle that unlocks `areaId`. A locked exit arrow opens it (the arrow can sit on top of that very object).
 export function unlockerOf(chapter: Chapter, area: Chapter['areas'][number], solved: string[], unlocked: string[], areaId: string) {
