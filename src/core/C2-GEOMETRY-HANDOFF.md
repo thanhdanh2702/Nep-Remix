@@ -1,5 +1,9 @@
 # C2 — native layout applied; Frontend walker fixes still required
 
+**Latest audit: FE `1692327`, see the revision audit below.** Spawn/arrival
+adapter requests from the earlier b6bb71a report have been addressed in source;
+visual floor/path acceptance is still open. Content radii are unchanged.
+
 Baseline Core `b3f7246`, clean `agent/core` before work. Layout source read-only:
 `git show b6bb71a:src/game/C2-LAYOUT-HANDOFF.md`. No Frontend merge. Manifest
 `assets/areas/chapter-2/manifest.json`: version 4, background A, three backgrounds
@@ -118,3 +122,81 @@ All 107 C2 cases and 26 legacy regressions pass; see C2-HANDOFF.md for full
 commands and coverage. These do not replace browser, visual floor or integrated
 acceptance. Reward layer `ao-dai-tan-thoi-vang-mo-ga` remains **BLOCKED** for full
 reward art QA. Keep both reward garment IDs; no replacement layer or art made.
+
+## Revision audit: Frontend 1692327, Core baseline 1ccf21a
+
+Read-only source revision: `1692327c4a80d5b0b9e709db73668504c28a7f7e`.
+No Frontend merge or checkout fallback. Movement blob:
+`f84ba714ce3ebf6adfd2d51024f2a554e4be8a90`; RoomScene blob:
+`9df674b97e0225e4d10b0a6a620e0309edf02f3e`.
+The preceding b354417 still used the old movement blob and had no new obstacle
+map. 1692327 adds three C2 obstacles and walking to exits; floor remains .58–.92.
+Its C2-LAYOUT-HANDOFF.md is unchanged and does not yet include the new feet table.
+
+Explicit revision command (missing revision/source boundaries fail, no fallback):
+
+```sh
+C2_MOVEMENT_REVISION=1692327c4a80d5b0b9e709db73668504c28a7f7e node --import tsx --test --test-reporter=tap src/core/c2-layout.test.ts
+```
+
+PASS 18/18: existing 15 layout tests run the committed FE walker via `git show`;
+three new area tests execute source blocks from that same RoomScene for entry
+and interaction. These test 94 adapter calls across every hotspot, spawn,
+all reverse-arrow entries, left/right approaches and normal/reduced arrival.
+Normal arrival advances actual `tick`; reduced arrival executes actual
+`arriveNow` through RoomScene/go. Each callback passes the actual normalized
+walker feet into the Core interact guard, exactly once. rAF/DOM paint is not
+executed: the test advances ticks and delivers the pending callback itself.
+Movement/entry/arrival formulas are not copied into tests. Only unused rendering
+imports are omitted for Node; RoomScene closures receive explicit test refs and
+callbacks. Gap and entry functions come from source; the audited floor is
+checked against the FE catalog. No browser or rendered occlusion claim.
+
+Without C2_MOVEMENT_REVISION the original suite explicitly tests the local
+Core checkout's movement and adds no FE adapter tests. It is not evidence for
+a newer FE revision. Leader can run the opt-in command once that exact Git
+object is available; do not substitute another checkout silently.
+
+### Feet computed from the committed patch; radius delta: none
+
+| Hotspot | Radius | Left approach native feet | Right approach native feet |
+| --- | --- | --- | --- |
+| drawing-desk | .11 | 509.96,545.78 | 760.76,545.78 |
+| fabric-basket | .09 | 894.52,583.42 | 1145.32,583.42 |
+| gas-lamp | .12 | 275.88,545.78 | 275.88,545.78 |
+| french-window | .10 | 1162.04,545.78 | 1412.84,545.78 |
+| drawing-easel | .15 | 225.72,545.78 | 509.96,545.78 |
+| grandfather-clock | .14 | 275.88,545.78 | 560.12,545.78 |
+| silk-shelves | .22 | 627.00,569.30 | 1212.20,545.78 |
+| iron-safe | .18 | 1160.37,611.65 | 1160.37,611.65 |
+| reporters-crowd | .21 | 1023.26,781.03 | 1513.16,781.03 |
+| ong-le-shadow | .15 | 359.48,564.60 | 643.72,545.78 |
+| exhibition-podium | .18 | 560.12,771.62 | 978.12,771.62 |
+
+Only shelf left and P4 left move relative to the old table. All existing radii
+pass real Core guards and native distance checks. No radius/content/gate change
+is justified by this patch.
+
+First entry consumes the content spawns. Executed return-entry source produces
+normalized S1 from S2 `(.93,.58)`; S2 from S1 `(.05,.58)`, from S3 `(.95,.76)`;
+S3 from S2 `(.05,.58)`. These are engine results, not approval of visible floor.
+
+### Remaining Frontend reproducer / WAITING for corrected floor evidence
+
+1. S1 obstacle y=.40,h=.173 ends at .573, below floorTop=.58. Neither drawing
+   desk arrived foot at y=.58 can hit this obstacle. Spawn (418,705.75) → desk
+   (509.96,545.78) remains the original furniture endpoint/path reproducer.
+2. S2 shelf left moves from y=545.78 to 569.30 (.605), but remains in the
+   painted cabinet region on background A; right stays y=545.78.
+3. S3 P4 left moves to y=564.60 (.60), still on the podium/desk region; right
+   (643.72,545.78) is outside the registered obstacle and remains unchanged.
+4. `standClear` only changes endpoints; actual `tick` is straight-line movement
+   without obstacle collision. Unit arrival PASS does not prove the walked
+   segment stays on open floor or that return entries avoid furniture.
+
+Frontend should supply a committed corrected floor/stand/path patch and native
+feet/return-entry table, with evidence on A for both approaches and reduced
+motion. Keep the established hotspot rects/gates. Core will then rerun the
+explicit-revision suite and adjust radius only for verified clear-floor points.
+Spawn/feet adapters are source-audited as fixed; floor/occlusion and browser
+acceptance remain open. Missing secondary reward layer remains an Art blocker.

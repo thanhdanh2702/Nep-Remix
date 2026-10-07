@@ -1,6 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { loadContent } from '../content/index.ts';
 import { createInitialState, runCommand } from './index.ts';
 import { transformSync } from 'esbuild';
@@ -8,12 +9,20 @@ import { transformSync } from 'esbuild';
 // Node cannot load assets.ts's Vite import.meta.glob. Execute the actual walker
 // source with only its unused rendering-atlas import omitted; no movement logic
 // is copied or mocked. cellFor is outside this geometry suite.
-const walkerSource = readFileSync(new URL('../game/room-walker.ts', import.meta.url),'utf8')
+// Explicit opt-in to a committed FE implementation. Missing revisions fail loudly;
+// never read a different worktree or fall back to local source after a git error.
+const movementRevision = process.env.C2_MOVEMENT_REVISION;
+const sourceAt = (path: string) => movementRevision
+  ? execFileSync('git',['show',`${movementRevision}:${path}`],{cwd:new URL('../..',import.meta.url),encoding:'utf8'})
+  : readFileSync(new URL(`../../${path}`,import.meta.url),'utf8');
+const walkerSource = sourceAt('src/game/room-walker.ts')
   .replace(/^import .* from '\.\/assets';\n/, '');
 const walkerModule = transformSync(walkerSource,{loader:'ts',format:'esm',target:'es2022'});
-const { standClear, targetFor, tick, newWalker, WALK_SPEED } = await import(
+const movement = await import(
   `data:text/javascript;base64,${Buffer.from(walkerModule.code).toString('base64')}`
 ) as typeof import('../game/room-walker.ts');
+const { standClear, targetFor, tick, newWalker, WALK_SPEED } = movement;
+if(movementRevision) console.log(`C2 movement revision: ${execFileSync('git',['rev-parse',`${movementRevision}^{commit}`],{encoding:'utf8'}).trim()}`);
 
 // Native measurements supplied by Frontend b6bb71a, not placeholder hitboxes.
 // Import the real pure walker; RoomScene's C2 floor and STAND_GAP are adapter inputs.
@@ -117,3 +126,73 @@ test('measured hit rects contain manifest visible bounds (one native pixel round
       `${spot.id} clips manifest visible bounds`);
   }
 });
+
+// Adapter audit is opt-in because the FE revision is not merged into this branch.
+// Execute exact source blocks; do not reimplement entry/arrival formulas here.
+if (movementRevision) {
+  const roomSource = sourceAt('src/game/RoomScene.tsx');
+  const slice = (start: string, end: string) => {
+    const a=roomSource.indexOf(start), b=roomSource.indexOf(end,a);
+    assert.ok(a>=0 && b>a,`FE adapter source boundary changed: ${start}`);
+    return roomSource.slice(a,b);
+  };
+  const scaleCode=transformSync(sourceAt('src/game/character-scale.ts'),{loader:'ts',format:'esm'}).code;
+  const { HUMAN_HEIGHT }=await import(`data:text/javascript;base64,${Buffer.from(scaleCode).toString('base64')}`);
+  assert.deepEqual({top:HUMAN_HEIGHT.c2.floorTop*world.h,bottom:HUMAN_HEIGHT.c2.floorBottom*world.h},floor,
+    'FE floor changed: update the explicitly audited geometry inputs before using this suite');
+  const definitions=slice('const floorOf =','// Every loaded view');
+  const initialize=slice('    const entry = effectiveExitArrows.find','    const folder =');
+  const go=slice('  const go = (i: Interactable) => {','  const hover =');
+  const adapterCode=transformSync(`export function adapter(env) {
+    const { HUMAN_HEIGHT, area, areaId, effectiveExitArrows, prevArea, scene, world,
+      walker, interact, pending, prefersReducedMotion, stop, paint, run,
+      clampToFloor, newWalker, standClear, targetFor, arriveNow }=env;
+    ${slice('const STAND_GAP =','const floorOf =')}
+    ${definitions}
+    ${go}
+    return { initialize() { ${initialize} }, go };
+  }`,{loader:'ts',format:'esm'}).code;
+  const { adapter }=await import(`data:text/javascript;base64,${Buffer.from(adapterCode).toString('base64')}`);
+  for(const area of areas) test(`FE ${movementRevision} spawn/return and both arrival modes: ${area.id}`,()=>{
+    const origins: {x:number;y:number}[]=[];
+    for(const previous of [undefined,...Object.values(area.exits)]) {
+      const walker: {current: import('../game/room-walker.ts').Walker|null}={current:null};
+      const instance=adapter({ ...movement,HUMAN_HEIGHT,area,areaId:area.id,world,
+        effectiveExitArrows:area.exitArrows,prevArea:{current:previous},scene:'c2',walker,
+        interact:{current:()=>{}},pending:{current:null},prefersReducedMotion:()=>false,
+        stop:()=>{},paint:()=>{},run:()=>{} });
+      instance.initialize();assert.ok(walker.current);
+      origins.push({x:walker.current.x,y:walker.current.y});
+      assert.ok(walker.current.y>=floor.top && walker.current.y<=floor.bottom);
+      if(previous===undefined) assert.deepEqual(origins.at(-1),{x:area.spawn.x*world.w,y:area.spawn.y*world.h});
+    }
+    origins.push({x:.05*world.w,y:.75*world.h},{x:.95*world.w,y:.75*world.h});
+    for(const spot of area.interactables) for(const from of origins) for(const reduced of [false,true]) {
+      const state=createInitialState(content);state.currentChapter='c2';
+      const ids=content.chapters.c2.puzzles.map(p=>p.id);
+      const index=spot.action.type==='puzzle'?ids.indexOf(spot.action.targetId):ids.length;
+      Object.assign(state.journey.c2,{status:'in_progress',currentArea:area.id,side:'mat_phai',
+        completedDialogueIds:['d-c2-ca-nghi','d-c2-mat-ma','d-c2-bien-lai','d-c2-giao-keo'],solvedPuzzleIds:ids.slice(0,index)});
+      state.inventory.itemIds.push('chia_khoa_ket_sat_bang_thau','bien_lai_tra_no_goc_1935','ban_ve_ao_dai_tan_thoi');
+      const walker={current:newWalker(from)};
+      const pending: {current:null|{id:string;fire:()=>void}}={current:null};
+      let calls=0;
+      const instance=adapter({...movement,HUMAN_HEIGHT,area,areaId:area.id,world,scene:'c2',walker,pending,
+        prefersReducedMotion:()=>reduced,stop:()=>{pending.current=null;},paint:()=>{},run:()=>{},
+        interact:{current:(id:string,feet:{x:number;y:number})=>{
+          calls++;assert.equal(id,spot.id);
+          assert.deepEqual(feet,{x:walker.current.x/world.w,y:walker.current.y/world.h});
+          const result=runCommand(state,{type:'interact',payload:{targetId:id,playerPos:feet}},content);
+          assert.ok(result.ok,`${spot.id} from ${JSON.stringify(from)} reduced=${reduced}: ${!result.ok?result.reason:''}`);
+        }} });
+      instance.go(spot);
+      if(!reduced) {
+        assert.equal(calls,0);
+        let arrived=false;
+        for(let frame=0;frame<1000 && !arrived;frame++) ({walker:walker.current,arrived}=tick(walker.current,.05,WALK_SPEED*world.w));
+        assert.ok(arrived);assert.ok(pending.current);pending.current.fire();
+      }
+      assert.equal(calls,1);
+    }
+  });
+}
