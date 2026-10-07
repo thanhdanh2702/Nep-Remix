@@ -1,6 +1,7 @@
 # C2 Core checkpoint M1/M2
 
-**Cập nhật M3–M4 ở cuối báo cáo.** Phần đầu giữ bằng chứng checkpoint M1.
+**Mới nhất: xem “Native layout follow-up” ở cuối báo cáo.** Các phần trước
+là bằng chứng lịch sử M1–M4; dependency geometry cũ được thay bằng báo cáo mới.
 
 Baseline chính thức `main@10d1f88fe20f4577757ad6ce2311eb60d28f7db4`, merge
 vào agent/core tại `5998e0baf963c82df95a5b0d4a9e6a3dc0deba80`, không conflict.
@@ -279,3 +280,104 @@ node --import tsx --experimental-test-coverage \
 Không thay schema/save version, reward, gates, queue hoặc migration trong
 follow-up này. Giữ tất cả thay đổi owner khác; không UI/store/browser/PNG/
 registry/package delta. Bảng geometry và layer áo phụ vẫn là dependency.
+
+## Native layout follow-up — Core ready for Leader integration, visual floor BLOCKED
+
+Baseline `agent/core@b3f72468bf99aeb5c8a0b572b808bbe114bb5f7f`, clean before edits.
+Worktree `/Users/thanhdanh/Nep-Remix-core`; main remains official `10d1f88`.
+Read Frontend layout at **b6bb71a**, without merging that branch. Current change
+owns only C2 JSON, adjacent Core layout tests and these two Core reports.
+No C3–C5, UI/store/browser/assets/registry/package changes.
+
+### Geometry and API delta for Leader / Frontend
+
+Applied 11 pos/rect/radius, three spawns, four exit arrows to JSON. Verified
+manifest v4 A 1672×941 and actual visible bounds. Corrections to measured table:
+safe rect `(.739,.37,.201,.28)`, crowd/receipt rect `(.657,.44,.203,.39)`, hall
+arrow `(.92,.76,.08,.14)` to avoid safe clicks; radii now cover arrived feet
+under the supplied floor from both approaches. Piece4 stays separate from S1
+exit, including expanded 44px targets. Full details and native feet table:
+[C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md).
+
+**API signatures at the top are unchanged and exported.** Existing b3f7246
+context fix remains verified by 12 context tests: valid catalog enum retained
+through close/reopen/reload, invalid payload returns an explicit error without
+changing prior state. Missing context remains compatible. Context and client
+allowlist cannot authorize loans. Equip/preset/resume/direct submit and both
+Closet save routes retain their Core guards. Local ScopedSession is a generic
+immutable helper: consumer must call `validateChallengeStudioDraft` on each
+candidate, including undo/redo, before accepting/rendering/persisting it; it
+does not magically validate room/gate without GameState/GameContent. Use the
+adapter example above and surface `{ok:false,reason}` rather than force-default
+an invalid saved draft. Ordinary Studio/Closet do not inherit challenge access.
+
+**Frontend adapter requests (not implemented in Core ownership):**
+
+1. RoomScene first entry must consume `area.spawn` instead of its current
+   bottom-centre fallback; preserve reverse-arrow return placement.
+2. `go/fire` must pass actual normalized arrived walker feet, not `i.pos`,
+   including reduced motion. No Core command/payload signature change.
+3. Fix C2 floor/obstacle/stand points: supplied floor [.58,.92] includes painted
+   furniture; C2 has no `standClear` obstacles. S1 desk feet (510,546), S2 shelf
+   (627,546), S3 P4 (359,546) reproduce visible furniture placement. Send updated
+   measured feet/floor so Core can recheck radii. Current engine reachability
+   is GREEN; physical placement/occlusion is **not accepted**.
+4. Display-only NPCs from the layout report agree with separation from Core
+   actions: c2-s1-loan, c2-s2-loan, c2-s3-ca-nghi, c2-s3-loan. Do not create the
+   missing legacy NPC hotspot IDs as fake actions. Frontend owns render/poses.
+
+Leader contract delta: record these implemented geometry values and adapter
+requests; no schema, command or save version delta. Leader package delta:
+include `src/core/c2-layout.test.ts` in C2 suite (the existing proposed
+`node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` picks it up).
+Core does not edit shared contract or package scripts.
+
+### Progress/save/reward guarantees preserved
+
+Compared JSON structurally with b3f7246 after removing geometry fields: exact
+match, including full D0/G1/G2, five puzzle prerequisites, queue/ending, IDs,
+reward and chapter metadata. Runtime migrations unchanged. Regression suites
+cover stale unlockedAreaIds/navStack, legacy S3 gates, queued two-paper nodes,
+head/history migration, reread/backup recovery and context drafts. No migration
+bump required for coordinates; saves keep main progress, drafts and queue.
+
+New claim remains +100 once. Card-read +15 is separate; claimed legacy +120
+wallet/ledger stay untouched. Loan grants no closet items or wallet. No auto-read,
+auto-complete, reward replay or purchase/AI/latVai dependency. Keep both reward
+garments. Missing secondary yellow garment layer remains **BLOCKED** for full
+reward-art acceptance; do not substitute Lemur or silently remove the reward.
+
+### TDD / verification actually run
+
+RED `8820dea`: layout 13 FAIL/0 PASS before production edits; lint compiles.
+RED `5f52de7`: safe/hall 44px overlap FAIL. RED `58a8f23`: manifest containment
+FAIL (safe then receipt after safe correction). GREEN: 15 layout tests PASS,
+checking actual walker tick/standClear/targetFor from both approaches, real
+interact guard at arrived feet, far-away rejection, native bounds, spawns and
+expanded touch separation. No old assertions weakened; expected design tuples
+reflect the documented corrections. The Node harness executes real walker code
+with only its unused Vite atlas import omitted, using existing esbuild. It does
+not test DOM rendering, furniture not registered as obstacles, or browser UI.
+
+| Command actually run | Result |
+| --- | --- |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 107/107 (92 existing +15 layout), no skips |
+| `node --import tsx --test --test-reporter=tap src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts src/core/sprint-01.test.ts tests/leader-core-integration.test.ts` | PASS 26/26 |
+| `npm run test:core` | PASS 15 core checks + game walkthrough/self checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS `Valid: true` |
+| `npm run build` | PASS; existing >500kB chunk warning |
+| `npm audit --json` | PASS 0 vulnerabilities, including dev |
+| Coverage command in M3–M4 section above (same 10 include paths, threshold 80 for lines/branches/functions; now includes layout via glob) | PASS 135/135; 88.60% lines /80.92% branches /83.77% functions |
+
+Coverage scope: ten Core production modules changed earlier in this sprint,
+including wardrobe, Studio/Closet, gates/navigation/drafts/puzzles/reward,
+serialize/replay. Aggregate threshold passes; **not every individual module**
+is above 80%. This follow-up changes content geometry only, no runtime logic;
+JSON is not instrumented, and 15 geometry cases are reported separately. No UI,
+render/walker coverage or browser acceptance is inferred from Core coverage.
+
+Next dependency: Leader integrates Core checkpoint; Frontend consumes corrected
+layout and resolves the three walker adapter issues; Leader integrates candidate;
+Tester runs full actual path/browser/device/visual/save acceptance. These Core
+results do not declare C2 complete. No push or other owner branch merge performed.

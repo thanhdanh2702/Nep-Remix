@@ -31,10 +31,10 @@
         "w": 1672,
         "h": 941
       },
-      "notes": "Production-v4 / background A, native 1672×941; rect/spawn/exit chờ báo cáo Frontend.",
+      "notes": "Production-v4 / background A, native 1672×941; layout Frontend b6bb71a. Radius covers floor 0.58–0.92 and stand gap 0.045 from both approaches; see src/core/C2-GEOMETRY-HANDOFF.md.",
       "spawn": {
-        "x": 0.15,
-        "y": 0.5
+        "x": 0.25,
+        "y": 0.75
       },
       "sides": {
         "phai": true,
@@ -48,15 +48,15 @@
           "id": "hitbox-drawing-desk",
           "kind": "object",
           "pos": {
-            "x": 0.3,
-            "y": 0.61
+            "x": 0.38,
+            "y": 0.469
           },
-          "radius": 0.08,
+          "radius": 0.11,
           "rect": {
-            "x": 0.15,
-            "y": 0.45,
-            "w": 0.3,
-            "h": 0.32
+            "x": 0.35,
+            "y": 0.43,
+            "w": 0.06,
+            "h": 0.08
           },
           "side": "phai",
           "action": {
@@ -76,15 +76,15 @@
           "id": "hitbox-fabric-basket",
           "kind": "object",
           "pos": {
-            "x": 0.55,
-            "y": 0.79
+            "x": 0.606,
+            "y": 0.574
           },
-          "radius": 0.08,
+          "radius": 0.09,
           "rect": {
-            "x": 0.48,
-            "y": 0.68,
-            "w": 0.14,
-            "h": 0.22
+            "x": 0.58,
+            "y": 0.53,
+            "w": 0.06,
+            "h": 0.09
           },
           "side": "phai",
           "action": {
@@ -104,15 +104,15 @@
           "id": "hitbox-gas-lamp",
           "kind": "object",
           "pos": {
-            "x": 0.11,
-            "y": 0.45
+            "x": 0.09,
+            "y": 0.454
           },
-          "radius": 0.08,
+          "radius": 0.12,
           "rect": {
             "x": 0.06,
-            "y": 0.35,
-            "w": 0.1,
-            "h": 0.2
+            "y": 0.41,
+            "w": 0.06,
+            "h": 0.09
           },
           "side": "phai",
           "action": {
@@ -132,15 +132,15 @@
           "id": "hitbox-french-window",
           "kind": "object",
           "pos": {
-            "x": 0.85,
-            "y": 0.43
+            "x": 0.767,
+            "y": 0.502
           },
-          "radius": 0.08,
+          "radius": 0.1,
           "rect": {
-            "x": 0.75,
-            "y": 0.18,
-            "w": 0.2,
-            "h": 0.5
+            "x": 0.74,
+            "y": 0.46,
+            "w": 0.06,
+            "h": 0.09
           },
           "side": "phai",
           "action": {
@@ -160,15 +160,15 @@
           "id": "hitbox-drawing-easel",
           "kind": "object",
           "pos": {
-            "x": 0.25,
-            "y": 0.4
+            "x": 0.219,
+            "y": 0.409
           },
-          "radius": 0.08,
+          "radius": 0.15,
           "rect": {
             "x": 0.18,
-            "y": 0.25,
-            "w": 0.16,
-            "h": 0.3
+            "y": 0.28,
+            "w": 0.08,
+            "h": 0.25
           },
           "side": "phai",
           "action": {
@@ -202,7 +202,19 @@
             }
           ]
         }
-      }
+      },
+      "exitArrows": [
+        {
+          "exit": "window",
+          "rect": {
+            "x": 0.88,
+            "y": 0.2,
+            "w": 0.1,
+            "h": 0.55
+          },
+          "dir": "right"
+        }
+      ]
     },
     {
       "id": "c2-s2-kho-vai-hang-dao",
@@ -213,10 +225,10 @@
         "w": 1672,
         "h": 941
       },
-      "notes": "Production-v4 / background A, native 1672×941; rect/spawn/exit chờ báo cáo Frontend.",
+      "notes": "Production-v4 / background A, native 1672×941; layout Frontend b6bb71a. Radius covers floor 0.58–0.92 and stand gap 0.045 from both approaches; see src/core/C2-GEOMETRY-HANDOFF.md.",
       "spawn": {
-        "x": 0.1,
-        "y": 0.6
+        "x": 0.15,
+        "y": 0.75
       },
       "sides": {
         "phai": true,
@@ -231,15 +243,15 @@
           "id": "hitbox-grandfather-clock",
           "kind": "object",
           "pos": {
-            "x": 0.19,
-            "y": 0.525
+            "x": 0.248,
+            "y": 0.425
           },
-          "radius": 0.08,
+          "radius": 0.14,
           "rect": {
-            "x": 0.1,
-            "y": 0.2,
-            "w": 0.18,
-            "h": 0.65
+            "x": 0.21,
+            "y": 0.32,
+            "w": 0.08,
+            "h": 0.24
           },
           "side": "phai",
           "action": {
@@ -267,15 +279,15 @@
           "id": "hitbox-silk-shelves",
           "kind": "object",
           "pos": {
-            "x": 0.51,
-            "y": 0.375
+            "x": 0.55,
+            "y": 0.4
           },
-          "radius": 0.08,
+          "radius": 0.22,
           "rect": {
-            "x": 0.34,
-            "y": 0.15,
-            "w": 0.34,
-            "h": 0.45
+            "x": 0.42,
+            "y": 0.22,
+            "w": 0.26,
+            "h": 0.35
           },
           "side": "phai",
           "action": {
@@ -303,15 +315,15 @@
           "id": "hitbox-iron-safe",
           "kind": "object",
           "pos": {
-            "x": 0.83,
-            "y": 0.66
+            "x": 0.837,
+            "y": 0.511
           },
-          "radius": 0.08,
+          "radius": 0.18,
           "rect": {
-            "x": 0.72,
-            "y": 0.45,
-            "w": 0.22,
-            "h": 0.42
+            "x": 0.739,
+            "y": 0.37,
+            "w": 0.201,
+            "h": 0.28
           },
           "side": "phai",
           "action": {
@@ -368,7 +380,29 @@
         "back": {
           "all": []
         }
-      }
+      },
+      "exitArrows": [
+        {
+          "exit": "back",
+          "rect": {
+            "x": 0,
+            "y": 0.45,
+            "w": 0.08,
+            "h": 0.45
+          },
+          "dir": "left"
+        },
+        {
+          "exit": "hall",
+          "rect": {
+            "x": 0.92,
+            "y": 0.76,
+            "w": 0.08,
+            "h": 0.14
+          },
+          "dir": "right"
+        }
+      ]
     },
     {
       "id": "c2-s3-phong-trien-lam-doi-dau",
@@ -379,10 +413,10 @@
         "w": 1672,
         "h": 941
       },
-      "notes": "Production-v4 / background A, native 1672×941; rect/spawn/exit chờ báo cáo Frontend.",
+      "notes": "Production-v4 / background A, native 1672×941; layout Frontend b6bb71a. Radius covers floor 0.58–0.92 and stand gap 0.045 from both approaches; see src/core/C2-GEOMETRY-HANDOFF.md.",
       "spawn": {
-        "x": 0.1,
-        "y": 0.6
+        "x": 0.12,
+        "y": 0.75
       },
       "sides": {
         "phai": true,
@@ -396,15 +430,15 @@
           "id": "hitbox-reporters-crowd",
           "kind": "npc",
           "pos": {
-            "x": 0.76,
-            "y": 0.575
+            "x": 0.755,
+            "y": 0.634
           },
-          "radius": 0.08,
+          "radius": 0.21,
           "rect": {
-            "x": 0.6,
-            "y": 0.35,
-            "w": 0.32,
-            "h": 0.45
+            "x": 0.657,
+            "y": 0.44,
+            "w": 0.203,
+            "h": 0.39
           },
           "side": "phai",
           "action": {
@@ -444,15 +478,15 @@
           "id": "hitbox-ong-le-shadow",
           "kind": "npc",
           "pos": {
-            "x": 0.5,
-            "y": 0.3
+            "x": 0.294,
+            "y": 0.413
           },
-          "radius": 0.1,
+          "radius": 0.15,
           "rect": {
-            "x": 0.35,
-            "y": 0.1,
-            "w": 0.3,
-            "h": 0.4
+            "x": 0.26,
+            "y": 0.28,
+            "w": 0.08,
+            "h": 0.25
           },
           "side": "phai",
           "action": {
@@ -496,15 +530,15 @@
           "id": "hitbox-exhibition-podium",
           "kind": "object",
           "pos": {
-            "x": 0.31,
-            "y": 0.63
+            "x": 0.45,
+            "y": 0.65
           },
-          "radius": 0.08,
+          "radius": 0.18,
           "rect": {
-            "x": 0.18,
-            "y": 0.38,
-            "w": 0.26,
-            "h": 0.5
+            "x": 0.38,
+            "y": 0.5,
+            "w": 0.16,
+            "h": 0.32
           },
           "side": "phai",
           "action": {
@@ -553,7 +587,19 @@
         "back": {
           "all": []
         }
-      }
+      },
+      "exitArrows": [
+        {
+          "exit": "back",
+          "rect": {
+            "x": 0,
+            "y": 0.45,
+            "w": 0.08,
+            "h": 0.45
+          },
+          "dir": "left"
+        }
+      ]
     }
   ],
   "dialogues": [
