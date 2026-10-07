@@ -1,6 +1,6 @@
 # C2 Core checkpoint M1/M2
 
-**Mới nhất: xem “Native layout follow-up” ở cuối báo cáo.** Các phần trước
+**Mới nhất: xem “FE revision coordination” ở cuối báo cáo.** Các phần trước
 là bằng chứng lịch sử M1–M4; dependency geometry cũ được thay bằng báo cáo mới.
 
 Baseline chính thức `main@10d1f88fe20f4577757ad6ce2311eb60d28f7db4`, merge
@@ -381,3 +381,116 @@ Next dependency: Leader integrates Core checkpoint; Frontend consumes corrected
 layout and resolves the three walker adapter issues; Leader integrates candidate;
 Tester runs full actual path/browser/device/visual/save acceptance. These Core
 results do not declare C2 complete. No push or other owner branch merge performed.
+
+## FE revision coordination — 1692327 audited, no production delta
+
+Core baseline `1ccf21a`, clean before this follow-up (only a temporary local
+dependency symlink during verification). Leader checkpoint reported/in Git:
+main `6885ccb`; Frontend first inspected at b354417, then new committed patch
+`1692327c4a80d5b0b9e709db73668504c28a7f7e`. No branch merge/cherry-pick.
+
+Changes are limited to `c2-layout.test.ts` and both Core handoffs. No radius,
+schema, command, save, reward or other production change. Existing APIs/exports
+and the adapter example at the top remain valid. Frontend 1692327 now imports
+all three real helpers and calls validation on local undo/redo/reset/preset
+candidates. Core tests continue covering eventContextId persist/resume, loan
+isolation, direct/session Closet rejection, gates, completion and save recovery.
+
+New verification mechanism: optional `C2_MOVEMENT_REVISION` loads committed
+movement and RoomScene source using `git show` from this repository. It prints
+the resolved SHA, fails for missing objects or changed source boundaries, and
+does not fall back to another checkout. RoomScene entry/go blocks execute with
+explicit test refs; normal motion uses actual tick, reduced motion uses its
+actual arriveNow branch. No copied movement algorithm or i.pos substitution.
+Three area tests exercise 94 adapter callbacks across all hotspots, first and
+return entries, both approaches and both motion modes. Without the variable,
+the established local suite still runs 107 tests and makes no FE-source claim.
+
+FE changed shelf/P4 left feet slightly; all existing radii still pass. Full
+revision/blob IDs, feet table and remaining visual-floor reproducers are in
+[C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md). Spawn and arrived-feet source
+adapters are addressed. S1 obstacle ends below floorTop and does not fix desk
+feet; shelf/P4 adjusted feet still lie on furniture in A. Paths are straight
+segments without obstacle collision. **WAITING for Frontend's corrected native
+floor/stand/path evidence**, not for a Core radius increase. No visual or browser
+PASS is inferred from this unit audit.
+
+Verification actually run on this Core checkout:
+
+| Command | Result |
+| --- | --- |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 107/107 |
+| `C2_MOVEMENT_REVISION=1692327c4a80d5b0b9e709db73668504c28a7f7e node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 110/110, including 18 geometry/adapter tests |
+| Four-file baseline regression command above | PASS 26/26 |
+| `npm run test:core` | PASS 15 core checks plus prologue/C1 walkthrough/self checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS Valid:true |
+| `npm run build` | PASS, existing >500kB chunk warning |
+| `npm audit --json` | PASS, 0 vulnerabilities including dev |
+
+Coverage command from M3–M4 above was rerun with
+`C2_MOVEMENT_REVISION=1692327c4a80d5b0b9e709db73668504c28a7f7e`:
+PASS 138/138; aggregate **88.60% lines /80.92% branches /83.77% functions**,
+all three thresholds 80 PASS. Scope remains the ten Core runtime modules;
+this follow-up changes verification only, not runtime logic. This is neither
+movement/render coverage nor a per-file 80% claim.
+
+No production bug was fixed in this follow-up, so no fabricated RED/GREEN cycle
+or radius change. Added tests strengthen source/revision verification and are
+GREEN against the current contract. Progress/save/reward behavior stays as in
+the preceding baseline: fresh +100 once, card read +15 separately, claimed120
+legacy unchanged, history/backup/queue/reread preserved. Missing yellow reward
+layer remains BLOCKED Art; both garments stay in the reward.
+
+Leader next: preserve this verification mechanism in the C2 suite, run it with
+the exact future geometry SHA after Frontend supplies it, then integrate the
+candidate for independent Tester browser/visual/device acceptance.
+
+## Handoff detail audit after 2b274ce — WAITING for geometry fix
+
+Core started clean at `2b274ce`; FE remains clean at
+`1692327c4a80d5b0b9e709db73668504c28a7f7e`, Leader main at 6885ccb. No newer
+committed FE geometry or integrated candidate was available. This change only
+fills missing handoff detail: exact hotspot IDs, current JSON pos/radius,
+approach, final native/normalized feet, named furniture, before-action fixture
+and normal/reduced reproduction steps. See the final section of
+[C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md).
+
+Engine GREEN still means final callback/guard reachability. Screenshot/video
+is required for visible foot/furniture overlap and walked path; unit tests
+cannot approve the floor strip visually. Source chain at 1692327 is targetFor
+(including clamp) → standClear → tick/arriveNow; no extra clamp after standClear
+in go. Test assertions read arrived walker.current and actual callback payload.
+The current content is authoritative; do not apply the stale FE layout table
+or a common 88px radius threshold.
+
+No runtime/test/content change, no new RED/GREEN implementation cycle. D0/G1/G2,
+P3→P4→P5→D4, loans/context resume, save/history/backup/reread and reward policies
+remain unchanged. Radius is sufficient at the audited engine points. A future
+radius change requires an actual guard rejection at a verified clear-floor point
+and a RED→GREEN reproducer. Art remains BLOCKED for the missing secondary layer;
+keep the reward as defined.
+
+WAITING input: fixed FE SHA, updated final feet/obstacle/floor table and visible
+floor/path evidence; then Leader's integrated candidate SHA/checkout. Core must
+rerun the explicit revision command and integrated checkout tests at those
+actual milestones, not claim the existing results cover a future patch.
+
+Pre-commit verification rerun for this documentation audit (all commands run
+from Core checkout 2b274ce with only these handoff edits):
+
+| Command | Actual result |
+| --- | --- |
+| `C2_MOVEMENT_REVISION=1692327c4a80d5b0b9e709db73668504c28a7f7e node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 110/110, including 18 layout/adapter cases |
+| Four-file baseline regression command above | PASS 26/26 |
+| `npm run test:core` | PASS core checks and prologue/C1 walkthrough/self checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS Valid:true |
+| `npm run build` | PASS; existing chunk warning >500kB |
+| `npm audit --json` | PASS 0 vulnerabilities |
+| Full ten-module coverage command above, prefixed with the same C2_MOVEMENT_REVISION | PASS 138/138, 88.60% lines /80.92% branches /83.77% functions; thresholds 80 PASS |
+
+No new/modified executable logic in this patch. Coverage measures the existing
+ten Core runtime modules, not documentation, JSON, browser or visual geometry.
+No integrated-candidate/browser rerun was possible without the requested new
+candidate; none is claimed. Frontend HEAD rechecked before handoff: 1692327.
