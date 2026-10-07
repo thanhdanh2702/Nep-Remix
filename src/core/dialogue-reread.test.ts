@@ -77,3 +77,16 @@ test('reread choices preserve progress and promote unread trigger queue', () => 
   assert.equal(finished.state.journey.prologue.activeDialogue?.dialogueId, 'd-c0-stairs');
   assert.equal(finished.state.journey.prologue.activeDialogue?.mode, undefined);
 });
+
+test('migration of a changed reread node retains its nonprogressing mode', () => {
+  const state = createInitialState(content);
+  state.currentChapter = 'c1'; state.journey.c1.status = 'in_progress'; state.journey.c1.currentArea = 'c1-s2-ban-tho-nha-tho-ho';
+  state.journey.c1.completedDialogueIds = ['d-c1-tiet-hanh'];
+  state.journey.c1.activeDialogue = { dialogueId: 'd-c1-tiet-hanh', currentNodeId: 'removed-node', history: ['removed-node'], mode: 'reread' };
+  const restored = fromJSON(toJSON(createInitialTree(state)), content); assert.ok(restored.ok);
+  const loaded = restored.tree.nodes[restored.tree.headId].snapshot;
+  assert.equal(loaded.journey.c1.activeDialogue?.mode, 'reread');
+  const advanced = runCommand(loaded, advance, content); assert.ok(advanced.ok);
+  assert.deepEqual(advanced.events, []);
+  assert.deepEqual(advanced.state.notebook.unlockedClueIds, []);
+});
