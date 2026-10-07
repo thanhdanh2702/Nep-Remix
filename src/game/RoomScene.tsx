@@ -10,7 +10,7 @@ import { ARROW_UP, CURSOR_DEFAULT, CURSOR_EXIT, CURSOR_HAND, cursorCss, gridToDa
 import { HUD_SELECTOR, measureInsets } from './scene-view';
 import { anLayerPath } from './npc-portraits';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT, type CharacterScene } from './character-scale';
-import { anCell, drawRoom, ROOM_NPCS, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
+import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, c2ExitArrows, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
 import { arriveNow, cellFor, clampToFloor, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
@@ -22,7 +22,7 @@ const boxesFor = (chapterId: string, areaId: string) => cutoutBoxes[`../../asset
 const SHOP_AREA = 'c0-s1-tiem-may-chieu';
 const CAT_SPRITE = 'assets/characters/cat-nep/view-front.png';
 // Chapter -> character-scale scene. Chapters without an entry draw no people and keep click-to-interact immediate.
-const SCENE_OF: Record<string, CharacterScene | undefined> = { prologue: 'c0', c1: 'c1' };
+const SCENE_OF: Record<string, CharacterScene | undefined> = { prologue: 'c0', c1: 'c1', c2: 'c2' };
 const NPC_VIEWS = ['front', 'left', 'right', 'back'] as const;
 const STAND_GAP = 0.045; // world widths of clear floor between An and the object she walks to
 const floorOf = (scene: CharacterScene, h: number) => ({ top: HUMAN_HEIGHT[scene].floorTop * h, bottom: HUMAN_HEIGHT[scene].floorBottom * h });
@@ -33,10 +33,18 @@ const entryPoint = (r: { x: number; y: number; w: number; h: number }, floor: { 
     : { x: r.x > 0.15 ? (r.x - 0.06) * world.w : (r.x + r.w + 0.06) * world.w, y: floor.top };
 const rectOf = (i: Interactable, w: number, h: number): Box => { const r = i.rect ?? { x: i.pos.x - .03, y: i.pos.y - .03, w: .06, h: .06 }; return { x: r.x * w, y: r.y * h, w: r.w * w, h: r.h * h }; };
 // Every loaded view of one NPC (front, left, right, back); a missing file just leaves that view out.
-const loadViews = (id: string): Promise<NpcViews> => {
-  const files = NPC_VIEWS.map(view => [view, ROOM_NPCS[id]!.path.replace('view-front', `view-${view}`)] as const).filter(([, path]) => assetRegistry[path]);
+const loadViews = (id: string, customPath?: string): Promise<NpcViews> => {
+  const spritePath = customPath ?? ROOM_NPCS[id]?.path;
+  if (!spritePath) return Promise.resolve({});
+  const files = NPC_VIEWS.map(view => [view, spritePath.replace('view-front', `view-${view}`)] as const).filter(([, path]) => assetRegistry[path]);
   return Promise.allSettled(files.map(([, path]) => loadImage(path)))
-    .then(done => Object.fromEntries(files.flatMap(([view], i) => { const r = done[i]; return r.status === 'fulfilled' ? [[view, r.value]] : []; })));
+    .then(done => {
+      const views = Object.fromEntries(files.flatMap(([view], i) => { const r = done[i]; return r.status === 'fulfilled' ? [[view, r.value]] : []; }));
+      if (!views.front && assetRegistry[spritePath]) {
+        return loadImage(spritePath).then(img => ({ ...views, front: img })).catch(() => views);
+      }
+      return views;
+    });
 };
 const DIR_LABEL = { up: 'Đi lên', down: 'Đi xuống', left: 'Sang trái', right: 'Sang phải' };
 type Chapter = (typeof content.chapters)[keyof typeof content.chapters];
@@ -123,10 +131,21 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
         return { i: s.i, label: s.label, used: s.used, world: s.world, hit: limitHit(s.hit, rect, centres) };
       });
   }, [area, chapterId, areaId, box.w, box.h, progress.side, progress.solvedPuzzleIds, progress.completedDialogueIds, state.inventory.itemIds, chapter]);
-  const npcs = area.interactables // same side rule as the spots; solved puzzles keep their NPC standing
-    .filter(i => ROOM_NPCS[i.id] && (i.side === 'ca_hai' || `mat_${i.side}` === progress.side))
-    .map(i => ({ id: i.id, rect: rectOf(i, world.w, world.h) }));
-  const via = new Set((area.exitArrows ?? []).map(a => a.via));
+  const staticNpcs = useMemo(
+    () => c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world),
+    [chapterId, areaId, progress.solvedPuzzleIds, world]
+  );
+  const npcs = useMemo(() => {
+    const interactableNpcs = area.interactables
+      .filter(i => ROOM_NPCS[i.id] && (i.side === 'ca_hai' || `mat_${i.side}` === progress.side))
+      .map(i => ({ id: i.id, rect: rectOf(i, world.w, world.h) }));
+    return [...interactableNpcs, ...staticNpcs.map(n => ({ id: n.id, rect: n.rect }))];
+  }, [area.interactables, progress.side, world, staticNpcs]);
+  const effectiveExitArrows = useMemo(
+    () => (area.exitArrows && area.exitArrows.length > 0 ? area.exitArrows : c2ExitArrows(areaId)),
+    [area.exitArrows, areaId]
+  );
+  const via = useMemo(() => new Set(effectiveExitArrows.map(a => a.via)), [effectiveExitArrows]);
   const buttons = spots.filter(s => !via.has(s.i.id));
   const focusSpot = !blocked && hoverId ? spots.find(s => s.i.id === hoverId) : undefined;
   const live = useRef({ box, ready, blocked, hoverId, soi, s1, areaId, spots, focusSpot, via, npcs, scene });
@@ -157,26 +176,66 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   useEffect(() => { // Load the area art; the dark fade covers this gap.
     let cancelled = false;
     setReady(false); setFailure(''); setHoverId(null); assets.current = null; lastSig.current = '';
-    // An enters just above the exit arrow that leads back to the room she came from (bottom centre on first entry), on clear floor.
-    const entry = (area.exitArrows ?? []).find(x => area.exits[x.exit] === prevArea.current);
+    // An enters just above the exit arrow that leads back to the room she came from (spawn or bottom centre on first entry), on clear floor.
+    const entry = effectiveExitArrows.find(x => area.exits[x.exit] === prevArea.current);
     prevArea.current = areaId;
     const floor = scene && floorOf(scene, world.h);
-    walker.current = floor ? newWalker(standClear(areaId, clampToFloor(entry ? entryPoint(entry.rect, floor, world) : { x: world.w / 2, y: world.h }, floor, world.w), floor, world)) : null;
+    const initialPos = entry && floor
+      ? entryPoint(entry.rect, floor, world)
+      : (area.spawn ? { x: area.spawn.x * world.w, y: area.spawn.y * world.h } : { x: world.w / 2, y: world.h });
+    walker.current = floor ? newWalker(standClear(areaId, clampToFloor(initialPos, floor, world.w), floor, world)) : null;
     const folder = areaFolder(chapterId, areaId);
     const ids = Object.keys(boxesFor(chapterId, areaId)).filter(id => assetRegistry[`${folder}/hotspot-${id}.png`]);
     const npcIds = area.interactables.map(i => i.id).filter(id => ROOM_NPCS[id]);
+    const staticNpcItems = c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
+    const allNpcLoaders = [
+      ...npcIds.map(id => loadViews(id)),
+      ...staticNpcItems.map(n => loadViews(n.id, n.path)),
+    ];
+    const allNpcIds = [...npcIds, ...staticNpcItems.map(n => n.id)];
+    const overlaySpecs = c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds);
+    const validOverlays = overlaySpecs.filter(o => assetRegistry[o.path]);
     Promise.all([
       Promise.all([loadImage(areaAsset(chapterId, areaId)), s1 && assetRegistry[CAT_SPRITE] ? loadImage(CAT_SPRITE) : undefined]),
       Promise.allSettled(ids.map(id => loadImage(`${folder}/hotspot-${id}.png`))),
-      Promise.all(npcIds.map(loadViews)),
-    ]).then(([[bg, cat], cuts, people]) => {
+      Promise.all(allNpcLoaders),
+      Promise.allSettled(validOverlays.map(o => loadImage(o.path))),
+    ]).then(([[bg, cat], cuts, people, loadedOverlays]) => {
       if (cancelled) return;
-      assets.current = { bg, cat, cutouts: Object.fromEntries(ids.flatMap((id, i) => cuts[i].status === 'fulfilled' ? [[id, cuts[i].value]] : [])),
-        npcs: Object.fromEntries(npcIds.map((id, i) => [id, people[i]])) };
+      const overlays = validOverlays.flatMap((o, i) => {
+        const res = loadedOverlays[i];
+        return res.status === 'fulfilled' ? [{ id: o.id, img: res.value, visible: o.visible }] : [];
+      });
+      assets.current = {
+        bg, cat,
+        cutouts: Object.fromEntries(ids.flatMap((id, i) => cuts[i].status === 'fulfilled' ? [[id, cuts[i].value]] : [])),
+        npcs: Object.fromEntries(allNpcIds.map((id, i) => [id, people[i]])),
+        overlays,
+      };
       setReady(true);
     }).catch(error => { if (!cancelled) setFailure(error.message); });
     return () => { cancelled = true; stop(); };
-  }, [chapterId, areaId, s1]);
+  }, [chapterId, areaId, s1, world]);
+
+  useEffect(() => {
+    if (assets.current && chapterId === 'c2') {
+      if (assets.current.overlays) {
+        const liveSpecs = Object.fromEntries(c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds).map(o => [o.id, o.visible]));
+        assets.current.overlays.forEach(o => {
+          if (liveSpecs[o.id] !== undefined) o.visible = liveSpecs[o.id];
+        });
+      }
+      const currentStatics = c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
+      Promise.all(currentStatics.map(n => loadViews(n.id, n.path))).then(loadedViews => {
+        if (!assets.current) return;
+        currentStatics.forEach((n, idx) => {
+          assets.current!.npcs[n.id] = loadedViews[idx];
+        });
+        lastSig.current = '';
+        paint();
+      });
+    }
+  }, [state.inventory.itemIds, progress.solvedPuzzleIds, chapterId, areaId, world]);
 
   useEffect(() => { // An's layers for the player's look, loaded outside the room fade; she appears once ready. A failure leaves the room playable without her.
     let cancelled = false;
@@ -189,8 +248,8 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   }, [preset]);
 
   useEffect(() => { // A hotspot that disappears (item picked, puzzle solved) takes its hover with it.
-    if (hoverId && !spots.some(s => s.i.id === hoverId) && !(area.exitArrows ?? []).some(x => (x.via ?? `exit:${x.exit}`) === hoverId)) setHoverId(null);
-  }, [spots, hoverId, area]);
+    if (hoverId && !spots.some(s => s.i.id === hoverId) && !effectiveExitArrows.some(x => (x.via ?? `exit:${x.exit}`) === hoverId)) setHoverId(null);
+  }, [spots, hoverId, effectiveExitArrows]);
   useEffect(() => { // Blocked (dialogue, puzzle, panel): no hover, no highlight.
     if (blocked) { setHoverId(null); setSoi(false); if (pending.current) stop(); } // something else took over: she stays put and nothing fires later
   }, [blocked]);
@@ -257,12 +316,23 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   };
   /** Hotspot click (or Enter on its button): An walks beside the object, faces it, then the interaction runs once. */
   const go = (i: Interactable) => {
-    const w = walker.current, fire = () => interact.current(i.id, i.pos);
-    if (!scene || !w) return fire();
+    const w = walker.current;
+    if (!scene || !w) return interact.current(i.id, i.pos);
     if (pending.current?.id === i.id) return; // already on her way there: never fire twice
     const floor = floorOf(scene, world.h), aim = targetFor(rectOf(i, world.w, world.h), w, floor, world.w, STAND_GAP * world.w);
     const to = standClear(areaId, aim.to, floor, world), face = aim.face;
-    if (prefersReducedMotion()) { stop(); walker.current = arriveNow(w, to, face); paint(); return fire(); }
+    const fire = () => {
+      const arrivedFeet = walker.current
+        ? { x: walker.current.x / world.w, y: walker.current.y / world.h }
+        : { x: to.x / world.w, y: to.y / world.h };
+      interact.current(i.id, arrivedFeet);
+    };
+    if (prefersReducedMotion()) {
+      stop();
+      walker.current = arriveNow(w, to, face);
+      paint();
+      return fire();
+    }
     pending.current = { id: i.id, fire };
     walker.current = { ...w, goal: { to, face } };
     run();
@@ -275,7 +345,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     onBlur: () => setHoverId(null),
   });
   const tip = hoverId && !blocked ? (() => {
-    const spot = spots.find(s => s.i.id === hoverId), arrow = (area.exitArrows ?? []).find(a => a.via === hoverId || `exit:${a.exit}` === hoverId);
+    const spot = spots.find(s => s.i.id === hoverId), arrow = effectiveExitArrows.find(a => a.via === hoverId || `exit:${a.exit}` === hoverId);
     const r = spot ? spot.hit : arrow ? hitOf(arrow.rect, box) : undefined;
     const text = spot && !arrow ? spot.label : arrow ? DIR_LABEL[arrow.dir] : ''; // arrow tooltip stays short; the aria-label carries the destination
     return r && text ? { text, left: Math.min(box.w - 60, Math.max(60, r.x + r.w / 2)), top: r.y < 36 ? r.y + r.h + 8 : r.y - 8, below: r.y < 36 } : null;
@@ -284,6 +354,41 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   const n = box.w >= 1000 ? 4 : 3;
   const pos = (b: Box) => ({ left: b.x, top: b.y, width: b.w, height: b.h });
 
+  const handleExitClick = (arrow: ExitArrow) => {
+    const target = arrow.via && area.interactables.find(i => i.id === arrow.via);
+    if (target) {
+      go(target);
+      return;
+    }
+    const w = walker.current;
+    if (!scene || !w) {
+      onExit(arrow);
+      return;
+    }
+    const floor = floorOf(scene, world.h);
+    const arrowBox = {
+      x: arrow.rect.x * world.w,
+      y: arrow.rect.y * world.h,
+      w: arrow.rect.w * world.w,
+      h: arrow.rect.h * world.h,
+    };
+    const aim = targetFor(arrowBox, w, floor, world.w, STAND_GAP * world.w);
+    const to = standClear(areaId, aim.to, floor, world);
+    const face = aim.face;
+    const fire = () => {
+      onExit(arrow);
+    };
+    if (prefersReducedMotion()) {
+      stop();
+      walker.current = arriveNow(w, to, face);
+      paint();
+      return fire();
+    }
+    pending.current = { id: `exit:${arrow.exit}`, fire };
+    walker.current = { ...w, goal: { to, face } };
+    run();
+  };
+
   return <div ref={container} className="room-scene">
     <div className="room-stage" style={{ left: box.x, top: box.y, width: box.w, height: box.h }}>
       <canvas ref={canvas} role="img" aria-label={`${area.title}. Bấm vào vật có viền sáng, hoặc dùng Tab rồi Enter.`} data-world-width={world.w} data-world-height={world.h}
@@ -291,9 +396,9 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       <div className="room-hotspots" role="group" aria-label="Vật trong phòng">
         {buttons.map(s => <button key={s.i.id} type="button" data-hotspot={s.i.id} data-used={s.used} aria-label={s.label} disabled={blocked}
           style={pos(s.hit)} onClick={() => go(s.i)} {...hover(s.i.id)} />)}
-        {(area.exitArrows ?? []).map(arrow => <button key={arrow.exit} type="button" className={`room-exit dir-${arrow.dir}`} data-exit={arrow.exit} aria-label={exitLabel(arrow)} disabled={blocked}
+        {effectiveExitArrows.map(arrow => <button key={arrow.exit} type="button" className={`room-exit dir-${arrow.dir}`} data-exit={arrow.exit} aria-label={exitLabel(arrow)} disabled={blocked}
           style={pos(hitOf(arrow.rect, box))} {...hover(arrow.via ?? `exit:${arrow.exit}`)}
-          onClick={() => { const target = arrow.via && area.interactables.find(i => i.id === arrow.via); if (target) onInteract(target.id, target.pos); else onExit(arrow); }}>
+          onClick={() => handleExitClick(arrow)}>
           <img src={arrowUrl(arrow.dir, n)} alt="" draggable={false} />
         </button>)}
         {tip && <span className={`room-tip${tip.below ? ' below' : ''}`} style={{ left: tip.left, top: tip.top }} aria-hidden="true">{tip.text}</span>}

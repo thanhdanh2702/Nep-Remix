@@ -33,3 +33,155 @@ button.journal-item.selected{background:var(--c-soft-pink);border-color:var(--c-
   .studio-challenge .actions { flex-wrap: nowrap; }
   .studio-challenge .actions button { flex: 1; padding-inline: var(--sp-2); }
 }
+
+/* Order puzzle (C2 strip assemble) */
+.order-assembly { display: flex; flex-direction: column; gap: var(--sp-3); margin-top: var(--sp-2); }
+.order-board { background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border); padding: var(--sp-3); min-height: 200px; display: flex; align-items: center; justify-content: center; }
+.order-empty-hint { color: var(--c-muted-plum); font-size: var(--fs-caption); text-align: center; margin: 0; }
+
+.order-canvas-wrapper { display: flex; justify-content: center; align-items: center; width: 100%; overflow-x: auto; padding: var(--sp-1) 0; }
+.order-canvas {
+  display: flex;
+  flex-direction: row;
+  gap: 0; /* Strips assemble seamlessly side-by-side */
+  justify-content: center;
+  align-items: stretch;
+  background: #fff;
+  border: 1px solid var(--c-sub-border);
+  box-shadow: var(--shadow-sm);
+}
+
+.order-strip-slot {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  cursor: pointer;
+  border-right: 1px dashed rgba(0, 0, 0, 0.15);
+  outline: none;
+}
+.order-strip-slot:last-child {
+  border-right: none;
+}
+.order-strip-slot:focus-visible,
+.order-strip-slot.is-selected {
+  outline: 2px solid var(--c-warm-gold);
+  outline-offset: -2px;
+  z-index: 2;
+}
+
+.order-slot-num {
+  position: absolute;
+  top: 4px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--c-deep-plum);
+  background: rgba(255, 255, 255, 0.88);
+  border-radius: 50%;
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+.order-strip-img {
+  /* Native aspect ratio 128 / 1476. Responsive height, scaled without distortion */
+  height: clamp(160px, 35vh, 240px);
+  width: auto;
+  aspect-ratio: 128 / 1476;
+  object-fit: contain;
+  display: block;
+}
+
+/* Control panel separated cleanly below the canvas */
+.order-strip-controls-panel {
+  border-top: 1px dashed var(--c-sub-border);
+  padding-top: var(--sp-2);
+}
+.order-strip-controls-panel h4 {
+  margin: 0 0 var(--sp-2);
+  font-size: var(--fs-caption);
+  color: var(--c-deep-plum);
+}
+.order-strip-controls-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.order-strip-control-row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  background: #fff;
+  border: 1px solid var(--c-sub-border);
+  padding: var(--sp-1) var(--sp-2);
+  border-radius: var(--rad-sm);
+  gap: var(--sp-2);
+}
+.order-strip-control-label {
+  font-size: var(--fs-caption);
+  color: var(--c-ink);
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+.order-slot-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--c-deep-plum);
+  color: #fff;
+  font-size: var(--fs-min);
+}
+.order-strip-btn-group {
+  display: flex;
+  flex-direction: row;
+  gap: var(--sp-1);
+}
+.order-strip-btn-group button {
+  min-height: var(--target-min);
+  min-width: var(--target-min);
+  padding: var(--sp-1) var(--sp-2);
+  font-size: var(--fs-caption);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.order-strip-btn-group button:focus-visible {
+  outline: 2px solid var(--c-warm-gold);
+  outline-offset: 2px;
+}
+.order-strip-btn-group .order-remove {
+  color: var(--c-error);
+}
+
+.order-tray { border-top: 1px dashed var(--c-sub-border); padding-top: var(--sp-2); }
+.order-tray h4 { margin: 0 0 var(--sp-2); font-size: var(--fs-caption); color: var(--c-deep-plum); }
+.order-tray-items { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.order-tray-btn { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--target-min); padding: var(--sp-1) var(--sp-3); font-size: var(--fs-caption); text-align: left; }
+.order-tray-btn:focus-visible { outline: 2px solid var(--c-warm-gold); outline-offset: 2px; }
+.order-tray-thumb { height: 32px; width: auto; max-width: 16px; object-fit: contain; }
+
+@media (max-width: 640px) {
+  .order-strip-control-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .order-strip-btn-group {
+    justify-content: flex-end;
+  }
+  .order-strip-img {
+    height: clamp(140px, 30vh, 200px);
+  }
+}
+

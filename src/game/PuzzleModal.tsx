@@ -1,21 +1,36 @@
+import { useEffect, useRef, useState } from 'react';
 import type { StudioDraft, PuzzleAnswerDraft } from '../core';
 import type { ChapterId, Puzzle } from '../content/schema';
 import { content } from './store';
-import { asset, itemAsset } from './assets';
+import { asset, itemAsset, c2StripAsset } from './assets';
 import { Modal } from './Modal';
+import {
+  ALL_C2_STRIPS,
+  addOrderPiece,
+  removeOrderPiece,
+  moveOrderPieceLeft,
+  moveOrderPieceRight,
+  resetOrderSeq,
+  handleOrderSlotKey,
+} from './order-puzzle';
 import './puzzle.css';
 
 type Chapter = (typeof content.chapters)[ChapterId];
 
 // Button text authored per puzzle / dialogue id; the content schema has no label field yet.
-export const ACTION_LABEL: Record<string, string> = { 'p-c0-cloth': 'Gỡ tấm vải phủ', 'd-c0-stairs': 'Bước lên gác xép' };
+export const ACTION_LABEL: Record<string, string> = {
+  'p-c0-cloth': 'Gỡ tấm vải phủ',
+  'd-c0-stairs': 'Bước lên gác xép',
+  'p-c2-sketch-assemble': 'Ghép bản vẽ',
+  'p-c2-safe-open': 'Mở hòm sắt',
+  'p-c2-present-receipt': 'Trình biên lai',
+  'p-c2-present-sketch': 'Trình bản vẽ',
+};
 // 'use' puzzles that name a required item and every 'present' puzzle are answered with an inventory item.
 const needsItem = (puzzle: Puzzle) => puzzle.type === 'present' || (puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemId || puzzle.solution.requiredItemIds));
-// Shape that evaluatePuzzleAnswer expects for a 'styling' puzzle.
-export const stylingAnswer = (draft: StudioDraft) => ({
-  silhouette: draft.silhouette, garmentId: draft.garmentId, headwearId: draft.equippedAccessories.headwear,
-  jewelryId: draft.equippedAccessories.jewelry, footwearId: draft.equippedAccessories.footwear, handheldId: draft.equippedAccessories.handheld,
-});
+
+import { stylingAnswer } from './styling-answer';
+export { stylingAnswer };
 
 // Hotspot of the unsolved puzzle that unlocks `areaId`. A locked exit arrow opens it (the arrow can sit on top of that very object).
 export function unlockerOf(chapter: Chapter, area: Chapter['areas'][number], solved: string[], unlocked: string[], areaId: string) {
@@ -31,6 +46,241 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
   puzzle: Puzzle; itemIds: string[]; hintTier: number; feedback: string; draft?: PuzzleAnswerDraft;
   onSubmit: (answer: unknown) => void; onHint: () => void; onClose: () => void; onUpdateDraft: (draft: PuzzleAnswerDraft) => void;
 }) {
+  if (puzzle.type === 'order') {
+    const ownedStrips = ALL_C2_STRIPS.filter(id => itemIds.includes(id));
+    const currentSeq: string[] = Array.isArray(draft?.answer)
+      ? (draft.answer as unknown[]).filter((x): x is string => typeof x === 'string')
+      : [];
+    const unplaced = ownedStrips.filter(id => !currentSeq.includes(id));
+    const label = ACTION_LABEL[puzzle.id] ?? 'Ghép bản vẽ';
+
+    const stripRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const trayRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+    const trayContainerRef = useRef<HTMLDivElement>(null);
+    const [focusedPieceId, setFocusedPieceId] = useState<string | null>(null);
+
+    // Keep focus on the active piece across re-orders or shift intentionally on removal
+    useEffect(() => {
+      if (focusedPieceId) {
+        const el = stripRefs.current.get(focusedPieceId);
+        if (el && document.activeElement !== el) {
+          el.focus();
+        }
+      }
+    }, [currentSeq, focusedPieceId]);
+
+    const updateSeq = (next: string[], nextFocusId?: string | null) => {
+      if (nextFocusId !== undefined) {
+        setFocusedPieceId(nextFocusId);
+      }
+      onUpdateDraft({ type: 'order', answer: next });
+    };
+
+    const addPiece = (id: string) => {
+      const next = addOrderPiece(currentSeq, id);
+      updateSeq(next, id);
+    };
+
+    const removePiece = (index: number) => {
+      const removedId = currentSeq[index];
+      const next = removeOrderPiece(currentSeq, index);
+      if (next.length > 0) {
+        const nextIndex = Math.min(index, next.length - 1);
+        updateSeq(next, next[nextIndex]);
+      } else {
+        // When all pieces are removed from the canvas, the strip elements unmount.
+        // Prevent focus from dropping to document.body by redirecting focus to
+        // the corresponding returned piece button in the tray (or the first tray button/modal).
+        updateSeq(next, null);
+        setTimeout(() => {
+          const trayBtn = trayRefs.current.get(removedId) ?? trayContainerRef.current?.querySelector('button');
+          if (trayBtn) {
+            trayBtn.focus();
+          }
+        }, 0);
+      }
+    };
+
+    const moveLeft = (index: number) => {
+      if (index <= 0) return;
+      const pieceId = currentSeq[index];
+      const next = moveOrderPieceLeft(currentSeq, index);
+      updateSeq(next, pieceId);
+    };
+
+    const moveRight = (index: number) => {
+      if (index >= currentSeq.length - 1) return;
+      const pieceId = currentSeq[index];
+      const next = moveOrderPieceRight(currentSeq, index);
+      updateSeq(next, pieceId);
+    };
+
+    return (
+      <Modal title={puzzle.title} wide onClose={onClose}>
+        <p>Sắp xếp bốn dải bản vẽ từ trái sang phải để phục hồi thiết kế hoàn chỉnh.</p>
+        <div className="order-assembly" aria-label="Khung ghép dải bản vẽ">
+          <div className="order-board" aria-label="Bản vẽ đang ghép">
+            {currentSeq.length === 0 ? (
+              <p className="order-empty-hint">Chưa có dải bản vẽ nào được đặt. Chọn mảnh bên dưới để ghép.</p>
+            ) : (
+              <div className="order-canvas-wrapper">
+                <div className="order-canvas" role="region" aria-label="Bản vẽ ghép liên tục">
+                  {currentSeq.map((id, index) => {
+                    const stripPath = c2StripAsset(id);
+                    const name = content.itemsById.get(id)?.name ?? `Dải ${index + 1}`;
+                    return (
+                      <div
+                        key={id}
+                        ref={(el) => {
+                          if (el) stripRefs.current.set(id, el);
+                          else stripRefs.current.delete(id);
+                        }}
+                        className={`order-strip-slot ${focusedPieceId === id ? 'is-selected' : ''}`}
+                        tabIndex={0}
+                        role="group"
+                        aria-label={`Vị trí ${index + 1}: ${name}. Dùng phím Mũi tên trái/phải để đổi chỗ, Delete để gỡ.`}
+                        onFocus={() => setFocusedPieceId(id)}
+                        onClick={() => setFocusedPieceId(id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            moveLeft(index);
+                          } else if (e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            moveRight(index);
+                          } else if (e.key === 'Delete' || e.key === 'Backspace') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            removePiece(index);
+                          }
+                        }}
+                      >
+                        <span className="order-slot-num">{index + 1}</span>
+                        {stripPath && (
+                          <img
+                            src={asset(stripPath)}
+                            alt={name}
+                            className="order-strip-img"
+                            draggable={false}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {currentSeq.length > 0 && (
+            <div className="order-strip-controls-panel" role="group" aria-label="Điều khiển vị trí các mảnh">
+              <h4>Thao tác các mảnh đã ghép:</h4>
+              <div className="order-strip-controls-list">
+                {currentSeq.map((id, index) => {
+                  const name = content.itemsById.get(id)?.name ?? `Dải ${index + 1}`;
+                  return (
+                    <div key={id} className="order-strip-control-row">
+                      <span className="order-strip-control-label">
+                        <strong className="order-slot-badge">{index + 1}</strong> {name}
+                      </span>
+                      <div className="order-strip-btn-group">
+                        <button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveLeft(index);
+                          }}
+                          aria-label={`Dịch ${name} sang trái`}
+                          title="Dịch sang trái"
+                        >
+                          ‹ Trái
+                        </button>
+                        <button
+                          type="button"
+                          disabled={index === currentSeq.length - 1}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveRight(index);
+                          }}
+                          aria-label={`Dịch ${name} sang phải`}
+                          title="Dịch sang phải"
+                        >
+                          Phải ›
+                        </button>
+                        <button
+                          type="button"
+                          className="order-remove"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removePiece(index);
+                          }}
+                          aria-label={`Gỡ ${name}`}
+                          title="Gỡ bỏ"
+                        >
+                          × Gỡ
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          <div className="order-tray" aria-label="Mảnh bản vẽ trong túi">
+            <h4>Mảnh bản vẽ trong túi đồ:</h4>
+            {unplaced.length === 0 ? (
+              <p className="fine-print">
+                {ownedStrips.length === 0
+                  ? 'Túi đồ chưa có mảnh bản vẽ nào. Hãy tìm kiếm quanh gác lửng.'
+                  : 'Đã đưa tất cả mảnh đang có vào khung ghép.'}
+              </p>
+            ) : (
+              <div ref={trayContainerRef} className="order-tray-items">
+                {unplaced.map(id => {
+                  const stripPath = c2StripAsset(id);
+                  const name = content.itemsById.get(id)?.name ?? id;
+                  return (
+                    <button
+                      key={id}
+                      ref={(el) => {
+                        if (el) trayRefs.current.set(id, el);
+                        else trayRefs.current.delete(id);
+                      }}
+                      type="button"
+                      className="order-tray-btn"
+                      onClick={() => addPiece(id)}
+                      aria-label={`Thêm ${name}`}
+                    >
+                      {stripPath && <img src={asset(stripPath)} alt="" className="order-tray-thumb" />}
+                      <span>+ {name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="actions">
+          <button className="primary" onClick={() => onSubmit(currentSeq)}>
+            {label}
+          </button>
+          <button type="button" disabled={currentSeq.length === 0} onClick={() => updateSeq(resetOrderSeq(), null)}>
+            Đặt lại
+          </button>
+          <button disabled={hintTier >= 3} onClick={onHint}>
+            Nếp gợi ý ({hintTier}/3)
+          </button>
+        </div>
+        <Hints puzzle={puzzle} tier={hintTier} />
+        <Feedback text={feedback} />
+      </Modal>
+    );
+  }
+
   const isMulti = puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemIds);
   const answer = draft?.answer;
   const picked = isMulti ? (Array.isArray(answer) ? answer : []) : (typeof answer === 'string' ? answer : '');
@@ -86,6 +336,11 @@ export function StyleChallengeBar({ puzzle, draft, hintTier, feedback, onSubmit,
 
 const ENDING_ART: Partial<Record<ChapterId, { title: string; src: string; alt: string }>> = {
   prologue: { title: 'Nếp ký ức đầu tiên', src: 'assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/cg-prologue-mo-ruong-hoi-sinh.png', alt: 'An mở chiếc rương gia bảo trong ánh sáng vàng' },
+  c2: {
+    title: 'Khoản nợ đã trả, bản vẽ tự ký tên',
+    src: 'assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/cg-c2-loan-tu-ky-ten.png',
+    alt: 'Cụ Trần Thị Loan tự mình ký tên lên bản vẽ áo dài Tân thời trước sự chứng kiến của công chúng',
+  },
 };
 
 // Chapter summary: clues found + reward. Chapters without a painted CG get a plain card.
@@ -98,7 +353,7 @@ export function ChapterEnding({ chapter, clueIds, onHome, onMap, onClose }: {
   return <Modal title={art?.title ?? title} wide onClose={onClose}>
     {art ? <img className="ending-art" src={asset(art.src)} alt={art.alt} /> : <p className="ending-ribbon">Hoàn thành chương</p>}
     {clues.map(clue => <article key={clue!.id} className="ending-clue"><h4>{clue!.title}</h4><p>{clue!.description}</p></article>)}
-    <strong>Đã hoàn thành {art ? 'Màn mở đầu' : title}</strong>
+    <strong>Đã hoàn thành {id === 'prologue' ? 'Màn mở đầu' : title}</strong>
     <div className="ending-rewards">
       <h4>Phần thưởng nhận được:</h4>
       <ul>

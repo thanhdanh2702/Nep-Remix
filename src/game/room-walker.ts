@@ -48,6 +48,12 @@ export function targetFor(rect: Rect, from: Pt, floor: Floor, worldW: number, ga
 const OBSTACLES: Record<string, Rect[]> = {
   'c0-s1-tiem-may-chieu': [{ x: 0.57, y: 0.5, w: 0.43, h: 0.42 }, { x: 0, y: 0.5, w: 0.19, h: 0.3 }],
   'c0-s2-gac-xep-chiec-ruong': [{ x: 0.36, y: 0.5, w: 0.29, h: 0.21 }, { x: 0, y: 0.5, w: 0.21, h: 0.22 }, { x: 0.77, y: 0.5, w: 0.23, h: 0.33 }],
+  'c2-s1-gac-lung-ve-tranh': [{ x: 0.30, y: 0.40, w: 0.19, h: 0.285 }],
+  'c2-s2-kho-vai-hang-dao': [
+    { x: 0.36, y: 0.21, w: 0.32, h: 0.497 },
+    { x: 0.71, y: 0.35, w: 0.24, h: 0.410 }
+  ],
+  'c2-s3-phong-trien-lam-doi-dau': [{ x: 0.00, y: 0.25, w: 0.48, h: 0.505 }],
 };
 const FRONT_GAP = 0.02; // share of the room height between a footprint's front edge and her feet
 
