@@ -64,6 +64,8 @@ export interface SavedOutfit {
 }
 
 export interface ActiveDialogueState {
+  /** Revisit only: acknowledgement cannot grant clues or advance progression. */
+  mode?: 'reread';
   dialogueId: string;
   currentNodeId: string;
   history: string[];

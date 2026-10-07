@@ -151,6 +151,10 @@ export const interactCommand: CommandDef<InteractPayload> = {
     if (interactable.action.type === 'dialogue') {
       const dialogue = chData.dialogues.find(d => d.id === interactable.action.targetId);
       if (!dialogue || !isGateSatisfied(state, dialogue.when)) return { ok: false, reason: 'Dialogue prerequisites are not completed.' };
+      if (chProgress.completedDialogueIds.includes(dialogue.id) && chProgress.activeDialogue
+        && chProgress.activeDialogue.dialogueId !== dialogue.id) {
+        return { ok: false, reason: 'Hãy đọc xong lời kể hiện tại trước khi xem lại.' };
+      }
     }
     const { inRange } = isPlayerInRange(interactable, playerPos);
     if (!inRange) {
@@ -178,7 +182,7 @@ export const interactCommand: CommandDef<InteractPayload> = {
       const dialogueId = interactable.action.targetId;
       const dialogueDef = chData.dialogues.find((d) => d.id === dialogueId);
 
-      if (dialogueDef) nextState = enqueueDialogues(state, [dialogueId], content);
+      if (dialogueDef) nextState = enqueueDialogues(state, [dialogueId], content, 'interaction');
     } else if (interactable.action.type === 'item') {
       const itemId = interactable.action.targetId;
       if (!state.inventory.itemIds.includes(itemId)) {

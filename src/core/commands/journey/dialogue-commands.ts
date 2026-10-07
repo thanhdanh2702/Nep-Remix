@@ -24,14 +24,14 @@ function acknowledge(state: GameState, content: GameContent, nextId?: string) {
   const { active, dialogue, node } = current(state, content);
   const events: DomainEvent[] = [];
   let notebook = state.notebook;
-  if (node!.clueId && !notebook.unlockedClueIds.includes(node!.clueId)) {
+  if (active!.mode !== 'reread' && node!.clueId && !notebook.unlockedClueIds.includes(node!.clueId)) {
     notebook = { ...notebook, unlockedClueIds: [...notebook.unlockedClueIds, node!.clueId] };
     events.push({ type: 'clueCollected', payload: { clueId: node!.clueId } });
   }
   const next = dialogue!.nodes.find(n => n.id === nextId);
   const nextProgress = {
     ...progress,
-    completedDialogueIds: next ? progress.completedDialogueIds : [...new Set([...progress.completedDialogueIds, dialogue!.id])],
+    completedDialogueIds: next || active!.mode === 'reread' ? progress.completedDialogueIds : [...new Set([...progress.completedDialogueIds, dialogue!.id])],
     activeDialogue: next ? { ...active!, currentNodeId: next.id, history: [...active!.history, next.id] } : null
   };
   let result = { ...state, notebook, journey: { ...state.journey, [chapterId]: nextProgress } };
