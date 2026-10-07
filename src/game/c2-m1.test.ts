@@ -1,8 +1,24 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { resolve, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { c2StripAsset, c2CompleteSketchAsset } from './assets';
 import { characterScale, HUMAN_HEIGHT } from './character-scale';
 import { c2AreaOverlays } from './room-render';
+import {
+  addOrderPiece,
+  removeOrderPiece,
+  moveOrderPieceLeft,
+  moveOrderPieceRight,
+  resetOrderSeq,
+  handleOrderSlotKey,
+} from './order-puzzle';
+import { freshTree, execute, content } from './store';
+import { createInitialTree, toJSON, fromJSON } from '../core';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 test('c2StripAsset resolves correct paths for C2 drawing pieces', () => {
   assert.equal(
@@ -104,3 +120,290 @@ test('c2AreaOverlays accurately tracks visibility across S1, S2, and S3 based on
   );
   assert.deepEqual(s3Presented.map(o => o.visible), [true, true]);
 });
+
+test('order-puzzle sequence operations: add, remove, left, right, reset, and bounds handling', () => {
+  let seq: string[] = [];
+
+  // Add pieces
+  seq = addOrderPiece(seq, 'manh_ban_ve_ao_dai_1');
+  assert.deepEqual(seq, ['manh_ban_ve_ao_dai_1']);
+
+  seq = addOrderPiece(seq, 'manh_ban_ve_ao_dai_3');
+  assert.deepEqual(seq, ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_3']);
+
+  // Duplicate add should be rejected / no-op
+  seq = addOrderPiece(seq, 'manh_ban_ve_ao_dai_1');
+  assert.deepEqual(seq, ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_3']);
+
+  seq = addOrderPiece(seq, 'manh_ban_ve_ao_dai_2');
+  seq = addOrderPiece(seq, 'manh_ban_ve_ao_dai_4');
+  assert.deepEqual(seq, [
+    'manh_ban_ve_ao_dai_1',
+    'manh_ban_ve_ao_dai_3',
+    'manh_ban_ve_ao_dai_2',
+    'manh_ban_ve_ao_dai_4',
+  ]);
+
+  // Move left: index 0 cannot move left
+  assert.deepEqual(moveOrderPieceLeft(seq, 0), seq);
+  assert.deepEqual(moveOrderPieceLeft(seq, -1), seq);
+
+  // Move left: swap index 2 ('manh_ban_ve_ao_dai_2') with index 1 ('manh_ban_ve_ao_dai_3')
+  seq = moveOrderPieceLeft(seq, 2);
+  assert.deepEqual(seq, [
+    'manh_ban_ve_ao_dai_1',
+    'manh_ban_ve_ao_dai_2',
+    'manh_ban_ve_ao_dai_3',
+    'manh_ban_ve_ao_dai_4',
+  ]);
+
+  // Move right: last index cannot move right
+  assert.deepEqual(moveOrderPieceRight(seq, 3), seq);
+  assert.deepEqual(moveOrderPieceRight(seq, 4), seq);
+
+  // Move right: swap index 0 ('manh_1') with index 1 ('manh_2')
+  seq = moveOrderPieceRight(seq, 0);
+  assert.deepEqual(seq, [
+    'manh_ban_ve_ao_dai_2',
+    'manh_ban_ve_ao_dai_1',
+    'manh_ban_ve_ao_dai_3',
+    'manh_ban_ve_ao_dai_4',
+  ]);
+
+  // Move left: swap back
+  seq = moveOrderPieceLeft(seq, 1);
+  assert.deepEqual(seq, [
+    'manh_ban_ve_ao_dai_1',
+    'manh_ban_ve_ao_dai_2',
+    'manh_ban_ve_ao_dai_3',
+    'manh_ban_ve_ao_dai_4',
+  ]);
+
+  // Remove piece: remove index 1 ('manh_2')
+  seq = removeOrderPiece(seq, 1);
+  assert.deepEqual(seq, [
+    'manh_ban_ve_ao_dai_1',
+    'manh_ban_ve_ao_dai_3',
+    'manh_ban_ve_ao_dai_4',
+  ]);
+
+  // Remove out of bounds: no-op
+  assert.deepEqual(removeOrderPiece(seq, -1), seq);
+  assert.deepEqual(removeOrderPiece(seq, 10), seq);
+
+  // Reset sequence
+  seq = resetOrderSeq();
+  assert.deepEqual(seq, []);
+});
+
+test('order-puzzle keyboard navigation: ArrowLeft, ArrowRight, Delete, and Backspace', () => {
+  const initialSeq = ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3'];
+  let currentSeq = [...initialSeq];
+  let prevented = false;
+  const preventDefault = () => { prevented = true; };
+
+  // ArrowLeft at index 1 -> swaps index 0 and 1
+  prevented = false;
+  const handledLeft = handleOrderSlotKey('ArrowLeft', 1, currentSeq, preventDefault, next => {
+    currentSeq = next;
+  });
+  assert.equal(handledLeft, true);
+  assert.equal(prevented, true);
+  assert.deepEqual(currentSeq, ['manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_3']);
+
+  // ArrowLeft at index 0 -> boundary no-op, returns false
+  prevented = false;
+  const handledLeftBoundary = handleOrderSlotKey('ArrowLeft', 0, currentSeq, preventDefault, next => {
+    currentSeq = next;
+  });
+  assert.equal(handledLeftBoundary, false);
+  assert.equal(prevented, true); // Still prevented default browser scroll
+  assert.deepEqual(currentSeq, ['manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_3']);
+
+  // ArrowRight at index 0 -> swaps index 0 and 1
+  prevented = false;
+  const handledRight = handleOrderSlotKey('ArrowRight', 0, currentSeq, preventDefault, next => {
+    currentSeq = next;
+  });
+  assert.equal(handledRight, true);
+  assert.equal(prevented, true);
+  assert.deepEqual(currentSeq, ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3']);
+
+  // ArrowRight at index 2 (last) -> boundary no-op, returns false
+  prevented = false;
+  const handledRightBoundary = handleOrderSlotKey('ArrowRight', 2, currentSeq, preventDefault, next => {
+    currentSeq = next;
+  });
+  assert.equal(handledRightBoundary, false);
+  assert.equal(prevented, true);
+
+  // Delete at index 1 -> removes 'manh_2'
+  prevented = false;
+  const handledDelete = handleOrderSlotKey('Delete', 1, currentSeq, preventDefault, next => {
+    currentSeq = next;
+  });
+  assert.equal(handledDelete, true);
+  assert.equal(prevented, true);
+  assert.deepEqual(currentSeq, ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_3']);
+
+  // Backspace at index 0 -> removes 'manh_1'
+  prevented = false;
+  const handledBackspace = handleOrderSlotKey('Backspace', 0, currentSeq, preventDefault, next => {
+    currentSeq = next;
+  });
+  assert.equal(handledBackspace, true);
+  assert.equal(prevented, true);
+  assert.deepEqual(currentSeq, ['manh_ban_ve_ao_dai_3']);
+
+  // Other keys: ignored, does not preventDefault
+  prevented = false;
+  const handledOther = handleOrderSlotKey('Tab', 0, currentSeq, preventDefault, () => {});
+  assert.equal(handledOther, false);
+  assert.equal(prevented, false);
+});
+
+test('order puzzle draft persistence, close/reopen, and reload resilience in Core engine', () => {
+  let tree = freshTree();
+  const snap = tree.nodes[tree.headId].snapshot;
+  const c2Progress = { ...snap.journey.c2, status: 'in_progress' as const };
+  const unlockedState = {
+    ...snap,
+    journey: { ...snap.journey, c2: c2Progress },
+    inventory: {
+      itemIds: [
+        'manh_ban_ve_ao_dai_1',
+        'manh_ban_ve_ao_dai_2',
+        'manh_ban_ve_ao_dai_3',
+        'manh_ban_ve_ao_dai_4',
+      ],
+    },
+  };
+  tree = createInitialTree(unlockedState);
+
+  // Enter C2 and open sketch assembly puzzle
+  const enterRes = execute(tree, { type: 'chapter/enter', payload: { chapterId: 'c2' } });
+  assert.equal(enterRes.ok, true);
+  tree = enterRes.tree;
+
+  const openRes = execute(tree, {
+    type: 'puzzle/open',
+    payload: { puzzleId: 'p-c2-sketch-assemble' },
+  });
+  assert.equal(openRes.ok, true);
+  tree = openRes.tree;
+
+  // Step 1: Add piece 1
+  tree = execute(tree, {
+    type: 'puzzle/updateDraft',
+    payload: {
+      puzzleId: 'p-c2-sketch-assemble',
+      draft: { type: 'order', answer: ['manh_ban_ve_ao_dai_1'] },
+    },
+  }).tree;
+
+  // Step 2: Add piece 3
+  tree = execute(tree, {
+    type: 'puzzle/updateDraft',
+    payload: {
+      puzzleId: 'p-c2-sketch-assemble',
+      draft: { type: 'order', answer: ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_3'] },
+    },
+  }).tree;
+
+  // Step 3: Add piece 2
+  tree = execute(tree, {
+    type: 'puzzle/updateDraft',
+    payload: {
+      puzzleId: 'p-c2-sketch-assemble',
+      draft: {
+        type: 'order',
+        answer: ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_3', 'manh_ban_ve_ao_dai_2'],
+      },
+    },
+  }).tree;
+
+  // Step 4: Swap pieces 3 and 2
+  tree = execute(tree, {
+    type: 'puzzle/updateDraft',
+    payload: {
+      puzzleId: 'p-c2-sketch-assemble',
+      draft: {
+        type: 'order',
+        answer: ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3'],
+      },
+    },
+  }).tree;
+
+  // Close puzzle session
+  const closeRes = execute(tree, { type: 'puzzle/close', payload: {} });
+  assert.equal(closeRes.ok, true);
+  tree = closeRes.tree;
+
+  // Verify persistent draft in journey
+  let curState = tree.nodes[tree.headId].snapshot;
+  assert.deepEqual(curState.journey.c2.puzzleDrafts?.['p-c2-sketch-assemble'], {
+    type: 'order',
+    answer: ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3'],
+  });
+
+  // Reopen puzzle: draft is still preserved
+  const reopenRes = execute(tree, {
+    type: 'puzzle/open',
+    payload: { puzzleId: 'p-c2-sketch-assemble' },
+  });
+  assert.equal(reopenRes.ok, true);
+  tree = reopenRes.tree;
+
+  curState = tree.nodes[tree.headId].snapshot;
+  assert.deepEqual(curState.journey.c2.puzzleDrafts?.['p-c2-sketch-assemble'], {
+    type: 'order',
+    answer: ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3'],
+  });
+
+  // Page reload simulation: serialize to JSON, deserialize back
+  const serialized = toJSON(tree);
+  const deserialized = fromJSON(serialized, content);
+  assert.equal(deserialized.ok, true);
+  const reloadedTree = deserialized.tree;
+  const reloadedState = reloadedTree.nodes[reloadedTree.headId].snapshot;
+
+  assert.deepEqual(reloadedState.journey.c2.puzzleDrafts?.['p-c2-sketch-assemble'], {
+    type: 'order',
+    answer: ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3'],
+  });
+
+  // Complete assembly and submit solution
+  const submitRes = execute(reloadedTree, {
+    type: 'puzzle/submit',
+    payload: {
+      puzzleId: 'p-c2-sketch-assemble',
+      answer: [
+        'manh_ban_ve_ao_dai_1',
+        'manh_ban_ve_ao_dai_2',
+        'manh_ban_ve_ao_dai_3',
+        'manh_ban_ve_ao_dai_4',
+      ],
+    },
+  });
+  assert.equal(submitRes.ok, true);
+  const solvedState = submitRes.tree.nodes[submitRes.tree.headId].snapshot;
+  assert.ok(solvedState.journey.c2.solvedPuzzleIds.includes('p-c2-sketch-assemble'));
+  assert.ok(solvedState.inventory.itemIds.includes('ban_ve_ao_dai_tan_thoi'));
+});
+
+test('touch target minimum 44px and focus-visible styling in puzzle.css', () => {
+  const css = readFileSync(resolve(__dirname, 'puzzle.css'), 'utf8');
+
+  // Assert button min-width and min-height are set to var(--target-min) (44px)
+  assert.ok(
+    css.includes('.order-strip-controls button { min-height: var(--target-min); min-width: var(--target-min);'),
+    'Order puzzle controls button must satisfy min-height and min-width var(--target-min) (>=44px)'
+  );
+
+  // Assert focus-visible styling is present
+  assert.ok(
+    css.includes('.order-slot:focus-visible'),
+    'Order slot must have clear focus-visible styling for keyboard accessibility'
+  );
+});
+

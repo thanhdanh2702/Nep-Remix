@@ -3,6 +3,15 @@ import type { ChapterId, Puzzle } from '../content/schema';
 import { content } from './store';
 import { asset, itemAsset, c2StripAsset } from './assets';
 import { Modal } from './Modal';
+import {
+  ALL_C2_STRIPS,
+  addOrderPiece,
+  removeOrderPiece,
+  moveOrderPieceLeft,
+  moveOrderPieceRight,
+  resetOrderSeq,
+  handleOrderSlotKey,
+} from './order-puzzle';
 import './puzzle.css';
 
 type Chapter = (typeof content.chapters)[ChapterId];
@@ -34,8 +43,6 @@ export function unlockerOf(chapter: Chapter, area: Chapter['areas'][number], sol
 const Hints = ({ puzzle, tier }: { puzzle: Puzzle; tier: number }) => <>{puzzle.hints.slice(0, tier).map((hint, i) => <p key={i} className="hint">{hint}</p>)}</>;
 const Feedback = ({ text }: { text: string }) => text ? <p role="status" className="puzzle-feedback is-error">{text}</p> : null;
 
-const ALL_C2_STRIPS = ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3', 'manh_ban_ve_ao_dai_4'];
-
 export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubmit, onHint, onClose, onUpdateDraft }: {
   puzzle: Puzzle; itemIds: string[]; hintTier: number; feedback: string; draft?: PuzzleAnswerDraft;
   onSubmit: (answer: unknown) => void; onHint: () => void; onClose: () => void; onUpdateDraft: (draft: PuzzleAnswerDraft) => void;
@@ -52,20 +59,10 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
       onUpdateDraft({ type: 'order', answer: next });
     };
 
-    const addPiece = (id: string) => updateSeq([...currentSeq, id]);
-    const removePiece = (index: number) => updateSeq(currentSeq.filter((_, i) => i !== index));
-    const moveLeft = (index: number) => {
-      if (index <= 0) return;
-      const next = [...currentSeq];
-      [next[index - 1], next[index]] = [next[index], next[index - 1]];
-      updateSeq(next);
-    };
-    const moveRight = (index: number) => {
-      if (index >= currentSeq.length - 1) return;
-      const next = [...currentSeq];
-      [next[index + 1], next[index]] = [next[index], next[index + 1]];
-      updateSeq(next);
-    };
+    const addPiece = (id: string) => updateSeq(addOrderPiece(currentSeq, id));
+    const removePiece = (index: number) => updateSeq(removeOrderPiece(currentSeq, index));
+    const moveLeft = (index: number) => updateSeq(moveOrderPieceLeft(currentSeq, index));
+    const moveRight = (index: number) => updateSeq(moveOrderPieceRight(currentSeq, index));
 
     return (
       <Modal title={puzzle.title} wide onClose={onClose}>
@@ -80,7 +77,16 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
                   const stripPath = c2StripAsset(id);
                   const name = content.itemsById.get(id)?.name ?? `Dải ${index + 1}`;
                   return (
-                    <div key={`${id}-${index}`} className="order-slot" aria-label={`Vị trí ${index + 1}: ${name}`}>
+                    <div
+                      key={`${id}-${index}`}
+                      className="order-slot"
+                      tabIndex={0}
+                      role="group"
+                      aria-label={`Vị trí ${index + 1}: ${name}. Dùng phím Mũi tên trái/phải để đổi chỗ, Delete để gỡ.`}
+                      onKeyDown={(e) => {
+                        handleOrderSlotKey(e.key, index, currentSeq, () => e.preventDefault(), updateSeq);
+                      }}
+                    >
                       <span className="order-slot-num">{index + 1}</span>
                       <div className="order-strip-preview">
                         {stripPath && <img src={asset(stripPath)} alt={name} className="order-strip-img" />}

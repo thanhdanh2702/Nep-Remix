@@ -4,12 +4,11 @@ import museumMeta from '../../assets/screens/museum/asset-manifest.json';
 import assetMetadata from '../../data/runtime-assets.json';
 
 // Vite owns these URLs in dev and production. Never import drafts or QA images.
-const globFn = (import.meta as { glob?: <T>(patterns: string[], opts?: unknown) => Record<string, T> }).glob;
-const files: Record<string, string> = globFn
-  ? globFn<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
+const files = typeof process !== 'undefined' && !process.env.VITE
+  ? {}
+  : import.meta.glob<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
       eager: true, query: '?url', import: 'default',
-    })
-  : {};
+    });
 export const assetRegistry: Record<string, string> = Object.fromEntries(
   Object.entries(files).map(([path, url]) => [path.replace('../../', ''), url])
 );
