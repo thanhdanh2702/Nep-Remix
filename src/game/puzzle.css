@@ -33,3 +33,21 @@ button.journal-item.selected{background:var(--c-soft-pink);border-color:var(--c-
   .studio-challenge .actions { flex-wrap: nowrap; }
   .studio-challenge .actions button { flex: 1; padding-inline: var(--sp-2); }
 }
+
+/* Order puzzle (C2 strip assemble) */
+.order-assembly { display: flex; flex-direction: column; gap: var(--sp-3); margin-top: var(--sp-2); }
+.order-board { background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border); padding: var(--sp-3); min-height: 190px; display: flex; align-items: center; justify-content: center; }
+.order-empty-hint { color: var(--c-muted-plum); font-size: var(--fs-caption); text-align: center; margin: 0; }
+.order-slots { display: flex; flex-direction: row; gap: var(--sp-2); justify-content: center; align-items: flex-end; width: 100%; overflow-x: auto; padding: var(--sp-1) 0; }
+.order-slot { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); flex-shrink: 0; }
+.order-slot-num { font-size: var(--fs-min); font-weight: 700; color: var(--c-muted-plum); }
+.order-strip-preview { height: 160px; width: 32px; border: 1px solid var(--c-sub-border); background: #fff; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+.order-strip-img { width: 100%; height: 100%; object-fit: fill; }
+.order-strip-controls { display: flex; flex-direction: row; gap: 2px; }
+.order-strip-controls button { min-height: var(--target-min); min-width: 32px; padding: 0 var(--sp-1); font-size: 14px; font-weight: 700; }
+.order-strip-controls .order-remove { color: var(--c-error); }
+.order-tray { border-top: 1px dashed var(--c-sub-border); padding-top: var(--sp-2); }
+.order-tray h4 { margin: 0 0 var(--sp-2); font-size: var(--fs-caption); color: var(--c-deep-plum); }
+.order-tray-items { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.order-tray-btn { display: inline-flex; align-items: center; gap: var(--sp-2); min-height: var(--target-min); padding: var(--sp-1) var(--sp-3); font-size: var(--fs-caption); text-align: left; }
+.order-tray-thumb { height: 28px; width: auto; max-width: 16px; object-fit: contain; }

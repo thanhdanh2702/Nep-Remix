@@ -1,14 +1,21 @@
 import type { StudioDraft, PuzzleAnswerDraft } from '../core';
 import type { ChapterId, Puzzle } from '../content/schema';
 import { content } from './store';
-import { asset, itemAsset } from './assets';
+import { asset, itemAsset, c2StripAsset } from './assets';
 import { Modal } from './Modal';
 import './puzzle.css';
 
 type Chapter = (typeof content.chapters)[ChapterId];
 
 // Button text authored per puzzle / dialogue id; the content schema has no label field yet.
-export const ACTION_LABEL: Record<string, string> = { 'p-c0-cloth': 'Gỡ tấm vải phủ', 'd-c0-stairs': 'Bước lên gác xép' };
+export const ACTION_LABEL: Record<string, string> = {
+  'p-c0-cloth': 'Gỡ tấm vải phủ',
+  'd-c0-stairs': 'Bước lên gác xép',
+  'p-c2-sketch-assemble': 'Ghép bản vẽ',
+  'p-c2-safe-open': 'Mở hòm sắt',
+  'p-c2-present-receipt': 'Trình biên lai',
+  'p-c2-present-sketch': 'Trình bản vẽ',
+};
 // 'use' puzzles that name a required item and every 'present' puzzle are answered with an inventory item.
 const needsItem = (puzzle: Puzzle) => puzzle.type === 'present' || (puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemId || puzzle.solution.requiredItemIds));
 // Shape that evaluatePuzzleAnswer expects for a 'styling' puzzle.
@@ -27,10 +34,139 @@ export function unlockerOf(chapter: Chapter, area: Chapter['areas'][number], sol
 const Hints = ({ puzzle, tier }: { puzzle: Puzzle; tier: number }) => <>{puzzle.hints.slice(0, tier).map((hint, i) => <p key={i} className="hint">{hint}</p>)}</>;
 const Feedback = ({ text }: { text: string }) => text ? <p role="status" className="puzzle-feedback is-error">{text}</p> : null;
 
+const ALL_C2_STRIPS = ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_3', 'manh_ban_ve_ao_dai_4'];
+
 export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubmit, onHint, onClose, onUpdateDraft }: {
   puzzle: Puzzle; itemIds: string[]; hintTier: number; feedback: string; draft?: PuzzleAnswerDraft;
   onSubmit: (answer: unknown) => void; onHint: () => void; onClose: () => void; onUpdateDraft: (draft: PuzzleAnswerDraft) => void;
 }) {
+  if (puzzle.type === 'order') {
+    const ownedStrips = ALL_C2_STRIPS.filter(id => itemIds.includes(id));
+    const currentSeq: string[] = Array.isArray(draft?.answer)
+      ? (draft.answer as unknown[]).filter((x): x is string => typeof x === 'string')
+      : [];
+    const unplaced = ownedStrips.filter(id => !currentSeq.includes(id));
+    const label = ACTION_LABEL[puzzle.id] ?? 'Ghép bản vẽ';
+
+    const updateSeq = (next: string[]) => {
+      onUpdateDraft({ type: 'order', answer: next });
+    };
+
+    const addPiece = (id: string) => updateSeq([...currentSeq, id]);
+    const removePiece = (index: number) => updateSeq(currentSeq.filter((_, i) => i !== index));
+    const moveLeft = (index: number) => {
+      if (index <= 0) return;
+      const next = [...currentSeq];
+      [next[index - 1], next[index]] = [next[index], next[index - 1]];
+      updateSeq(next);
+    };
+    const moveRight = (index: number) => {
+      if (index >= currentSeq.length - 1) return;
+      const next = [...currentSeq];
+      [next[index + 1], next[index]] = [next[index], next[index + 1]];
+      updateSeq(next);
+    };
+
+    return (
+      <Modal title={puzzle.title} wide onClose={onClose}>
+        <p>Sắp xếp bốn dải bản vẽ từ trái sang phải để phục hồi thiết kế hoàn chỉnh.</p>
+        <div className="order-assembly" aria-label="Khung ghép dải bản vẽ">
+          <div className="order-board" aria-label="Bản vẽ đang ghép">
+            {currentSeq.length === 0 ? (
+              <p className="order-empty-hint">Chưa có dải bản vẽ nào được đặt. Chọn mảnh bên dưới để ghép.</p>
+            ) : (
+              <div className="order-slots">
+                {currentSeq.map((id, index) => {
+                  const stripPath = c2StripAsset(id);
+                  const name = content.itemsById.get(id)?.name ?? `Dải ${index + 1}`;
+                  return (
+                    <div key={`${id}-${index}`} className="order-slot" aria-label={`Vị trí ${index + 1}: ${name}`}>
+                      <span className="order-slot-num">{index + 1}</span>
+                      <div className="order-strip-preview">
+                        {stripPath && <img src={asset(stripPath)} alt={name} className="order-strip-img" />}
+                      </div>
+                      <div className="order-strip-controls">
+                        <button
+                          type="button"
+                          disabled={index === 0}
+                          onClick={() => moveLeft(index)}
+                          aria-label={`Dịch ${name} sang trái`}
+                          title="Sang trái"
+                        >
+                          ‹
+                        </button>
+                        <button
+                          type="button"
+                          disabled={index === currentSeq.length - 1}
+                          onClick={() => moveRight(index)}
+                          aria-label={`Dịch ${name} sang phải`}
+                          title="Sang phải"
+                        >
+                          ›
+                        </button>
+                        <button
+                          type="button"
+                          className="order-remove"
+                          onClick={() => removePiece(index)}
+                          aria-label={`Gỡ ${name}`}
+                          title="Gỡ bỏ"
+                        >
+                          ×
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+          <div className="order-tray" aria-label="Mảnh bản vẽ trong túi">
+            <h4>Mảnh bản vẽ trong túi đồ:</h4>
+            {unplaced.length === 0 ? (
+              <p className="fine-print">
+                {ownedStrips.length === 0
+                  ? 'Túi đồ chưa có mảnh bản vẽ nào. Hãy tìm kiếm quanh gác lửng.'
+                  : 'Đã đưa tất cả mảnh đang có vào khung ghép.'}
+              </p>
+            ) : (
+              <div className="order-tray-items">
+                {unplaced.map(id => {
+                  const stripPath = c2StripAsset(id);
+                  const name = content.itemsById.get(id)?.name ?? id;
+                  return (
+                    <button
+                      key={id}
+                      type="button"
+                      className="order-tray-btn"
+                      onClick={() => addPiece(id)}
+                      aria-label={`Thêm ${name}`}
+                    >
+                      {stripPath && <img src={asset(stripPath)} alt="" className="order-tray-thumb" />}
+                      <span>+ {name}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        </div>
+        <div className="actions">
+          <button className="primary" onClick={() => onSubmit(currentSeq)}>
+            {label}
+          </button>
+          <button type="button" disabled={currentSeq.length === 0} onClick={() => updateSeq([])}>
+            Đặt lại
+          </button>
+          <button disabled={hintTier >= 3} onClick={onHint}>
+            Nếp gợi ý ({hintTier}/3)
+          </button>
+        </div>
+        <Hints puzzle={puzzle} tier={hintTier} />
+        <Feedback text={feedback} />
+      </Modal>
+    );
+  }
+
   const isMulti = puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemIds);
   const answer = draft?.answer;
   const picked = isMulti ? (Array.isArray(answer) ? answer : []) : (typeof answer === 'string' ? answer : '');
@@ -86,6 +222,11 @@ export function StyleChallengeBar({ puzzle, draft, hintTier, feedback, onSubmit,
 
 const ENDING_ART: Partial<Record<ChapterId, { title: string; src: string; alt: string }>> = {
   prologue: { title: 'Nếp ký ức đầu tiên', src: 'assets/areas/prologue/c0-s2-gac-xep-chiec-ruong/cg-prologue-mo-ruong-hoi-sinh.png', alt: 'An mở chiếc rương gia bảo trong ánh sáng vàng' },
+  c2: {
+    title: 'Khoản nợ đã trả, bản vẽ tự ký tên',
+    src: 'assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/cg-c2-loan-tu-ky-ten.png',
+    alt: 'Cụ Trần Thị Loan tự mình ký tên lên bản vẽ áo dài Tân thời trước sự chứng kiến của công chúng',
+  },
 };
 
 // Chapter summary: clues found + reward. Chapters without a painted CG get a plain card.

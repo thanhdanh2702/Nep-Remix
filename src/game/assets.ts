@@ -4,10 +4,15 @@ import museumMeta from '../../assets/screens/museum/asset-manifest.json';
 import assetMetadata from '../../data/runtime-assets.json';
 
 // Vite owns these URLs in dev and production. Never import drafts or QA images.
-const files = import.meta.glob<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
-  eager: true, query: '?url', import: 'default',
-});
-export const assetRegistry = Object.fromEntries(Object.entries(files).map(([path, url]) => [path.replace('../../', ''), url]));
+const globFn = (import.meta as { glob?: <T>(patterns: string[], opts?: unknown) => Record<string, T> }).glob;
+const files: Record<string, string> = globFn
+  ? globFn<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
+      eager: true, query: '?url', import: 'default',
+    })
+  : {};
+export const assetRegistry: Record<string, string> = Object.fromEntries(
+  Object.entries(files).map(([path, url]) => [path.replace('../../', ''), url])
+);
 export const assetInfo = Object.fromEntries(assetMetadata.map(entry => [entry.path, entry]));
 export function asset(path: string): string {
   const url = assetRegistry[path];
@@ -43,6 +48,15 @@ export function itemAsset(id: string) {
   const slug = id.replaceAll('_', '-').toLowerCase();
   const path = `assets/items/${slug}/${slug}.png`;
   return assetRegistry[path] ? path : undefined;
+}
+export function c2StripAsset(id: string): string | undefined {
+  const match = id.match(/(\d+)$/);
+  if (!match) return undefined;
+  const path = `assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-${match[1]}.png`;
+  return Object.keys(assetRegistry).length > 0 ? (assetRegistry[path] ? path : undefined) : path;
+}
+export function c2CompleteSketchAsset(): string {
+  return 'assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-ban-ve-hoan-chinh.png';
 }
 export function garmentAsset(id: string, icon = false) {
   return `assets/garments/${id}/${id}${icon ? '--icon' : ''}.png`;

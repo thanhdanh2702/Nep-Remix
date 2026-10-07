@@ -10,7 +10,7 @@ import { ARROW_UP, CURSOR_DEFAULT, CURSOR_EXIT, CURSOR_HAND, cursorCss, gridToDa
 import { HUD_SELECTOR, measureInsets } from './scene-view';
 import { anLayerPath } from './npc-portraits';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT, type CharacterScene } from './character-scale';
-import { anCell, drawRoom, ROOM_NPCS, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
+import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
 import { arriveNow, cellFor, clampToFloor, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
@@ -22,7 +22,7 @@ const boxesFor = (chapterId: string, areaId: string) => cutoutBoxes[`../../asset
 const SHOP_AREA = 'c0-s1-tiem-may-chieu';
 const CAT_SPRITE = 'assets/characters/cat-nep/view-front.png';
 // Chapter -> character-scale scene. Chapters without an entry draw no people and keep click-to-interact immediate.
-const SCENE_OF: Record<string, CharacterScene | undefined> = { prologue: 'c0', c1: 'c1' };
+const SCENE_OF: Record<string, CharacterScene | undefined> = { prologue: 'c0', c1: 'c1', c2: 'c2' };
 const NPC_VIEWS = ['front', 'left', 'right', 'back'] as const;
 const STAND_GAP = 0.045; // world widths of clear floor between An and the object she walks to
 const floorOf = (scene: CharacterScene, h: number) => ({ top: HUMAN_HEIGHT[scene].floorTop * h, bottom: HUMAN_HEIGHT[scene].floorBottom * h });
@@ -165,18 +165,39 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const folder = areaFolder(chapterId, areaId);
     const ids = Object.keys(boxesFor(chapterId, areaId)).filter(id => assetRegistry[`${folder}/hotspot-${id}.png`]);
     const npcIds = area.interactables.map(i => i.id).filter(id => ROOM_NPCS[id]);
+    const overlaySpecs = c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds);
+    const validOverlays = overlaySpecs.filter(o => assetRegistry[o.path]);
     Promise.all([
       Promise.all([loadImage(areaAsset(chapterId, areaId)), s1 && assetRegistry[CAT_SPRITE] ? loadImage(CAT_SPRITE) : undefined]),
       Promise.allSettled(ids.map(id => loadImage(`${folder}/hotspot-${id}.png`))),
       Promise.all(npcIds.map(loadViews)),
-    ]).then(([[bg, cat], cuts, people]) => {
+      Promise.allSettled(validOverlays.map(o => loadImage(o.path))),
+    ]).then(([[bg, cat], cuts, people, loadedOverlays]) => {
       if (cancelled) return;
-      assets.current = { bg, cat, cutouts: Object.fromEntries(ids.flatMap((id, i) => cuts[i].status === 'fulfilled' ? [[id, cuts[i].value]] : [])),
-        npcs: Object.fromEntries(npcIds.map((id, i) => [id, people[i]])) };
+      const overlays = validOverlays.flatMap((o, i) => {
+        const res = loadedOverlays[i];
+        return res.status === 'fulfilled' ? [{ id: o.id, img: res.value, visible: o.visible }] : [];
+      });
+      assets.current = {
+        bg, cat,
+        cutouts: Object.fromEntries(ids.flatMap((id, i) => cuts[i].status === 'fulfilled' ? [[id, cuts[i].value]] : [])),
+        npcs: Object.fromEntries(npcIds.map((id, i) => [id, people[i]])),
+        overlays,
+      };
       setReady(true);
     }).catch(error => { if (!cancelled) setFailure(error.message); });
     return () => { cancelled = true; stop(); };
   }, [chapterId, areaId, s1]);
+
+  useEffect(() => {
+    if (assets.current?.overlays && chapterId === 'c2') {
+      const liveSpecs = Object.fromEntries(c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds).map(o => [o.id, o.visible]));
+      assets.current.overlays.forEach(o => {
+        if (liveSpecs[o.id] !== undefined) o.visible = liveSpecs[o.id];
+      });
+      lastSig.current = '';
+    }
+  }, [state.inventory.itemIds, progress.solvedPuzzleIds, chapterId, areaId]);
 
   useEffect(() => { // An's layers for the player's look, loaded outside the room fade; she appears once ready. A failure leaves the room playable without her.
     let cancelled = false;
