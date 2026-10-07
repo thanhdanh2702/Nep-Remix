@@ -494,3 +494,60 @@ No new/modified executable logic in this patch. Coverage measures the existing
 ten Core runtime modules, not documentation, JSON, browser or visual geometry.
 No integrated-candidate/browser rerun was possible without the requested new
 candidate; none is claimed. Frontend HEAD rechecked before handoff: 1692327.
+
+## Tester 9d32c34 / FE edece11 — contract and proximity follow-up
+
+Baseline Core `19d6c1168f7e7bbad5764f4fb441e0ac6c36879a`, initially clean.
+Read immutable Tester audit/browser reproducer at `9d32c34`; inspected FE
+`edece1126f15ae9296bf89989d093e5b10db5fdb` and integration source/content
+`2038276e1d14926a5b109ba2a70b84d947998c39`. No merge or production change.
+See the final section of [C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md) for
+all 11 native/normalized feet, revision-dependent radius differences and RED
+path reproducers. Leader's four radius changes already exist in 2038276;
+this patch does not apply or endorse them as visual acceptance.
+
+API/schema/store adapter delta: **none**. Loan helper exports/signatures remain
+as documented above. D0/G1/G2, five puzzles, P3→P4→P5→D4, context resume,
+closet/loan isolation, save/head/history/backup/queue/reread and reward policies
+remain unchanged. Fresh claim +100 once; card read +15 separately; claimed120
+legacy money/ledger unchanged. No auto-read/complete or permanent loan grant.
+Ca Nghi is render-only; Tester GEO-006 does not authorize a new interaction.
+
+Verification harness changes only:
+- `C2_CONTENT_REVISION` loads schema-validated committed C2 JSON independently
+  of `C2_MOVEMENT_REVISION`; missing Git revisions fail, no fallback. Core
+  runtime/catalog remain local, so this is an explicit cross-revision probe.
+- Adapter receives chapterId='c2'; spawn expectation uses the actual final
+  clamp/standClear projection, including S3 .12,.775 at the new revision.
+- `C2_CHECK_PATH_CLEARANCE=1` adds two zero-furniture-crossing regressions using
+  actual FE go/tick. Both are RED pending the FE routing fix; no Core fix is
+  appropriate for walking through furniture. This commit preserves RED evidence.
+
+Commands actually run from this Core checkout (not an integration-checkout run):
+
+| Command | Result |
+| --- | --- |
+| `C2_MOVEMENT_REVISION=edece1126f15ae9296bf89989d093e5b10db5fdb C2_CONTENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 node --import tsx --test --test-reporter=tap src/core/c2-layout.test.ts` | PASS 18/18 |
+| `C2_MOVEMENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 C2_CONTENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 110/110 |
+| Same integration revision pair with `C2_CHECK_PATH_CLEARANCE=1`, layout file only | FAIL: 18 PASS / 2 RED (GEO-002, GEO-004) |
+| `node --import tsx --test --test-reporter=tap src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts src/core/sprint-01.test.ts tests/leader-core-integration.test.ts` | PASS 26/26 |
+| `npm run test:core` | PASS both core/game checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS Valid:true |
+| `npm run build` | PASS; existing >500kB chunk warning |
+| `npm audit --json` | PASS 0 vulnerabilities |
+| Ten-module coverage command above, with both integration revision variables, path flag unset | PASS 138/138; 88.60% lines / 80.92% branches / 83.77% functions, aggregate thresholds 80 PASS |
+
+Coverage scope: challenge wardrobe, Studio/Closet commands, journey area/chapter/
+draft/puzzle/reward commands, history serialize/replay. This patch changes tests
+and documentation only. Coverage is aggregate existing Core runtime coverage,
+not per-file 80%, new production logic, FE movement or browser/visual coverage.
+The explicit RED path suite is reported separately and is not a GREEN claim.
+
+Frontend/Tester next: fix routing/NPC overlap in owned files; correct P4 browser
+precondition to solve P3 first; keep Ca Nghi render-only. Supply immutable fixed
+SHA and floor/path evidence, followed by Leader's integrated candidate. Core
+will rerun final-foot/proximity/path regressions against those exact revisions.
+Current engine reachability GREEN with integration content does not approve
+visual geometry, paths or the whole C2. Art remains BLOCKED for the missing
+secondary reward layer; keep both existing reward garments.
