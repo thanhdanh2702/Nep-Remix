@@ -46,7 +46,7 @@ function migrateSnapshot(original: GameState, content: GameContent): GameState {
       if (!dialogue) throw new Error('Saved dialogue does not exist');
       if (!dialogue.nodes.some(n => n.id === progress.activeDialogue!.currentNodeId)) {
         const first = dialogue.nodes[0].id;
-        progress.activeDialogue = { dialogueId: dialogue.id, currentNodeId: first, history: [first] };
+        progress.activeDialogue = { ...progress.activeDialogue, dialogueId: dialogue.id, currentNodeId: first, history: [first] };
       }
     }
     if (progress.claimed) {
