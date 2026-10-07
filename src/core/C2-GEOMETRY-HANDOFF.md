@@ -200,3 +200,81 @@ motion. Keep the established hotspot rects/gates. Core will then rerun the
 explicit-revision suite and adjust radius only for verified clear-floor points.
 Spawn/feet adapters are source-audited as fixed; floor/occlusion and browser
 acceptance remain open. Missing secondary reward layer remains an Art blocker.
+
+## Reproducer details requested after Core 2b274ce
+
+Checked against FE `1692327c4a80d5b0b9e709db73668504c28a7f7e`; no newer
+committed geometry or Leader integrated candidate was available at this audit.
+The following fills the normalized coordinates/reproduction detail missing in
+2b274ce. It does not change content, radii or the visual-acceptance conclusion.
+
+Source of pos/radius is **current `src/content/chapters/c2.json`**, not the stale
+Frontend layout table. The 11-row native feet/radius table above remains the
+engine result for that JSON and that exact FE revision. No common 88px threshold
+is used: Core distance uses 800×500 with radius×800 and its expanded-rect fallback;
+the additional native check uses 1672×941 with radius×1672. Real interact guards
+are authoritative. Distances under those two metrics must not be conflated.
+
+### Concrete affected actions and furniture
+
+Each point below is the final foot after **targetFor's clampToFloor → standClear
+→ tick/arriveNow**, and is the normalized value delivered to interact. At this
+revision go has no additional clamp after standClear. Normalized points below
+come from unrounded engine values; native display is rounded to 3 decimals.
+All listed interact guards PASS; the open issue is feet/path on visible furniture.
+
+| Area / exact hotspot ID | Content pos / radius | Approach | Final native foot | Final normalized foot | Furniture to inspect on background A |
+| --- | --- | --- | --- | --- | --- |
+| S1 / hitbox-drawing-desk | (.380,.469) / .11 | from left | (509.960,545.780) | (.305,.580) | left side/leg of central drawing desk; path rises from open floor into desk region |
+| S1 / hitbox-drawing-desk | (.380,.469) / .11 | from right | (760.760,545.780) | (.455,.580) | central drawing desk and stool region |
+| S1 / hitbox-drawing-easel | (.219,.409) / .15 | from right | (509.960,545.780) | (.305,.580) | same desk edge as drawing-desk left; checking only the easel rect misses this |
+| S2 / hitbox-silk-shelves | (.550,.400) / .22 | from left | (627.000,569.305) | (.375,.605) | lower cabinet beneath silk shelves; obstacle moves foot only 23.525 native px |
+| S2 / hitbox-silk-shelves | (.550,.400) / .22 | from right | (1212.200,545.780) | (.725,.580) | right edge/gap of cabinet next to safe; confirm actual floor/occlusion in frame |
+| S3 / hitbox-ong-le-shadow | (.294,.413) / .15 | from left | (359.480,564.600) | (.215,.600) | podium/desk on raised left platform; obstacle moves foot only 18.820 native px |
+| S3 / hitbox-ong-le-shadow | (.294,.413) / .15 | from right | (643.720,545.780) | (.385,.580) | right edge of raised platform; outside the narrow registered obstacle |
+
+These furniture descriptions are based on inspecting the native background A
+at the computed coordinates. Exact visible overlap, leg occlusion and whether
+the whole walked segment looks valid need a rendered browser frame/video. The
+table does not turn a background inspection into browser acceptance evidence.
+
+### Steps to reproduce independently
+
+1. Use FE revision above with native world 1672×941, matching content from Core
+   2b274ce, phai side and gap .045×width. Prepare a separate checkpoint **before**
+   the listed action for each approach so a picked item/solved puzzle is not
+   already hidden. Finish any active dialogue before clicking another action.
+2. S1: enter C2 and finish D0 before piece1/P1. For S2 shelves complete G1; for
+   S3 P4 complete G2 and P3. These are the normal progress requirements, not
+   proposed bypasses. Browser happy-path acceptance must earn them normally.
+3. Engine fixture starts: left `(83.600,705.750)` = `(.05,.75)`; right
+   `(1588.400,705.750)` = `(.95,.75)`. Execute the actual go for the named
+   hotspot. For first-entry cases the actual spawns are S1 `(418,705.750)`,
+   S2 `(250.800,705.750)`, S3 `(200.640,705.750)`; return entries are listed above.
+   Private before-action fixtures are for isolated negative/geometry diagnosis,
+   not evidence of a full earned browser walkthrough.
+4. Run normal motion to arrival and reduced motion separately. Read final
+   walker.current and the interact payload after the callback; compare them
+   with the row, not with i.pos or the pre-standClear aim. In a browser capture
+   canvas data-an-x/data-an-y, screenshot with visible feet and furniture, and
+   for normal motion a short path recording or intermediate frames.
+5. Source-level result: S1 obstacle ends at .573 and cannot catch floor .580;
+   S2 left becomes .605, S3 left .600. Inspect the final rendered feet against
+   the named furniture. Do not widen a radius to make these points visually valid.
+
+### Evidence boundary and next input
+
+| Condition | Evidence available | Remaining verification |
+| --- | --- | --- |
+| 11 hotspots, both approaches, spawn/return, normal/reduced | committed source execution, final feet and real Core guards GREEN | run same revision mechanism on new FE SHA |
+| Actual feet sent to interact | exact RoomScene/go callback plus tick/arriveNow GREEN | DOM/rAF cancellation and rendering on integrated browser candidate |
+| Foot inside floor strip after final movement | numerical bounds GREEN | floor strip may include painted furniture |
+| Feet and full path clear of furniture | native background inspection identifies open reproducers | FE/Tester screenshot/video with final/intermediate feet; not unit PASS |
+| Integrated candidate | no new candidate supplied; main 6885ccb lacks the later FE geometry | Leader supplies candidate SHA; rerun on that checkout |
+| Secondary reward garment | reward retained | Art supplies missing layer; full reward-art acceptance BLOCKED |
+
+**WAITING:** a fixed FE commit SHA plus updated 11-hotspot table derived from
+actual JSON (pos/radius/rect), exact floor/obstacles, before/after final feet in
+both units, spawn/return entries and screenshots/path evidence on background A.
+Then provide the Leader candidate SHA/checkout for integrated rerun. No content
+change is warranted until a verified clear-floor point is rejected by a guard.
