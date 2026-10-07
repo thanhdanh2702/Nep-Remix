@@ -26,8 +26,9 @@ Ngày: 2026-10-07. Đây là candidate local, chưa phải nghiệm thu phát h�
 4. Sửa assertion CSS của harness sang selector nút thật
    `.order-strip-btn-group button`; không bỏ kiểm tra kích thước.
 5. RED browser hồi quy: FE áp adapter chân C2 cho Mở đầu/C1 khiến cầu thang
-   prologue bị từ chối proximity. Cần giữ adapter legacy ở các chương cũ,
-   chỉ áp tọa độ chân thật theo hợp đồng geometry C2 cho C2.
+   prologue bị từ chối proximity. Đã khôi phục adapter legacy ở các chương
+   cũ; chỉ áp tọa độ chân thật theo hợp đồng geometry C2 cho C2. Browser
+   Mở đầu/C1 end-to-end và save/queue hồi quy chuyển GREEN.
 
 ## Chạy và chơi
 
@@ -51,7 +52,11 @@ không phải candidate Leader; không dùng nó để nghiệm thu candidate n�
   18/18 PASS với source walker tích hợp.
 - `npm run test:core`, validator, lint, build, npm audit: PASS; audit 0 vulnerabilities.
 - Regression dialogue/reread/replay/Sprint 01: 26/26 PASS.
-- Browser candidate: xem kết quả cuối trong commit bàn giao. Suite
+- Browser candidate: 10/10 walkthrough C2 PASS, 5 viewport × 2 motion,
+  trước khi khôi phục adapter legacy (không đổi nhánh adapter C2). Lượt cuối
+  sau bản sửa legacy: 16/16 PASS gồm 5 reduced C2 và 11 C1/save/UI regressions,
+  trên production port 3062, bundle `index-B4URMGok.js` (xem dist/index.html
+  để xác nhận tên bundle nếu build lại). Suite
   `tests/browser/c2-playtest.spec.ts` chạy UI menu → P1–P5 → ending → claim100
   → Hub, reload giữa hai giấy, kiểm không cấp loan vĩnh viễn trước claim,
   5 viewport × 2 motion. Fixture chỉ hoàn thành Mở đầu/C1 trước khi vào C2;

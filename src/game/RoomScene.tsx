@@ -325,6 +325,9 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const floor = floorOf(scene, world.h), aim = targetFor(rectOf(i, world.w, world.h), w, floor, world.w, STAND_GAP * world.w);
     const to = standClear(areaId, aim.to, floor, world), face = aim.face;
     const fire = () => {
+      // C2 owns the new measured-feet adapter. Earlier chapters retain their
+      // existing logical interaction anchors until their geometry is migrated.
+      if (chapterId !== 'c2') return interact.current(i.id, i.pos);
       const arrivedFeet = walker.current
         ? { x: walker.current.x / world.w, y: walker.current.y / world.h }
         : { x: to.x / world.w, y: to.y / world.h };
