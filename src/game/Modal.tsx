@@ -11,9 +11,14 @@ export function Modal({title,children,onClose,wide=false,className=''}: {title:s
       if(e.key==='Escape' && closeRef.current){e.preventDefault();closeRef.current();}
       if(e.key==='Tab'){
         const items=focusables(),first=items[0],last=items[items.length-1];
-        if(!first){e.preventDefault();return;}
-        if(e.shiftKey && (document.activeElement===first || document.activeElement===ref.current)){e.preventDefault();last.focus();}
-        else if(!e.shiftKey && document.activeElement===last){e.preventDefault();first.focus();}
+        if(!first){e.preventDefault();ref.current?.focus();return;}
+        if(e.shiftKey) {
+          if(document.activeElement===first || document.activeElement===ref.current){e.preventDefault();last.focus();}
+          else if(!ref.current?.contains(document.activeElement)){e.preventDefault();last.focus();}
+        } else {
+          if(document.activeElement===last || document.activeElement===ref.current){e.preventDefault();first.focus();}
+          else if(!ref.current?.contains(document.activeElement)){e.preventDefault();first.focus();}
+        }
       }
     };
     window.addEventListener('keydown',key);
