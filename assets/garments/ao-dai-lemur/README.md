@@ -11,5 +11,5 @@
 
 | Tên tệp | Loại | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :--- | :---: |
-| `ao-dai-lemur.png` | garment-layer | Lớp trang phục mặc trên người dạng thang xám | Chờ gen lại (spec An) |
-| `ao-dai-lemur--icon.png` | garment-icon | Biểu tượng thu nhỏ trong tủ đồ và cửa hàng | ⬜ chưa gen |
+| `ao-dai-lemur.png` | garment-layer | Lớp trang phục thang xám đã thử ghép ba hướng trên An | Đã xuất C2, chờ duyệt cuối |
+| `ao-dai-lemur--icon.png` | garment-icon | Biểu tượng thu nhỏ trong tủ đồ và cửa hàng | Đã có, tái sử dụng |

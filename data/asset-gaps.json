@@ -1,7 +1,7 @@
 {
   "missingManifestPaths": [],
   "notes": [
-    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 139 ảnh thật.",
+    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 184 ảnh thật.",
     "Không có tệp âm thanh trong assets/audio/.",
     "Không có nền portrait cho hai khu vực prologue; UI giữ nguyên tỷ lệ 8:5."
   ]

@@ -125,7 +125,9 @@ test('Mobile camera, touch controls, input focus and corrupt saves work',async({
   await page.locator('[data-chapter="prologue"] .journey-map-label').click();await expect(room(page)).toHaveAttribute('data-world-width','890');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.evaluate(()=>localStorage.setItem('tiem-may-nep-save-v1','broken-json'));await page.reload();await enterGame(page);
-  expect((await savedState(page)).wallet.senNgoc).toBe(100);await expect(page.getByRole('status').filter({hasText:'Bản lưu không hợp lệ'})).toBeVisible();
+  expect(await page.evaluate(()=>localStorage.getItem('tiem-may-nep-save-v1'))).toBe('broken-json');
+  await expect(page.getByRole('status').filter({hasText:'Bản lưu không hợp lệ'})).toBeVisible();
+  await expect(page.getByRole('status').filter({hasText:'Đã lưu'})).not.toBeVisible();
 });
 
 test('The game fills the screen below the cream header and Back returns home',async({page})=>{

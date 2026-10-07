@@ -1,5 +1,7 @@
 # Quy Chuẩn Quản Lý Kho Tài Nguyên Pixel Art (assets/README.md)
 
+> Cập nhật C2 ngày 07/10/2026: [manifest production-v4](areas/chapter-2/manifest.json) và [bàn giao](../docs/07-game/08-c2-asset-handoff.md) ghi trạng thái mới cho Loan, Cả Nghị, Ông Lệ, Lemur, khăn vấn đen và guốc mộc; ưu tiên hơn danh sách chờ gen lịch sử bên dưới. Người dùng chọn tỷ lệ nhân vật theo ảnh mẫu và cho phép hậu kỳ cơ học bằng script. Không đổi khung An. Phụ kiện giữ màu theo renderer hiện tại; riêng áo dùng key xám. Chưa tuyên bố đã vào gameplay hoặc qua sửa tay của họa sĩ.
+
 Tài liệu này là **NƠI DUY NHẤT** trong toàn bộ kho lưu trữ thông số kỹ thuật, kích thước điểm ảnh (pixel), bảng mã màu hex, tỷ lệ khung hình, quy chuẩn prompt và quy trình sản xuất đồ họa pixel art cho trò chơi **Tiệm May Nếp**.
 
 Tất cả các tài liệu `README.md` con của từng asset trong kho chỉ được mô tả nội dung bằng lời văn và tên màu quy ước, tuyệt đối không được ghi lại các thông số kỹ thuật đã được chuẩn hóa tại đây.
