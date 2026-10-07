@@ -51,6 +51,8 @@ dispatch(tree, {type:'puzzle/updateDraft', payload:{puzzleId:'p-c2-styling-loan'
     handheldId:candidate.current.equippedAccessories.handheld ?? '',
     color0:candidate.current.colorPalette[0],color1:candidate.current.colorPalette[1],
     color2:candidate.current.colorPalette[2],color3:candidate.current.colorPalette[3],
+    ...(candidate.current.eventContextId !== undefined
+      ? {eventContextId:candidate.current.eventContextId} : {}),
     motifId:candidate.current.motifId ?? ''}}}}, content);
 ```
 
@@ -212,3 +214,68 @@ node --import tsx --experimental-test-coverage \
 - `src/game/`, browser tests, PNG, registry, exporter và package không bị Core
   sửa trong các commit implement. Mọi thay đổi ngoài ownership chỉ đến từ
   merge checkpoint chính thức được người dùng cho phép.
+
+## Review follow-up: event context và NPC/native geometry
+
+Baseline `agent/core@fd64750`, worktree sạch lúc bắt đầu. RED context commit
+`e391378`: 12 ca mới, 10 FAIL/2 PASS đúng lỗi mất context và chấp nhận ID lạ.
+
+**API delta, signature giữ nguyên:** `challengeDraftFromAnswer` và
+`createChallengeStudioDraft` nay giữ `eventContextId` trong StudioDraft khi
+answer có trường này. Dùng `EventIdSchema` hiện có: `tet`, `dam_cuoi`,
+`be_giang`, `le_chua`, `vieng_tang`, `dao_pho`. Trường vắng mặt vẫn trả draft
+không event context, tương thích save/draft cũ; không cần bump version.
+
+Context rỗng/ID lạ → `{ok:false,reason:'Unknown event context.'}`. Trường
+không phải string bị chặn bởi shape validation hiện có. Lỗi từ helper được
+propagate qua updateDraft/submit; giữ state/draft cũ. Saved answer có context
+lạ cũng được helper trả lỗi rõ khi resume, không âm thầm đổi context hoặc
+grant đồ. `validateChallengeStudioDraft` tái kiểm context cho local history;
+`studio/selectEvent` kiểm candidate mới theo cùng schema.
+
+Event context chỉ là lựa chọn sự kiện để hiển thị/evaluate; không tham gia
+tạo allowlist hoặc mở gate. Quyền mượn vẫn từ puzzleId + room/chapter/side/
+gates/unsolved + catalog/ownership. Không chấm thêm context vào brief P5.
+Frontend persist `eventContextId` string hợp lệ nếu có, omit khi chưa chọn;
+không gửi `''` làm sentinel. Ví dụ adapter ở đầu báo cáo đã bổ sung trường này.
+
+**NPC/tọa độ:** xem [C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md).
+Không thay `c2.json` bằng tọa độ suy đoán, không thêm hotspot giả. Core đã
+gửi phương án NPC thuần hiển thị và mẫu bảng native cần nhận qua báo cáo;
+chưa có xác nhận Frontend hoặc bảng đo đầy đủ tại thời điểm follow-up.
+
+Verification follow-up thực chạy:
+
+| Lệnh | Kết quả |
+| --- | --- |
+| `node --import tsx --test --test-reporter=tap src/core/c2-context.test.ts` | RED 10 FAIL/2 PASS → GREEN 12/12 |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 92/92: 80 cũ +12 context, không skip |
+| Node baseline 4 file ở trên | PASS 26/26 |
+| `npm run test:core` | PASS 15 checks + game walkthrough/self checks |
+| `npm run lint` | PASS |
+| `npx tsx scripts/validate-content.ts` | PASS `Valid:true` |
+| `npm run build` | PASS; warning chunk >500kB hiện hữu |
+| `npm audit --json` | PASS 0 vulnerabilities, gồm dev dependencies |
+
+Coverage riêng **hai module production sửa trong follow-up này**, tính cả
+code cũ: `challenge-wardrobe.ts` + `studio-commands.ts`: **90.07% lines,
+84.33% branches, 80.43% functions**, threshold tổng 80% cả ba PASS. Helper
+riêng 98.90% lines/96.67% branches/100% functions. Phạm vi 10 module C2 đã
+bàn giao trước cũng PASS: 88.60%/80.92%/83.77%. Không thay assertion cũ.
+
+Lệnh coverage hai module thực chạy:
+
+```sh
+node --import tsx --experimental-test-coverage \
+  --test-coverage-include='src/core/commands/studio/challenge-wardrobe.ts' \
+  --test-coverage-include='src/core/commands/studio/studio-commands.ts' \
+  --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-functions=80 \
+  --test --test-reporter=tap src/core/c2-*.test.ts \
+  src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts \
+  src/core/sprint-01.test.ts tests/leader-core-integration.test.ts \
+  scripts/check-core.ts scripts/check-game.ts
+```
+
+Không thay schema/save version, reward, gates, queue hoặc migration trong
+follow-up này. Giữ tất cả thay đổi owner khác; không UI/store/browser/PNG/
+registry/package delta. Bảng geometry và layer áo phụ vẫn là dependency.

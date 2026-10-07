@@ -1,4 +1,5 @@
 import type { GameContent } from '../../../content/index.ts';
+import { EventIdSchema } from '../../../content/schema.ts';
 import type { GameState, StudioDraft } from '../../state.ts';
 import { guardPuzzle } from '../journey/gate.ts';
 
@@ -26,6 +27,9 @@ export function getChallengeWardrobe(state: GameState, puzzleId: string, content
 
 /** Shared by Studio commands and permanent Closet saves; context is never trusted. */
 export function validateStudioDraft(state: GameState, draft: StudioDraft, content: GameContent, permanentOnly = false): DraftValidation {
+  if (draft.eventContextId !== undefined && !EventIdSchema.safeParse(draft.eventContextId).success) {
+    return fail('Unknown event context.');
+  }
   let garmentIds = state.closet.unlockedGarmentIds;
   let accessoryIds = state.closet.unlockedAccessoryIds;
   if (draft.challengePuzzleId !== undefined && !permanentOnly) {
@@ -71,6 +75,7 @@ export function challengeDraftFromAnswer(state: GameState, puzzleId: string, ans
     if (id !== undefined && id !== '') equippedAccessories[slot] = id;
   }
   const draft: StudioDraft = { type: 'studio', challengePuzzleId: puzzleId,
+    ...(fields.eventContextId !== undefined ? { eventContextId: fields.eventContextId } : {}),
     garmentId, silhouette: (fields.silhouette ?? garment.silhouette) as StudioDraft['silhouette'],
     colorPalette: garment.defaultColorPalette.map((color, i) => fields[`color${i}`] ?? color) as StudioDraft['colorPalette'],
     equippedAccessories, ...(fields.motifId ? { motifId: fields.motifId } : {}) };

@@ -87,7 +87,8 @@ export const studioSelectEventCommand: CommandDef<StudioSelectEventPayload> = {
     if (!payload.eventId) {
       return { ok: false, reason: 'Event ID is required.' };
     }
-    return true;
+    const valid = validateStudioDraft(state, { ...state.activeSession, eventContextId: payload.eventId }, content);
+    return valid.ok ? true : valid;
   },
 
   apply: (state: GameState, payload: StudioSelectEventPayload) => {
