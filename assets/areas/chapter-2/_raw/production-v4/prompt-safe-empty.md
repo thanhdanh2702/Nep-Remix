@@ -1,0 +1,1 @@
+Use case: precise-object-edit. Edit supplied open-safe room image. Remove ONLY the two stacks of ivory papers INSIDE the safe, leaving EMPTY dark shelves to show that evidence has been collected. Preserve entire room, camera, pixels, open safe door, hinges, clock, textile shelving, warm lighting, original dimensions and all geometry. No other change, no text, no characters.

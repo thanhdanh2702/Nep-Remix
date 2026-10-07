@@ -1,0 +1,741 @@
+{
+  "version": 4,
+  "backgroundChoice": "A",
+  "assets": [
+    {
+      "path": "assets/characters/cu-loan/scene-idle.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        31,
+        17,
+        145,
+        401
+      ],
+      "sha256": "b8830a6c4b87d4003608c1806b2ac9f4c45c407d48f629c4fd7f50e8cf5dc2c0"
+    },
+    {
+      "path": "assets/characters/cu-loan/view-front.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        31,
+        17,
+        145,
+        401
+      ],
+      "sha256": "b8830a6c4b87d4003608c1806b2ac9f4c45c407d48f629c4fd7f50e8cf5dc2c0"
+    },
+    {
+      "path": "assets/characters/cu-loan/portrait-idle.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        38,
+        5,
+        142,
+        176
+      ],
+      "sha256": "1ab11c71f8ba40f480e690e365acc6a2c9e98328cea44b70f793a9dc47c15ef9"
+    },
+    {
+      "path": "assets/characters/cu-loan/scene-exhibition.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        30,
+        17,
+        145,
+        401
+      ],
+      "sha256": "a3ead393e89a7c38808497aef69b8e39c038641e6deef6a94e9f415aa211a532"
+    },
+    {
+      "path": "assets/characters/cu-loan/portrait-exhibition.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        38,
+        5,
+        140,
+        176
+      ],
+      "sha256": "a46a214ea017613d89e36023f7fa1e5ffdb98cbe4cafac1bfa62b07ca13d6d28"
+    },
+    {
+      "path": "assets/characters/ca-nghi/scene-idle.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        23,
+        17,
+        153,
+        401
+      ],
+      "sha256": "656c3c17e94f6af801c9cffb0c124af47288e655409b6f3013cc91acd08297ee"
+    },
+    {
+      "path": "assets/characters/ca-nghi/view-front.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        23,
+        17,
+        153,
+        401
+      ],
+      "sha256": "656c3c17e94f6af801c9cffb0c124af47288e655409b6f3013cc91acd08297ee"
+    },
+    {
+      "path": "assets/characters/ca-nghi/portrait-idle.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        23,
+        5,
+        144,
+        176
+      ],
+      "sha256": "d3133a02ac75da3af96bc379b6880594310d2ae4182c41370cec1576927dad6c"
+    },
+    {
+      "path": "assets/characters/ong-le/scene-idle.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        25,
+        17,
+        151,
+        401
+      ],
+      "sha256": "342e9f636212eeb58e59c047d663fe139319c7e516cb01f277e79e5466c2c26e"
+    },
+    {
+      "path": "assets/characters/ong-le/view-front.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        25,
+        17,
+        151,
+        401
+      ],
+      "sha256": "342e9f636212eeb58e59c047d663fe139319c7e516cb01f277e79e5466c2c26e"
+    },
+    {
+      "path": "assets/characters/ong-le/portrait-idle.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        26,
+        5,
+        146,
+        176
+      ],
+      "sha256": "352ef82f20b14896b358a506f6fc080a0159d840bd666d12d9b63d01870d8c49"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-ban-ve-hoan-chinh.png",
+      "width": 512,
+      "height": 1476,
+      "bounds": [
+        0,
+        0,
+        512,
+        1476
+      ],
+      "sha256": "c0616da7e9f45abbf2a8084baeafc9687f8730b0eafa557b2c476e617a86c941"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-1.png",
+      "width": 128,
+      "height": 1476,
+      "bounds": [
+        0,
+        0,
+        128,
+        1476
+      ],
+      "sha256": "b3d81c4ea614fa13f8a3af27fac6e25dae37f0d77aa34c1636dc38f3d7ba58ce"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-2.png",
+      "width": 128,
+      "height": 1476,
+      "bounds": [
+        0,
+        0,
+        128,
+        1476
+      ],
+      "sha256": "2562d1756477e9ae4aa7324b4037dad552f6208cbb7fd95e71955c7ea38b092e"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-3.png",
+      "width": 128,
+      "height": 1476,
+      "bounds": [
+        0,
+        0,
+        128,
+        1476
+      ],
+      "sha256": "9688beb1a9f5398bad850de870130a574d137df4e835ad85b9045ef920f4c382"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-4.png",
+      "width": 128,
+      "height": 1476,
+      "bounds": [
+        0,
+        2,
+        128,
+        1476
+      ],
+      "sha256": "2da23db5d5941a3c7fddce09ee8afe9eb185f068d7b2cc0d4363ac96b76cca07"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--ban-ve-ghep.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        329,
+        280,
+        402,
+        490
+      ],
+      "sha256": "904be72406154a7851bb5e3ee8a2de5208aa6b1ebee08e5bdc6e90a20539e0d1"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-1.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        619,
+        425,
+        652,
+        457
+      ],
+      "sha256": "bab296ddc8bc6e146e56b393c65439e2f3f8137f0dea60787e0a4583b79353a4"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-2.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        998,
+        522,
+        1029,
+        559
+      ],
+      "sha256": "c483087c15ecf2812d52d83a485f2c182cbe823983dd55e9f68b38452d36a290"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-3.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        136,
+        410,
+        166,
+        444
+      ],
+      "sha256": "977fd429b59d788a30758df5a6358ee45e5e754435638afbca08f1f28f2f1477"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-4.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1267,
+        456,
+        1297,
+        489
+      ],
+      "sha256": "470f4bee70b5a114f0b3191d411316a9e4061d3fc071575f1b6da7f3e889ce16"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--chia-khoa.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        409,
+        387,
+        421,
+        413
+      ],
+      "sha256": "990f503999a13b26da30083cfd254c2b2e6ac1f873aa6ac22f12664e3eb1408c"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--ban-ve-treo.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        453,
+        280,
+        529,
+        498
+      ],
+      "sha256": "7a12351f45a6df291dcd7604a5fc15e052095e7f77b22586f3d42c687acc9706"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--nguoi-nghe.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1100,
+        414,
+        1425,
+        780
+      ],
+      "sha256": "e1550aa3bc64071e4f29e60688408142d8434f12152f4d7ee1469adb8e1fb055"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/cg-c2-loan-tu-ky-ten.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "42a61797aae5ec0112321f41d114fcf1b68e9f4773adfe32392b45d7afaa5071"
+    },
+    {
+      "path": "assets/characters/cu-loan/scene-worried.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        29,
+        17,
+        147,
+        401
+      ],
+      "sha256": "395cc739cf090427544aee0d2e70b2d301ba0d14e40590fc40e9d8f3504d74c5"
+    },
+    {
+      "path": "assets/characters/cu-loan/portrait-worried.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        43,
+        5,
+        133,
+        176
+      ],
+      "sha256": "678f33454b4b9db57e741318ef4b0bcb3fd7ce4661a2a966f36ebac007f9427a"
+    },
+    {
+      "path": "assets/characters/cu-loan/scene-determined.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        24,
+        17,
+        151,
+        401
+      ],
+      "sha256": "dcef4aef611b02ee8730c5e7020ae394f239f4776aebf6b4087e84597a74e5e8"
+    },
+    {
+      "path": "assets/characters/cu-loan/portrait-determined.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        30,
+        5,
+        133,
+        176
+      ],
+      "sha256": "f2c5f9e5edffafec6444eb5cea64a9ca758cde9b407867116286deb2a7bbafea"
+    },
+    {
+      "path": "assets/characters/cu-loan/scene-relieved.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        27,
+        17,
+        148,
+        401
+      ],
+      "sha256": "cfbc031fb19726242acebf5e0f7d3e6029cb945aa20f2bcf1169578e7e487d65"
+    },
+    {
+      "path": "assets/characters/cu-loan/portrait-relieved.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        36,
+        5,
+        138,
+        176
+      ],
+      "sha256": "b9071ddcfd0471ec2992808c3b435a3c8c33075cd0ea05eaee71d515856db12a"
+    },
+    {
+      "path": "assets/characters/ca-nghi/scene-stern.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        18,
+        17,
+        158,
+        401
+      ],
+      "sha256": "ff26516ebe113a75e27fcf864b5bc5a240f4863a311d910aed4ebb9e4e081ab6"
+    },
+    {
+      "path": "assets/characters/ca-nghi/portrait-stern.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        24,
+        5,
+        158,
+        176
+      ],
+      "sha256": "b3928eb0e6e69fd66782a473bbbc27ce4b257d37c307a1cabc6c4809a388849b"
+    },
+    {
+      "path": "assets/characters/ca-nghi/scene-shocked.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        8,
+        74,
+        168,
+        401
+      ],
+      "sha256": "c7c3f39927bd0a27acb9e24556467302a2565f7b15c441bb41dddb688c9e7a74"
+    },
+    {
+      "path": "assets/characters/ca-nghi/portrait-shocked.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        41,
+        62,
+        155,
+        176
+      ],
+      "sha256": "c97f0165a113098eda063accb982f30e54e8948ccdd865d49ecdb7a423e9c420"
+    },
+    {
+      "path": "assets/characters/ca-nghi/scene-retreat.png",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        16,
+        17,
+        160,
+        401
+      ],
+      "sha256": "7be37006581ce6e7547fb2c322fafc894bc094fba0bb9adb11647b46cf727e02"
+    },
+    {
+      "path": "assets/characters/ca-nghi/portrait-retreat.png",
+      "width": 176,
+      "height": 176,
+      "bounds": [
+        35,
+        5,
+        160,
+        176
+      ],
+      "sha256": "1dc634c1cb81664c6be3f912a744ba2627e060b5b796ce6cbcaa948333062488"
+    },
+    {
+      "path": "assets/garments/ao-dai-lemur/ao-dai-lemur.png",
+      "width": 528,
+      "height": 416,
+      "bounds": [
+        29,
+        126,
+        510,
+        377
+      ],
+      "sha256": "c7e08255a5cd1343326bd5205f1829a58f814931223f49cabb8515819bd52779"
+    },
+    {
+      "path": "assets/accessories/khan-van-den/khan-van-den.png",
+      "width": 528,
+      "height": 416,
+      "bounds": [
+        32,
+        17,
+        502,
+        120
+      ],
+      "sha256": "7c1ed73f7b6632cd6237bdc4981faf51bcc3ed4242cbf5eab36573249ebc5a8c"
+    },
+    {
+      "path": "assets/accessories/guoc-moc/guoc-moc.png",
+      "width": 528,
+      "height": 416,
+      "bounds": [
+        51,
+        377,
+        493,
+        400
+      ],
+      "sha256": "8d516a91da9bd7a9bec643f556fbedbfe38c006631602c9f23ebc7d13e9ecc32"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--ket-mo.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1236,
+        353,
+        1563,
+        609
+      ],
+      "sha256": "5923902b7e7ad7e68c3ac4a81b55767f6b6a9b08ce414ad330badbcb61f68809"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--ket-rong.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1236,
+        353,
+        1563,
+        609
+      ],
+      "sha256": "5fcb54317c17147ffd6c172c52a7021d14086c6993b8b3758a5d54073bf8c7e8"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--phai.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "72adfeb102644562266bab4fe834ffa7bb027e731854efd053da637381d2eb0e"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--phai.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "b7cabc346ff64babc0c65ec3f472dcf00e3fd57e48a92d0f95616c9564f0c7c6"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--phai.png",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "a86e4cfa627cb154a39d8fe2581bfb3e90cfa7c5fb85a07c8e33200ab0d49d9a"
+    },
+    {
+      "path": "assets/items/manh-ban-ve-ao-dai-1/manh-ban-ve-ao-dai-1.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        5,
+        5,
+        44,
+        43
+      ],
+      "sha256": "6ae9537df7f2f4df2abdf49353ffd27d979bb2fc1b7afca2194cbbb681af3eee"
+    },
+    {
+      "path": "assets/items/manh-ban-ve-ao-dai-2/manh-ban-ve-ao-dai-2.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        6,
+        2,
+        43,
+        47
+      ],
+      "sha256": "0b2ffa47fcbbb7d816b07cc933ce76e86d307951a79b9ca65cb1d32a655b1234"
+    },
+    {
+      "path": "assets/items/manh-ban-ve-ao-dai-3/manh-ban-ve-ao-dai-3.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        7,
+        4,
+        43,
+        45
+      ],
+      "sha256": "df384245cefc59d39660f2d05feca2f0225e7f24d34645699cfe75684ba75515"
+    },
+    {
+      "path": "assets/items/manh-ban-ve-ao-dai-4/manh-ban-ve-ao-dai-4.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        9,
+        5,
+        45,
+        44
+      ],
+      "sha256": "09eb627a1e3012a1db0ac56dac471d072a710d5317eba7d10cb1cc0ff1be3bc7"
+    },
+    {
+      "path": "assets/items/ban-ve-ao-dai-tan-thoi/ban-ve-ao-dai-tan-thoi.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        6,
+        5,
+        42,
+        44
+      ],
+      "sha256": "7160a5be8e8826f2d1c556cedfa05eda93a792056810c24dc5979c964f107c84"
+    },
+    {
+      "path": "assets/items/chia-khoa-ket-sat-bang-thau/chia-khoa-ket-sat-bang-thau.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        14,
+        2,
+        35,
+        46
+      ],
+      "sha256": "217eaa8b1ff9b8b9867a6ac17907543b41ef909516ac208fe5a67f51dfb2c983"
+    },
+    {
+      "path": "assets/items/bien-lai-tra-no-goc-1935/bien-lai-tra-no-goc-1935.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        5,
+        9,
+        43,
+        40
+      ],
+      "sha256": "6379e1a8a0259ea35a8a4ff87403f1a83d22ad36c3c71dd6a0c6f1e3085d6e4c"
+    },
+    {
+      "path": "assets/items/ban-giao-keo-ep-hon/ban-giao-keo-ep-hon.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        7,
+        10,
+        41,
+        40
+      ],
+      "sha256": "d4e5fe5297b599c22349805ff696541a902c3fa6d1314a4b430aa15274f6b0cd"
+    },
+    {
+      "path": "assets/garments/ao-dai-lemur/ao-dai-lemur--icon.png",
+      "width": 96,
+      "height": 96,
+      "bounds": [
+        21,
+        2,
+        76,
+        94
+      ],
+      "sha256": "1a9cc3da84f5726c31968d24a32a2309f15fd46440cec8f1b560c3ff61828c5c"
+    },
+    {
+      "path": "assets/accessories/khan-van-den/khan-van-den--icon.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        3,
+        12,
+        45,
+        41
+      ],
+      "sha256": "5d624f412d4a75d9c44f674cbe4f6bf409872bbfe59bfc639269d59d8d372b36"
+    },
+    {
+      "path": "assets/accessories/guoc-moc/guoc-moc--icon.png",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        3,
+        10,
+        46,
+        41
+      ],
+      "sha256": "ad72cb699c1f647979cf55ff912b3138e2a18b236dcf93fa439aea52d0d96960"
+    }
+  ],
+  "worldPlacements": [
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-1.png",
+      "topLeft": [
+        615,
+        421
+      ],
+      "itemId": "manh-ban-ve-ao-dai-1"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-2.png",
+      "topLeft": [
+        993,
+        520
+      ],
+      "itemId": "manh-ban-ve-ao-dai-2"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-3.png",
+      "topLeft": [
+        130,
+        407
+      ],
+      "itemId": "manh-ban-ve-ao-dai-3"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-4.png",
+      "topLeft": [
+        1260,
+        452
+      ],
+      "itemId": "manh-ban-ve-ao-dai-4"
+    },
+    {
+      "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--chia-khoa.png",
+      "topLeft": [
+        401,
+        386
+      ],
+      "itemId": "chia-khoa-ket-sat-bang-thau"
+    }
+  ],
+  "reuseItemIds": [
+    "manh-ban-ve-ao-dai-1",
+    "manh-ban-ve-ao-dai-2",
+    "manh-ban-ve-ao-dai-3",
+    "manh-ban-ve-ao-dai-4",
+    "ban-ve-ao-dai-tan-thoi",
+    "chia-khoa-ket-sat-bang-thau",
+    "bien-lai-tra-no-goc-1935",
+    "ban-giao-keo-ep-hon"
+  ],
+  "missingRequiredArt": [],
+  "deferredOptionalArt": [
+    "NPC walk atlases (static NPC gameplay)",
+    "audio (optional)",
+    "mat-trai (not in C2 scope)"
+  ],
+  "generation": "Built-in ImageGen; original PNGs and prompts retained in _raw",
+  "processing": "User-approved deterministic crop/resize/alpha/canvas/palette export",
+  "npcAnimation": "Static story poses; An reuses existing walk atlas. No duplicated frames advertised as animation.",
+  "approval": "Background A approved. Final C2 gallery awaits user visual sign-off.",
+  "gameplayIntegrated": false
+}

@@ -10,5 +10,5 @@
 
 | Tên tệp | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :---: |
-| `guoc-moc.png` | accessory-layer | Lớp phụ kiện mặc trên người dạng thang xám | Chờ gen lại (spec An) |
-| `guoc-moc--icon.png` | accessory-icon | Biểu tượng phụ kiện trong cửa hàng | ⬜ chưa gen |
+| `guoc-moc.png` | accessory-layer | Lớp guốc gỗ ba hướng, giữ màu vì renderer phụ kiện không gradient-map | Đã xuất C2, chờ duyệt cuối |
+| `guoc-moc--icon.png` | accessory-icon | Biểu tượng phụ kiện trong cửa hàng | Đã có, tái sử dụng |

@@ -10,5 +10,5 @@
 
 | Tên tệp | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :---: |
-| `khan-van-den.png` | accessory-layer | Lớp phụ kiện mặc trên người dạng thang xám | Chờ gen lại (spec An) |
-| `khan-van-den--icon.png` | accessory-icon | Biểu tượng phụ kiện trong cửa hàng | ⬜ chưa gen |
+| `khan-van-den.png` | accessory-layer | Lớp khăn nhung đen ba hướng, giữ màu vì renderer phụ kiện không gradient-map | Đã xuất C2, chờ duyệt cuối |
+| `khan-van-den--icon.png` | accessory-icon | Biểu tượng phụ kiện trong cửa hàng | Đã có, tái sử dụng |

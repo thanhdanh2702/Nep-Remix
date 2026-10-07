@@ -1,0 +1,107 @@
+{
+  "version": 3,
+  "date": "2026-10-07",
+  "backgroundChoice": "A",
+  "proportionReference": "assets/areas/chapter-2/_raw/review-v3/references/user-proportion-reference.png",
+  "approval": "Characters and new drawing awaiting user review; backgrounds approved",
+  "runtimePromotionAutomatic": false,
+  "backgrounds": [
+    {
+      "id": "c2-s1-gac-lung-ve-tranh",
+      "variant": "A",
+      "status": "approved-background-registered-runtime",
+      "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--phai.png",
+      "next": "Wire C2 renderer; measure walkable zone and hotspots on this image"
+    },
+    {
+      "id": "c2-s2-kho-vai-hang-dao",
+      "variant": "A",
+      "status": "approved-background-registered-runtime",
+      "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--phai.png",
+      "next": "Wire C2 renderer; measure walkable zone and hotspots on this image"
+    },
+    {
+      "id": "c2-s3-phong-trien-lam-doi-dau",
+      "variant": "A",
+      "status": "approved-background-registered-runtime",
+      "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--phai.png",
+      "next": "Wire C2 renderer; measure walkable zone and hotspots on this image"
+    }
+  ],
+  "candidates": [
+    {
+      "id": "v3-loan-work",
+      "source": "assets/areas/chapter-2/_raw/review-v3/characters/loan-work.png",
+      "plannedRuntimePath": "assets/characters/cu-loan/scene-idle.png",
+      "status": "awaiting-user-approval-and-technical-normalization",
+      "nativeMetadata": "qa.json",
+      "notAnimationAtlas": true
+    },
+    {
+      "id": "v3-loan-exhibit",
+      "source": "assets/areas/chapter-2/_raw/review-v3/characters/loan-exhibit.png",
+      "plannedRuntimePath": "assets/characters/cu-loan/scene-exhibition.png",
+      "status": "awaiting-user-approval-and-technical-normalization",
+      "nativeMetadata": "qa.json",
+      "notAnimationAtlas": true
+    },
+    {
+      "id": "v3-ca-nghi",
+      "source": "assets/areas/chapter-2/_raw/review-v3/characters/ca-nghi.png",
+      "plannedRuntimePath": "assets/characters/ca-nghi/scene-idle.png",
+      "status": "awaiting-user-approval-and-technical-normalization",
+      "nativeMetadata": "qa.json",
+      "notAnimationAtlas": true
+    },
+    {
+      "id": "v3-ong-le",
+      "source": "assets/areas/chapter-2/_raw/review-v3/characters/ong-le.png",
+      "plannedRuntimePath": "assets/characters/ong-le/scene-idle.png",
+      "status": "awaiting-user-approval-and-technical-normalization",
+      "nativeMetadata": "qa.json",
+      "notAnimationAtlas": true
+    },
+    {
+      "id": "v3-reporters",
+      "source": "assets/areas/chapter-2/_raw/review-v3/characters/reporters.png",
+      "plannedRuntimePath": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--nguoi-nghe.png",
+      "status": "awaiting-user-approval-and-technical-normalization",
+      "nativeMetadata": "qa.json",
+      "notAnimationAtlas": true
+    },
+    {
+      "id": "v3-sketch",
+      "source": "assets/areas/chapter-2/_raw/review-v3/props/restored-sketch.png",
+      "plannedRuntimePath": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-ban-ve-hoan-chinh.png",
+      "status": "awaiting-user-approval-and-technical-normalization",
+      "nativeMetadata": "qa.json",
+      "notAnimationAtlas": true
+    }
+  ],
+  "reuseItemIds": [
+    "manh-ban-ve-ao-dai-1",
+    "manh-ban-ve-ao-dai-2",
+    "manh-ban-ve-ao-dai-3",
+    "manh-ban-ve-ao-dai-4",
+    "ban-ve-ao-dai-tan-thoi",
+    "chia-khoa-ket-sat-bang-thau",
+    "bien-lai-tra-no-goc-1935",
+    "ban-giao-keo-ep-hon"
+  ],
+  "missingProductionArt": [
+    "walk animations and approved expression portraits",
+    "Lemur garment layer aligned to An",
+    "safe-open state aligned to S2",
+    "mounted sketch state aligned to S3"
+  ],
+  "excludedSources": [
+    "output/imagegen/chapter-2/A/characters-chibi-v2.png",
+    "output/imagegen/chapter-2/B/characters-chibi-v2.png",
+    "original adult character sheets"
+  ],
+  "verification": {
+    "assetAudit": "PASS: 142 PNGs, 0 missing manifest paths",
+    "build": "PASS: npm run build; existing JS chunk-size warning",
+    "fullC2Playtest": "Not run; implementation not part of this asset task"
+  }
+}
