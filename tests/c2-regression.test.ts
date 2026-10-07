@@ -16,24 +16,25 @@ import * as CoreExports from '../src/core/index.ts';
 /**
  * BỘ KIỂM THỬ HỒI QUY ĐỘC LẬP CHƯƠNG 2 — TESTER OWNERSHIP
  *
- * Tham chiếu:
- * - docs/07-game/c2-contract.md
- * - Sáu phát hiện review Leader (NPC mapping, Ghép hình native ratio, Keyboard focus,
- *   Context Studio, ChapterEnding title, Layout handoff)
- *
- * 4 Nhóm trọng tâm regression độc lập:
- * 1. Context Studio:
- *    Lưu eventContextId hợp lệ → close/reopen/reload → giữ đúng context.
- *    Quyền mượn không thoát challenge. Kiểm invalid context theo contract Core chốt.
- * 2. NPC:
- *    Loan/Cả Nghị thực sự xuất hiện trong phòng đúng state/pose (không chỉ ROOM_NPCS).
- *    Kiểm mapping content, ảnh load và vị trí không che hotspot/exit.
- * 3. Ghép hình:
- *    Bốn dải giữ đúng tỷ lệ native, không kéo ngang. Thứ tự đúng tạo ảnh liền.
- *    Controls không chen vào hình.
- * 4. Keyboard:
- *    Focus một mảnh, đổi vị trí bằng nhiều ArrowLeft/Right liên tiếp.
- *    Sau move vẫn thao tác được. Remove chuyển focus hợp lý.
+ * Tiêu chuẩn nghiệm thu harness:
+ * 1. Mọi test phải kiểm tra implementation thật:
+ *    - Không tự viết lại hàm move/remove rồi dùng kết quả đó chứng minh runtime đúng.
+ *    - Không dùng NPC map, tọa độ hoặc kích thước hằng trong test để chứng minh renderer hoạt động.
+ *    - Không dùng assertion điều kiện để âm thầm pass khi helper, modal hoặc selector bắt buộc không tồn tại.
+ *    - Import API thật; dependency thiếu phải báo FAIL hoặc BLOCKED rõ ràng.
+ * 2. Test chạy độc lập trên đúng checkout:
+ *    - Bỏ fallback đường dẫn tuyệt đối sang worktree Leader/Frontend.
+ *    - Dùng content, asset và source của chính candidate.
+ *    - Sửa clue ID theo content thật: clue-bien-lai-goc-1935.
+ *    - Dùng đúng payload Closet/equippedAccessories và fixture đã đạt gate P5.
+ *    - Kiểm tra cả direct payload và session khi thử thoát quyền mượn.
+ *    - Không ép thông báo lỗi tiếng Anh nếu contract không quy định.
+ * 3. Kiểm chứng UI thật:
+ *    - NPC: kiểm tra dữ liệu renderer thật và bằng chứng hiển thị; không chỉ kiểm ảnh tồn tại/no404.
+ *    - Ghép tranh: đo tỷ lệ hiển thị, liền dải và controls tách rời.
+ *    - Keyboard: focus piece 4 → ArrowLeft ba lần, kiểm thứ tự và đúng element giữ focus sau mỗi lần.
+ *    - Gỡ mảnh đầu/giữa/cuối kiểm focus chuyển hợp lý; kiểm biên không đổi thứ tự.
+ *    - Không fixed sleep, tăng timeout hoặc bỏ assertion để làm xanh.
  */
 
 const content = loadContent();
@@ -228,19 +229,23 @@ test('[C2 Safe 3.1] Mở két thành công ở mặt phải cấp đồng thời
   assert.ok(result.ok, 'Mở két thành công ở mặt phải');
   assert.ok(result.state.inventory.itemIds.includes(receipt), 'Cấp biên lai trả nợ');
   assert.ok(result.state.inventory.itemIds.includes(contract), 'Cấp bản giao kèo');
-  assert.equal(result.state.notebook.unlockedClueIds.includes('clue-bien-lai-tra-no-goc-1935'), false, 'Clue biên lai chưa được cấp trước khi đọc thoại');
+  assert.equal(
+    result.state.notebook.unlockedClueIds.includes('clue-bien-lai-goc-1935'),
+    false,
+    'Clue biên lai chưa được cấp trước khi đọc thoại'
+  );
   assert.equal(result.state.journey.c2.activeDialogue?.dialogueId, 'd-c2-bien-lai', 'Thoại biên lai được mở đầu tiên');
   assert.deepEqual(result.state.journey.c2.dialogueQueue, ['d-c2-giao-keo'], 'Thoại giao kèo nằm trong hàng đợi');
 });
 
-test('[C2 Safe 3.2] Clue chỉ được cấp khi người chơi xác nhận đọc (dialogue/advance)', () => {
+test('[C2 Safe 3.2] Clue clue-bien-lai-goc-1935 chỉ được cấp khi người chơi xác nhận đọc (dialogue/advance)', () => {
   const state = createC2State(S2);
   state.journey.c2.activeDialogue = {
     dialogueId: 'd-c2-bien-lai',
     currentNodeId: 'node-1',
     history: ['node-1'],
   };
-  assert.ok(!state.notebook.unlockedClueIds.includes('clue-bien-lai-tra-no-goc-1935'));
+  assert.ok(!state.notebook.unlockedClueIds.includes('clue-bien-lai-goc-1935'));
 
   const advance = runCommand(state, { type: 'dialogue/advance', payload: {} }, content);
   assert.ok(advance.ok);
@@ -251,7 +256,10 @@ test('[C2 Safe 3.2] Clue chỉ được cấp khi người chơi xác nhận đ�
     current = next.state;
   }
   if (current.journey.c2.completedDialogueIds.includes('d-c2-bien-lai')) {
-    assert.ok(current.notebook.unlockedClueIds.includes('clue-bien-lai-tra-no-goc-1935'));
+    assert.ok(
+      current.notebook.unlockedClueIds.includes('clue-bien-lai-goc-1935'),
+      'Clue clue-bien-lai-goc-1935 phải mở khóa sau khi hoàn thành d-c2-bien-lai'
+    );
   }
 });
 
@@ -267,14 +275,50 @@ const loanBrief = {
   footwearId: 'guoc-moc',
 };
 
-test('[C2 Studio 4.1] Lưu eventContextId hợp lệ → close/reopen/reload → giữ đúng context', () => {
+function fixtureReadyP5() {
+  const state = createC2State(S3);
+  state.wallet.senNgoc = 0;
+  state.journey.c2.currentArea = S3;
+  state.journey.c2.side = 'mat_phai';
+  state.journey.c2.solvedPuzzleIds = [P1, P2, P3, P4];
+  state.journey.c2.completedDialogueIds = ['d-c2-ca-nghi', 'd-c2-mat-ma', 'd-c2-bien-lai', 'd-c2-giao-keo'];
+  state.inventory.itemIds.push(receipt, contract, sketch);
+  state.closet.unlockedGarmentIds = state.closet.unlockedGarmentIds.filter(id => id !== 'ao-dai-lemur');
+  state.closet.unlockedAccessoryIds = state.closet.unlockedAccessoryIds.filter(id => id !== 'khan-van-den' && id !== 'guoc-moc');
+  return state;
+}
+
+test('[C2 Studio 4.1] Core API thật: createChallengeStudioDraft, challengeDraftFromAnswer, validateChallengeStudioDraft', () => {
+  const anyCore = CoreExports as Record<string, unknown>;
+  assert.equal(
+    typeof anyCore.createChallengeStudioDraft,
+    'function',
+    'BLOCKED / FAIL: Core helper createChallengeStudioDraft chưa được export từ src/core'
+  );
+  assert.equal(
+    typeof anyCore.challengeDraftFromAnswer,
+    'function',
+    'BLOCKED / FAIL: Core helper challengeDraftFromAnswer chưa được export từ src/core'
+  );
+  assert.equal(
+    typeof anyCore.validateChallengeStudioDraft,
+    'function',
+    'BLOCKED / FAIL: Core helper validateChallengeStudioDraft chưa được export từ src/core'
+  );
+  assert.equal(
+    typeof anyCore.getChallengeWardrobe,
+    'function',
+    'BLOCKED / FAIL: Core helper getChallengeWardrobe chưa được export từ src/core'
+  );
+});
+
+test('[C2 Studio 4.2] Lưu eventContextId hợp lệ → close/reopen/reload → giữ đúng context trên fixture đạt gate P5', () => {
   const puzzleId = P5;
+  const anyCore = CoreExports as Record<string, any>;
+  const createDraftFn = anyCore.createChallengeStudioDraft as ((...args: unknown[]) => { ok: boolean; draft: any; reason?: string }) | undefined;
+
   for (const eventContextId of validEvents) {
-    const state = createC2State(S3);
-    state.journey.c2.solvedPuzzleIds = [P1, P2, P3, P4];
-    state.journey.c2.completedDialogueIds = ['d-c2-ca-nghi', 'd-c2-mat-ma', 'd-c2-bien-lai', 'd-c2-giao-keo'];
-    state.wallet.senNgoc = 0;
-    state.closet.unlockedAccessoryIds = [];
+    const state = fixtureReadyP5();
 
     let tree = createInitialTree(state);
     const send = (type: string, payload: unknown) => {
@@ -309,60 +353,85 @@ test('[C2 Studio 4.1] Lưu eventContextId hợp lệ → close/reopen/reload →
     assert.ok(answer, 'Draft P5 phải được bảo toàn sau reload');
     assert.equal(answer.eventContextId, eventContextId, `eventContextId ${eventContextId} phải được giữ nguyên`);
 
-    // 6. Nếu có helper Core createChallengeStudioDraft
-    const anyCore = CoreExports as Record<string, unknown>;
-    if (typeof anyCore.createChallengeStudioDraft === 'function') {
-      const helperResult = (anyCore.createChallengeStudioDraft as Function)(resumedState, puzzleId, content);
-      assert.ok(helperResult.ok);
-      assert.equal(helperResult.draft.eventContextId, eventContextId);
-      assert.equal(helperResult.draft.challengePuzzleId, puzzleId);
-    }
+    // 6. Kiểm chứng qua helper Core thật
+    assert.ok(createDraftFn, 'createChallengeStudioDraft phải tồn tại');
+    const helperResult = createDraftFn(resumedState, puzzleId, content);
+    assert.ok(helperResult.ok, `createChallengeStudioDraft phải thành công: ${helperResult.reason}`);
+    assert.equal(helperResult.draft.eventContextId, eventContextId);
+    assert.equal(helperResult.draft.challengePuzzleId, puzzleId);
   }
 });
 
-test('[C2 Studio 4.2] Quyền mượn không thoát khỏi challenge Studio', () => {
-  const state = createC2State(S3);
-  state.wallet.senNgoc = 0;
-  state.closet.unlockedGarmentIds = state.closet.unlockedGarmentIds.filter(id => id !== 'ao-dai-lemur');
-  state.closet.unlockedAccessoryIds = state.closet.unlockedAccessoryIds.filter(id => id !== 'khan-van-den' && id !== 'guoc-moc');
+test('[C2 Studio 4.3] Quyền mượn không thoát challenge: kiểm tra cả direct payload và session-based saveOutfit', () => {
+  const state = fixtureReadyP5();
 
-  // 1. Không tự động cấp đồ mượn vào closet vĩnh viễn trước claim
+  // 1. Invariant: đồ mượn không nằm trong closet và ví không bị trừ
   assert.ok(!state.closet.unlockedGarmentIds.includes('ao-dai-lemur'));
   assert.ok(!state.closet.unlockedAccessoryIds.includes('khan-van-den'));
   assert.ok(!state.closet.unlockedAccessoryIds.includes('guoc-moc'));
-  assert.equal(state.wallet.senNgoc, 0, 'Ví người chơi không bị trừ/thay đổi');
+  assert.equal(state.wallet.senNgoc, 0, 'Ví giữ nguyên 0 Sen');
 
-  // 2. Chặn closet/saveOutfit chứa đồ mượn
-  expectReject(state, 'closet/saveOutfit', {
-    garmentId: 'ao-dai-lemur',
-    headwearId: 'khan-van-den',
-    footwearId: 'guoc-moc',
-  }, 'Lưu outfit chứa đồ mượn vào Closet thường');
+  // 2. Chặn direct payload closet/saveOutfit với đúng cấu trúc equippedAccessories
+  expectReject(
+    state,
+    'closet/saveOutfit',
+    {
+      garmentId: 'ao-dai-lemur',
+      equippedAccessories: {
+        headwear: 'khan-van-den',
+        footwear: 'guoc-moc',
+      },
+    },
+    'Direct payload closet/saveOutfit chứa đồ mượn'
+  );
 
-  // 3. Chặn submit styling khi ở sai phòng hoặc ngoài context challenge
+  // 3. Chặn session-based closet/saveOutfit khi session là Studio challenge
+  const stateWithSession = {
+    ...state,
+    activeSession: {
+      type: 'studio' as const,
+      silhouette: 'tan_thoi' as const,
+      garmentId: 'ao-dai-lemur',
+      equippedAccessories: {
+        headwear: 'khan-van-den',
+        footwear: 'guoc-moc',
+      },
+      challengePuzzleId: P5,
+      colorPalette: ['#FFF', '#FFF', '#FFF', '#000'] as [string, string, string, string],
+      layerOrder: ['body', 'garment'],
+      mode: 'custom' as const,
+    },
+  };
+  expectReject(
+    stateWithSession as ReturnType<typeof createC2State>,
+    'closet/saveOutfit',
+    {},
+    'Session-based closet/saveOutfit chứa đồ mượn từ studio challenge session'
+  );
+
+  // 4. Chặn submit styling khi ở sai phòng
   const stateWrongRoom = createC2State(S1);
-  expectReject(stateWrongRoom, 'puzzle/submit', {
-    puzzleId: P5,
-    answer: { ...loanBrief, eventContextId: 'tet' },
-  }, 'Submit styling đồ mượn khi ở sai phòng S1');
-
-  // 4. Nếu có helper createChallengeStudioDraft, kiểm tra không cấp đồ khi sai phòng
-  const anyCore = CoreExports as Record<string, unknown>;
-  if (typeof anyCore.createChallengeStudioDraft === 'function') {
-    stateWrongRoom.journey.c2.currentArea = S1;
-    const res = (anyCore.createChallengeStudioDraft as Function)(stateWrongRoom, P5, content);
-    assert.equal(res.ok, false, 'Không tạo được challenge draft khi đứng sai phòng S1');
-  }
+  expectReject(
+    stateWrongRoom,
+    'puzzle/submit',
+    {
+      puzzleId: P5,
+      answer: { ...loanBrief, eventContextId: 'tet' },
+    },
+    'Submit styling đồ mượn khi đang ở sai phòng S1'
+  );
 });
 
-test('[C2 Studio 4.3] Kiểm tra invalid context theo contract Core chốt: rỗng/lạ/sai schema bị reject', () => {
+test('[C2 Studio 4.4] Invalid context contract: rỗng/lạ/sai schema bị reject, state/draft cũ giữ nguyên', () => {
   const puzzleId = P5;
   const invalidContexts = ['unknown', 'ao-dai-lemur', '', 'invalid_event_123'];
+  const anyCore = CoreExports as Record<string, any>;
+  const decodeFn = anyCore.challengeDraftFromAnswer as ((...args: unknown[]) => { ok: boolean; reason?: string }) | undefined;
+
+  assert.ok(decodeFn, 'challengeDraftFromAnswer phải tồn tại');
 
   for (const eventContextId of invalidContexts) {
-    const state = createC2State(S3);
-    state.journey.c2.solvedPuzzleIds = [P1, P2, P3, P4];
-    state.journey.c2.completedDialogueIds = ['d-c2-ca-nghi', 'd-c2-mat-ma', 'd-c2-bien-lai', 'd-c2-giao-keo'];
+    const state = fixtureReadyP5();
 
     // 1. Dispatch updateDraft với context không hợp lệ
     const resUpdate = runCommand(state, {
@@ -370,12 +439,9 @@ test('[C2 Studio 4.3] Kiểm tra invalid context theo contract Core chốt: rỗ
       payload: { puzzleId, draft: { type: 'styling', answer: { ...loanBrief, eventContextId } } },
     }, content);
 
-    // Contract Core: từ chối với ok:false và lỗi liên quan event context
     assert.equal(resUpdate.ok, false, `updateDraft với invalid eventContextId "${eventContextId}" phải bị reject`);
-    if (!resUpdate.ok) {
-      assert.match(resUpdate.reason ?? '', /event context/i, 'Thông báo lỗi phải chỉ rõ event context');
-    }
-    assert.equal(resUpdate.state, state, 'State không đổi khi invalid context bị reject');
+    assert.ok(typeof resUpdate.reason === 'string' && resUpdate.reason.length > 0, 'Phải có lý do từ chối rõ ràng');
+    assert.equal(resUpdate.state, state, 'State không được biến đổi khi bị reject');
 
     // 2. Dispatch submit với context không hợp lệ
     const resSubmit = runCommand(state, {
@@ -383,96 +449,85 @@ test('[C2 Studio 4.3] Kiểm tra invalid context theo contract Core chốt: rỗ
       payload: { puzzleId, answer: { ...loanBrief, eventContextId } },
     }, content);
     assert.equal(resSubmit.ok, false, `puzzle/submit với invalid eventContextId "${eventContextId}" phải bị reject`);
-    if (!resSubmit.ok) {
-      assert.match(resSubmit.reason ?? '', /event context/i);
-    }
 
-    // 3. Nếu có helper challengeDraftFromAnswer
-    const anyCore = CoreExports as Record<string, unknown>;
-    if (typeof anyCore.challengeDraftFromAnswer === 'function') {
-      const decoded = (anyCore.challengeDraftFromAnswer as Function)(state, puzzleId, { ...loanBrief, eventContextId }, content);
-      assert.equal(decoded.ok, false);
-      if (!decoded.ok) assert.match(decoded.reason, /event context/i);
-    }
+    // 3. Helper Core thật trả về ok: false
+    const decoded = decodeFn(state, puzzleId, { ...loanBrief, eventContextId }, content);
+    assert.equal(decoded.ok, false, `challengeDraftFromAnswer phải reject context "${eventContextId}"`);
   }
 
-  // 4. Non-string types (null, 123, object, array) bị reject an toàn mà không crash
+  // 4. Non-string types (null, số, object, mảng) xử lý an toàn không crash
   const nonStringContexts = [null, 123, {}, ['tet'], true];
-  const state2 = createC2State(S3);
-  const anyCore = CoreExports as Record<string, unknown>;
-  if (typeof anyCore.challengeDraftFromAnswer === 'function') {
-    for (const ctx of nonStringContexts) {
-      const fn = anyCore.challengeDraftFromAnswer as ((...args: unknown[]) => { ok: boolean });
-      const helperRes = fn(state2, puzzleId, { ...loanBrief, eventContextId: ctx }, content);
-      assert.equal(helperRes.ok, false, `Non-string context ${JSON.stringify(ctx)} phải bị reject an toàn`);
-    }
+  const state2 = fixtureReadyP5();
+  for (const ctx of nonStringContexts) {
+    const helperRes = decodeFn(state2, puzzleId, { ...loanBrief, eventContextId: ctx }, content);
+    assert.equal(helperRes.ok, false, `Non-string context ${JSON.stringify(ctx)} phải bị reject an toàn`);
   }
 });
 
 // ============================================================================
-// 5. NPC MAPPING, ASSET LOAD & NON-OCCLUSION GEOMETRY (YÊU CẦU 2)
+// 5. NPC RENDERING, REAL ASSETS & NON-OCCLUSION GEOMETRY (YÊU CẦU 2)
 // ============================================================================
 
-test('[C2 NPC 5.1] Mapping Content vs Room NPCs: Loan/Cả Nghị phải có kênh hiển thị thực tế', () => {
-  // Leader Review Finding 1: ROOM_NPCS dùng ID không có trong interactables content
-  // RoomScene filter area.interactables theo ROOM_NPCS nên NPC bị biến mất.
-  const s1Area = c2.areas.find(a => a.id === S1);
-  const s2Area = c2.areas.find(a => a.id === S2);
-  const s3Area = c2.areas.find(a => a.id === S3);
-
-  assert.ok(s1Area && s2Area && s3Area);
-
-  const s1Ids = s1Area.interactables.map(i => i.id) as string[];
-  const s2Ids = s2Area.interactables.map(i => i.id) as string[];
-  const s3Ids = s3Area.interactables.map(i => i.id) as string[];
-
-  // Xác nhận phản ánh trung thực hiện trạng:
-  // S1 không chứa hitbox-ca-nghi hay hitbox-cu-loan trong interactables
-  const hasCaNghiInteractable = s1Ids.includes('hitbox-ca-nghi');
-  const hasCuLoanInteractable = s1Ids.includes('hitbox-cu-loan');
-  const hasCuLoanStorageInteractable = s2Ids.includes('hitbox-cu-loan-storage');
-
-  // Test kiểm tra: nếu Frontend phụ thuộc vào area.interactables để render NPC,
-  // thì Loan và Cả Nghị sẽ KHÔNG xuất hiện!
-  // Đòi hỏi giải pháp: hoặc Content bổ sung interactable thuần hiển thị,
-  // hoặc Frontend có bảng NPC render độc lập theo area.
-  const independentNpcMap: Record<string, string[]> = {
-    [S1]: ['npc-c2-ca-nghi', 'npc-c2-loan-s1'],
-    [S2]: ['npc-c2-loan-s2'],
-    [S3]: ['hitbox-ong-le-shadow'],
-  };
-
-  for (const [areaId, expectedNpcs] of Object.entries(independentNpcMap)) {
-    assert.ok(expectedNpcs.length > 0, `Phòng ${areaId} phải có danh sách NPC xuất hiện rõ ràng`);
+test('[C2 NPC 5.1] Renderer thật: c2RoomNpcs trả về Loan và Cả Nghị trên mặt sàn, không phụ thuộc interactables', async () => {
+  let roomRender: any = null;
+  try {
+    roomRender = await import('../src/game/room-render.ts');
+  } catch (err: any) {
+    assert.fail(`BLOCKED / FAIL: src/game/room-render.ts không thể import: ${err.message}`);
   }
+
+  assert.equal(
+    typeof roomRender.c2RoomNpcs,
+    'function',
+    'BLOCKED / FAIL: c2RoomNpcs chưa được export từ src/game/room-render.ts'
+  );
+
+  const world = { w: 1672, h: 941 };
+
+  // S1: Cụ Loan xuất hiện trên sàn
+  const s1Npcs = roomRender.c2RoomNpcs('c2', S1, [], world);
+  assert.ok(Array.isArray(s1Npcs), 's1Npcs phải là mảng');
+  assert.ok(s1Npcs.length > 0, 'Phòng S1 phải render ít nhất một NPC (Loan)');
+  const s1Loan = s1Npcs.find((n: any) => n.id === 'c2-s1-loan' || n.name === 'Cụ Loan');
+  assert.ok(s1Loan, 'Cụ Loan phải có trong danh sách render S1');
+  assert.ok(s1Loan.path.includes('cu-loan'), 'Đường dẫn sprite Cụ Loan phải hợp lệ');
+
+  // S2: Cụ Loan lo âu
+  const s2Npcs = roomRender.c2RoomNpcs('c2', S2, [], world);
+  const s2Loan = s2Npcs.find((n: any) => n.id === 'c2-s2-loan' || n.name === 'Cụ Loan');
+  assert.ok(s2Loan, 'Cụ Loan phải có trong danh sách render S2');
+
+  // S3: Cả Nghị và Loan có chuyển động/pose theo tiến trình
+  const s3Initial = roomRender.c2RoomNpcs('c2', S3, [], world);
+  const s3CaNghiInitial = s3Initial.find((n: any) => n.id.includes('ca-nghi') || n.name.includes('Cả Nghị'));
+  assert.ok(s3CaNghiInitial, 'Ông Cả Nghị phải có trong danh sách render S3 ban đầu');
+
+  const s3SolvedSketch = roomRender.c2RoomNpcs('c2', S3, ['p-c2-present-sketch'], world);
+  const s3CaNghiRetreat = s3SolvedSketch.find((n: any) => n.id.includes('ca-nghi') || n.name.includes('Cả Nghị'));
+  assert.ok(s3CaNghiRetreat, 'Ông Cả Nghị phải có mặt sau khi giải sketch');
 });
 
-test('[C2 NPC 5.2] Kiểm tra ảnh Sprite & Portrait nhân vật C2 tồn tại và có header PNG hợp lệ', () => {
+test('[C2 NPC 5.2] Kiểm tra ảnh Sprite & Portrait nhân vật C2 tồn tại trên đúng checkout candidate', () => {
   const charactersToCheck = [
     { dir: 'ca-nghi', files: ['view-front.png', 'portrait-idle.png', 'scene-idle.png'] },
     { dir: 'cu-loan', files: ['view-front.png', 'portrait-idle.png', 'scene-idle.png'] },
     { dir: 'ong-le', files: ['view-front.png', 'portrait-idle.png', 'scene-idle.png'] },
   ];
 
-  // Kiểm tra trên thư mục assets chuẩn của repo (hoặc đường dẫn checkpoint Leader nếu chưa merge)
+  // Chỉ kiểm tra trên thư mục assets của checkout này, KHÔNG fallback ra ngoài
   const baseAssetsDir = path.resolve('assets/characters');
-  const leaderAssetsDir = path.resolve('/Users/thanhdanh/Nep-Remix/assets/characters');
 
   for (const char of charactersToCheck) {
     for (const file of char.files) {
-      const localPath = path.join(baseAssetsDir, char.dir, file);
-      const leaderPath = path.join(leaderAssetsDir, char.dir, file);
-      const targetPath = fs.existsSync(localPath) ? localPath : leaderPath;
-
+      const targetPath = path.join(baseAssetsDir, char.dir, file);
       assert.ok(
         fs.existsSync(targetPath),
-        `Asset nhân vật ${char.dir}/${file} phải tồn tại trên đĩa (kiểm tra ${targetPath})`
+        `BLOCKED / FAIL: Asset nhân vật ${char.dir}/${file} không tồn tại trên checkout này (${targetPath})`
       );
 
       const stat = fs.statSync(targetPath);
-      assert.ok(stat.size > 0, `Ảnh ${targetPath} không được rỗng (kích thước: ${stat.size} bytes)`);
+      assert.ok(stat.size > 0, `Ảnh ${targetPath} không được rỗng`);
 
-      // Kiểm tra magic bytes PNG (\x89PNG\r\n\x1a\n)
       const buffer = Buffer.alloc(8);
       const fd = fs.openSync(targetPath, 'r');
       fs.readSync(fd, buffer, 0, 8, 0);
@@ -484,184 +539,232 @@ test('[C2 NPC 5.2] Kiểm tra ảnh Sprite & Portrait nhân vật C2 tồn tại
   }
 });
 
-test('[C2 NPC 5.3] Hình học NPC không che hotspot nhặt đồ hoặc mũi tên exit', () => {
-  // Native dimensions: 1672 x 941
-  // Tọa độ các điểm tương tác quan trọng từ manifest và content:
-  // S1:
-  // - Mảnh 4 tại cửa sổ: topLeft [1260, 452], normalized rect x=0.75, y=0.18, w=0.20, h=0.50
-  // - Exit window sang S2: ở cạnh phải phòng
-  // S2:
-  // - Chìa khóa đồng hồ: topLeft [401, 386], normalized rect x=0.10, y=0.20, w=0.18, h=0.65
-  // - Két sắt: normalized rect x=0.72, y=0.45, w=0.22, h=0.42
+test('[C2 NPC 5.3] Hình học NPC renderer thật không che hotspot nhặt đồ hoặc mũi tên exit', async () => {
+  let roomRender: any = null;
+  try {
+    roomRender = await import('../src/game/room-render.ts');
+  } catch {
+    assert.fail('BLOCKED / FAIL: src/game/room-render.ts chưa sẵn sàng để kiểm tra hình học');
+  }
 
-  // NPC footprint & position: Cả Nghị đứng bên trái bàn vẽ, Loan đứng giữa/trái
-  // Không được đặt NPC tại x in [0.70, 0.98] ở S1 (che cửa sổ và exit window)
-  const s1ForbiddenNpcZone = { minX: 0.72, maxX: 0.98, minY: 0.15, maxY: 0.70 };
-  const caNghiPlacementS1 = { x: 0.35, y: 0.65 }; // Dự kiến gần bàn vẽ
+  const world = { w: 1672, h: 941 };
+  const s1Npcs = roomRender.c2RoomNpcs('c2', S1, [], world);
+  const s2Npcs = roomRender.c2RoomNpcs('c2', S2, [], world);
 
-  const inForbiddenZone = (pos: { x: number; y: number }, zone: typeof s1ForbiddenNpcZone) =>
-    pos.x >= zone.minX && pos.x <= zone.maxX && pos.y >= zone.minY && pos.y <= zone.maxY;
+  // Helper tính giao cắt giữa hai hình chữ nhật { x, y, w, h }
+  const intersects = (r1: { x: number; y: number; w: number; h: number }, r2: { x: number; y: number; w: number; h: number }) => {
+    return !(
+      r2.x >= r1.x + r1.w ||
+      r2.x + r2.w <= r1.x ||
+      r2.y >= r1.y + r1.h ||
+      r2.y + r2.h <= r1.y
+    );
+  };
 
-  assert.equal(
-    inForbiddenZone(caNghiPlacementS1, s1ForbiddenNpcZone),
-    false,
-    'Cả Nghị không được đứng trong vùng cửa sổ/exit window của S1'
-  );
+  // S1: Hotspot mảnh 4 tại cửa sổ (native bounds [1267, 456, 1297, 489] mở rộng đạt 44px)
+  // và exit window [1470, 188, 1638, 705]
+  const s1WindowPiece = { x: 1240, y: 430, w: 100, h: 90 };
+  const s1ExitWindow = { x: 1470, y: 188, w: 168, h: 517 };
 
-  // S2: Cụ Loan không được đứng đè lên đồng hồ (x in [0.08, 0.30]) hoặc két sắt (x in [0.70, 0.95])
-  const s2ClockZone = { minX: 0.08, maxX: 0.30, minY: 0.15, maxY: 0.85 };
-  const s2SafeZone = { minX: 0.70, maxX: 0.95, minY: 0.40, maxY: 0.85 };
-  const loanPlacementS2 = { x: 0.50, y: 0.68 }; // Đứng giữa kệ vải
-
-  assert.equal(inForbiddenZone(loanPlacementS2, s2ClockZone), false, 'Cụ Loan không được che đồng hồ chìa khóa ở S2');
-  assert.equal(inForbiddenZone(loanPlacementS2, s2SafeZone), false, 'Cụ Loan không được che két sắt ở S2');
-});
-
-// ============================================================================
-// 6. GHÉP HÌNH: NATIVE ASPECT RATIO, SEAMLESSNESS & CONTROLS (YÊU CẦU 3)
-// ============================================================================
-
-test('[C2 Ghép hình 6.1] Bốn dải bản vẽ giữ đúng tỷ lệ native (128x1476), không kéo ngang', () => {
-  // Leader Review Finding 2: Bỏ ép ảnh 128x1476 thành 44x160 bằng object-fit: fill
-  const stripW = 128;
-  const stripH = 1476;
-  const nativeAspect = stripW / stripH; // ~0.08672
-
-  // Nếu ép thành 44x160: 44 / 160 = 0.275 (kéo rộng gấp ~3.17 lần chiều ngang!)
-  const squashedAspect = 44 / 160;
-  const stretchRatio = squashedAspect / nativeAspect;
-  assert.ok(stretchRatio > 3.0, 'Khẳng định bug: 44x160 kéo dãn ngang ảnh hơn 300%');
-
-  // Kiểm tra file CSS puzzle.css (hoặc trên worktree frontend nếu kiểm tra)
-  const cssPath = path.resolve('src/game/puzzle.css');
-  const frontendCssPath = path.resolve('/Users/thanhdanh/Nep-Remix-frontend/src/game/puzzle.css');
-  const targetCss = fs.existsSync(frontendCssPath) ? frontendCssPath : cssPath;
-
-  if (fs.existsSync(targetCss)) {
-    const cssContent = fs.readFileSync(targetCss, 'utf8');
-    // Test kiểm chứng: không được chứa "object-fit: fill" cho dải bản vẽ
-    const hasObjectFitFill = /\.order-strip-img\s*\{[^}]*object-fit:\s*fill/i.test(cssContent);
+  for (const npc of s1Npcs) {
     assert.equal(
-      hasObjectFitFill,
+      intersects(npc.rect, s1WindowPiece),
       false,
-      'CSS .order-strip-img KHÔNG được dùng object-fit: fill (phải dùng contain hoặc aspect-ratio native)'
+      `NPC ${npc.name} (${npc.id}) không được che Mảnh 4 tại cửa sổ S1`
+    );
+    assert.equal(
+      intersects(npc.rect, s1ExitWindow),
+      false,
+      `NPC ${npc.name} (${npc.id}) không được che Exit sang S2`
+    );
+  }
+
+  // S2: Hotspot chìa khóa đồng hồ [409, 387, 421, 413], két sắt [1236, 353, 1563, 609]
+  const s2ClockKey = { x: 380, y: 350, w: 100, h: 100 };
+  const s2Safe = { x: 1236, y: 353, w: 327, h: 256 };
+
+  for (const npc of s2Npcs) {
+    assert.equal(
+      intersects(npc.rect, s2ClockKey),
+      false,
+      `NPC ${npc.name} (${npc.id}) không được che chìa khóa đồng hồ S2`
+    );
+    assert.equal(
+      intersects(npc.rect, s2Safe),
+      false,
+      `NPC ${npc.name} (${npc.id}) không được che két sắt S2`
     );
   }
 });
 
-test('[C2 Ghép hình 6.2] Thứ tự đúng 1-2-3-4 tạo thành bản vẽ liền không hở pixel', () => {
-  // 4 dải 128x1476 ghép liền tạo thành ảnh tổng thể 512 x 1476
+// ============================================================================
+// 6. GHÉP HÌNH: NATIVE RATIO, SEAMLESSNESS & CONTROLS TÁCH RỜI (YÊU CẦU 3)
+// ============================================================================
+
+test('[C2 Ghép hình 6.1] Bốn dải bản vẽ giữ đúng tỷ lệ native (128x1476), CSS không dùng object-fit: fill', () => {
+  const stripW = 128;
+  const stripH = 1476;
+  const nativeAspect = stripW / stripH; // ~0.08672
+
+  assert.equal(stripW, 128);
+  assert.equal(stripH, 1476);
+  assert.ok(Math.abs(nativeAspect - 0.08672) < 0.001);
+
+  const cssPath = path.resolve('src/game/puzzle.css');
+  assert.ok(fs.existsSync(cssPath), 'puzzle.css phải tồn tại trên checkout');
+
+  const cssContent = fs.readFileSync(cssPath, 'utf8');
+
+  // Khẳng định: cấm object-fit: fill trên .order-strip-img
+  const hasObjectFitFill = /\.order-strip-img\s*\{[^}]*object-fit:\s*fill/i.test(cssContent);
+  assert.equal(
+    hasObjectFitFill,
+    false,
+    'FAIL: .order-strip-img vẫn dùng object-fit: fill làm dãn méo ngang dải tranh'
+  );
+
+  // Khẳng định: không ép cứng cố định width: 44px và height: 160px
+  const hasFixed44x160 = /\.order-strip-preview\s*\{[^}]*width:\s*44px[^}]*height:\s*160px/i.test(cssContent);
+  assert.equal(
+    hasFixed44x160,
+    false,
+    'FAIL: .order-strip-preview vẫn ép cứng width: 44px; height: 160px'
+  );
+});
+
+test('[C2 Ghép hình 6.2] Thứ tự đúng 1-2-3-4 ghép thành tranh liền 512x1476, CSS hỗ trợ ghép sát không hở', () => {
   const totalW = 128 * 4;
   const totalH = 1476;
-  const compositeAspect = totalW / totalH; // ~0.34688
-
-  assert.equal(totalW, 512, 'Tổng chiều rộng 4 dải là 512px');
+  assert.equal(totalW, 512, 'Chiều rộng tranh liền là 512px');
   assert.equal(totalH, 1476, 'Chiều cao giữ nguyên 1476px');
 
-  // Khung board ghép phải hỗ trợ ghép sát (gap: 0 hoặc liền kề)
   const cssPath = path.resolve('src/game/puzzle.css');
-  const frontendCssPath = path.resolve('/Users/thanhdanh/Nep-Remix-frontend/src/game/puzzle.css');
-  const targetCss = fs.existsSync(frontendCssPath) ? frontendCssPath : cssPath;
+  const cssContent = fs.readFileSync(cssPath, 'utf8');
 
-  if (fs.existsSync(targetCss)) {
-    const cssContent = fs.readFileSync(targetCss, 'utf8');
-    // Cảnh báo nếu các dải bị tách rời bởi gap lớn
-    const hasExcessiveGap = /\.order-slots\s*\{[^}]*gap:\s*var\(--sp-2\)/i.test(cssContent);
-    // Ghi nhận phát hiện review: cần ghép liền (gap: 0 giữa các dải tranh)
-    assert.ok(typeof compositeAspect === 'number');
+  // Khung dải tranh hoặc board ghép liền phải không có gap tách rời dải tranh
+  const hasSeparatingGap = /\.order-slots\s*\{[^}]*gap:\s*var\(--sp-2\)/i.test(cssContent);
+  assert.equal(
+    hasSeparatingGap,
+    false,
+    'FAIL: .order-slots vẫn dùng gap: var(--sp-2) làm tách rời 4 dải tranh'
+  );
+});
+
+test('[C2 Ghép hình 6.3] Nút điều khiển (‹ › ×) tách rời khỏi vùng ảnh và đạt kích thước tiếp cận >= 43.5px', () => {
+  const cssPath = path.resolve('src/game/puzzle.css');
+  const cssContent = fs.readFileSync(cssPath, 'utf8');
+
+  // Nút điều khiển phải đảm bảo min-height / min-width tiếp cận
+  const hasAccessibleControls = /\.order-strip-controls button\s*\{[^}]*min-height:\s*var\(--target-min\)/i.test(cssContent)
+    || /\.order-strip-controls button\s*\{[^}]*min-height:\s*44px/i.test(cssContent)
+    || /\.order-strip-controls button\s*\{[^}]*min-width:\s*var\(--target-min\)/i.test(cssContent);
+
+  assert.ok(hasAccessibleControls, 'Nút điều khiển dải tranh phải đạt kích thước tiếp cận tối thiểu');
+});
+
+// ============================================================================
+// 7. KEYBOARD NAVIGATION & FOCUS INVARIANTS TỪ IMPLEMENTATION THẬT (YÊU CẦU 4)
+// ============================================================================
+
+test('[C2 Keyboard 7.1] API thật: moveOrderPieceLeft, moveOrderPieceRight, handleOrderSlotKey từ src/game/order-puzzle.ts', async () => {
+  let orderPuzzle: any = null;
+  const orderPuzzlePath = '../src/game/order-puzzle.ts';
+  try {
+    orderPuzzle = await import(orderPuzzlePath);
+  } catch (err: any) {
+    assert.fail(`BLOCKED / FAIL: src/game/order-puzzle.ts không thể import: ${err.message}`);
   }
-});
 
-test('[C2 Ghép hình 6.3] Nút điều khiển (‹ › ×) tách rời, không đè lên hình vẽ và đạt >= 44px', () => {
-  // Nút điều khiển phải nằm ở thanh công cụ riêng (bên dưới hoặc trên dải tranh),
-  // không được position: absolute chồng lên phần hiển thị nét vẽ
-  const minTargetSize = 44; // px
-  assert.ok(minTargetSize >= 43.5, 'Kích thước cảm ứng tối thiểu đạt chuẩn 44px');
-});
+  assert.equal(typeof orderPuzzle.moveOrderPieceLeft, 'function', 'moveOrderPieceLeft phải tồn tại');
+  assert.equal(typeof orderPuzzle.moveOrderPieceRight, 'function', 'moveOrderPieceRight phải tồn tại');
+  assert.equal(typeof orderPuzzle.removeOrderPiece, 'function', 'removeOrderPiece phải tồn tại');
+  assert.equal(typeof orderPuzzle.handleOrderSlotKey, 'function', 'handleOrderSlotKey phải tồn tại');
 
-// ============================================================================
-// 7. KEYBOARD NAVIGATION & FOCUS INVARIANTS (YÊU CẦU 4)
-// ============================================================================
-
-test('[C2 Keyboard 7.1] Đổi vị trí bằng nhiều phím ArrowLeft liên tiếp mà không mất focus', () => {
-  // Leader Review Finding 3: Không dùng key chứa index khiến mảnh bị remount khi đổi vị trí
-  // Mô phỏng hàm xử lý phím và mảng sequence
+  // Kiểm tra thao tác phím thật qua handleOrderSlotKey:
+  // Focus piece 4 (index 3), nhấn ArrowLeft 3 lần liên tiếp
   let seq = ['manh_1', 'manh_2', 'manh_3', 'manh_4'];
-  let focusedId = 'manh_4'; // Focus vào mảnh cuối (index 3)
+  let currentUpdatedSeq = seq;
+  const updateSeq = (next: string[]) => { currentUpdatedSeq = next; };
+  let prevented = false;
+  const preventDefault = () => { prevented = true; };
 
-  const moveLeft = (arr: string[], idx: number) => {
-    if (idx <= 0) return arr;
-    const next = [...arr];
-    [next[idx - 1], next[idx]] = [next[idx], next[idx - 1]];
-    return next;
-  };
-
-  // Bước 1: Nhấn ArrowLeft lần 1 -> chuyển về index 2
-  let idx = seq.indexOf(focusedId);
-  seq = moveLeft(seq, idx);
+  // Lần 1: index 3 -> 2
+  prevented = false;
+  const handled1 = orderPuzzle.handleOrderSlotKey('ArrowLeft', 3, seq, preventDefault, updateSeq);
+  assert.ok(handled1);
+  assert.ok(prevented);
+  seq = currentUpdatedSeq;
   assert.deepEqual(seq, ['manh_1', 'manh_2', 'manh_4', 'manh_3']);
-  // Invariant: focusedId vẫn là 'manh_4'
-  assert.equal(seq[2], focusedId);
 
-  // Bước 2: Nhấn ArrowLeft lần 2 liên tiếp -> chuyển về index 1
-  idx = seq.indexOf(focusedId);
-  seq = moveLeft(seq, idx);
+  // Lần 2: index 2 -> 1
+  prevented = false;
+  const handled2 = orderPuzzle.handleOrderSlotKey('ArrowLeft', 2, seq, preventDefault, updateSeq);
+  assert.ok(handled2);
+  assert.ok(prevented);
+  seq = currentUpdatedSeq;
   assert.deepEqual(seq, ['manh_1', 'manh_4', 'manh_2', 'manh_3']);
-  assert.equal(seq[1], focusedId);
 
-  // Bước 3: Nhấn ArrowLeft lần 3 liên tiếp -> chuyển về index 0
-  idx = seq.indexOf(focusedId);
-  seq = moveLeft(seq, idx);
+  // Lần 3: index 1 -> 0
+  prevented = false;
+  const handled3 = orderPuzzle.handleOrderSlotKey('ArrowLeft', 1, seq, preventDefault, updateSeq);
+  assert.ok(handled3);
+  assert.ok(prevented);
+  seq = currentUpdatedSeq;
   assert.deepEqual(seq, ['manh_4', 'manh_1', 'manh_2', 'manh_3']);
-  assert.equal(seq[0], focusedId);
 
-  // Bước 4: Nhấn ArrowLeft ở biên index 0 -> không đổi
-  idx = seq.indexOf(focusedId);
-  seq = moveLeft(seq, idx);
+  // Lần 4 (biên trái index 0): nhấn ArrowLeft không đổi mảng
+  prevented = false;
+  const handledBoundary = orderPuzzle.handleOrderSlotKey('ArrowLeft', 0, seq, preventDefault, updateSeq);
+  assert.equal(handledBoundary, false, 'Tại biên index 0, ArrowLeft không thực hiện swap');
   assert.deepEqual(seq, ['manh_4', 'manh_1', 'manh_2', 'manh_3']);
+
+  // Biên phải: tại index 3, ArrowRight không đổi mảng
+  const seqForRight = ['manh_1', 'manh_2', 'manh_3', 'manh_4'];
+  const handledRightBoundary = orderPuzzle.handleOrderSlotKey('ArrowRight', 3, seqForRight, preventDefault, updateSeq);
+  assert.equal(handledRightBoundary, false, 'Tại biên index 3, ArrowRight không thực hiện swap');
 });
 
-test('[C2 Keyboard 7.2] Đổi vị trí bằng nhiều phím ArrowRight liên tiếp mà không mất focus', () => {
-  let seq = ['manh_4', 'manh_1', 'manh_2', 'manh_3'];
-  let focusedId = 'manh_4'; // Focus vào mảnh đầu (index 0)
-
-  const moveRight = (arr: string[], idx: number) => {
-    if (idx >= arr.length - 1) return arr;
-    const next = [...arr];
-    [next[idx + 1], next[idx]] = [next[idx], next[idx + 1]];
-    return next;
-  };
-
-  // Di chuyển liên tiếp 3 lần sang phải
-  for (let step = 1; step <= 3; step++) {
-    const idx = seq.indexOf(focusedId);
-    seq = moveRight(seq, idx);
-    assert.equal(seq[step], focusedId, `Sau bước ${step}, focusedId phải ở index ${step}`);
+test('[C2 Keyboard 7.2] Gỡ mảnh đầu / giữa / cuối từ implementation thật và logic tính focus', async () => {
+  let orderPuzzle: any = null;
+  const orderPuzzlePath = '../src/game/order-puzzle.ts';
+  try {
+    orderPuzzle = await import(orderPuzzlePath);
+  } catch {
+    assert.fail('BLOCKED / FAIL: src/game/order-puzzle.ts chưa sẵn sàng');
   }
-  assert.deepEqual(seq, ['manh_1', 'manh_2', 'manh_3', 'manh_4']);
+
+  const initial = ['manh_1', 'manh_2', 'manh_3', 'manh_4'];
+
+  // Gỡ mảnh đầu (index 0)
+  const afterRemoveHead = orderPuzzle.removeOrderPiece(initial, 0);
+  assert.deepEqual(afterRemoveHead, ['manh_2', 'manh_3', 'manh_4']);
+
+  // Gỡ mảnh giữa (index 1)
+  const afterRemoveMid = orderPuzzle.removeOrderPiece(initial, 1);
+  assert.deepEqual(afterRemoveMid, ['manh_1', 'manh_3', 'manh_4']);
+
+  // Gỡ mảnh cuối (index 3)
+  const afterRemoveTail = orderPuzzle.removeOrderPiece(initial, 3);
+  assert.deepEqual(afterRemoveTail, ['manh_1', 'manh_2', 'manh_3']);
+
+  // Gỡ ngoài biên không lỗi
+  assert.deepEqual(orderPuzzle.removeOrderPiece(initial, -1), initial);
+  assert.deepEqual(orderPuzzle.removeOrderPiece(initial, 10), initial);
 });
 
-test('[C2 Keyboard 7.3] Gỡ mảnh (remove) chuyển focus hợp lý, không rơi focus về body', () => {
-  let seq = ['manh_1', 'manh_2', 'manh_3', 'manh_4'];
+test('[C2 Keyboard 7.3] PuzzleModal.tsx cấm dùng key index để không làm remount mất focus', () => {
+  const modalPath = path.resolve('src/game/PuzzleModal.tsx');
+  assert.ok(fs.existsSync(modalPath), 'PuzzleModal.tsx phải tồn tại trên checkout');
 
-  const removeAt = (arr: string[], idx: number) => {
-    const next = arr.filter((_, i) => i !== idx);
-    // Tính focus mới: nếu gỡ phần tử cuối thì focus về phần tử trước đó;
-    // ngược lại focus vào phần tử vừa dồn lên tại vị trí idx.
-    const newFocusIndex = idx >= next.length ? next.length - 1 : idx;
-    const newFocusedId = next[newFocusIndex] ?? null;
-    return { next, newFocusIndex, newFocusedId };
-  };
+  const modalContent = fs.readFileSync(modalPath, 'utf8');
 
-  // Gỡ mảnh ở giữa (index 1: manh_2) -> focus chuyển sang mảnh ở index 1 mới (manh_3)
-  const res1 = removeAt(seq, 1);
-  assert.deepEqual(res1.next, ['manh_1', 'manh_3', 'manh_4']);
-  assert.equal(res1.newFocusedId, 'manh_3', 'Focus chuyển sang mảnh kế tiếp tại index 1');
-
-  // Gỡ mảnh ở cuối (index 2: manh_4) -> focus chuyển về mảnh trước đó (manh_3)
-  const res2 = removeAt(res1.next, 2);
-  assert.deepEqual(res2.next, ['manh_1', 'manh_3']);
-  assert.equal(res2.newFocusedId, 'manh_3', 'Focus chuyển về mảnh trước đó khi gỡ mảnh cuối');
+  // Khẳng định: cấm key={`${id}-${index}`}
+  const hasIndexInKey = /key=\{`\$\{id\}-\$\{index\}`\}/.test(modalContent);
+  assert.equal(
+    hasIndexInKey,
+    false,
+    'FAIL: PuzzleModal.tsx vẫn dùng key={`${id}-${index}`} gây remount và mất focus khi đổi chỗ'
+  );
 });
 
 // ============================================================================
@@ -704,4 +807,25 @@ test('[C2 Reward 8.2] Legacy profile đã nhận 120 Sen không bị trừ hoặ
   const snapshot = restored.tree.nodes[restored.tree.headId].snapshot;
   assert.equal(snapshot.wallet.senNgoc, 220, 'Số dư của save legacy 120 Sen được bảo toàn nguyên vẹn');
   expectReject(snapshot, 'reward/claim', { chapterId: 'c2' }, 'Claim lại trên save legacy');
+});
+
+test('[C2 Reward 8.3] Lệnh nghịch đảo snapshot (undo/restore) không được xóa phần thưởng đã nhận', () => {
+  const state = createC2State(S3);
+  state.journey.c2.status = 'completed';
+  state.journey.c2.solvedPuzzleIds = [P1, P2, P3, P4, P5];
+  state.journey.c2.completedDialogueIds = ['d-c2-ca-nghi', 'd-c2-mat-ma', 'd-c2-bien-lai', 'd-c2-giao-keo'];
+  if (content.chapters.c2.dialogues.some(d => String(d.id) === 'd-c2-ending')) {
+    state.journey.c2.completedDialogueIds.push('d-c2-ending');
+  }
+
+  const claimed = runCommand(state, { type: 'reward/claim', payload: { chapterId: 'c2' } }, content);
+  assert.ok(claimed.ok);
+
+  for (const restoreType of ['dialogue/restore', 'interact/undo']) {
+    const attempted = runCommand(claimed.state, {
+      type: restoreType,
+      payload: { previousState: state },
+    }, content);
+    assert.equal(attempted.ok, false, `Lệnh ${restoreType} không được đảo ngược trạng thái đã nhận thưởng`);
+  }
 });
