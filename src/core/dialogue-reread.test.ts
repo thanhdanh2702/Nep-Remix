@@ -90,3 +90,32 @@ test('migration of a changed reread node retains its nonprogressing mode', () =>
   assert.deepEqual(advanced.events, []);
   assert.deepEqual(advanced.state.notebook.unlockedClueIds, []);
 });
+
+test('legacy pending paper queue reconstructs without prereading clues', () => {
+  const state = createInitialState(content);
+  state.currentChapter = 'c1'; state.journey.c1.status = 'in_progress'; state.journey.c1.currentArea = 'c1-s2-ban-tho-nha-tho-ho';
+  state.journey.c1.solvedPuzzleIds = ['p-c1-altar-cut-threads'];
+  delete state.journey.c1.dialogueQueue;
+  const restored = fromJSON(toJSON(createInitialTree(state)), content); assert.ok(restored.ok);
+  const loaded = restored.tree.nodes[restored.tree.headId].snapshot;
+  assert.equal(loaded.journey.c1.activeDialogue?.dialogueId, 'd-c1-thu-chong');
+  assert.equal(loaded.journey.c1.activeDialogue?.mode, undefined);
+  assert.deepEqual(loaded.journey.c1.dialogueQueue, ['d-c1-van-tu']);
+  assert.deepEqual(loaded.notebook.unlockedClueIds, []);
+  const advanced = runCommand(loaded, advance, content); assert.ok(advanced.ok);
+  assert.deepEqual(advanced.state.notebook.unlockedClueIds, ['clue-thu-chong-cu-cam']);
+});
+
+test('invalid branching and broken links reject without altering reread state', () => {
+  const custom = { ...content, chapters: { ...content.chapters, prologue: structuredClone(content.chapters.prologue) } };
+  const dialogue = custom.chapters.prologue.dialogues.find(d => d.id === 'd-c0-mirror')!;
+  dialogue.nodes[0].choices = [{text:'Tiếp',nextNodeId:'missing'}];
+  const state = createInitialState(custom); state.journey.prologue.completedDialogueIds = ['d-c0-mirror'];
+  const opened = runCommand(state,clickMirror,custom); assert.ok(opened.ok);
+  for (const command of [advance, {type:'dialogue/choose',payload:{choiceIndex:0}}, {type:'dialogue/choose',payload:{choiceIndex:0.5}}, {type:'dialogue/choose',payload:{choiceIndex:-1}}]) {
+    const result = runCommand(opened.state,command,custom); assert.equal(result.ok,false); assert.equal(result.state,opened.state);
+  }
+  delete dialogue.nodes[0].choices;
+  dialogue.nodes[0].nextNodeId = 'missing';
+  const broken = runCommand(opened.state,advance,custom); assert.equal(broken.ok,false); assert.equal(broken.state,opened.state);
+});
