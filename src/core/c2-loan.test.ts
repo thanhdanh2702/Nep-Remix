@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { loadContent } from '../content/index.ts';
 import { createInitialState, createChallengeStudioDraft, getChallengeWardrobe,
-  validateChallengeStudioDraft, runCommand, studioApplyPresetCommand, closetSaveOutfitCommand,
+  validateChallengeStudioDraft, validateStudioDraft, challengeDraftFromAnswer, runCommand, studioApplyPresetCommand, closetSaveOutfitCommand,
   createScopedSession, undoSession, redoSession, dispatchSession } from './index.ts';
 
 const content = loadContent();
@@ -55,7 +55,7 @@ test('challenge resume preserves strings/color/motif and rejects unauthorized sa
 });
 test('local undo/redo candidates revalidate when challenge gate is revoked', () => {
   const state = ready(); const made = createChallengeStudioDraft(state,P5,content); assert.ok(made.ok); if (!made.ok) return;
-  const session = dispatchSession(createScopedSession(made.draft,'studio'), d => ({...d,colorPalette:['#1','#2','#3','#4']}));
+  const session = dispatchSession(createScopedSession(made.draft,'studio'), d => ({...d,colorPalette:['#1','#2','#3','#4'] as [string,string,string,string]}));
   const undone = undoSession(session); assert.ok(undone.ok);
   assert.equal(validateChallengeStudioDraft(state,P5,undone.session.current,content).ok,true);
   state.journey.c2.solvedPuzzleIds.push(P5);
@@ -95,4 +95,29 @@ test('ordinary Studio rejects loan initial garment and unowned preset accessorie
   const opened = runCommand(state,{type:'studio/open',payload:{initialGarmentId:'ao-tu-than'}},content); assert.ok(opened.ok);
   if (!opened.ok || opened.state.activeSession?.type !== 'studio') return;
   assert.notEqual(studioApplyPresetCommand.guard(opened.state,{preset:{...opened.state.activeSession,equippedAccessories:{headwear:'khan-van-den'}}},content),true);
+});
+test('validation rejects context mismatch, silhouette, palette, motif and accessory slot spoofing', () => {
+  const state = ready(); const made = createChallengeStudioDraft(state,P5,content); assert.ok(made.ok); if (!made.ok) return;
+  assert.equal(validateChallengeStudioDraft(state,'p-c2-present-sketch',made.draft,content).ok,false);
+  for (const draft of [
+    {...made.draft,silhouette:'tu_than' as const},
+    {...made.draft,colorPalette:['#FFF'] as unknown as typeof made.draft.colorPalette},
+    {...made.draft,motifId:'unknown'},
+    {...made.draft,equippedAccessories:{jewelry:'khan-van-den'}},
+    {...made.draft,equippedAccessories:null as unknown as typeof made.draft.equippedAccessories},
+  ]) assert.equal(validateStudioDraft(state,draft,content).ok,false);
+  assert.equal(validateStudioDraft(state,{...made.draft,equippedAccessories:{headwear:undefined}},content).ok,true);
+  for (const answer of [null,[],{garmentId:3}]) assert.equal(challengeDraftFromAnswer(state,P5,answer,content).ok,false);
+  state.journey.c2.puzzleDrafts = {[P5]:{type:'order',answer:[]}};
+  assert.equal(createChallengeStudioDraft(state,P5,content).ok,false);
+});
+test('loan helper rejects catalog drift and cannot build a draft with an empty wardrobe', () => {
+  const state = ready(); const drift = structuredClone(content);
+  drift.garmentsById.delete('ao-dai-lemur');
+  assert.equal(getChallengeWardrobe(state,P5,drift).ok,false);
+  const puzzle = drift.chapters.c2.puzzles.find(p => p.id === P5)!; assert.equal(puzzle.type,'styling');
+  if (puzzle.type !== 'styling') return;
+  delete puzzle.loanWardrobe;
+  state.closet.unlockedGarmentIds = [];
+  assert.equal(createChallengeStudioDraft(state,P5,drift).ok,false);
 });

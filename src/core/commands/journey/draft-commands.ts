@@ -1,6 +1,7 @@
 import type { CommandDef } from '../../command.ts';
 import type { PuzzleAnswerDraft } from '../../state.ts';
 import { guardPuzzle } from './gate.ts';
+import { challengeDraftFromAnswer } from '../studio/challenge-wardrobe.ts';
 
 export interface PuzzleUpdateDraftPayload { puzzleId: string; draft: PuzzleAnswerDraft }
 function validDraft(draft: unknown, type: string): draft is PuzzleAnswerDraft {
@@ -19,7 +20,18 @@ export const puzzleUpdateDraftCommand: CommandDef<PuzzleUpdateDraftPayload> = {
     const guarded = guardPuzzle(state, payload.puzzleId, content, false);
     if (guarded !== true) return guarded;
     const puzzle = content.chapters[state.currentChapter].puzzles.find(p => p.id === payload.puzzleId)!;
-    return validDraft(payload.draft, puzzle.type) || { ok: false, reason: 'Draft discriminator or answer shape is invalid.' };
+    if (!validDraft(payload.draft, puzzle.type)) return { ok: false, reason: 'Draft discriminator or answer shape is invalid.' };
+    if (state.currentChapter === 'c2' && puzzle.type === 'order' && payload.draft.type === 'order') {
+      const ids = payload.draft.answer;
+      if (new Set(ids).size !== ids.length || ids.some(id => !puzzle.solution.requiredItemIds?.some(piece => piece === id) || !state.inventory.itemIds.includes(id))) {
+        return { ok: false, reason: 'Order draft must be a unique subset of owned drawing pieces.' };
+      }
+    }
+    if (puzzle.type === 'styling' && puzzle.loanWardrobe) {
+      const validated = challengeDraftFromAnswer(state, puzzle.id, payload.draft.answer, content);
+      if (!validated.ok) return validated;
+    }
+    return true;
   },
   apply: (state, payload) => {
     const progress = state.journey[state.currentChapter];

@@ -105,6 +105,7 @@ export const DialogueIdSchema = z.enum([
   'd-c1-giai-phong',
   'd-c1-gate-exit',
   'd-c2-ca-nghi',
+  'd-c2-ending',
   'd-c2-mat-ma',
   'd-c2-silk-shelves',
   'd-c2-bien-lai',
@@ -502,13 +503,18 @@ export const PresentPuzzleSchema = PuzzleBaseSchema.extend({
 
 export const StylingPuzzleSchema = PuzzleBaseSchema.extend({
   type: z.literal('styling'),
+  loanWardrobe: z.object({
+    garmentIds: z.array(GarmentIdSchema),
+    accessoryIds: z.array(AccessoryIdSchema)
+  }).optional(),
   solution: z.object({
     silhouette: z.string(),
     garmentId: GarmentIdSchema,
     headwearId: AccessoryIdSchema.optional(),
     jewelryId: AccessoryIdSchema.optional(),
     footwearId: AccessoryIdSchema.optional(),
-    handheldId: AccessoryIdSchema.optional()
+    handheldId: AccessoryIdSchema.optional(),
+    dialogueTriggerId: DialogueIdSchema.optional()
   })
 });
 
@@ -589,6 +595,7 @@ export const ChapterMetaSchema = z.object({
   year: z.number().int(),
   historicalPeriod: z.enum(['thoi_le', 'thoi_nguyen', 'nam_1934', 'hien_dai']),
   summary: z.string(),
+  entryDialogueId: DialogueIdSchema.optional(),
   /** Dialogue whose completion (after every puzzle is solved) ends the chapter; the UI then runs chapter/complete + reward/claim. */
   completionDialogueId: DialogueIdSchema.optional(),
   reward: RewardSchema
@@ -606,6 +613,9 @@ export const ChapterContentSchema = z.object({
   const dialogues = new Set<string>(chapter.dialogues.map(d => d.id));
   const areas = new Set<string>(chapter.areas.map(a => a.id));
   const dependencies = new Map<string, string[]>();
+  for (const id of [chapter.chapter.entryDialogueId, chapter.chapter.completionDialogueId]) {
+    if (id && !dialogues.has(id)) error(`Foreign chapter dialogue ${id}`);
+  }
   const checkGate = (owner: string, gate?: Gate) => {
     const deps = dependencies.get(owner) ?? [];
     for (const requirement of gate?.all ?? []) {

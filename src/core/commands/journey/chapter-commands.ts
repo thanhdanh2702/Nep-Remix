@@ -2,6 +2,7 @@ import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 import type { ChapterId } from '../../../content/schema.ts';
+import { enqueueDialogues } from './dialogue-queue.ts';
 
 // ==========================================
 // 1. chapter/enter (reversible)
@@ -36,7 +37,8 @@ export const chapterEnterCommand: CommandDef<ChapterEnterPayload> = {
   apply: (state: GameState, payload: ChapterEnterPayload, content: GameContent) => {
     const { chapterId } = payload;
     const chData = content.chapters[chapterId];
-    const initialArea = chData.areas[0]?.id ?? `${chapterId}-s1`;
+    const previous = state.journey[chapterId];
+    const initialArea = chData.areas.some(a => a.id === previous.currentArea) ? previous.currentArea : chData.areas[0].id;
 
     const nextState: GameState = {
       ...state,
@@ -46,13 +48,13 @@ export const chapterEnterCommand: CommandDef<ChapterEnterPayload> = {
         [chapterId]: {
           ...state.journey[chapterId],
           currentArea: initialArea,
-          navStack: []
+          navStack: previous.navStack
         }
       }
     };
 
     return {
-      state: nextState,
+      state: enqueueDialogues(nextState, [chData.chapter.entryDialogueId], content),
       events: [
         {
           type: 'areaEntered',

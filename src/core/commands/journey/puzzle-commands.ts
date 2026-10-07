@@ -4,6 +4,7 @@ import type { GameContent } from '../../../content/index.ts';
 import type { Puzzle } from '../../../content/schema.ts';
 import { guardPuzzle } from './gate.ts';
 import { applyPuzzleSolved } from './puzzle-solution.ts';
+import { challengeDraftFromAnswer } from '../studio/challenge-wardrobe.ts';
 
 // ==========================================
 // Text Normalization (Diacritic & Case Insensitive)
@@ -95,7 +96,14 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
   kind: 'reversible',
 
   guard: (state: GameState, payload: PuzzleSubmitPayload, content: GameContent) => {
-    return guardPuzzle(state, payload.puzzleId, content);
+    const guarded = guardPuzzle(state, payload.puzzleId, content);
+    if (guarded !== true) return guarded;
+    const puzzle = content.chapters[state.currentChapter].puzzles.find(p => p.id === payload.puzzleId)!;
+    if (puzzle.type === 'styling' && puzzle.loanWardrobe) {
+      const validated = challengeDraftFromAnswer(state, puzzle.id, payload.answer, content);
+      if (!validated.ok) return validated;
+    }
+    return true;
   },
 
   apply: (state: GameState, payload: PuzzleSubmitPayload, content: GameContent) => {

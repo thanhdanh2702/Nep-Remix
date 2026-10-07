@@ -89,6 +89,15 @@ export function loadContent(): GameContent {
     motifs: z.array(MotifSchema)
   });
   const studio = studioSchema.parse(studioJson);
+  for (const chapter of [prologue, c1, c2, c3, c4, c5]) {
+    for (const puzzle of chapter.puzzles) {
+      if (puzzle.type !== 'styling' || !puzzle.loanWardrobe) continue;
+      if (puzzle.loanWardrobe.garmentIds.some(id => !studio.garments.some(g => g.id === id))
+        || puzzle.loanWardrobe.accessoryIds.some(id => !studio.accessories.some(a => a.id === id))) {
+        throw new Error(`Unknown catalog reference in ${puzzle.id} loan wardrobe`);
+      }
+    }
+  }
 
   const chapters: Record<string, ChapterContent> = {
     prologue,

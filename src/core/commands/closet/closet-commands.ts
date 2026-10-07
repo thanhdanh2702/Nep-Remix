@@ -1,5 +1,6 @@
 import type { CommandDef } from '../../command.ts';
 import type { GameState, StudioDraft, SavedOutfit } from '../../state.ts';
+import { validateStudioDraft } from '../studio/challenge-wardrobe.ts';
 
 // ==========================================
 // 1. closet/saveOutfit (reversible)
@@ -19,18 +20,16 @@ export const closetSaveOutfitCommand: CommandDef<ClosetSaveOutfitPayload> = {
   type: 'closet/saveOutfit',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: ClosetSaveOutfitPayload) => {
-    if (payload?.garmentId) {
-      return true;
-    }
-    if (!state.activeSession || state.activeSession.type !== 'studio') {
-      return { ok: false, reason: 'No active Studio session to save outfit from.' };
-    }
-    const session = state.activeSession as StudioDraft;
-    if (!session.garmentId) {
-      return { ok: false, reason: 'Active studio draft is missing a garment.' };
-    }
-    return true;
+  guard: (state, payload, content) => {
+    const session = state.activeSession?.type === 'studio' ? state.activeSession : null;
+    if (!payload.garmentId && !session) return { ok: false, reason: 'No Studio outfit to save.' };
+    const garmentId = payload.garmentId ?? session!.garmentId;
+    const valid = validateStudioDraft(state, { type: 'studio', garmentId,
+      silhouette: content.garmentsById.get(garmentId)?.silhouette ?? 'tu_than',
+      equippedAccessories: payload.equippedAccessories ?? session?.equippedAccessories ?? {},
+      colorPalette: payload.colorPalette ?? session?.colorPalette ?? ['#FFF','#FFF','#FFF','#000'],
+      motifId: payload.motifId ?? session?.motifId }, content, true);
+    return valid.ok ? true : valid;
   },
 
   apply: (state: GameState, payload: ClosetSaveOutfitPayload) => {
