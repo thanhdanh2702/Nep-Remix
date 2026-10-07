@@ -25,6 +25,9 @@ Ngày: 2026-10-07. Đây là candidate local, chưa phải nghiệm thu phát h�
    Memoize world size để effect tải cảnh không reset walker giữa đường.
 4. Sửa assertion CSS của harness sang selector nút thật
    `.order-strip-btn-group button`; không bỏ kiểm tra kích thước.
+5. RED browser hồi quy: FE áp adapter chân C2 cho Mở đầu/C1 khiến cầu thang
+   prologue bị từ chối proximity. Cần giữ adapter legacy ở các chương cũ,
+   chỉ áp tọa độ chân thật theo hợp đồng geometry C2 cho C2.
 
 ## Chạy và chơi
 
