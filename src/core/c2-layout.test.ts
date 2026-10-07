@@ -76,7 +76,7 @@ for (const [n,area] of areas.entries()) for (const [k,spot] of area.interactable
 test('C2 measured exits exist; expanded mobile piece 4 target does not overlap S1 arrow', () => {
   const expected = [
     [{exit:'window',rect:{x:.88,y:.20,w:.10,h:.55},dir:'right'}],
-    [{exit:'back',rect:{x:0,y:.45,w:.08,h:.45},dir:'left'},{exit:'hall',rect:{x:.92,y:.35,w:.08,h:.45},dir:'right'}],
+    [{exit:'back',rect:{x:0,y:.45,w:.08,h:.45},dir:'left'},{exit:'hall',rect:{x:.92,y:.76,w:.08,h:.14},dir:'right'}],
     [{exit:'back',rect:{x:0,y:.45,w:.08,h:.45},dir:'left'}],
   ];
   areas.forEach((a,n) => assert.deepEqual(a.exitArrows,expected[n]));
@@ -97,5 +97,23 @@ test('S2 floor exit does not intercept safe clicks after 44px touch expansion', 
     const safeBottom=(safe.y+safe.h/2)*height+Math.max(44,safe.h*height)/2;
     const arrowTop=(arrow.y+arrow.h/2)*height-Math.max(44,arrow.h*height)/2;
     assert.ok(safeBottom<arrowTop,`exit intercepts safe at stage width ${width}`);
+  }
+});
+
+test('measured hit rects contain manifest visible bounds (one native pixel rounding tolerance)', () => {
+  const suffixes: Record<string,string> = {
+    'hitbox-drawing-desk':'--manh-1.png','hitbox-fabric-basket':'--manh-2.png',
+    'hitbox-gas-lamp':'--manh-3.png','hitbox-french-window':'--manh-4.png',
+    'hitbox-drawing-easel':'--ban-ve-ghep.png','hitbox-grandfather-clock':'--chia-khoa.png',
+    'hitbox-iron-safe':'--ket-mo.png','hitbox-reporters-crowd':'--nguoi-nghe.png',
+    'hitbox-ong-le-shadow':'--ban-ve-treo.png',
+  };
+  for(const area of areas) for(const spot of area.interactables) {
+    const suffix=suffixes[spot.id]; if(!suffix) continue; // shelf/podium are painted into background A
+    const asset=manifest.assets.find((a:{path:string})=>a.path.endsWith(suffix)); assert.ok(asset);
+    const [left,top,right,bottom]=asset.bounds; const r=spot.rect!;
+    assert.ok(r.x*world.w<=left+1 && r.y*world.h<=top+1
+      && (r.x+r.w)*world.w>=right-1 && (r.y+r.h)*world.h>=bottom-1,
+      `${spot.id} clips manifest visible bounds`);
   }
 });
