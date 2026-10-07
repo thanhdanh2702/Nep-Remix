@@ -2,6 +2,8 @@ import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 import type { ChapterId } from '../../../content/schema.ts';
+import { enqueueDialogues } from './dialogue-queue.ts';
+import { isGateSatisfied } from './gate.ts';
 
 // ==========================================
 // 1. chapter/enter (reversible)
@@ -36,7 +38,8 @@ export const chapterEnterCommand: CommandDef<ChapterEnterPayload> = {
   apply: (state: GameState, payload: ChapterEnterPayload, content: GameContent) => {
     const { chapterId } = payload;
     const chData = content.chapters[chapterId];
-    const initialArea = chData.areas[0]?.id ?? `${chapterId}-s1`;
+    const previous = state.journey[chapterId];
+    const initialArea = chData.areas.some(a => a.id === previous.currentArea) ? previous.currentArea : chData.areas[0].id;
 
     const nextState: GameState = {
       ...state,
@@ -46,13 +49,13 @@ export const chapterEnterCommand: CommandDef<ChapterEnterPayload> = {
         [chapterId]: {
           ...state.journey[chapterId],
           currentArea: initialArea,
-          navStack: []
+          navStack: previous.navStack
         }
       }
     };
 
     return {
-      state: nextState,
+      state: enqueueDialogues(nextState, [chData.chapter.entryDialogueId], content),
       events: [
         {
           type: 'areaEntered',
@@ -122,6 +125,9 @@ export const chapterCompleteCommand: CommandDef<ChapterCompletePayload> = {
     if (chId !== state.currentChapter || chProgress.status === 'locked') return { ok: false, reason: 'Chapter is not currently playable.' };
     const ending = chData.chapter.completionDialogueId;
     if (ending && !chProgress.completedDialogueIds.includes(ending)) return { ok: false, reason: 'Read the ending before completing the chapter.' };
+    if (chId === 'c2' && !isGateSatisfied(state, chData.puzzles.find(p => p.id === 'p-c2-styling-loan')?.when)) {
+      return { ok: false, reason: 'Read the C2 evidence and finish the presentations before completing.' };
+    }
 
     // Verify all declared puzzles in the chapter are solved
     const solvedSet = new Set(chProgress.solvedPuzzleIds);

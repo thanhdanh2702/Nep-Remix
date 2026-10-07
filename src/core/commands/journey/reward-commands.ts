@@ -2,6 +2,7 @@ import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 import type { ChapterId } from '../../../content/schema.ts';
+import { chapterCompleteCommand } from './chapter-commands.ts';
 
 // ==========================================
 // reward/claim (one-way)
@@ -39,6 +40,10 @@ export const rewardClaimCommand: CommandDef<RewardClaimPayload> = {
         reason: `Cannot claim reward: chapter '${chapterId}' is not yet completed.`
       };
     }
+
+    // Completed legacy snapshots keep their history, but pending claims must
+    // pass today's C2 reading gates. Claimed rewards were rejected above.
+    if (chapterId === 'c2') return chapterCompleteCommand.guard(state, { chapterId }, content);
 
     return true;
   },
