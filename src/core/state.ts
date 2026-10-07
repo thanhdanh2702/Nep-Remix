@@ -7,6 +7,8 @@ import type { GameContent } from '../content/index.ts';
 
 export interface StudioDraft {
   type: 'studio';
+  /** Revalidated against the current room/gate; never an ownership grant. */
+  challengePuzzleId?: string;
   eventContextId?: string;
   silhouette: 'tu_than' | 'ngu_than_tay_chen' | 'ngu_than_tay_thung' | 'tan_thoi';
   garmentId: string;

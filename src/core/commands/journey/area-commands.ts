@@ -93,12 +93,12 @@ export const areaGoBackCommand: CommandDef<AreaGoBackPayload> = {
   type: 'area/goBack',
   kind: 'reversible',
 
-  guard: (state: GameState, _payload: AreaGoBackPayload) => {
+  guard: (state: GameState, _payload: AreaGoBackPayload, content: GameContent) => {
     const chProgress = state.journey[state.currentChapter];
     if (!chProgress || chProgress.navStack.length === 0) {
       return { ok: false, reason: 'Không còn lối nào để quay lại.' };
     }
-    return true;
+    return areaGoToCommand.guard(state, { areaId: chProgress.navStack.at(-1)! }, content);
   },
 
   apply: (state: GameState, _payload: AreaGoBackPayload) => {

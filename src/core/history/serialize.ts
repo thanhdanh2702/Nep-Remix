@@ -3,8 +3,9 @@ import type { GameContent } from '../../content/index.ts';
 import type { GameState } from '../state.ts';
 import { validateState } from '../invariants.ts';
 import { grantRewardGifts } from '../commands/journey/reward-commands.ts';
+import { enqueueDialogues } from '../commands/journey/dialogue-queue.ts';
 
-export const CONTENT_VERSION = 'sprint-01-core-1';
+export const CONTENT_VERSION = 'sprint-02-core-1';
 export interface SerializedHistoryEnvelope {
   saveFormatVersion: 'tiem-may-nep-save-v1';
   schemaVersion: string;
@@ -20,7 +21,7 @@ export function toJSON(tree: HistoryTree): string {
   };
   return JSON.stringify(envelope);
 }
-function migrateSnapshot(original: GameState, content: GameContent): GameState {
+function migrateSnapshot(original: GameState, content: GameContent, legacyC2: boolean): GameState {
   let state = structuredClone(original);
   state.claimedRewardIds ??= [];
   state.museum.unlockedCardIds ??= [];
@@ -28,7 +29,7 @@ function migrateSnapshot(original: GameState, content: GameContent): GameState {
     const chapter = content.chapters[id];
     if (!chapter) throw new Error(`Unknown chapter ${id}`);
     // Reconstruct unread triggered dialogues from old snapshots, without completing them.
-    if (!progress.dialogueQueue) {
+    if (!progress.dialogueQueue && !(id === 'c2' && legacyC2)) {
       const triggers = chapter.puzzles.filter(p => progress.solvedPuzzleIds.includes(p.id)).flatMap(p => {
         const sol = p.solution as { dialogueTriggerId?: string; dialogueTriggerIds?: string[] };
         return [sol.dialogueTriggerId, ...(sol.dialogueTriggerIds ?? [])].filter((value): value is string => !!value);
@@ -41,6 +42,40 @@ function migrateSnapshot(original: GameState, content: GameContent): GameState {
       }
     }
     progress.puzzleDrafts ??= {};
+    if (id === 'c2' && legacyC2) {
+      // C2 no longer has a reverse fabric face. Preserve the room/progress;
+      // normalize a legacy left-side snapshot to the supported art face.
+      progress.side = 'mat_phai';
+      for (const [puzzleId, draft] of Object.entries(progress.puzzleDrafts)) {
+        const puzzle = chapter.puzzles.find(p => p.id === puzzleId);
+        if (puzzle?.type !== 'order') continue;
+        const ids = draft.type === 'order' ? draft.answer : null;
+        if (!ids || !Array.isArray(ids) || new Set(ids).size !== ids.length
+          || ids.some(piece => !puzzle.solution.requiredItemIds?.some(id => id === piece) || !state.inventory.itemIds.includes(piece))) {
+          delete progress.puzzleDrafts[puzzleId];
+          if (state.activeSession?.type === 'puzzle' && state.activeSession.puzzleId === puzzleId) {
+            state.activeSession = { ...state.activeSession, valid: false, data: {} };
+          }
+        }
+      }
+      // Old engines could record a solve without delivering plural gifts.
+      // Repair earned evidence only; never currency, loans, reads or solves.
+      for (const puzzle of chapter.puzzles.filter(p => progress.solvedPuzzleIds.includes(p.id))) {
+        const solution = puzzle.solution as { rewardItemId?: string; rewardItemIds?: string[] };
+        state.inventory.itemIds = [...new Set([...state.inventory.itemIds,
+          ...[solution.rewardItemId, ...(solution.rewardItemIds ?? [])].filter((id): id is string => !!id)])];
+      }
+      if (progress.status !== 'locked') {
+        const recovery = [chapter.chapter.entryDialogueId, ...chapter.puzzles
+          .filter(p => progress.solvedPuzzleIds.includes(p.id)).flatMap(p => {
+            const solution = p.solution as { dialogueTriggerId?: string; dialogueTriggerIds?: string[] };
+            return [solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])];
+          })];
+        const queued = enqueueDialogues({ ...state, currentChapter: chapter.chapter.id }, recovery, content);
+        progress.activeDialogue = queued.journey.c2.activeDialogue;
+        progress.dialogueQueue = queued.journey.c2.dialogueQueue;
+      }
+    }
     if (progress.activeDialogue) {
       const dialogue = chapter.dialogues.find(d => d.id === progress.activeDialogue!.dialogueId);
       if (!dialogue) throw new Error('Saved dialogue does not exist');
@@ -61,12 +96,13 @@ export function fromJSON(jsonStr: string, content: GameContent): FromJSONResult 
     const parsed = JSON.parse(jsonStr);
     if (!parsed || typeof parsed !== 'object') throw new Error('Save must be an object');
     if (parsed.saveFormatVersion && parsed.saveFormatVersion !== 'tiem-may-nep-save-v1') throw new Error('Unsupported save version');
-    if (parsed.contentVersion && parsed.contentVersion !== CONTENT_VERSION) throw new Error('Unsupported content version');
+    if (parsed.contentVersion && ![CONTENT_VERSION, 'sprint-01-core-1'].includes(parsed.contentVersion)) throw new Error('Unsupported content version');
     const candidate = parsed.tree ?? parsed;
     if (candidate.version !== '1.0.0') throw new Error('Unsupported schema version');
     if (!candidate.nodes || !candidate.nodes[candidate.rootId] || !candidate.nodes[candidate.headId]) throw new Error('Missing root/head snapshot');
     const tree: HistoryTree = structuredClone(candidate);
-    let migrated = !parsed.contentVersion;
+    const legacyC2 = parsed.contentVersion !== CONTENT_VERSION;
+    let migrated = legacyC2;
     for (const [id, node] of Object.entries(tree.nodes)) {
       if (node.id !== id || !Array.isArray(node.childIds) || !node.snapshot
         || (node.parentId !== null && !tree.nodes[node.parentId])
@@ -77,7 +113,7 @@ export function fromJSON(jsonStr: string, content: GameContent): FromJSONResult 
         if (seen.has(cursor) || !tree.nodes[cursor]) throw new Error('Cyclic history');
         seen.add(cursor); cursor = tree.nodes[cursor].parentId;
       }
-      const snapshot = migrateSnapshot(node.snapshot, content);
+      const snapshot = migrateSnapshot(node.snapshot, content, legacyC2);
       migrated ||= JSON.stringify(snapshot) !== JSON.stringify(node.snapshot);
       node.snapshot = snapshot;
       const validation = validateState(snapshot, content);
