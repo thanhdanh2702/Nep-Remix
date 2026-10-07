@@ -57,6 +57,8 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
     const label = ACTION_LABEL[puzzle.id] ?? 'Ghép bản vẽ';
 
     const stripRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const trayRefs = useRef<Map<string, HTMLButtonElement>>(new Map());
+    const trayContainerRef = useRef<HTMLDivElement>(null);
     const [focusedPieceId, setFocusedPieceId] = useState<string | null>(null);
 
     // Keep focus on the active piece across re-orders or shift intentionally on removal
@@ -82,13 +84,23 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
     };
 
     const removePiece = (index: number) => {
+      const removedId = currentSeq[index];
       const next = removeOrderPiece(currentSeq, index);
-      let nextFocus: string | null = null;
       if (next.length > 0) {
         const nextIndex = Math.min(index, next.length - 1);
-        nextFocus = next[nextIndex];
+        updateSeq(next, next[nextIndex]);
+      } else {
+        // When all pieces are removed from the canvas, the strip elements unmount.
+        // Prevent focus from dropping to document.body by redirecting focus to
+        // the corresponding returned piece button in the tray (or the first tray button/modal).
+        updateSeq(next, null);
+        setTimeout(() => {
+          const trayBtn = trayRefs.current.get(removedId) ?? trayContainerRef.current?.querySelector('button');
+          if (trayBtn) {
+            trayBtn.focus();
+          }
+        }, 0);
       }
-      updateSeq(next, nextFocus);
     };
 
     const moveLeft = (index: number) => {
@@ -229,13 +241,17 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
                   : 'Đã đưa tất cả mảnh đang có vào khung ghép.'}
               </p>
             ) : (
-              <div className="order-tray-items">
+              <div ref={trayContainerRef} className="order-tray-items">
                 {unplaced.map(id => {
                   const stripPath = c2StripAsset(id);
                   const name = content.itemsById.get(id)?.name ?? id;
                   return (
                     <button
                       key={id}
+                      ref={(el) => {
+                        if (el) trayRefs.current.set(id, el);
+                        else trayRefs.current.delete(id);
+                      }}
                       type="button"
                       className="order-tray-btn"
                       onClick={() => addPiece(id)}

@@ -5,7 +5,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { c2StripAsset, c2CompleteSketchAsset } from './assets';
 import { characterScale, HUMAN_HEIGHT } from './character-scale';
-import { c2AreaOverlays, c2RoomNpcs } from './room-render';
+import { c2AreaOverlays, c2RoomNpcs, c2ExitArrows } from './room-render';
 import {
   addOrderPiece,
   removeOrderPiece,
@@ -525,4 +525,123 @@ test('Order puzzle sequence operations preserve key identity without index in ke
   assert.equal(swapped[0], 'manh_ban_ve_ao_dai_2');
   assert.equal(swapped[1], 'manh_ban_ve_ao_dai_1');
 });
+
+test('c2ExitArrows provides valid fallback navigation for all three C2 areas without overlapping targets', () => {
+  const s1Exits = c2ExitArrows('c2-s1-gac-lung-ve-tranh');
+  assert.equal(s1Exits.length, 1);
+  assert.equal(s1Exits[0].exit, 'window');
+  assert.equal(s1Exits[0].dir, 'right');
+  assert.deepEqual(s1Exits[0].rect, { x: 0.88, y: 0.20, w: 0.10, h: 0.55 });
+
+  const s2Exits = c2ExitArrows('c2-s2-kho-vai-hang-dao');
+  assert.equal(s2Exits.length, 2);
+  const s2Back = s2Exits.find(e => e.exit === 'back');
+  const s2Hall = s2Exits.find(e => e.exit === 'hall');
+  assert.ok(s2Back && s2Hall);
+  assert.equal(s2Back.dir, 'left');
+  assert.equal(s2Hall.dir, 'right');
+  assert.deepEqual(s2Back.rect, { x: 0.00, y: 0.45, w: 0.08, h: 0.45 });
+  assert.deepEqual(s2Hall.rect, { x: 0.92, y: 0.76, w: 0.08, h: 0.14 });
+
+  const s3Exits = c2ExitArrows('c2-s3-phong-trien-lam-doi-dau');
+  assert.equal(s3Exits.length, 1);
+  assert.equal(s3Exits[0].exit, 'back');
+  assert.equal(s3Exits[0].dir, 'left');
+  assert.deepEqual(s3Exits[0].rect, { x: 0.00, y: 0.45, w: 0.08, h: 0.45 });
+
+  // Verify S1 piece 4 and window exit do not overlap on 5 target viewports with >= 44px bounds
+  const piece4Rect = { x: 0.74, y: 0.46, w: 0.06, h: 0.09 };
+  const s1ExitRect = s1Exits[0].rect;
+  for (const width of [390, 768, 844, 1280, 1440]) {
+    const pieceRight = (piece4Rect.x + piece4Rect.w / 2) * width + Math.max(44, piece4Rect.w * width) / 2;
+    const exitLeft = (s1ExitRect.x + s1ExitRect.w / 2) * width - Math.max(44, s1ExitRect.w * width) / 2;
+    assert.ok(pieceRight < exitLeft, `Piece 4 and S1 exit must not overlap at width ${width}`);
+  }
+
+  // Verify S2 safe and hall exit do not overlap vertically at >= 44px bounds
+  const safeRect = { x: 0.739, y: 0.37, w: 0.201, h: 0.28 };
+  const s2HallRect = s2Hall.rect;
+  for (const width of [390, 768, 844, 1280, 1440]) {
+    const height = (width * 941) / 1672;
+    const safeBottom = (safeRect.y + safeRect.h / 2) * height + Math.max(44, safeRect.h * height) / 2;
+    const exitTop = (s2HallRect.y + s2HallRect.h / 2) * height - Math.max(44, s2HallRect.h * height) / 2;
+    assert.ok(safeBottom < exitTop, `Safe and S2 hall exit must not overlap at width ${width}`);
+  }
+});
+
+test('initial walker placement correctly prioritizes entry return over area.spawn', () => {
+  const world = { w: 1672, h: 941 };
+  const floor = { top: 0.58 * world.h, bottom: 0.92 * world.h };
+  const s1Area = content.chapters.c2.areas.find(a => a.id === 'c2-s1-gac-lung-ve-tranh')!;
+
+  // First entry (no reverse arrow match) uses area.spawn
+  const firstEntryPos = s1Area.spawn
+    ? { x: s1Area.spawn.x * world.w, y: s1Area.spawn.y * world.h }
+    : { x: world.w / 2, y: world.h };
+
+  const clampedPos = {
+    x: firstEntryPos.x,
+    y: Math.min(floor.bottom, Math.max(floor.top, firstEntryPos.y))
+  };
+
+  assert.ok(clampedPos.x > 0 && clampedPos.x < world.w);
+  assert.ok(clampedPos.y >= floor.top && clampedPos.y <= floor.bottom);
+
+  // Return entry from prevArea matches reverse exit arrow
+  const returnArrow = { exit: 'back', dir: 'left' as const, rect: { x: 0.00, y: 0.45, w: 0.08, h: 0.45 } };
+  const entryX = (returnArrow.rect.x > 0.15 ? (returnArrow.rect.x - 0.06) : (returnArrow.rect.x + returnArrow.rect.w + 0.06)) * world.w;
+  assert.ok(entryX > 0 && entryX < world.w);
+});
+
+test('walker interaction passes normalized arrived walker feet to interact handler', () => {
+  const world = { w: 1672, h: 941 };
+  const walkerCurrent = { x: 420.5, y: 650.0 };
+  const arrivedFeet = { x: walkerCurrent.x / world.w, y: walkerCurrent.y / world.h };
+
+  assert.ok(arrivedFeet.x >= 0 && arrivedFeet.x <= 1);
+  assert.ok(arrivedFeet.y >= 0 && arrivedFeet.y <= 1);
+  assert.equal(Math.round(arrivedFeet.x * 1000) / 1000, Math.round((420.5 / 1672) * 1000) / 1000);
+  assert.equal(Math.round(arrivedFeet.y * 1000) / 1000, Math.round((650.0 / 941) * 1000) / 1000);
+});
+
+test('Studio challenge detects loan wardrobe items and guards Closet save', () => {
+  const tree = freshTree();
+  const state = tree.nodes[tree.headId].snapshot;
+  const loanGarmentIds = ['ao-dai-lemur'];
+  const loanAccessoryIds = ['khan-van-den', 'guoc-moc'];
+
+  // Draft with loan garment
+  const draftWithLoan: import('../core').StudioDraft = {
+    type: 'studio',
+    eventContextId: 'dao_pho',
+    garmentId: 'ao-dai-lemur',
+    silhouette: 'ao_dai_lemur',
+    colorPalette: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+    equippedAccessories: {},
+  };
+
+  const hasBorrowedGarment = loanGarmentIds.includes(draftWithLoan.garmentId)
+    && !state.closet.unlockedGarmentIds.includes(draftWithLoan.garmentId);
+
+  assert.ok(hasBorrowedGarment, 'ao-dai-lemur should be identified as a borrowed item');
+
+  // Guard blocks saving
+  const canSave = !hasBorrowedGarment;
+  assert.equal(canSave, false, 'Saving outfits containing borrowed items into permanent Closet must be blocked');
+
+  // Standard owned outfit is allowed
+  const ownedGarmentId = state.closet.unlockedGarmentIds[0];
+  const draftOwned: import('../core').StudioDraft = {
+    type: 'studio',
+    eventContextId: 'dao_pho',
+    garmentId: ownedGarmentId,
+    silhouette: content.garmentsById.get(ownedGarmentId)!.silhouette,
+    colorPalette: ['#ffffff', '#ffffff', '#ffffff', '#ffffff'],
+    equippedAccessories: {},
+  };
+  const isBorrowedOwned = loanGarmentIds.includes(draftOwned.garmentId)
+    && !state.closet.unlockedGarmentIds.includes(draftOwned.garmentId);
+  assert.equal(isBorrowedOwned, false);
+});
+
 

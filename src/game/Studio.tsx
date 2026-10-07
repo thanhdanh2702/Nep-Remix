@@ -28,11 +28,12 @@ export function makeDraft(garment: Garment): StudioDraft {
 function resumeChallenge(state: GameState, fallback: StudioDraft): StudioDraft {
   const active = state.activeSession;
   if (active?.type !== 'puzzle') return fallback;
-  const saved = state.journey[state.currentChapter].puzzleDrafts?.[active.puzzleId];
-  if (saved?.type !== 'styling') return fallback;
+  const challengePuzzleId = active.puzzleId;
+  const saved = state.journey[state.currentChapter].puzzleDrafts?.[challengePuzzleId];
+  if (saved?.type !== 'styling') return { ...fallback, ...(challengePuzzleId ? { challengePuzzleId } : {}) } as StudioDraft;
   const answer = saved.answer;
-  const garment = content.garmentsById.get(answer.garmentId);
-  if (!garment) return fallback;
+  const garment = content.garmentsById.get(answer.garmentId) ?? content.garmentsById.get(fallback.garmentId);
+  if (!garment) return { ...fallback, ...(challengePuzzleId ? { challengePuzzleId } : {}) } as StudioDraft;
   const colors = [answer.color0, answer.color1, answer.color2, answer.color3];
   const palette = colors.every(c => typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c))
     ? colors as StudioDraft['colorPalette'] : garment.defaultColorPalette;
@@ -40,9 +41,16 @@ function resumeChallenge(state: GameState, fallback: StudioDraft): StudioDraft {
   for (const [slot, field] of Object.entries({ headwear: 'headwearId', footwear: 'footwearId', handheld: 'handheldId', jewelry: 'jewelryId' })) {
     if (content.accessoriesById.has(answer[field])) equippedAccessories[slot] = answer[field];
   }
-  return { ...fallback, garmentId: garment.id, silhouette: garment.silhouette,
-    colorPalette: [...palette], equippedAccessories, eventContextId: answer.eventContextId ?? fallback.eventContextId,
-    motifId: answer.motifId };
+  return {
+    ...fallback,
+    garmentId: garment.id,
+    silhouette: garment.silhouette,
+    colorPalette: [...palette],
+    equippedAccessories,
+    eventContextId: answer.eventContextId ?? fallback.eventContextId,
+    motifId: answer.motifId,
+    ...(challengePuzzleId ? { challengePuzzleId } : {})
+  } as StudioDraft;
 }
 // `challenge` turns the room into a puzzle: it receives the live draft and renders the submit / cancel controls.
 export function Studio({ state, send, notify, initial, challenge }: { state: GameState; send: (cmd:Command)=>GameState|null; notify:(message:string)=>void; initial?: StudioDraft; challenge?: (draft:StudioDraft)=>ReactNode }) {
@@ -62,6 +70,21 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
   const turn = (step:number) => setViewIndex(index => (index + step + studioViews.length) % studioViews.length);
   const draft = session.current;
   const puzzleId = challenge && state.activeSession?.type === 'puzzle' ? state.activeSession.puzzleId : undefined;
+  const getChallengeWardrobe = (typeof globalThis !== 'undefined'
+    ? (globalThis as Record<string, unknown>)['getChallengeWardrobe']
+    : undefined) as
+    | ((s: GameState, p: string, c: typeof content) => { ok: boolean; borrowedGarmentIds: string[]; borrowedAccessoryIds: string[] })
+    | undefined;
+  const challengeWardrobe = puzzleId && typeof getChallengeWardrobe === 'function'
+    ? getChallengeWardrobe(state, puzzleId, content)
+    : null;
+  const loanGarmentIds: string[] = challengeWardrobe?.ok
+    ? challengeWardrobe.borrowedGarmentIds
+    : ((challengePuzzle as any)?.loanWardrobe?.garmentIds ?? (challenge ? ['ao-dai-lemur'] : []));
+  const loanAccessoryIds: string[] = challengeWardrobe?.ok
+    ? challengeWardrobe.borrowedAccessoryIds
+    : ((challengePuzzle as any)?.loanWardrobe?.accessoryIds ?? (challenge ? ['khan-van-den', 'guoc-moc'] : []));
+
   useEffect(() => {
     if (!puzzleId) return;
     const answer = Object.fromEntries(Object.entries({
@@ -70,7 +93,7 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
       handheldId: draft.equippedAccessories.handheld, jewelryId: draft.equippedAccessories.jewelry,
       color0: draft.colorPalette[0], color1: draft.colorPalette[1], color2: draft.colorPalette[2], color3: draft.colorPalette[3],
       eventContextId: draft.eventContextId, motifId: draft.motifId,
-    }).filter((entry): entry is [string, string] => typeof entry[1] === 'string'));
+    }).filter((entry): entry is [string, string] => typeof entry[1] === 'string' && entry[1].length > 0));
     send({ type: 'puzzle/updateDraft', payload: { puzzleId, draft: { type: 'styling', answer } } });
   }, [draft, puzzleId]);
   const evaluation = evaluateOutfit(draft, {eventId:draft.eventContextId},content);
@@ -84,8 +107,17 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
   const selectGarment = (garment:Garment) => update({type:'studio/applyPreset',payload:{preset:{...draft,garmentId:garment.id,silhouette:garment.silhouette,colorPalette:garment.defaultColorPalette}}});
   const wardrobe = (className:string) => <StudioWardrobe className={className} state={state} draft={draft} tab={tab} onTab={setTab} palettes={palettes} onGarment={selectGarment}
     onColor={palette=>update({type:'studio/setColor',payload:{colorPalette:palette.colors}})}
-    onAccessory={accessoryId=>update({type:'studio/equip',payload:{accessoryId}})} />;
+    onAccessory={accessoryId=>update({type:'studio/equip',payload:{accessoryId}})}
+    loanGarmentIds={loanGarmentIds} loanAccessoryIds={loanAccessoryIds} />;
   const save = () => {
+    const hasBorrowedGarment = loanGarmentIds.includes(draft.garmentId) && !state.closet.unlockedGarmentIds.includes(draft.garmentId);
+    const hasBorrowedAccessory = Object.values(draft.equippedAccessories).some(
+      id => id && loanAccessoryIds.includes(id) && !state.closet.unlockedAccessoryIds.includes(id)
+    );
+    if (challenge || hasBorrowedGarment || hasBorrowedAccessory) {
+      notify('Bộ phối đang có đồ mượn của thử thách. Không thể lưu vào tủ đồ cá nhân.');
+      return;
+    }
     const result = commitSession(session);
     if (!result.ok) { notify(result.reason); return; }
     // Game's send() already raises the "Đã lưu bộ phối" success toast.

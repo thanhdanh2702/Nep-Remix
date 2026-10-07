@@ -10,7 +10,7 @@ import { ARROW_UP, CURSOR_DEFAULT, CURSOR_EXIT, CURSOR_HAND, cursorCss, gridToDa
 import { HUD_SELECTOR, measureInsets } from './scene-view';
 import { anLayerPath } from './npc-portraits';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT, type CharacterScene } from './character-scale';
-import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
+import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, c2ExitArrows, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
 import { arriveNow, cellFor, clampToFloor, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
@@ -141,7 +141,11 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       .map(i => ({ id: i.id, rect: rectOf(i, world.w, world.h) }));
     return [...interactableNpcs, ...staticNpcs.map(n => ({ id: n.id, rect: n.rect }))];
   }, [area.interactables, progress.side, world, staticNpcs]);
-  const via = new Set((area.exitArrows ?? []).map(a => a.via));
+  const effectiveExitArrows = useMemo(
+    () => (area.exitArrows && area.exitArrows.length > 0 ? area.exitArrows : c2ExitArrows(areaId)),
+    [area.exitArrows, areaId]
+  );
+  const via = useMemo(() => new Set(effectiveExitArrows.map(a => a.via)), [effectiveExitArrows]);
   const buttons = spots.filter(s => !via.has(s.i.id));
   const focusSpot = !blocked && hoverId ? spots.find(s => s.i.id === hoverId) : undefined;
   const live = useRef({ box, ready, blocked, hoverId, soi, s1, areaId, spots, focusSpot, via, npcs, scene });
@@ -172,11 +176,14 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   useEffect(() => { // Load the area art; the dark fade covers this gap.
     let cancelled = false;
     setReady(false); setFailure(''); setHoverId(null); assets.current = null; lastSig.current = '';
-    // An enters just above the exit arrow that leads back to the room she came from (bottom centre on first entry), on clear floor.
-    const entry = (area.exitArrows ?? []).find(x => area.exits[x.exit] === prevArea.current);
+    // An enters just above the exit arrow that leads back to the room she came from (spawn or bottom centre on first entry), on clear floor.
+    const entry = effectiveExitArrows.find(x => area.exits[x.exit] === prevArea.current);
     prevArea.current = areaId;
     const floor = scene && floorOf(scene, world.h);
-    walker.current = floor ? newWalker(standClear(areaId, clampToFloor(entry ? entryPoint(entry.rect, floor, world) : { x: world.w / 2, y: world.h }, floor, world.w), floor, world)) : null;
+    const initialPos = entry && floor
+      ? entryPoint(entry.rect, floor, world)
+      : (area.spawn ? { x: area.spawn.x * world.w, y: area.spawn.y * world.h } : { x: world.w / 2, y: world.h });
+    walker.current = floor ? newWalker(standClear(areaId, clampToFloor(initialPos, floor, world.w), floor, world)) : null;
     const folder = areaFolder(chapterId, areaId);
     const ids = Object.keys(boxesFor(chapterId, areaId)).filter(id => assetRegistry[`${folder}/hotspot-${id}.png`]);
     const npcIds = area.interactables.map(i => i.id).filter(id => ROOM_NPCS[id]);
@@ -241,8 +248,8 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   }, [preset]);
 
   useEffect(() => { // A hotspot that disappears (item picked, puzzle solved) takes its hover with it.
-    if (hoverId && !spots.some(s => s.i.id === hoverId) && !(area.exitArrows ?? []).some(x => (x.via ?? `exit:${x.exit}`) === hoverId)) setHoverId(null);
-  }, [spots, hoverId, area]);
+    if (hoverId && !spots.some(s => s.i.id === hoverId) && !effectiveExitArrows.some(x => (x.via ?? `exit:${x.exit}`) === hoverId)) setHoverId(null);
+  }, [spots, hoverId, effectiveExitArrows]);
   useEffect(() => { // Blocked (dialogue, puzzle, panel): no hover, no highlight.
     if (blocked) { setHoverId(null); setSoi(false); if (pending.current) stop(); } // something else took over: she stays put and nothing fires later
   }, [blocked]);
@@ -309,12 +316,23 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   };
   /** Hotspot click (or Enter on its button): An walks beside the object, faces it, then the interaction runs once. */
   const go = (i: Interactable) => {
-    const w = walker.current, fire = () => interact.current(i.id, i.pos);
-    if (!scene || !w) return fire();
+    const w = walker.current;
+    if (!scene || !w) return interact.current(i.id, i.pos);
     if (pending.current?.id === i.id) return; // already on her way there: never fire twice
     const floor = floorOf(scene, world.h), aim = targetFor(rectOf(i, world.w, world.h), w, floor, world.w, STAND_GAP * world.w);
     const to = standClear(areaId, aim.to, floor, world), face = aim.face;
-    if (prefersReducedMotion()) { stop(); walker.current = arriveNow(w, to, face); paint(); return fire(); }
+    const fire = () => {
+      const arrivedFeet = walker.current
+        ? { x: walker.current.x / world.w, y: walker.current.y / world.h }
+        : { x: to.x / world.w, y: to.y / world.h };
+      interact.current(i.id, arrivedFeet);
+    };
+    if (prefersReducedMotion()) {
+      stop();
+      walker.current = arriveNow(w, to, face);
+      paint();
+      return fire();
+    }
     pending.current = { id: i.id, fire };
     walker.current = { ...w, goal: { to, face } };
     run();
@@ -327,7 +345,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     onBlur: () => setHoverId(null),
   });
   const tip = hoverId && !blocked ? (() => {
-    const spot = spots.find(s => s.i.id === hoverId), arrow = (area.exitArrows ?? []).find(a => a.via === hoverId || `exit:${a.exit}` === hoverId);
+    const spot = spots.find(s => s.i.id === hoverId), arrow = effectiveExitArrows.find(a => a.via === hoverId || `exit:${a.exit}` === hoverId);
     const r = spot ? spot.hit : arrow ? hitOf(arrow.rect, box) : undefined;
     const text = spot && !arrow ? spot.label : arrow ? DIR_LABEL[arrow.dir] : ''; // arrow tooltip stays short; the aria-label carries the destination
     return r && text ? { text, left: Math.min(box.w - 60, Math.max(60, r.x + r.w / 2)), top: r.y < 36 ? r.y + r.h + 8 : r.y - 8, below: r.y < 36 } : null;
@@ -343,7 +361,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       <div className="room-hotspots" role="group" aria-label="Vật trong phòng">
         {buttons.map(s => <button key={s.i.id} type="button" data-hotspot={s.i.id} data-used={s.used} aria-label={s.label} disabled={blocked}
           style={pos(s.hit)} onClick={() => go(s.i)} {...hover(s.i.id)} />)}
-        {(area.exitArrows ?? []).map(arrow => <button key={arrow.exit} type="button" className={`room-exit dir-${arrow.dir}`} data-exit={arrow.exit} aria-label={exitLabel(arrow)} disabled={blocked}
+        {effectiveExitArrows.map(arrow => <button key={arrow.exit} type="button" className={`room-exit dir-${arrow.dir}`} data-exit={arrow.exit} aria-label={exitLabel(arrow)} disabled={blocked}
           style={pos(hitOf(arrow.rect, box))} {...hover(arrow.via ?? `exit:${arrow.exit}`)}
           onClick={() => { const target = arrow.via && area.interactables.find(i => i.id === arrow.via); if (target) onInteract(target.id, target.pos); else onExit(arrow); }}>
           <img src={arrowUrl(arrow.dir, n)} alt="" draggable={false} />

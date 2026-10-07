@@ -5,6 +5,7 @@ import { portraitFor } from './npc-portraits';
 import { AN, assetRegistry, areaFolder } from './assets';
 import { AN_FIGURE_H, characterScale, spriteScaleFor, type CharacterScene } from './character-scale';
 import { npcView, type NpcView, type Pt } from './room-walker';
+import type { ExitArrow } from '../content/schema';
 
 export function c2AreaOverlays(
   chapterId: string,
@@ -161,6 +162,22 @@ export function c2RoomNpcs(
     ];
   }
 
+  return [];
+}
+
+export function c2ExitArrows(areaId: string): ExitArrow[] {
+  if (areaId === 'c2-s1-gac-lung-ve-tranh') {
+    return [{ exit: 'window', rect: { x: 0.88, y: 0.20, w: 0.10, h: 0.55 }, dir: 'right' }];
+  }
+  if (areaId === 'c2-s2-kho-vai-hang-dao') {
+    return [
+      { exit: 'back', rect: { x: 0.00, y: 0.45, w: 0.08, h: 0.45 }, dir: 'left' },
+      { exit: 'hall', rect: { x: 0.92, y: 0.76, w: 0.08, h: 0.14 }, dir: 'right' },
+    ];
+  }
+  if (areaId === 'c2-s3-phong-trien-lam-doi-dau') {
+    return [{ exit: 'back', rect: { x: 0.00, y: 0.45, w: 0.08, h: 0.45 }, dir: 'left' }];
+  }
   return [];
 }
 /** Sprite sheets at An's spec share her art px and foot anchor (AN.anchor); the 128x128 cat has ~14 px under its paws. */
