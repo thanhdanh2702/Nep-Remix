@@ -81,6 +81,88 @@ export const ROOM_NPCS: Record<string, { path: string; ghost?: boolean } | undef
   'hitbox-cu-loan-storage': speakerSprite('Cụ Loan'),
   'hitbox-ong-le-shadow': speakerSprite('Bóng mờ Ông Lệ'),
 };
+
+export interface RoomNpc {
+  id: string;
+  name: string;
+  path: string;
+  ghost?: boolean;
+  rect: Box;
+}
+
+/** C2 static scene characters (Loan, Cả Nghị) placed on the room floor decoupled from interactable hitboxes. */
+export function c2RoomNpcs(
+  chapterId: string,
+  areaId: string,
+  solvedPuzzleIds: string[],
+  world: { w: number; h: number }
+): RoomNpc[] {
+  if (chapterId !== 'c2') return [];
+  const W = world.w, H = world.h;
+  const npcBox = (footNormX: number, footNormY: number): Box => {
+    const footX = Math.round(footNormX * W);
+    const footY = Math.round(footNormY * H);
+    return {
+      x: footX - 88,
+      y: footY - 416,
+      w: 176,
+      h: 416,
+    };
+  };
+
+  if (areaId === 'c2-s1-gac-lung-ve-tranh') {
+    return [
+      {
+        id: 'c2-s1-loan',
+        name: 'Cụ Loan',
+        path: 'assets/characters/cu-loan/scene-idle.png',
+        rect: npcBox(0.68, 0.75),
+      },
+    ];
+  }
+
+  if (areaId === 'c2-s2-kho-vai-hang-dao') {
+    return [
+      {
+        id: 'c2-s2-loan',
+        name: 'Cụ Loan',
+        path: 'assets/characters/cu-loan/scene-worried.png',
+        rect: npcBox(0.36, 0.70),
+      },
+    ];
+  }
+
+  if (areaId === 'c2-s3-phong-trien-lam-doi-dau') {
+    const caNghiPath = solvedPuzzleIds.includes('p-c2-present-sketch')
+      ? 'assets/characters/ca-nghi/scene-retreat.png'
+      : solvedPuzzleIds.includes('p-c2-present-receipt')
+        ? 'assets/characters/ca-nghi/scene-shocked.png'
+        : 'assets/characters/ca-nghi/scene-stern.png';
+
+    const loanPath = solvedPuzzleIds.includes('p-c2-styling-loan')
+      ? 'assets/characters/cu-loan/scene-relieved.png'
+      : solvedPuzzleIds.includes('p-c2-present-sketch')
+        ? 'assets/characters/cu-loan/scene-determined.png'
+        : 'assets/characters/cu-loan/scene-worried.png';
+
+    return [
+      {
+        id: 'c2-s3-ca-nghi',
+        name: 'Ông Cả Nghị',
+        path: caNghiPath,
+        rect: npcBox(0.75, 0.72),
+      },
+      {
+        id: 'c2-s3-loan',
+        name: 'Cụ Loan',
+        path: loanPath,
+        rect: npcBox(0.22, 0.72),
+      },
+    ];
+  }
+
+  return [];
+}
 /** Sprite sheets at An's spec share her art px and foot anchor (AN.anchor); the 128x128 cat has ~14 px under its paws. */
 const CAT = { cell: 128, foot: { x: 64, y: 114 }, world: { x: 677, y: 458 }, height: 100, share: 0.26 };
 
@@ -159,7 +241,7 @@ export function drawRoom(ctx: CanvasRenderingContext2D, assets: RoomAssets, area
       const img = views && ((an && views[npcView(foot, an, { w: assets.bg.naturalWidth, h: bgH })]) || views.front);
       if (!img) continue;
       draws.push({ y: foot.y, draw: () => {
-        ctx.globalAlpha = ROOM_NPCS[id]?.ghost ? .7 : 1; // ghosts are see-through
+        ctx.globalAlpha = (ROOM_NPCS[id]?.ghost || id.includes('ong-le')) ? .7 : 1; // ghosts are see-through
         figure(img, img.naturalWidth, img.naturalHeight, AN.anchor, foot, characterScale(scene, bgH, foot.y) * spriteScaleFor(img), img.naturalHeight >= 128);
         ctx.globalAlpha = 1;
       } });

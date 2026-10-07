@@ -10,7 +10,7 @@ import { ARROW_UP, CURSOR_DEFAULT, CURSOR_EXIT, CURSOR_HAND, cursorCss, gridToDa
 import { HUD_SELECTOR, measureInsets } from './scene-view';
 import { anLayerPath } from './npc-portraits';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT, type CharacterScene } from './character-scale';
-import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
+import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
 import { arriveNow, cellFor, clampToFloor, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
@@ -33,10 +33,18 @@ const entryPoint = (r: { x: number; y: number; w: number; h: number }, floor: { 
     : { x: r.x > 0.15 ? (r.x - 0.06) * world.w : (r.x + r.w + 0.06) * world.w, y: floor.top };
 const rectOf = (i: Interactable, w: number, h: number): Box => { const r = i.rect ?? { x: i.pos.x - .03, y: i.pos.y - .03, w: .06, h: .06 }; return { x: r.x * w, y: r.y * h, w: r.w * w, h: r.h * h }; };
 // Every loaded view of one NPC (front, left, right, back); a missing file just leaves that view out.
-const loadViews = (id: string): Promise<NpcViews> => {
-  const files = NPC_VIEWS.map(view => [view, ROOM_NPCS[id]!.path.replace('view-front', `view-${view}`)] as const).filter(([, path]) => assetRegistry[path]);
+const loadViews = (id: string, customPath?: string): Promise<NpcViews> => {
+  const spritePath = customPath ?? ROOM_NPCS[id]?.path;
+  if (!spritePath) return Promise.resolve({});
+  const files = NPC_VIEWS.map(view => [view, spritePath.replace('view-front', `view-${view}`)] as const).filter(([, path]) => assetRegistry[path]);
   return Promise.allSettled(files.map(([, path]) => loadImage(path)))
-    .then(done => Object.fromEntries(files.flatMap(([view], i) => { const r = done[i]; return r.status === 'fulfilled' ? [[view, r.value]] : []; })));
+    .then(done => {
+      const views = Object.fromEntries(files.flatMap(([view], i) => { const r = done[i]; return r.status === 'fulfilled' ? [[view, r.value]] : []; }));
+      if (!views.front && assetRegistry[spritePath]) {
+        return loadImage(spritePath).then(img => ({ ...views, front: img })).catch(() => views);
+      }
+      return views;
+    });
 };
 const DIR_LABEL = { up: 'Đi lên', down: 'Đi xuống', left: 'Sang trái', right: 'Sang phải' };
 type Chapter = (typeof content.chapters)[keyof typeof content.chapters];
@@ -123,9 +131,16 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
         return { i: s.i, label: s.label, used: s.used, world: s.world, hit: limitHit(s.hit, rect, centres) };
       });
   }, [area, chapterId, areaId, box.w, box.h, progress.side, progress.solvedPuzzleIds, progress.completedDialogueIds, state.inventory.itemIds, chapter]);
-  const npcs = area.interactables // same side rule as the spots; solved puzzles keep their NPC standing
-    .filter(i => ROOM_NPCS[i.id] && (i.side === 'ca_hai' || `mat_${i.side}` === progress.side))
-    .map(i => ({ id: i.id, rect: rectOf(i, world.w, world.h) }));
+  const staticNpcs = useMemo(
+    () => c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world),
+    [chapterId, areaId, progress.solvedPuzzleIds, world]
+  );
+  const npcs = useMemo(() => {
+    const interactableNpcs = area.interactables
+      .filter(i => ROOM_NPCS[i.id] && (i.side === 'ca_hai' || `mat_${i.side}` === progress.side))
+      .map(i => ({ id: i.id, rect: rectOf(i, world.w, world.h) }));
+    return [...interactableNpcs, ...staticNpcs.map(n => ({ id: n.id, rect: n.rect }))];
+  }, [area.interactables, progress.side, world, staticNpcs]);
   const via = new Set((area.exitArrows ?? []).map(a => a.via));
   const buttons = spots.filter(s => !via.has(s.i.id));
   const focusSpot = !blocked && hoverId ? spots.find(s => s.i.id === hoverId) : undefined;
@@ -165,12 +180,18 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const folder = areaFolder(chapterId, areaId);
     const ids = Object.keys(boxesFor(chapterId, areaId)).filter(id => assetRegistry[`${folder}/hotspot-${id}.png`]);
     const npcIds = area.interactables.map(i => i.id).filter(id => ROOM_NPCS[id]);
+    const staticNpcItems = c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
+    const allNpcLoaders = [
+      ...npcIds.map(id => loadViews(id)),
+      ...staticNpcItems.map(n => loadViews(n.id, n.path)),
+    ];
+    const allNpcIds = [...npcIds, ...staticNpcItems.map(n => n.id)];
     const overlaySpecs = c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds);
     const validOverlays = overlaySpecs.filter(o => assetRegistry[o.path]);
     Promise.all([
       Promise.all([loadImage(areaAsset(chapterId, areaId)), s1 && assetRegistry[CAT_SPRITE] ? loadImage(CAT_SPRITE) : undefined]),
       Promise.allSettled(ids.map(id => loadImage(`${folder}/hotspot-${id}.png`))),
-      Promise.all(npcIds.map(loadViews)),
+      Promise.all(allNpcLoaders),
       Promise.allSettled(validOverlays.map(o => loadImage(o.path))),
     ]).then(([[bg, cat], cuts, people, loadedOverlays]) => {
       if (cancelled) return;
@@ -181,23 +202,33 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       assets.current = {
         bg, cat,
         cutouts: Object.fromEntries(ids.flatMap((id, i) => cuts[i].status === 'fulfilled' ? [[id, cuts[i].value]] : [])),
-        npcs: Object.fromEntries(npcIds.map((id, i) => [id, people[i]])),
+        npcs: Object.fromEntries(allNpcIds.map((id, i) => [id, people[i]])),
         overlays,
       };
       setReady(true);
     }).catch(error => { if (!cancelled) setFailure(error.message); });
     return () => { cancelled = true; stop(); };
-  }, [chapterId, areaId, s1]);
+  }, [chapterId, areaId, s1, world]);
 
   useEffect(() => {
-    if (assets.current?.overlays && chapterId === 'c2') {
-      const liveSpecs = Object.fromEntries(c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds).map(o => [o.id, o.visible]));
-      assets.current.overlays.forEach(o => {
-        if (liveSpecs[o.id] !== undefined) o.visible = liveSpecs[o.id];
+    if (assets.current && chapterId === 'c2') {
+      if (assets.current.overlays) {
+        const liveSpecs = Object.fromEntries(c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds).map(o => [o.id, o.visible]));
+        assets.current.overlays.forEach(o => {
+          if (liveSpecs[o.id] !== undefined) o.visible = liveSpecs[o.id];
+        });
+      }
+      const currentStatics = c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
+      Promise.all(currentStatics.map(n => loadViews(n.id, n.path))).then(loadedViews => {
+        if (!assets.current) return;
+        currentStatics.forEach((n, idx) => {
+          assets.current!.npcs[n.id] = loadedViews[idx];
+        });
+        lastSig.current = '';
+        paint();
       });
-      lastSig.current = '';
     }
-  }, [state.inventory.itemIds, progress.solvedPuzzleIds, chapterId, areaId]);
+  }, [state.inventory.itemIds, progress.solvedPuzzleIds, chapterId, areaId, world]);
 
   useEffect(() => { // An's layers for the player's look, loaded outside the room fade; she appears once ready. A failure leaves the room playable without her.
     let cancelled = false;

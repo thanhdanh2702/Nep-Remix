@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import type { StudioDraft, PuzzleAnswerDraft } from '../core';
 import type { ChapterId, Puzzle } from '../content/schema';
 import { content } from './store';
@@ -55,14 +56,54 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
     const unplaced = ownedStrips.filter(id => !currentSeq.includes(id));
     const label = ACTION_LABEL[puzzle.id] ?? 'Ghép bản vẽ';
 
-    const updateSeq = (next: string[]) => {
+    const stripRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+    const [focusedPieceId, setFocusedPieceId] = useState<string | null>(null);
+
+    // Keep focus on the active piece across re-orders or shift intentionally on removal
+    useEffect(() => {
+      if (focusedPieceId) {
+        const el = stripRefs.current.get(focusedPieceId);
+        if (el && document.activeElement !== el) {
+          el.focus();
+        }
+      }
+    }, [currentSeq, focusedPieceId]);
+
+    const updateSeq = (next: string[], nextFocusId?: string | null) => {
+      if (nextFocusId !== undefined) {
+        setFocusedPieceId(nextFocusId);
+      }
       onUpdateDraft({ type: 'order', answer: next });
     };
 
-    const addPiece = (id: string) => updateSeq(addOrderPiece(currentSeq, id));
-    const removePiece = (index: number) => updateSeq(removeOrderPiece(currentSeq, index));
-    const moveLeft = (index: number) => updateSeq(moveOrderPieceLeft(currentSeq, index));
-    const moveRight = (index: number) => updateSeq(moveOrderPieceRight(currentSeq, index));
+    const addPiece = (id: string) => {
+      const next = addOrderPiece(currentSeq, id);
+      updateSeq(next, id);
+    };
+
+    const removePiece = (index: number) => {
+      const next = removeOrderPiece(currentSeq, index);
+      let nextFocus: string | null = null;
+      if (next.length > 0) {
+        const nextIndex = Math.min(index, next.length - 1);
+        nextFocus = next[nextIndex];
+      }
+      updateSeq(next, nextFocus);
+    };
+
+    const moveLeft = (index: number) => {
+      if (index <= 0) return;
+      const pieceId = currentSeq[index];
+      const next = moveOrderPieceLeft(currentSeq, index);
+      updateSeq(next, pieceId);
+    };
+
+    const moveRight = (index: number) => {
+      if (index >= currentSeq.length - 1) return;
+      const pieceId = currentSeq[index];
+      const next = moveOrderPieceRight(currentSeq, index);
+      updateSeq(next, pieceId);
+    };
 
     return (
       <Modal title={puzzle.title} wide onClose={onClose}>
@@ -72,60 +113,113 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
             {currentSeq.length === 0 ? (
               <p className="order-empty-hint">Chưa có dải bản vẽ nào được đặt. Chọn mảnh bên dưới để ghép.</p>
             ) : (
-              <div className="order-slots">
+              <div className="order-canvas-wrapper">
+                <div className="order-canvas" role="region" aria-label="Bản vẽ ghép liên tục">
+                  {currentSeq.map((id, index) => {
+                    const stripPath = c2StripAsset(id);
+                    const name = content.itemsById.get(id)?.name ?? `Dải ${index + 1}`;
+                    return (
+                      <div
+                        key={id}
+                        ref={(el) => {
+                          if (el) stripRefs.current.set(id, el);
+                          else stripRefs.current.delete(id);
+                        }}
+                        className={`order-strip-slot ${focusedPieceId === id ? 'is-selected' : ''}`}
+                        tabIndex={0}
+                        role="group"
+                        aria-label={`Vị trí ${index + 1}: ${name}. Dùng phím Mũi tên trái/phải để đổi chỗ, Delete để gỡ.`}
+                        onFocus={() => setFocusedPieceId(id)}
+                        onClick={() => setFocusedPieceId(id)}
+                        onKeyDown={(e) => {
+                          if (e.key === 'ArrowLeft') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            moveLeft(index);
+                          } else if (e.key === 'ArrowRight') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            moveRight(index);
+                          } else if (e.key === 'Delete' || e.key === 'Backspace') {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            removePiece(index);
+                          }
+                        }}
+                      >
+                        <span className="order-slot-num">{index + 1}</span>
+                        {stripPath && (
+                          <img
+                            src={asset(stripPath)}
+                            alt={name}
+                            className="order-strip-img"
+                            draggable={false}
+                          />
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {currentSeq.length > 0 && (
+            <div className="order-strip-controls-panel" role="group" aria-label="Điều khiển vị trí các mảnh">
+              <h4>Thao tác các mảnh đã ghép:</h4>
+              <div className="order-strip-controls-list">
                 {currentSeq.map((id, index) => {
-                  const stripPath = c2StripAsset(id);
                   const name = content.itemsById.get(id)?.name ?? `Dải ${index + 1}`;
                   return (
-                    <div
-                      key={`${id}-${index}`}
-                      className="order-slot"
-                      tabIndex={0}
-                      role="group"
-                      aria-label={`Vị trí ${index + 1}: ${name}. Dùng phím Mũi tên trái/phải để đổi chỗ, Delete để gỡ.`}
-                      onKeyDown={(e) => {
-                        handleOrderSlotKey(e.key, index, currentSeq, () => e.preventDefault(), updateSeq);
-                      }}
-                    >
-                      <span className="order-slot-num">{index + 1}</span>
-                      <div className="order-strip-preview">
-                        {stripPath && <img src={asset(stripPath)} alt={name} className="order-strip-img" />}
-                      </div>
-                      <div className="order-strip-controls">
+                    <div key={id} className="order-strip-control-row">
+                      <span className="order-strip-control-label">
+                        <strong className="order-slot-badge">{index + 1}</strong> {name}
+                      </span>
+                      <div className="order-strip-btn-group">
                         <button
                           type="button"
                           disabled={index === 0}
-                          onClick={() => moveLeft(index)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveLeft(index);
+                          }}
                           aria-label={`Dịch ${name} sang trái`}
-                          title="Sang trái"
+                          title="Dịch sang trái"
                         >
-                          ‹
+                          ‹ Trái
                         </button>
                         <button
                           type="button"
                           disabled={index === currentSeq.length - 1}
-                          onClick={() => moveRight(index)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            moveRight(index);
+                          }}
                           aria-label={`Dịch ${name} sang phải`}
-                          title="Sang phải"
+                          title="Dịch sang phải"
                         >
-                          ›
+                          Phải ›
                         </button>
                         <button
                           type="button"
                           className="order-remove"
-                          onClick={() => removePiece(index)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            removePiece(index);
+                          }}
                           aria-label={`Gỡ ${name}`}
                           title="Gỡ bỏ"
                         >
-                          ×
+                          × Gỡ
                         </button>
                       </div>
                     </div>
                   );
                 })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
           <div className="order-tray" aria-label="Mảnh bản vẽ trong túi">
             <h4>Mảnh bản vẽ trong túi đồ:</h4>
             {unplaced.length === 0 ? (
@@ -160,7 +254,7 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
           <button className="primary" onClick={() => onSubmit(currentSeq)}>
             {label}
           </button>
-          <button type="button" disabled={currentSeq.length === 0} onClick={() => updateSeq([])}>
+          <button type="button" disabled={currentSeq.length === 0} onClick={() => updateSeq(resetOrderSeq(), null)}>
             Đặt lại
           </button>
           <button disabled={hintTier >= 3} onClick={onHint}>
@@ -245,7 +339,7 @@ export function ChapterEnding({ chapter, clueIds, onHome, onMap, onClose }: {
   return <Modal title={art?.title ?? title} wide onClose={onClose}>
     {art ? <img className="ending-art" src={asset(art.src)} alt={art.alt} /> : <p className="ending-ribbon">Hoàn thành chương</p>}
     {clues.map(clue => <article key={clue!.id} className="ending-clue"><h4>{clue!.title}</h4><p>{clue!.description}</p></article>)}
-    <strong>Đã hoàn thành {art ? 'Màn mở đầu' : title}</strong>
+    <strong>Đã hoàn thành {id === 'prologue' ? 'Màn mở đầu' : title}</strong>
     <div className="ending-rewards">
       <h4>Phần thưởng nhận được:</h4>
       <ul>

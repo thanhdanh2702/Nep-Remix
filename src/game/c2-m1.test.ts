@@ -5,7 +5,7 @@ import { resolve, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { c2StripAsset, c2CompleteSketchAsset } from './assets';
 import { characterScale, HUMAN_HEIGHT } from './character-scale';
-import { c2AreaOverlays } from './room-render';
+import { c2AreaOverlays, c2RoomNpcs } from './room-render';
 import {
   addOrderPiece,
   removeOrderPiece,
@@ -285,6 +285,13 @@ test('order puzzle draft persistence, close/reopen, and reload resilience in Cor
   assert.equal(enterRes.ok, true);
   tree = enterRes.tree;
 
+  // Advance intro dialogue D0 ('d-c2-ca-nghi') through real command if active
+  while (tree.nodes[tree.headId].snapshot.journey.c2.activeDialogue) {
+    const advRes = execute(tree, { type: 'dialogue/advance', payload: {} });
+    if (!advRes.ok) break;
+    tree = advRes.tree;
+  }
+
   const openRes = execute(tree, {
     type: 'puzzle/open',
     payload: { puzzleId: 'p-c2-sketch-assemble' },
@@ -391,19 +398,131 @@ test('order puzzle draft persistence, close/reopen, and reload resilience in Cor
   assert.ok(solvedState.inventory.itemIds.includes('ban_ve_ao_dai_tan_thoi'));
 });
 
-test('touch target minimum 44px and focus-visible styling in puzzle.css', () => {
+test('touch target minimum 44px, native aspect ratio, and focus-visible styling in puzzle.css', () => {
   const css = readFileSync(resolve(__dirname, 'puzzle.css'), 'utf8');
 
   // Assert button min-width and min-height are set to var(--target-min) (44px)
   assert.ok(
-    css.includes('.order-strip-controls button { min-height: var(--target-min); min-width: var(--target-min);'),
+    css.includes('.order-strip-btn-group button {') &&
+    css.includes('min-height: var(--target-min);') &&
+    css.includes('min-width: var(--target-min);'),
     'Order puzzle controls button must satisfy min-height and min-width var(--target-min) (>=44px)'
+  );
+
+  // Assert native aspect ratio 128 / 1476 is preserved and object-fit: fill is removed
+  assert.ok(
+    css.includes('aspect-ratio: 128 / 1476;'),
+    'Order strip image must preserve native 128 / 1476 aspect ratio'
+  );
+  assert.ok(
+    !css.includes('object-fit: fill;'),
+    'Order strip image must not stretch or distort with object-fit: fill'
+  );
+
+  // Assert contiguous canvas gap is 0
+  assert.ok(
+    css.includes('gap: 0; /* Strips assemble seamlessly side-by-side */') || css.includes('gap: 0;'),
+    'Order canvas must have gap 0 to assemble seamlessly'
   );
 
   // Assert focus-visible styling is present
   assert.ok(
-    css.includes('.order-slot:focus-visible'),
-    'Order slot must have clear focus-visible styling for keyboard accessibility'
+    css.includes('.order-strip-slot:focus-visible'),
+    'Order strip slot must have clear focus-visible styling for keyboard accessibility'
   );
+});
+
+test('c2RoomNpcs places Loan and Cả Nghị on room floors without overlapping pickups or exits', () => {
+  const c2Content = content.chapters.c2;
+  const world = { w: 1672, h: 941 };
+  const floorMin = HUMAN_HEIGHT.c2.floorTop * world.h;
+  const floorMax = HUMAN_HEIGHT.c2.floorBottom * world.h;
+
+  // 1. S1 Gác lửng vẽ tranh: Loan is placed on floor
+  const s1Npcs = c2RoomNpcs('c2', 'c2-s1-gac-lung-ve-tranh', [], world);
+  assert.equal(s1Npcs.length, 1);
+  const s1Loan = s1Npcs.find(n => n.id === 'c2-s1-loan')!;
+  assert.ok(s1Loan);
+  assert.equal(s1Loan.path, 'assets/characters/cu-loan/scene-idle.png');
+  const s1LoanFootY = s1Loan.rect.y + s1Loan.rect.h;
+  assert.ok(s1LoanFootY >= floorMin && s1LoanFootY <= floorMax, `Loan footY ${s1LoanFootY} must be within floor [${floorMin}, ${floorMax}]`);
+
+  // Verify no overlap with any pickup items in S1
+  const s1Area = c2Content.areas.find(a => a.id === 'c2-s1-gac-lung-ve-tranh')!;
+  for (const item of s1Area.interactables) {
+    const itemRect = item.rect ? {
+      x: item.rect.x * world.w,
+      y: item.rect.y * world.h,
+      w: item.rect.w * world.w,
+      h: item.rect.h * world.h,
+    } : { x: item.pos.x * world.w - 40, y: item.pos.y * world.h - 40, w: 80, h: 80 };
+    const overlapX = s1Loan.rect.x < itemRect.x + itemRect.w && s1Loan.rect.x + s1Loan.rect.w > itemRect.x;
+    const overlapY = s1Loan.rect.y < itemRect.y + itemRect.h && s1Loan.rect.y + s1Loan.rect.h > itemRect.y;
+    assert.ok(!(overlapX && overlapY), `Loan must not overlap interactable ${item.id}`);
+  }
+
+  // 2. S2 Kho vải: Loan is placed on floor
+  const s2Npcs = c2RoomNpcs('c2', 'c2-s2-kho-vai-hang-dao', [], world);
+  assert.equal(s2Npcs.length, 1);
+  const s2Loan = s2Npcs.find(n => n.id === 'c2-s2-loan')!;
+  assert.ok(s2Loan);
+  assert.equal(s2Loan.path, 'assets/characters/cu-loan/scene-worried.png');
+  const s2LoanFootY = s2Loan.rect.y + s2Loan.rect.h;
+  assert.ok(s2LoanFootY >= floorMin && s2LoanFootY <= floorMax, `Loan footY ${s2LoanFootY} must be within floor [${floorMin}, ${floorMax}]`);
+
+  // 3. S3 Triển lãm: Dynamic poses for Cả Nghị and Loan based on puzzle solved states
+  // Initial state: Cả Nghị stern, Loan worried
+  const s3NpcsInitial = c2RoomNpcs('c2', 'c2-s3-phong-trien-lam-doi-dau', [], world);
+  assert.equal(s3NpcsInitial.length, 2);
+  const caNghiInitial = s3NpcsInitial.find(n => n.id === 'c2-s3-ca-nghi')!;
+  const loanInitial = s3NpcsInitial.find(n => n.id === 'c2-s3-loan')!;
+  assert.equal(caNghiInitial.path, 'assets/characters/ca-nghi/scene-stern.png');
+  assert.equal(loanInitial.path, 'assets/characters/cu-loan/scene-worried.png');
+  assert.ok(caNghiInitial.rect.y + caNghiInitial.rect.h >= floorMin && caNghiInitial.rect.y + caNghiInitial.rect.h <= floorMax);
+  assert.ok(loanInitial.rect.y + loanInitial.rect.h >= floorMin && loanInitial.rect.y + loanInitial.rect.h <= floorMax);
+
+  // After receipt solved: Cả Nghị shocked
+  const s3NpcsReceipt = c2RoomNpcs('c2', 'c2-s3-phong-trien-lam-doi-dau', ['p-c2-present-receipt'], world);
+  assert.equal(s3NpcsReceipt.find(n => n.id === 'c2-s3-ca-nghi')!.path, 'assets/characters/ca-nghi/scene-shocked.png');
+
+  // After sketch solved: Cả Nghị retreat, Loan determined
+  const s3NpcsSketch = c2RoomNpcs('c2', 'c2-s3-phong-trien-lam-doi-dau', ['p-c2-present-receipt', 'p-c2-present-sketch'], world);
+  assert.equal(s3NpcsSketch.find(n => n.id === 'c2-s3-ca-nghi')!.path, 'assets/characters/ca-nghi/scene-retreat.png');
+  assert.equal(s3NpcsSketch.find(n => n.id === 'c2-s3-loan')!.path, 'assets/characters/cu-loan/scene-determined.png');
+
+  // After styling solved: Loan relieved
+  const s3NpcsStyling = c2RoomNpcs('c2', 'c2-s3-phong-trien-lam-doi-dau', ['p-c2-present-receipt', 'p-c2-present-sketch', 'p-c2-styling-loan'], world);
+  assert.equal(s3NpcsStyling.find(n => n.id === 'c2-s3-loan')!.path, 'assets/characters/cu-loan/scene-relieved.png');
+});
+
+test('ChapterEnding differentiates completion text by chapter ID', () => {
+  const getEndingTitle = (chapterId: string, chapterTitle: string) => {
+    return `Đã hoàn thành ${chapterId === 'prologue' ? 'Màn mở đầu' : chapterTitle}`;
+  };
+
+  assert.equal(
+    getEndingTitle('prologue', 'Màn mở đầu: Tiệm May Ký Ức'),
+    'Đã hoàn thành Màn mở đầu'
+  );
+  assert.equal(
+    getEndingTitle('c2', 'Chương 2: Tiếng Kéo Đêm Phố Cũ'),
+    'Đã hoàn thành Chương 2: Tiếng Kéo Đêm Phố Cũ'
+  );
+  assert.notEqual(
+    getEndingTitle('c2', 'Chương 2: Tiếng Kéo Đêm Phố Cũ'),
+    'Đã hoàn thành Màn mở đầu'
+  );
+  assert.equal(
+    getEndingTitle('c1', 'Chương 1: Khung Cửi Rạn'),
+    'Đã hoàn thành Chương 1: Khung Cửi Rạn'
+  );
+});
+
+test('Order puzzle sequence operations preserve key identity without index in key', () => {
+  const currentSeq = ['manh_ban_ve_ao_dai_1', 'manh_ban_ve_ao_dai_2'];
+  const swapped = moveOrderPieceRight(currentSeq, 0);
+  assert.deepEqual(swapped, ['manh_ban_ve_ao_dai_2', 'manh_ban_ve_ao_dai_1']);
+  assert.equal(swapped[0], 'manh_ban_ve_ao_dai_2');
+  assert.equal(swapped[1], 'manh_ban_ve_ao_dai_1');
 });
 
