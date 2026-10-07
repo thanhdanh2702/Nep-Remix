@@ -164,7 +164,12 @@ if (movementRevision) {
       instance.initialize();assert.ok(walker.current);
       origins.push({x:walker.current.x,y:walker.current.y});
       assert.ok(walker.current.y>=floor.top && walker.current.y<=floor.bottom);
-      if(previous===undefined) assert.deepEqual(origins.at(-1),{x:area.spawn.x*world.w,y:area.spawn.y*world.h});
+      // The content spawn in S3 lies on the newly measured podium footprint.
+      // Entry must retain spawn X but project feet onto clear floor, not furniture.
+      if(previous===undefined) assert.deepEqual(origins.at(-1),{
+        x:area.spawn.x*world.w,
+        y:(area.id==='c2-s3-phong-trien-lam-doi-dau' ? .775 : area.spawn.y)*world.h
+      });
     }
     origins.push({x:.05*world.w,y:.75*world.h},{x:.95*world.w,y:.75*world.h});
     for(const spot of area.interactables) for(const from of origins) for(const reduced of [false,true]) {

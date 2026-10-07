@@ -33,7 +33,7 @@ function Coins({ value }: { value: number }) {
   return <span ref={ref}>{value.toLocaleString('vi-VN')}</span>;
 }
 type Panel = 'journal' | 'settings' | 'restart' | 'ending' | null;
-const PLAYABLE:ChapterId[]=['prologue','c1']; // chapters with a complete world; the rest show the "being prepared" note
+const PLAYABLE:ChapterId[]=['prologue','c1','c2']; // C2 local playtest candidate; C3–C5 remain unavailable.
 const screenNames:Record<Screen,string>={hub:'Sân nhà',studio:'Phòng phối đồ',closet:'Tủ đồ',museum:'Bảo tàng',journey:'Cốt truyện'};
 export default function Game({ embedded = false, paused = false, navigationRequest, onBlockedChange, pendingAvatarPreset, onAvatarApplied }: {
   embedded?: boolean;

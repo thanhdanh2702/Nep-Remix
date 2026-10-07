@@ -655,9 +655,11 @@ test('[C2 Ghép hình 6.3] Nút điều khiển (‹ › ×) tách rời khỏi 
   const cssContent = fs.readFileSync(cssPath, 'utf8');
 
   // Nút điều khiển phải đảm bảo min-height / min-width tiếp cận
-  const hasAccessibleControls = /\.order-strip-controls button\s*\{[^}]*min-height:\s*var\(--target-min\)/i.test(cssContent)
-    || /\.order-strip-controls button\s*\{[^}]*min-height:\s*44px/i.test(cssContent)
-    || /\.order-strip-controls button\s*\{[^}]*min-width:\s*var\(--target-min\)/i.test(cssContent);
+  const component = fs.readFileSync(path.resolve('src/game/PuzzleModal.tsx'), 'utf8');
+  assert.ok(component.includes('className="order-strip-btn-group"'), 'Check the actual rendered controls');
+  const controls = cssContent.match(/\.order-strip-btn-group button\s*\{([^}]+)\}/)?.[1] ?? '';
+  const hasAccessibleControls = /min-height:\s*var\(--target-min\)/i.test(controls)
+    && /min-width:\s*var\(--target-min\)/i.test(controls);
 
   assert.ok(hasAccessibleControls, 'Nút điều khiển dải tranh phải đạt kích thước tiếp cận tối thiểu');
 });
