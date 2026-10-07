@@ -19,6 +19,8 @@ Thể loại: khám phá point-and-click, giải đố vật phẩm, visual nove
 | [05 — Mỹ thuật và âm thanh](05-art-audio.md) | Danh sách cảnh, bố cục tương tác, yêu cầu asset và khả năng tiếp cận |
 | [06 — Văn hóa và nguồn](06-cultural-review.md) | Phân biệt sử liệu/hư cấu, các nội dung phải sửa và cổng duyệt văn hóa |
 | [07 — Nghiệm thu](07-acceptance.md) | Walkthrough, kiểm thử âm tính, save/reward, điều kiện phát hành |
+| [08 — Bàn giao asset C2](08-c2-asset-handoff.md) | Nền A đã chọn, nhân vật theo ảnh mẫu, gói duyệt và giới hạn kỹ thuật cho team |
+| [09 — Kế hoạch Leader C2](09-c2-leader-plan.md) | Team bốn agent, ownership, cổng M0–M5, contract, test và prompt khởi động |
 
 ## Những gì đã có và chưa có
 
