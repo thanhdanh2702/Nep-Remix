@@ -88,3 +88,14 @@ test('C2 measured exits exist; expanded mobile piece 4 target does not overlap S
     assert.ok(right<left,`44px targets overlap at stage width ${width}`);
   }
 });
+
+test('S2 floor exit does not intercept safe clicks after 44px touch expansion', () => {
+  const safe=areas[1].interactables.find(i=>i.id==='hitbox-iron-safe')!.rect!;
+  const arrow=areas[1].exitArrows!.find(a=>a.exit==='hall')!.rect;
+  for(const width of [300,390,844,768,1280,1440]) {
+    const height=width*941/1672;
+    const safeBottom=(safe.y+safe.h/2)*height+Math.max(44,safe.h*height)/2;
+    const arrowTop=(arrow.y+arrow.h/2)*height-Math.max(44,arrow.h*height)/2;
+    assert.ok(safeBottom<arrowTop,`exit intercepts safe at stage width ${width}`);
+  }
+});
