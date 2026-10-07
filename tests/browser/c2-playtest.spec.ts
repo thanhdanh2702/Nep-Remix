@@ -36,14 +36,17 @@ function fixture() {
   `], { encoding: 'utf8' });
 }
 
-for (const [width, height] of [[1440, 900], [390, 844]]) {
-  test(`C2 candidate menu → five puzzles → ending → +100 → Hub (${width}×${height})`, async ({ page }) => {
+for (const motion of ['reduce', 'no-preference'] as const) {
+for (const [width, height] of [[1440, 900], [1280, 720], [390, 844], [844, 390], [768, 1024]]) {
+  test(`C2 candidate menu → five puzzles → ending → +100 → Hub (${width}×${height}, ${motion})`, async ({ page }) => {
     page.setDefaultTimeout(10_000);
     await page.setViewportSize({ width, height });
-    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.emulateMedia({ reducedMotion: motion });
     const errors: string[] = [];
     page.on('pageerror', error => { errors.push(error.message); console.log('PAGE ERROR:', error.message); });
-    page.on('console', message => { if (message.type() === 'error') console.log('BROWSER ERROR:', message.text()); });
+    page.on('console', message => {
+      if (message.type() === 'error') errors.push(message.text());
+    });
     await page.addInitScript(({ saveKey, raw }) => {
       if (!sessionStorage.getItem('c2-playtest-fixture')) {
         localStorage.setItem(saveKey, raw);
@@ -107,9 +110,10 @@ for (const [width, height] of [[1440, 900], [390, 844]]) {
     await expect.poll(async () => (await saved(page)).journey.c2.claimed).toBe(true);
     expect((await saved(page)).wallet.senNgoc).toBe(350);
     await expect(page.getByRole('dialog')).toContainText('Đã hoàn thành Chương 2');
-    await page.screenshot({ path: `artifacts/c2-playtest-ending-${width}.png`, fullPage: true });
+    await page.screenshot({ path: `artifacts/c2-playtest-ending-${width}-${motion}.png`, fullPage: true });
     await page.getByRole('button', { name: 'Về sân nhà', exact: true }).click();
     await expect(page.locator('.studio-challenge')).toHaveCount(0);
     expect(errors).toEqual([]);
   });
+}
 }
