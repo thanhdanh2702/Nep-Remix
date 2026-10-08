@@ -1,0 +1,553 @@
+# C2 Core checkpoint M1/M2
+
+**Mới nhất: xem “FE revision coordination” ở cuối báo cáo.** Các phần trước
+là bằng chứng lịch sử M1–M4; dependency geometry cũ được thay bằng báo cáo mới.
+
+Baseline chính thức `main@10d1f88fe20f4577757ad6ce2311eb60d28f7db4`, merge
+vào agent/core tại `5998e0baf963c82df95a5b0d4a9e6a3dc0deba80`, không conflict.
+RED loan checkpoint `5266661`; gates/order RED checkpoint `2d58e18`.
+Người dùng đã cho phép merge baseline và commit local công việc C2, không push.
+
+## Đã có API thật
+
+Export từ `src/core/index.ts` qua `commands/studio/index.ts`:
+
+```ts
+getChallengeWardrobe(state: GameState, puzzleId: string, content: GameContent):
+  | { ok: true; garmentIds: string[]; accessoryIds: string[];
+      borrowedGarmentIds: string[]; borrowedAccessoryIds: string[] }
+  | { ok: false; reason: string };
+
+createChallengeStudioDraft(state: GameState, puzzleId: string, content: GameContent):
+  | { ok: true; draft: StudioDraft }
+  | { ok: false; reason: string };
+
+validateChallengeStudioDraft(state: GameState, puzzleId: string,
+  draft: StudioDraft, content: GameContent):
+  { ok: true } | { ok: false; reason: string };
+```
+
+`StudioDraft.challengePuzzleId?: string` là context phải revalidate.
+Hai helper đầu đúng contract mục 4; helper validation bổ sung cho local history
+đúng yêu cầu revalidate. Leader cập nhật contract để consumer dùng tên thật.
+`validateStudioDraft`/`challengeDraftFromAnswer` cũng export nhưng adapter nên
+dùng ba helper trên. Không tin allowlist client; không thay closet/wallet.
+
+Ví dụ adapter Frontend (không sửa `src/game/` ở Core):
+
+```ts
+const opened = createChallengeStudioDraft(state, 'p-c2-styling-loan', content);
+if (!opened.ok) return showError(opened.reason);
+const local = createScopedSession(opened.draft, 'studio');
+// Sau thao tác local / undo / redo, kiểm trước khi nhận candidate:
+const check = validateChallengeStudioDraft(state, 'p-c2-styling-loan', candidate.current, content);
+if (!check.ok) return showError(check.reason);
+// Giữ global PuzzleDraft; persist string fields qua dispatch hiện có:
+dispatch(tree, {type:'puzzle/updateDraft', payload:{puzzleId:'p-c2-styling-loan',
+  draft:{type:'styling',answer:{silhouette:candidate.current.silhouette,
+    garmentId:candidate.current.garmentId,
+    headwearId:candidate.current.equippedAccessories.headwear ?? '',
+    footwearId:candidate.current.equippedAccessories.footwear ?? '',
+    jewelryId:candidate.current.equippedAccessories.jewelry ?? '',
+    handheldId:candidate.current.equippedAccessories.handheld ?? '',
+    color0:candidate.current.colorPalette[0],color1:candidate.current.colorPalette[1],
+    color2:candidate.current.colorPalette[2],color3:candidate.current.colorPalette[3],
+    ...(candidate.current.eventContextId !== undefined
+      ? {eventContextId:candidate.current.eventContextId} : {}),
+    motifId:candidate.current.motifId ?? ''}}}}, content);
+```
+
+Không gọi global `studio/open` thay puzzle. Không persist loan list/context
+như sở hữu. Command Studio cũng revalidate; Closet luôn kiểm quyền vĩnh viễn,
+cả direct payload và session. Sau claim Lemur sở hữu thật, khăn/guốc không
+được grant thêm. Brief không chấm màu/motif/phụ kiện ngoài brief, nhưng mọi
+món mặc đều phải có quyền và đúng slot/catalog.
+
+## Đã GREEN
+
+- D0/G1/G2 bằng `when`/`exitGates`, direct command và forward legacy goBack.
+- Receipt → sketch → styling; két phai; order tường minh 1–2–3–4, không xoay/flip.
+- Draft order unique subset đồ sở hữu; partial/wrong order hợp lệ; feedback sai
+  giữ state. Entry D0 idempotent, resume giữ phòng/stack/draft/queue.
+- Loan Lemur/khăn/guốc, equip/preset/silhouette/context/resume/direct submit
+  guards; ordinary Studio và Closet chặn đồ mượn.
+- Native size 1672×941 nền A, Hàng Đào/1935, ending trigger/content và completion
+  dialogue, reward mới 100. Hai áo legacy giữ nguyên.
+
+Lệnh thực chạy:
+
+```sh
+npm run lint
+npm run test:core
+node --import tsx --test --test-reporter=tap src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts src/core/sprint-01.test.ts tests/leader-core-integration.test.ts
+node --import tsx --experimental-test-coverage --test-coverage-include='src/core/commands/studio/challenge-wardrobe.ts' --test --test-reporter=tap src/core/c2-gates.red.test.ts src/core/c2-loan.test.ts
+npx tsx scripts/validate-content.ts
+npm run build
+```
+
+Tất cả PASS: 26 baseline, 53 C2 (36 cũ +17 loan); content `Valid:true`.
+Coverage helper loan mới: lines 96.51%, branches 95.18%, functions 100%.
+Phạm vi này **chưa** đại diện toàn bộ logic production đã sửa; sẽ đo phạm vi
+mở rộng sau migration/M3–M4. Build có warning chunk >500kB.
+
+## Việc tiếp theo / dependency
+
+- M3–M4: fixtures queue từng node, migration mọi snapshot/version cũ+mới,
+  claimed120/reread và legacy đang S3; guard complete/claim pending legacy
+  không grandfather, history/replay không farm. Chưa nghiệm thu migration.
+- Native rect/spawn/exit: chưa có bảng trong commit Frontend `7d1c1c8` hoặc
+  worktree Frontend lúc kiểm tra. Đã hỏi đầu vào; chưa áp tọa độ placeholder
+  như thể đo native. JSON notes ghi rõ phần đang chờ.
+- Layer áo phụ thiếu vẫn chặn full reward art QA; không thay quà/art.
+- Không merge Frontend; không bật menu C2/C3–C5; browser/tích hợp do Leader/Tester.
+- Leader nối suite Node hai file C2 vào package scripts sau review, không sửa
+  `package.json` từ Core. Đề xuất `test:c2:core` chạy hai file, mở rộng thêm
+  migration suite ở checkpoint kế tiếp.
+
+## M3–M4 Core GREEN (07/10/2026)
+
+M1 GREEN commit `97c183d85703547c2c9e069a7b31e7e1a6771e7c`.
+Migration RED commit `496ebab`: 4 FAIL/4 PASS trước sửa version/recovery/claim.
+Ca bổ sung bắt lỗi replay thiếu D0 và queue legacy thiếu trường chọn D1 trước
+intro: 2 FAIL trước sửa, sau sửa đều GREEN. Content strip labels: 1 FAIL/1 PASS
+trước sửa catalog, sau sửa GREEN. Không nới 36 assertion gốc.
+
+Đã hoàn thành logic:
+
+- P2 cấp hai giấy nguyên tử; chỉ acknowledge mới cấp clue, queue D2→D3 giữ
+  qua reload. P5 enqueue ending hai node; chưa đọc hết không complete/claim.
+- Claim C2 kiểm lại chapter hiện tại, đủ puzzle/ending và gates đọc chứng cứ,
+  kể cả legacy `status=completed`. Không grandfather pending claim.
+- `CONTENT_VERSION='sprint-02-core-1'`; `fromJSON` nhận version này,
+  `sprint-01-core-1` và unversioned, từ chối version lạ. Signature không đổi.
+- Migration trên mọi snapshot: giữ room/navStack/solved/completed/claimed,
+  wallet và reread mode. Typed order draft hợp lệ giữ nguyên; draft trùng/ID
+  lạ/chưa sở hữu bị loại, matching session answer được vô hiệu hóa.
+- Legacy C2 thiếu queue hoặc queue rỗng được enqueue intro và trigger chưa
+  đọc theo thứ tự; giữ active node/mode và queue sẵn có, không auto-read.
+  Repair chứng cứ đã earned từ solved P1/P2 khi engine cũ thiếu plural gifts.
+- Legacy C2 mặt trái được chuyển sang `mat_phai` vì C2 v4 không hỗ trợ trái;
+  không reset phòng hoặc tiến trình. Đây là normalization duy nhất của side.
+- Claimed legacy120 giữ nguyên tiền/ledger, repair quà phi tiền tệ, không grant
+  khăn/guốc từ loan. Pending legacy ở S3 đọc phục hồi rồi claim +100 được.
+- Replay C2 riêng enqueue D0 để không softlock trước collect; reward vẫn chặn,
+  không thay main tree. Không mở rộng reset/replay UX.
+- Items bốn dải mang nhãn 1–2–3–4, bỏ cách gán từng mảnh cho cổ/thân/tay/chữ ký;
+  clues/giấy hư cấu giữ ID cũ, sửa wording gợi ý vị trí và năm 1935.
+
+### Adapter / contract delta gửi Leader và Frontend
+
+1. Đánh dấu API mục 4 implemented; bổ sung `validateChallengeStudioDraft`
+   với chữ ký ở trên cho local undo/redo/resume. `createChallengeStudioDraft`
+   trả lỗi rõ nếu saved draft không hợp lệ, không âm thầm cấp đồ để resume.
+2. Đánh dấu entry/ending/gates/schema/native size/reward100 implemented; rect
+   hotspot/spawn/exit vẫn pending báo cáo Frontend. Không coi legacy rect là
+   native đã nghiệm thu.
+3. Đánh dấu version/migration mục 6/7 implemented với side normalization và
+   phục hồi chứng cứ đã earned. Store nhận `migrated:true`, backup bytes gốc
+   trước ghi; **không cần đổi signature hoặc SAVE_KEY**. Hai ca adapter thực
+   chạy xác nhận backup nguyên bytes và lỗi backup không ghi đè slot gốc.
+4. Leader nối package script, Core không ghi `package.json`:
+
+```json
+"test:c2:core": "node --import tsx --test src/core/c2-*.test.ts"
+```
+
+Nối script này vào suite chuẩn sau review. File `.red.test.ts` giữ tên để theo
+dấu checkpoint RED nhưng toàn bộ 36 ca nay PASS, không exclude/skip.
+
+### Verification cuối M3–M4
+
+| Lệnh | Kết quả thực chạy |
+| --- | --- |
+| `npm run lint` | PASS |
+| `npm run test:core` | PASS 15 checks + walkthrough/self checks |
+| Node baseline 4 file nêu trên | PASS 26/26 |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 80/80, không skip |
+| `npx tsx scripts/validate-content.ts` | PASS `Valid:true` |
+| `npm run build` | PASS; warning chunk >500kB |
+| `npm audit --json` | PASS 0 vulnerabilities, gồm dev dependencies |
+
+Walkthrough unit mới đi từ state khởi tạo qua toàn bộ Mở đầu/C1→C2 bằng
+command thật, không seed inventory/solved C2: reload order partial/sai rồi
+sửa, hai giấy, styling mượn Lemur, từng node ending, pending claim reload,
+reward/reload. Wallet 250→350; cards chỉ unlock, không auto-read.
+
+Coverage có threshold **80% lines/branches/functions**, trên 10 module Core
+có production logic mới/sửa (tính cả code cũ trong các module, không chỉ các
+dòng dễ cover): `closet-commands.ts`, `area-commands.ts`, `chapter-commands.ts`,
+`draft-commands.ts`, `puzzle-commands.ts`, `reward-commands.ts`,
+`challenge-wardrobe.ts`, `studio-commands.ts`, `chapter-replay.ts`, `serialize.ts`.
+Kết quả tổng: **87.56% lines, 80.95% branches, 82.47% functions**. Đây là
+threshold tổng của phạm vi trên, không tuyên bố từng file cũ đều ≥80%.
+Schema/catalog JSON được kiểm bằng parse/validator/content regression,
+không gộp vào runtime coverage; state type/export barrel không có logic.
+
+Lệnh coverage đầy đủ, không cần cài dependency mới:
+
+```sh
+node --import tsx --experimental-test-coverage \
+  --test-coverage-include='src/core/commands/studio/challenge-wardrobe.ts' \
+  --test-coverage-include='src/core/commands/studio/studio-commands.ts' \
+  --test-coverage-include='src/core/commands/closet/closet-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/area-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/chapter-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/draft-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/puzzle-commands.ts' \
+  --test-coverage-include='src/core/commands/journey/reward-commands.ts' \
+  --test-coverage-include='src/core/history/serialize.ts' \
+  --test-coverage-include='src/core/history/chapter-replay.ts' \
+  --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-functions=80 \
+  --test --test-reporter=tap src/core/c2-*.test.ts \
+  src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts \
+  src/core/sprint-01.test.ts tests/leader-core-integration.test.ts \
+  scripts/check-core.ts scripts/check-game.ts
+```
+
+### Chưa nghiệm thu / dependency còn lại
+
+- Bảng rect/spawn/exit native chưa được gửi. Đã kiểm read-only cả Frontend
+  `7d1c1c8` và `16778b3`: không có report tọa độ trong commit/worktree lúc kiểm.
+  Core chưa tự đo từ placeholder hoặc lấy full-canvas overlay làm hit rect.
+- Layer áo phụ vẫn thiếu; giữ cả hai reward garment IDs. Không tạo/đổi art.
+- Chưa merge Frontend, chưa browser/gameplay QA trên bản tích hợp, chưa bật
+  candidate/release C2. M2/M3/M4 nghiệm thu UI vẫn cần Leader/Frontend/Tester.
+- `src/game/`, browser tests, PNG, registry, exporter và package không bị Core
+  sửa trong các commit implement. Mọi thay đổi ngoài ownership chỉ đến từ
+  merge checkpoint chính thức được người dùng cho phép.
+
+## Review follow-up: event context và NPC/native geometry
+
+Baseline `agent/core@fd64750`, worktree sạch lúc bắt đầu. RED context commit
+`e391378`: 12 ca mới, 10 FAIL/2 PASS đúng lỗi mất context và chấp nhận ID lạ.
+
+**API delta, signature giữ nguyên:** `challengeDraftFromAnswer` và
+`createChallengeStudioDraft` nay giữ `eventContextId` trong StudioDraft khi
+answer có trường này. Dùng `EventIdSchema` hiện có: `tet`, `dam_cuoi`,
+`be_giang`, `le_chua`, `vieng_tang`, `dao_pho`. Trường vắng mặt vẫn trả draft
+không event context, tương thích save/draft cũ; không cần bump version.
+
+Context rỗng/ID lạ → `{ok:false,reason:'Unknown event context.'}`. Trường
+không phải string bị chặn bởi shape validation hiện có. Lỗi từ helper được
+propagate qua updateDraft/submit; giữ state/draft cũ. Saved answer có context
+lạ cũng được helper trả lỗi rõ khi resume, không âm thầm đổi context hoặc
+grant đồ. `validateChallengeStudioDraft` tái kiểm context cho local history;
+`studio/selectEvent` kiểm candidate mới theo cùng schema.
+
+Event context chỉ là lựa chọn sự kiện để hiển thị/evaluate; không tham gia
+tạo allowlist hoặc mở gate. Quyền mượn vẫn từ puzzleId + room/chapter/side/
+gates/unsolved + catalog/ownership. Không chấm thêm context vào brief P5.
+Frontend persist `eventContextId` string hợp lệ nếu có, omit khi chưa chọn;
+không gửi `''` làm sentinel. Ví dụ adapter ở đầu báo cáo đã bổ sung trường này.
+
+**NPC/tọa độ:** xem [C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md).
+Không thay `c2.json` bằng tọa độ suy đoán, không thêm hotspot giả. Core đã
+gửi phương án NPC thuần hiển thị và mẫu bảng native cần nhận qua báo cáo;
+chưa có xác nhận Frontend hoặc bảng đo đầy đủ tại thời điểm follow-up.
+
+Verification follow-up thực chạy:
+
+| Lệnh | Kết quả |
+| --- | --- |
+| `node --import tsx --test --test-reporter=tap src/core/c2-context.test.ts` | RED 10 FAIL/2 PASS → GREEN 12/12 |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 92/92: 80 cũ +12 context, không skip |
+| Node baseline 4 file ở trên | PASS 26/26 |
+| `npm run test:core` | PASS 15 checks + game walkthrough/self checks |
+| `npm run lint` | PASS |
+| `npx tsx scripts/validate-content.ts` | PASS `Valid:true` |
+| `npm run build` | PASS; warning chunk >500kB hiện hữu |
+| `npm audit --json` | PASS 0 vulnerabilities, gồm dev dependencies |
+
+Coverage riêng **hai module production sửa trong follow-up này**, tính cả
+code cũ: `challenge-wardrobe.ts` + `studio-commands.ts`: **90.07% lines,
+84.33% branches, 80.43% functions**, threshold tổng 80% cả ba PASS. Helper
+riêng 98.90% lines/96.67% branches/100% functions. Phạm vi 10 module C2 đã
+bàn giao trước cũng PASS: 88.60%/80.92%/83.77%. Không thay assertion cũ.
+
+Lệnh coverage hai module thực chạy:
+
+```sh
+node --import tsx --experimental-test-coverage \
+  --test-coverage-include='src/core/commands/studio/challenge-wardrobe.ts' \
+  --test-coverage-include='src/core/commands/studio/studio-commands.ts' \
+  --test-coverage-lines=80 --test-coverage-branches=80 --test-coverage-functions=80 \
+  --test --test-reporter=tap src/core/c2-*.test.ts \
+  src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts \
+  src/core/sprint-01.test.ts tests/leader-core-integration.test.ts \
+  scripts/check-core.ts scripts/check-game.ts
+```
+
+Không thay schema/save version, reward, gates, queue hoặc migration trong
+follow-up này. Giữ tất cả thay đổi owner khác; không UI/store/browser/PNG/
+registry/package delta. Bảng geometry và layer áo phụ vẫn là dependency.
+
+## Native layout follow-up — Core ready for Leader integration, visual floor BLOCKED
+
+Baseline `agent/core@b3f72468bf99aeb5c8a0b572b808bbe114bb5f7f`, clean before edits.
+Worktree `/Users/thanhdanh/Nep-Remix-core`; main remains official `10d1f88`.
+Read Frontend layout at **b6bb71a**, without merging that branch. Current change
+owns only C2 JSON, adjacent Core layout tests and these two Core reports.
+No C3–C5, UI/store/browser/assets/registry/package changes.
+
+### Geometry and API delta for Leader / Frontend
+
+Applied 11 pos/rect/radius, three spawns, four exit arrows to JSON. Verified
+manifest v4 A 1672×941 and actual visible bounds. Corrections to measured table:
+safe rect `(.739,.37,.201,.28)`, crowd/receipt rect `(.657,.44,.203,.39)`, hall
+arrow `(.92,.76,.08,.14)` to avoid safe clicks; radii now cover arrived feet
+under the supplied floor from both approaches. Piece4 stays separate from S1
+exit, including expanded 44px targets. Full details and native feet table:
+[C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md).
+
+**API signatures at the top are unchanged and exported.** Existing b3f7246
+context fix remains verified by 12 context tests: valid catalog enum retained
+through close/reopen/reload, invalid payload returns an explicit error without
+changing prior state. Missing context remains compatible. Context and client
+allowlist cannot authorize loans. Equip/preset/resume/direct submit and both
+Closet save routes retain their Core guards. Local ScopedSession is a generic
+immutable helper: consumer must call `validateChallengeStudioDraft` on each
+candidate, including undo/redo, before accepting/rendering/persisting it; it
+does not magically validate room/gate without GameState/GameContent. Use the
+adapter example above and surface `{ok:false,reason}` rather than force-default
+an invalid saved draft. Ordinary Studio/Closet do not inherit challenge access.
+
+**Frontend adapter requests (not implemented in Core ownership):**
+
+1. RoomScene first entry must consume `area.spawn` instead of its current
+   bottom-centre fallback; preserve reverse-arrow return placement.
+2. `go/fire` must pass actual normalized arrived walker feet, not `i.pos`,
+   including reduced motion. No Core command/payload signature change.
+3. Fix C2 floor/obstacle/stand points: supplied floor [.58,.92] includes painted
+   furniture; C2 has no `standClear` obstacles. S1 desk feet (510,546), S2 shelf
+   (627,546), S3 P4 (359,546) reproduce visible furniture placement. Send updated
+   measured feet/floor so Core can recheck radii. Current engine reachability
+   is GREEN; physical placement/occlusion is **not accepted**.
+4. Display-only NPCs from the layout report agree with separation from Core
+   actions: c2-s1-loan, c2-s2-loan, c2-s3-ca-nghi, c2-s3-loan. Do not create the
+   missing legacy NPC hotspot IDs as fake actions. Frontend owns render/poses.
+
+Leader contract delta: record these implemented geometry values and adapter
+requests; no schema, command or save version delta. Leader package delta:
+include `src/core/c2-layout.test.ts` in C2 suite (the existing proposed
+`node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` picks it up).
+Core does not edit shared contract or package scripts.
+
+### Progress/save/reward guarantees preserved
+
+Compared JSON structurally with b3f7246 after removing geometry fields: exact
+match, including full D0/G1/G2, five puzzle prerequisites, queue/ending, IDs,
+reward and chapter metadata. Runtime migrations unchanged. Regression suites
+cover stale unlockedAreaIds/navStack, legacy S3 gates, queued two-paper nodes,
+head/history migration, reread/backup recovery and context drafts. No migration
+bump required for coordinates; saves keep main progress, drafts and queue.
+
+New claim remains +100 once. Card-read +15 is separate; claimed legacy +120
+wallet/ledger stay untouched. Loan grants no closet items or wallet. No auto-read,
+auto-complete, reward replay or purchase/AI/latVai dependency. Keep both reward
+garments. Missing secondary yellow garment layer remains **BLOCKED** for full
+reward-art acceptance; do not substitute Lemur or silently remove the reward.
+
+### TDD / verification actually run
+
+RED `8820dea`: layout 13 FAIL/0 PASS before production edits; lint compiles.
+RED `5f52de7`: safe/hall 44px overlap FAIL. RED `58a8f23`: manifest containment
+FAIL (safe then receipt after safe correction). GREEN: 15 layout tests PASS,
+checking actual walker tick/standClear/targetFor from both approaches, real
+interact guard at arrived feet, far-away rejection, native bounds, spawns and
+expanded touch separation. No old assertions weakened; expected design tuples
+reflect the documented corrections. The Node harness executes real walker code
+with only its unused Vite atlas import omitted, using existing esbuild. It does
+not test DOM rendering, furniture not registered as obstacles, or browser UI.
+
+| Command actually run | Result |
+| --- | --- |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 107/107 (92 existing +15 layout), no skips |
+| `node --import tsx --test --test-reporter=tap src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts src/core/sprint-01.test.ts tests/leader-core-integration.test.ts` | PASS 26/26 |
+| `npm run test:core` | PASS 15 core checks + game walkthrough/self checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS `Valid: true` |
+| `npm run build` | PASS; existing >500kB chunk warning |
+| `npm audit --json` | PASS 0 vulnerabilities, including dev |
+| Coverage command in M3–M4 section above (same 10 include paths, threshold 80 for lines/branches/functions; now includes layout via glob) | PASS 135/135; 88.60% lines /80.92% branches /83.77% functions |
+
+Coverage scope: ten Core production modules changed earlier in this sprint,
+including wardrobe, Studio/Closet, gates/navigation/drafts/puzzles/reward,
+serialize/replay. Aggregate threshold passes; **not every individual module**
+is above 80%. This follow-up changes content geometry only, no runtime logic;
+JSON is not instrumented, and 15 geometry cases are reported separately. No UI,
+render/walker coverage or browser acceptance is inferred from Core coverage.
+
+Next dependency: Leader integrates Core checkpoint; Frontend consumes corrected
+layout and resolves the three walker adapter issues; Leader integrates candidate;
+Tester runs full actual path/browser/device/visual/save acceptance. These Core
+results do not declare C2 complete. No push or other owner branch merge performed.
+
+## FE revision coordination — 1692327 audited, no production delta
+
+Core baseline `1ccf21a`, clean before this follow-up (only a temporary local
+dependency symlink during verification). Leader checkpoint reported/in Git:
+main `6885ccb`; Frontend first inspected at b354417, then new committed patch
+`1692327c4a80d5b0b9e709db73668504c28a7f7e`. No branch merge/cherry-pick.
+
+Changes are limited to `c2-layout.test.ts` and both Core handoffs. No radius,
+schema, command, save, reward or other production change. Existing APIs/exports
+and the adapter example at the top remain valid. Frontend 1692327 now imports
+all three real helpers and calls validation on local undo/redo/reset/preset
+candidates. Core tests continue covering eventContextId persist/resume, loan
+isolation, direct/session Closet rejection, gates, completion and save recovery.
+
+New verification mechanism: optional `C2_MOVEMENT_REVISION` loads committed
+movement and RoomScene source using `git show` from this repository. It prints
+the resolved SHA, fails for missing objects or changed source boundaries, and
+does not fall back to another checkout. RoomScene entry/go blocks execute with
+explicit test refs; normal motion uses actual tick, reduced motion uses its
+actual arriveNow branch. No copied movement algorithm or i.pos substitution.
+Three area tests exercise 94 adapter callbacks across all hotspots, first and
+return entries, both approaches and both motion modes. Without the variable,
+the established local suite still runs 107 tests and makes no FE-source claim.
+
+FE changed shelf/P4 left feet slightly; all existing radii still pass. Full
+revision/blob IDs, feet table and remaining visual-floor reproducers are in
+[C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md). Spawn and arrived-feet source
+adapters are addressed. S1 obstacle ends below floorTop and does not fix desk
+feet; shelf/P4 adjusted feet still lie on furniture in A. Paths are straight
+segments without obstacle collision. **WAITING for Frontend's corrected native
+floor/stand/path evidence**, not for a Core radius increase. No visual or browser
+PASS is inferred from this unit audit.
+
+Verification actually run on this Core checkout:
+
+| Command | Result |
+| --- | --- |
+| `node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 107/107 |
+| `C2_MOVEMENT_REVISION=1692327c4a80d5b0b9e709db73668504c28a7f7e node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 110/110, including 18 geometry/adapter tests |
+| Four-file baseline regression command above | PASS 26/26 |
+| `npm run test:core` | PASS 15 core checks plus prologue/C1 walkthrough/self checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS Valid:true |
+| `npm run build` | PASS, existing >500kB chunk warning |
+| `npm audit --json` | PASS, 0 vulnerabilities including dev |
+
+Coverage command from M3–M4 above was rerun with
+`C2_MOVEMENT_REVISION=1692327c4a80d5b0b9e709db73668504c28a7f7e`:
+PASS 138/138; aggregate **88.60% lines /80.92% branches /83.77% functions**,
+all three thresholds 80 PASS. Scope remains the ten Core runtime modules;
+this follow-up changes verification only, not runtime logic. This is neither
+movement/render coverage nor a per-file 80% claim.
+
+No production bug was fixed in this follow-up, so no fabricated RED/GREEN cycle
+or radius change. Added tests strengthen source/revision verification and are
+GREEN against the current contract. Progress/save/reward behavior stays as in
+the preceding baseline: fresh +100 once, card read +15 separately, claimed120
+legacy unchanged, history/backup/queue/reread preserved. Missing yellow reward
+layer remains BLOCKED Art; both garments stay in the reward.
+
+Leader next: preserve this verification mechanism in the C2 suite, run it with
+the exact future geometry SHA after Frontend supplies it, then integrate the
+candidate for independent Tester browser/visual/device acceptance.
+
+## Handoff detail audit after 2b274ce — WAITING for geometry fix
+
+Core started clean at `2b274ce`; FE remains clean at
+`1692327c4a80d5b0b9e709db73668504c28a7f7e`, Leader main at 6885ccb. No newer
+committed FE geometry or integrated candidate was available. This change only
+fills missing handoff detail: exact hotspot IDs, current JSON pos/radius,
+approach, final native/normalized feet, named furniture, before-action fixture
+and normal/reduced reproduction steps. See the final section of
+[C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md).
+
+Engine GREEN still means final callback/guard reachability. Screenshot/video
+is required for visible foot/furniture overlap and walked path; unit tests
+cannot approve the floor strip visually. Source chain at 1692327 is targetFor
+(including clamp) → standClear → tick/arriveNow; no extra clamp after standClear
+in go. Test assertions read arrived walker.current and actual callback payload.
+The current content is authoritative; do not apply the stale FE layout table
+or a common 88px radius threshold.
+
+No runtime/test/content change, no new RED/GREEN implementation cycle. D0/G1/G2,
+P3→P4→P5→D4, loans/context resume, save/history/backup/reread and reward policies
+remain unchanged. Radius is sufficient at the audited engine points. A future
+radius change requires an actual guard rejection at a verified clear-floor point
+and a RED→GREEN reproducer. Art remains BLOCKED for the missing secondary layer;
+keep the reward as defined.
+
+WAITING input: fixed FE SHA, updated final feet/obstacle/floor table and visible
+floor/path evidence; then Leader's integrated candidate SHA/checkout. Core must
+rerun the explicit revision command and integrated checkout tests at those
+actual milestones, not claim the existing results cover a future patch.
+
+Pre-commit verification rerun for this documentation audit (all commands run
+from Core checkout 2b274ce with only these handoff edits):
+
+| Command | Actual result |
+| --- | --- |
+| `C2_MOVEMENT_REVISION=1692327c4a80d5b0b9e709db73668504c28a7f7e node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 110/110, including 18 layout/adapter cases |
+| Four-file baseline regression command above | PASS 26/26 |
+| `npm run test:core` | PASS core checks and prologue/C1 walkthrough/self checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS Valid:true |
+| `npm run build` | PASS; existing chunk warning >500kB |
+| `npm audit --json` | PASS 0 vulnerabilities |
+| Full ten-module coverage command above, prefixed with the same C2_MOVEMENT_REVISION | PASS 138/138, 88.60% lines /80.92% branches /83.77% functions; thresholds 80 PASS |
+
+No new/modified executable logic in this patch. Coverage measures the existing
+ten Core runtime modules, not documentation, JSON, browser or visual geometry.
+No integrated-candidate/browser rerun was possible without the requested new
+candidate; none is claimed. Frontend HEAD rechecked before handoff: 1692327.
+
+## Tester 9d32c34 / FE edece11 — contract and proximity follow-up
+
+Baseline Core `19d6c1168f7e7bbad5764f4fb441e0ac6c36879a`, initially clean.
+Read immutable Tester audit/browser reproducer at `9d32c34`; inspected FE
+`edece1126f15ae9296bf89989d093e5b10db5fdb` and integration source/content
+`2038276e1d14926a5b109ba2a70b84d947998c39`. No merge or production change.
+See the final section of [C2-GEOMETRY-HANDOFF.md](C2-GEOMETRY-HANDOFF.md) for
+all 11 native/normalized feet, revision-dependent radius differences and RED
+path reproducers. Leader's four radius changes already exist in 2038276;
+this patch does not apply or endorse them as visual acceptance.
+
+API/schema/store adapter delta: **none**. Loan helper exports/signatures remain
+as documented above. D0/G1/G2, five puzzles, P3→P4→P5→D4, context resume,
+closet/loan isolation, save/head/history/backup/queue/reread and reward policies
+remain unchanged. Fresh claim +100 once; card read +15 separately; claimed120
+legacy money/ledger unchanged. No auto-read/complete or permanent loan grant.
+Ca Nghi is render-only; Tester GEO-006 does not authorize a new interaction.
+
+Verification harness changes only:
+- `C2_CONTENT_REVISION` loads schema-validated committed C2 JSON independently
+  of `C2_MOVEMENT_REVISION`; missing Git revisions fail, no fallback. Core
+  runtime/catalog remain local, so this is an explicit cross-revision probe.
+- Adapter receives chapterId='c2'; spawn expectation uses the actual final
+  clamp/standClear projection, including S3 .12,.775 at the new revision.
+- `C2_CHECK_PATH_CLEARANCE=1` adds two zero-furniture-crossing regressions using
+  actual FE go/tick. Both are RED pending the FE routing fix; no Core fix is
+  appropriate for walking through furniture. This commit preserves RED evidence.
+
+Commands actually run from this Core checkout (not an integration-checkout run):
+
+| Command | Result |
+| --- | --- |
+| `C2_MOVEMENT_REVISION=edece1126f15ae9296bf89989d093e5b10db5fdb C2_CONTENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 node --import tsx --test --test-reporter=tap src/core/c2-layout.test.ts` | PASS 18/18 |
+| `C2_MOVEMENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 C2_CONTENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 node --import tsx --test --test-reporter=tap src/core/c2-*.test.ts` | PASS 110/110 |
+| Same integration revision pair with `C2_CHECK_PATH_CLEARANCE=1`, layout file only | FAIL: 18 PASS / 2 RED (GEO-002, GEO-004) |
+| `node --import tsx --test --test-reporter=tap src/core/dialogue-reread.test.ts src/core/replay-audit.test.ts src/core/sprint-01.test.ts tests/leader-core-integration.test.ts` | PASS 26/26 |
+| `npm run test:core` | PASS both core/game checks |
+| `npm run lint` | PASS |
+| `node --import tsx scripts/validate-content.ts` | PASS Valid:true |
+| `npm run build` | PASS; existing >500kB chunk warning |
+| `npm audit --json` | PASS 0 vulnerabilities |
+| Ten-module coverage command above, with both integration revision variables, path flag unset | PASS 138/138; 88.60% lines / 80.92% branches / 83.77% functions, aggregate thresholds 80 PASS |
+
+Coverage scope: challenge wardrobe, Studio/Closet commands, journey area/chapter/
+draft/puzzle/reward commands, history serialize/replay. This patch changes tests
+and documentation only. Coverage is aggregate existing Core runtime coverage,
+not per-file 80%, new production logic, FE movement or browser/visual coverage.
+The explicit RED path suite is reported separately and is not a GREEN claim.
+
+Frontend/Tester next: fix routing/NPC overlap in owned files; correct P4 browser
+precondition to solve P3 first; keep Ca Nghi render-only. Supply immutable fixed
+SHA and floor/path evidence, followed by Leader's integrated candidate. Core
+will rerun final-foot/proximity/path regressions against those exact revisions.
+Current engine reachability GREEN with integration content does not approve
+visual geometry, paths or the whole C2. Art remains BLOCKED for the missing
+secondary reward layer; keep both existing reward garments.

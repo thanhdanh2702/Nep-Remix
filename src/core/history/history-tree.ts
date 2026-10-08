@@ -1,4 +1,5 @@
 import type { Command, DomainEvent } from '../command.ts';
+import type { ChapterId } from '../../content/schema.ts';
 import type { GameState, ContextOptions } from '../state.ts';
 import type { GameContent } from '../../content/index.ts';
 import { runCommand, defaultRegistry } from '../registry.ts';
@@ -20,6 +21,7 @@ export interface HistoryNode {
 }
 
 export interface HistoryTree {
+  replayOfChapter?: ChapterId;
   nodes: Record<string, HistoryNode>;
   rootId: string;
   headId: string;
@@ -164,6 +166,13 @@ export function dispatch(
  * Moves headId to parent node (if exists) and records lastVisitedChildId.
  * Does NOT delete any nodes.
  */
+function preservesClaims(tree: HistoryTree, target: GameState): boolean {
+  // Claim markers in any branch are irreversible, including legacy snapshots.
+  return Object.values(tree.nodes).every(node =>
+    Object.entries(node.snapshot.journey).every(([id, progress]) => !progress.claimed || target.journey[id as ChapterId]?.claimed)
+    && (node.snapshot.claimedRewardIds ?? []).every(id => target.claimedRewardIds?.includes(id)));
+}
+
 export function undo(tree: HistoryTree): { ok: boolean; tree: HistoryTree; reason?: string } {
   const currentHead = tree.nodes[tree.headId];
   if (!currentHead || !currentHead.parentId) {
@@ -182,6 +191,8 @@ export function undo(tree: HistoryTree): { ok: boolean; tree: HistoryTree; reaso
       tree
     };
   }
+
+  if (!preservesClaims(tree, parent.snapshot)) return { ok: false, tree, reason: 'Cannot undo a claimed reward.' };
 
   const updatedParent: HistoryNode = {
     ...parent,
@@ -226,6 +237,8 @@ export function redo(tree: HistoryTree): { ok: boolean; tree: HistoryTree; reaso
     };
   }
 
+  if (!preservesClaims(tree, tree.nodes[targetChildId].snapshot)) return { ok: false, tree, reason: 'Cannot restore a branch before a claimed reward.' };
+
   const nextTree: HistoryTree = {
     ...tree,
     headId: targetChildId
@@ -254,6 +267,8 @@ export function checkout(
       tree
     };
   }
+
+  if (!preservesClaims(tree, targetNode.snapshot)) return { ok: false, tree, reason: 'Cannot checkout before a claimed reward.' };
 
   const validation = validateState(targetNode.snapshot, content);
   if (!validation.valid) {
@@ -313,6 +328,7 @@ export function revert(
   // Compute inverse using parent snapshot
   const parentNode = targetNode.parentId ? tree.nodes[targetNode.parentId] : null;
   const baseSnapshot = parentNode ? parentNode.snapshot : targetNode.snapshot;
+  if (!preservesClaims(tree, baseSnapshot)) return { ok: false, tree, reason: 'Cannot revert a command before a claimed reward.' };
   const inverseCmd = def.invert(baseSnapshot, targetNode.command.payload, content);
 
   if (!inverseCmd) {

@@ -1,0 +1,254 @@
+{
+  "chapter": "c3",
+  "version": "review-v1",
+  "date": "2026-10-07",
+  "status": "source-preserved-production-v1-exported",
+  "runtimeReady": false,
+  "culturalApproved": false,
+  "mechanicalPostprocessingApplied": true,
+  "postprocessingPermission": "User explicitly approved processing as C2 on 2026-10-07; applied to derived files only",
+  "productionManifest": "assets/areas/chapter-3/manifest.json",
+  "scope": "No C2/runtime metadata/gameplay changes",
+  "selectedSources": 14,
+  "artifacts": [
+    {
+      "file": "ba-lon.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "sha256": "eb3b5b058ae2713b47fadfc6027c5fa85f6b594ff29340e1b4edf13acd255769",
+      "selected": false,
+      "status": "superseded by v2: distinct female hair/face identities per user feedback"
+    },
+    {
+      "file": "boat-neck.png",
+      "width": 1413,
+      "height": 1113,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "e438242e24ac3a41196a0ca38d702f1d10e5dee8730bd5cd682b5e6be7087777",
+      "selected": true
+    },
+    {
+      "file": "c3-s1.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaExtrema": null,
+      "sha256": "d3d36c0eb876b9335aeabea19a6d982bc9f63ec0a41ea72ca79379f57acdd7ab",
+      "selected": true
+    },
+    {
+      "file": "c3-s2.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaExtrema": null,
+      "sha256": "3d1d039932875cc4dd6b8942d75f30fe8e413b48e18c1d9fc31f70002c2b3b47",
+      "selected": true
+    },
+    {
+      "file": "c3-s3.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaExtrema": null,
+      "sha256": "0d218a06dedf68526cb0678452429c7792665db9e5f51fdf2e649e884ea24a7c",
+      "selected": true
+    },
+    {
+      "file": "cat-eye.png",
+      "width": 1414,
+      "height": 1113,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "cfc86e3c28caa7bfc8568b89627ad5e2c9791863aaccbb486601efb7b7b862ac",
+      "selected": true
+    },
+    {
+      "file": "chest-empty.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaExtrema": null,
+      "sha256": "5cc25628aa71a135759f63bbc96adc727db1831cc227b1fea0eb6b0931d3251c",
+      "selected": true
+    },
+    {
+      "file": "chest-open.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alphaExtrema": null,
+      "sha256": "9599b2326e892b7e3845246f8963c6c487f95084dd1b39dc534c98407e9365d0",
+      "selected": true
+    },
+    {
+      "file": "documents.png",
+      "width": 2046,
+      "height": 768,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "c8e10df8ff4c1f7749c791aa34b432b4c142945d8bcea9792f99c43fba220d7d",
+      "selected": true
+    },
+    {
+      "file": "mai-expressions-v0.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "sha256": "38f7cdfb069c14d245105218a16d50936475c03bcc966540b79eb538762359d6",
+      "selected": false
+    },
+    {
+      "file": "mai-expressions.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "sha256": "106587fc8501064f70c9dd11ab33e82d77b43e401fb10ba46338e10c35645a3e",
+      "selected": false,
+      "status": "superseded by v2: distinct female hair/face identities per user feedback"
+    },
+    {
+      "file": "mai-work.png",
+      "width": 909,
+      "height": 1730,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "11c5f8fd897e190cef3e30f5d7baba514824793094d03c3666bcd456f0e744d3",
+      "selected": false,
+      "status": "superseded by v2: distinct female hair/face identities per user feedback"
+    },
+    {
+      "file": "raglan.png",
+      "width": 1414,
+      "height": 1113,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "eeb644c80ede142872b0c428bc0e9c26dcc6a8d3cabc84c4cc541999aaa94118",
+      "selected": true
+    },
+    {
+      "file": "thay-ba-can.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "sha256": "55af780ba14736c8c232c3f4712bd83e71426342b1c46ebbe94e290b45f35b29",
+      "selected": false,
+      "status": "superseded by thay-ba-can-v2.png: user requested older masculine model"
+    },
+    {
+      "file": "vinh.png",
+      "width": 1414,
+      "height": 1113,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "2c317ce88dc07c8c6c6c67786f1d72b323e1483c0407ed4c94383e0fd3061c81",
+      "selected": true
+    },
+    {
+      "file": "thay-ba-can-v2.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "sha256": "1865a62d82cc3dcf9ebe4b180a043069f040fe0cece12a58f6335d85e9601520",
+      "selected": true
+    },
+    {
+      "file": "mai-work-v2.png",
+      "width": 909,
+      "height": 1730,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "f39dee815dff91f4b5a1e33d4af0d5f14912454e58e8b85b42b664ccbd99749b",
+      "selected": true
+    },
+    {
+      "file": "mai-expressions-v2.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        255
+      ],
+      "sha256": "62353ef332ec4954df0e0e2ec6b7bcc964d35714fc0b5e19620b270565654397",
+      "selected": true
+    },
+    {
+      "file": "ba-lon-v2.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alphaExtrema": [
+        0,
+        254
+      ],
+      "sha256": "878c1fc15b6d8879e759850902a775a9847b7af7d21bd9fedd78e3461bbfc60c",
+      "selected": true
+    }
+  ],
+  "knownIssues": [
+    "Raw PNGs remain immutable source references; use production manifest paths for integration.",
+    "Derived garments registered to An with four gray keys; NPCs share height within each pose group.",
+    "Documents cropped by unequal subject bounds; chest exports restricted to same-canvas ROI.",
+    "Final exported gallery review, cultural review and in-app gameplay QA remain separate; no manual pixel cleanup claimed."
+  ],
+  "reuse": [
+    "assets/accessories/guoc-moc/guoc-moc.png",
+    "assets/characters/ong-le/view-front.png",
+    "assets/items/bien-nhan-tien-thay-boi/bien-nhan-tien-thay-boi.png",
+    "assets/items/so-tu-vi-nguyen-ban-1962/so-tu-vi-nguyen-ban-1962.png",
+    "assets/items/thu-tay-thoa-thuan-boi-toan/thu-tay-thoa-thuan-boi-toan.png"
+  ],
+  "femaleIdentityRevision": {
+    "status": "v2 selected for user-authorized technical export; final exported gallery available",
+    "unchanged": [
+      "An",
+      "Loan C2"
+    ],
+    "Mai": "short curled-under side-part bob; slender oval face, almond eyes, lively smile",
+    "BaLon": "center-part low chignon, silver temple streaks; fuller mature face, defined jaw, hooded eyes"
+  }
+}

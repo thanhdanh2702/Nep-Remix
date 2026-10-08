@@ -4,10 +4,19 @@ import museumMeta from '../../assets/screens/museum/asset-manifest.json';
 import assetMetadata from '../../data/runtime-assets.json';
 
 // Vite owns these URLs in dev and production. Never import drafts or QA images.
-const files = import.meta.glob<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
-  eager: true, query: '?url', import: 'default',
-});
-export const assetRegistry = Object.fromEntries(Object.entries(files).map(([path, url]) => [path.replace('../../', ''), url]));
+const files = typeof process !== 'undefined' && !process.env.VITE
+  ? {}
+  : import.meta.glob<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
+      eager: true, query: '?url', import: 'default',
+    });
+/** Only metadata-backed assets may enter runtime; local art drafts stay untouched. */
+export function registeredAssetUrls(files: Record<string, string>, paths: readonly string[]): Record<string, string> {
+  const registered = new Set(paths);
+  return Object.fromEntries(Object.entries(files)
+    .map(([path, url]) => [path.replace('../../', ''), url])
+    .filter(([path]) => registered.has(path)));
+}
+export const assetRegistry = registeredAssetUrls(files, assetMetadata.map(entry => entry.path));
 export const assetInfo = Object.fromEntries(assetMetadata.map(entry => [entry.path, entry]));
 export function asset(path: string): string {
   const url = assetRegistry[path];
@@ -43,6 +52,15 @@ export function itemAsset(id: string) {
   const slug = id.replaceAll('_', '-').toLowerCase();
   const path = `assets/items/${slug}/${slug}.png`;
   return assetRegistry[path] ? path : undefined;
+}
+export function c2StripAsset(id: string): string | undefined {
+  const match = id.match(/(\d+)$/);
+  if (!match) return undefined;
+  const path = `assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-${match[1]}.png`;
+  return Object.keys(assetRegistry).length > 0 ? (assetRegistry[path] ? path : undefined) : path;
+}
+export function c2CompleteSketchAsset(): string {
+  return 'assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-ban-ve-hoan-chinh.png';
 }
 export function garmentAsset(id: string, icon = false) {
   return `assets/garments/${id}/${id}${icon ? '--icon' : ''}.png`;

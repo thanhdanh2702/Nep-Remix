@@ -4,71 +4,215 @@
     "title": "Chương 2: Tiếng Kéo Đêm Phố Cũ",
     "year": 1935,
     "historicalPeriod": "nam_1934",
-    "summary": "Cụ Trần Thị Loan tại phố Hàng Đào đối diện âm mưu gả bán gán nợ, phục hồi bản vẽ Lemur và khẳng định phẩm giá người phụ nữ tân thời.",
+    "summary": "Hà Nội, phố Hàng Đào năm 1935. Trong câu chuyện hư cấu này, Loan tìm lại chứng cứ trả nợ và bản vẽ Lemur, tự quyết định tương lai của mình.",
     "reward": {
       "id": "reward-c2",
       "chapterId": "c2",
-      "senNgoc": 120,
-      "garmentIds": ["ao-dai-lemur", "ao-dai-tan-thoi-vang-mo-ga"],
-      "cardIds": ["card-phong-trao-ao-dai-lemur-1934", "card-hu-tuc-tao-hon-ep-duyen"]
-    }
+      "senNgoc": 100,
+      "garmentIds": [
+        "ao-dai-lemur",
+        "ao-dai-tan-thoi-vang-mo-ga"
+      ],
+      "cardIds": [
+        "card-phong-trao-ao-dai-lemur-1934",
+        "card-hu-tuc-tao-hon-ep-duyen"
+      ]
+    },
+    "entryDialogueId": "d-c2-ca-nghi",
+    "completionDialogueId": "d-c2-ending"
   },
   "areas": [
     {
       "id": "c2-s1-gac-lung-ve-tranh",
       "chapterId": "c2",
-      "title": "Căn gác lửng vẽ tranh phố Hàng Gai",
-      "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.15, "y": 0.50 },
-      "sides": { "phai": true, "trai": true },
-      "exits": { "window": "c2-s2-kho-vai-hang-dao" },
+      "title": "Căn gác lửng vẽ tranh phố Hàng Đào",
+      "aspect": "16:9",
+      "logicalSize": {
+        "w": 1672,
+        "h": 941
+      },
+      "notes": "Production-v4 / background A, native 1672×941; layout Frontend b6bb71a. Radius covers floor 0.58–0.92 and stand gap 0.045 from both approaches; see src/core/C2-GEOMETRY-HANDOFF.md.",
+      "spawn": {
+        "x": 0.25,
+        "y": 0.75
+      },
+      "sides": {
+        "phai": true,
+        "trai": false
+      },
+      "exits": {
+        "window": "c2-s2-kho-vai-hang-dao"
+      },
       "interactables": [
         {
           "id": "hitbox-drawing-desk",
           "kind": "object",
-          "pos": { "x": 0.30, "y": 0.61 },
-          "radius": 0.08,
-          "rect": { "x": 0.15, "y": 0.45, "w": 0.30, "h": 0.32 },
+          "pos": {
+            "x": 0.38,
+            "y": 0.469
+          },
+          "radius": 0.17,
+          "rect": {
+            "x": 0.35,
+            "y": 0.43,
+            "w": 0.06,
+            "h": 0.08
+          },
           "side": "phai",
-          "action": { "type": "item", "targetId": "manh_ban_ve_ao_dai_1" }
+          "action": {
+            "type": "item",
+            "targetId": "manh_ban_ve_ao_dai_1"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-fabric-basket",
           "kind": "object",
-          "pos": { "x": 0.55, "y": 0.79 },
-          "radius": 0.08,
-          "rect": { "x": 0.48, "y": 0.68, "w": 0.14, "h": 0.22 },
+          "pos": {
+            "x": 0.606,
+            "y": 0.574
+          },
+          "radius": 0.09,
+          "rect": {
+            "x": 0.58,
+            "y": 0.53,
+            "w": 0.06,
+            "h": 0.09
+          },
           "side": "phai",
-          "action": { "type": "item", "targetId": "manh_ban_ve_ao_dai_2" }
+          "action": {
+            "type": "item",
+            "targetId": "manh_ban_ve_ao_dai_2"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-gas-lamp",
           "kind": "object",
-          "pos": { "x": 0.11, "y": 0.45 },
-          "radius": 0.08,
-          "rect": { "x": 0.06, "y": 0.35, "w": 0.10, "h": 0.20 },
+          "pos": {
+            "x": 0.09,
+            "y": 0.454
+          },
+          "radius": 0.12,
+          "rect": {
+            "x": 0.06,
+            "y": 0.41,
+            "w": 0.06,
+            "h": 0.09
+          },
           "side": "phai",
-          "action": { "type": "item", "targetId": "manh_ban_ve_ao_dai_3" }
+          "action": {
+            "type": "item",
+            "targetId": "manh_ban_ve_ao_dai_3"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-french-window",
           "kind": "object",
-          "pos": { "x": 0.85, "y": 0.43 },
-          "radius": 0.08,
-          "rect": { "x": 0.75, "y": 0.18, "w": 0.20, "h": 0.50 },
+          "pos": {
+            "x": 0.767,
+            "y": 0.502
+          },
+          "radius": 0.1,
+          "rect": {
+            "x": 0.74,
+            "y": 0.46,
+            "w": 0.06,
+            "h": 0.09
+          },
           "side": "phai",
-          "action": { "type": "item", "targetId": "manh_ban_ve_ao_dai_4" }
+          "action": {
+            "type": "item",
+            "targetId": "manh_ban_ve_ao_dai_4"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-drawing-easel",
           "kind": "object",
-          "pos": { "x": 0.25, "y": 0.40 },
-          "radius": 0.08,
-          "rect": { "x": 0.18, "y": 0.25, "w": 0.16, "h": 0.30 },
+          "pos": {
+            "x": 0.219,
+            "y": 0.409
+          },
+          "radius": 0.21,
+          "rect": {
+            "x": 0.18,
+            "y": 0.28,
+            "w": 0.08,
+            "h": 0.25
+          },
           "side": "phai",
-          "action": { "type": "puzzle", "targetId": "p-c2-sketch-assemble" }
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c2-sketch-assemble"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              }
+            ]
+          }
+        }
+      ],
+      "exitGates": {
+        "window": {
+          "all": [
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c2-ca-nghi"
+            },
+            {
+              "kind": "puzzleSolved",
+              "puzzleId": "p-c2-sketch-assemble"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c2-mat-ma"
+            }
+          ]
+        }
+      },
+      "exitArrows": [
+        {
+          "exit": "window",
+          "rect": {
+            "x": 0.88,
+            "y": 0.2,
+            "w": 0.1,
+            "h": 0.55
+          },
+          "dir": "right"
         }
       ]
     },
@@ -76,39 +220,187 @@
       "id": "c2-s2-kho-vai-hang-dao",
       "chapterId": "c2",
       "title": "Kho vải ngầm tiệm tơ lụa Hàng Đào",
-      "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.10, "y": 0.60 },
-      "sides": { "phai": true, "trai": true },
-      "exits": { "hall": "c2-s3-phong-trien-lam-doi-dau", "back": "c2-s1-gac-lung-ve-tranh" },
+      "aspect": "16:9",
+      "logicalSize": {
+        "w": 1672,
+        "h": 941
+      },
+      "notes": "Production-v4 / background A, native 1672×941; layout Frontend b6bb71a. Radius covers floor 0.58–0.92 and stand gap 0.045 from both approaches; see src/core/C2-GEOMETRY-HANDOFF.md.",
+      "spawn": {
+        "x": 0.15,
+        "y": 0.75
+      },
+      "sides": {
+        "phai": true,
+        "trai": false
+      },
+      "exits": {
+        "hall": "c2-s3-phong-trien-lam-doi-dau",
+        "back": "c2-s1-gac-lung-ve-tranh"
+      },
       "interactables": [
         {
           "id": "hitbox-grandfather-clock",
           "kind": "object",
-          "pos": { "x": 0.19, "y": 0.525 },
-          "radius": 0.08,
-          "rect": { "x": 0.10, "y": 0.20, "w": 0.18, "h": 0.65 },
+          "pos": {
+            "x": 0.248,
+            "y": 0.425
+          },
+          "radius": 0.14,
+          "rect": {
+            "x": 0.21,
+            "y": 0.32,
+            "w": 0.08,
+            "h": 0.24
+          },
           "side": "phai",
-          "action": { "type": "item", "targetId": "chia_khoa_ket_sat_bang_thau" }
+          "action": {
+            "type": "item",
+            "targetId": "chia_khoa_ket_sat_bang_thau"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-sketch-assemble"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-mat-ma"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-silk-shelves",
           "kind": "object",
-          "pos": { "x": 0.51, "y": 0.375 },
-          "radius": 0.08,
-          "rect": { "x": 0.34, "y": 0.15, "w": 0.34, "h": 0.45 },
+          "pos": {
+            "x": 0.55,
+            "y": 0.4
+          },
+          "radius": 0.3,
+          "rect": {
+            "x": 0.42,
+            "y": 0.22,
+            "w": 0.26,
+            "h": 0.35
+          },
           "side": "phai",
-          "action": { "type": "dialogue", "targetId": "d-c2-silk-shelves" }
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c2-silk-shelves"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-sketch-assemble"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-mat-ma"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-iron-safe",
           "kind": "object",
-          "pos": { "x": 0.83, "y": 0.66 },
-          "radius": 0.08,
-          "rect": { "x": 0.72, "y": 0.45, "w": 0.22, "h": 0.42 },
-          "side": "trai",
-          "action": { "type": "puzzle", "targetId": "p-c2-safe-open" }
+          "pos": {
+            "x": 0.837,
+            "y": 0.511
+          },
+          "radius": 0.18,
+          "rect": {
+            "x": 0.739,
+            "y": 0.37,
+            "w": 0.201,
+            "h": 0.28
+          },
+          "side": "phai",
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c2-safe-open"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-sketch-assemble"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-mat-ma"
+              }
+            ]
+          }
+        }
+      ],
+      "exitGates": {
+        "hall": {
+          "all": [
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c2-ca-nghi"
+            },
+            {
+              "kind": "puzzleSolved",
+              "puzzleId": "p-c2-sketch-assemble"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c2-mat-ma"
+            },
+            {
+              "kind": "puzzleSolved",
+              "puzzleId": "p-c2-safe-open"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c2-bien-lai"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c2-giao-keo"
+            }
+          ]
+        },
+        "back": {
+          "all": []
+        }
+      },
+      "exitArrows": [
+        {
+          "exit": "back",
+          "rect": {
+            "x": 0,
+            "y": 0.45,
+            "w": 0.08,
+            "h": 0.45
+          },
+          "dir": "left"
+        },
+        {
+          "exit": "hall",
+          "rect": {
+            "x": 0.92,
+            "y": 0.76,
+            "w": 0.08,
+            "h": 0.14
+          },
+          "dir": "right"
         }
       ]
     },
@@ -116,39 +408,196 @@
       "id": "c2-s3-phong-trien-lam-doi-dau",
       "chapterId": "c2",
       "title": "Phòng triển lãm Báo Ngày Nay",
-      "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.10, "y": 0.60 },
-      "sides": { "phai": true, "trai": true },
-      "exits": { "exit": "prologue" },
+      "aspect": "16:9",
+      "logicalSize": {
+        "w": 1672,
+        "h": 941
+      },
+      "notes": "Production-v4 / background A, native 1672×941; layout Frontend b6bb71a. Radius covers floor 0.58–0.92 and stand gap 0.045 from both approaches; see src/core/C2-GEOMETRY-HANDOFF.md.",
+      "spawn": {
+        "x": 0.12,
+        "y": 0.75
+      },
+      "sides": {
+        "phai": true,
+        "trai": false
+      },
+      "exits": {
+        "back": "c2-s2-kho-vai-hang-dao"
+      },
       "interactables": [
         {
           "id": "hitbox-reporters-crowd",
           "kind": "npc",
-          "pos": { "x": 0.76, "y": 0.575 },
-          "radius": 0.08,
-          "rect": { "x": 0.60, "y": 0.35, "w": 0.32, "h": 0.45 },
+          "pos": {
+            "x": 0.755,
+            "y": 0.634
+          },
+          "radius": 0.21,
+          "rect": {
+            "x": 0.657,
+            "y": 0.44,
+            "w": 0.203,
+            "h": 0.39
+          },
           "side": "phai",
-          "action": { "type": "puzzle", "targetId": "p-c2-present-receipt" }
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c2-present-receipt"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-sketch-assemble"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-mat-ma"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-safe-open"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-bien-lai"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-giao-keo"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-ong-le-shadow",
           "kind": "npc",
-          "pos": { "x": 0.50, "y": 0.30 },
-          "radius": 0.10,
-          "rect": { "x": 0.35, "y": 0.10, "w": 0.30, "h": 0.40 },
+          "pos": {
+            "x": 0.294,
+            "y": 0.413
+          },
+          "radius": 0.25,
+          "rect": {
+            "x": 0.26,
+            "y": 0.28,
+            "w": 0.08,
+            "h": 0.25
+          },
           "side": "phai",
-          "action": { "type": "puzzle", "targetId": "p-c2-present-sketch" }
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c2-present-sketch"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-sketch-assemble"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-mat-ma"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-safe-open"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-bien-lai"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-giao-keo"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-present-receipt"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-exhibition-podium",
           "kind": "object",
-          "pos": { "x": 0.31, "y": 0.63 },
-          "radius": 0.08,
-          "rect": { "x": 0.18, "y": 0.38, "w": 0.26, "h": 0.50 },
+          "pos": {
+            "x": 0.45,
+            "y": 0.65
+          },
+          "radius": 0.18,
+          "rect": {
+            "x": 0.38,
+            "y": 0.5,
+            "w": 0.16,
+            "h": 0.32
+          },
           "side": "phai",
-          "action": { "type": "puzzle", "targetId": "p-c2-styling-loan" }
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c2-styling-loan"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-ca-nghi"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-sketch-assemble"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-mat-ma"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-safe-open"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-bien-lai"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c2-giao-keo"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-present-receipt"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c2-present-sketch"
+              }
+            ]
+          }
+        }
+      ],
+      "exitGates": {
+        "back": {
+          "all": []
+        }
+      },
+      "exitArrows": [
+        {
+          "exit": "back",
+          "rect": {
+            "x": 0,
+            "y": 0.45,
+            "w": 0.08,
+            "h": 0.45
+          },
+          "dir": "left"
         }
       ]
     }
@@ -160,7 +609,7 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Nữ nhi vô tài tiện thị đức! Ngày mai cô phải gật đầu làm kế thất quan Huyện để trừ món nợ 500 đồng!"
+          "text": "Cả Nghị: Ngày mai cô phải nhận làm vợ kế để trừ món nợ 500 đồng! Loan: Tôi chưa đồng ý. Tôi sẽ tìm giấy tờ và tự nói rõ chuyện này. (Tình huống hư cấu tại phố Hàng Đào, năm 1935.)"
         }
       ]
     },
@@ -170,7 +619,7 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Góc tà áo có dòng chữ chì than: 'Giao kèo bán tạ - Hòm sắt tiệm vải Hàng Đào - Chìa giấu sau đồng hồ quả lắc'.",
+          "text": "Bản vẽ đã liền lại. Góc giấy ghi: “Hòm sắt tiệm vải Hàng Đào — chìa giấu sau đồng hồ quả lắc.” Đó là gợi ý vị trí chìa, không phải mã số.",
           "clueId": "clue-ban-ve-lemur-mat-ma"
         }
       ]
@@ -191,7 +640,7 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Khoản nợ 500 đồng của cha tôi thực chất đã được thanh toán hết từ sáu tháng trước!",
+          "text": "Biên lai trả nợ gốc năm 1935 xác nhận 500 đồng đã được thanh toán từ sáu tháng trước. Tôi sẽ đưa chứng cứ này ra. (Giấy tờ hư cấu trong câu chuyện.)",
           "clueId": "clue-bien-lai-goc-1935"
         }
       ]
@@ -202,8 +651,23 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Ông Cả Nghị đã cố tình ỉm biên lai để ép tôi làm vợ kế quan Huyện nhằm độc quyền thầu vải sợi.",
+          "text": "Giao kèo cho thấy Cả Nghị giấu biên lai để ép tôi làm vợ kế, đổi lấy việc thầu vải. Tôi không chấp nhận giao kèo này. (Giấy tờ hư cấu trong câu chuyện.)",
           "clueId": "clue-giao-keo-ep-hon"
+        }
+      ]
+    },
+    {
+      "id": "d-c2-ending",
+      "speaker": "Loan",
+      "nodes": [
+        {
+          "id": "node-1",
+          "text": "Khoản nợ đã trả. Còn bản vẽ, tôi sẽ tự ký tên.",
+          "nextNodeId": "node-2"
+        },
+        {
+          "id": "node-2",
+          "text": "An: Tôi sẽ đứng bên cạnh để mọi người nghe rõ lựa chọn của chị."
         }
       ]
     }
@@ -215,9 +679,9 @@
       "title": "Phục hồi 4 mảnh bản vẽ áo dài Lemur bị xé",
       "hasSession": true,
       "hints": [
-        "Cả Nghị vò nát các mảnh bản vẽ vứt rải rác trong phòng.",
-        "Thu thập đủ 4 mảnh: cổ áo dưới bàn, thân áo trong giỏ, tay bồng dưới đèn, và chữ ký bên cửa sổ.",
-        "Xoay và ghép 4 mảnh giấy khít lại với nhau để phục hồi bản vẽ hoàn chỉnh."
+        "Tìm đủ bốn dải bản vẽ rải trong gác lửng.",
+        "Đặt các dải theo nét vẽ nối liền từ trái sang phải; có thể bỏ hoặc đổi vị trí để thử lại.",
+        "Thứ tự trái sang phải là mảnh 1, 2, 3, 4. Giữ nguyên hướng từng dải."
       ],
       "solution": {
         "requiredItemIds": [
@@ -228,23 +692,59 @@
         ],
         "rewardItemId": "ban_ve_ao_dai_tan_thoi",
         "dialogueTriggerId": "d-c2-mat-ma",
-        "unlocksAreaId": "c2-s2-kho-vai-hang-dao"
+        "unlocksAreaId": "c2-s2-kho-vai-hang-dao",
+        "sequence": [
+          "manh_ban_ve_ao_dai_1",
+          "manh_ban_ve_ao_dai_2",
+          "manh_ban_ve_ao_dai_3",
+          "manh_ban_ve_ao_dai_4"
+        ]
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-ca-nghi"
+          }
+        ]
       }
     },
     {
       "id": "p-c2-safe-open",
       "type": "use",
-      "title": "Mở két sắt và Lật Vải cắt đứt giao kèo hôn nhân",
+      "title": "Mở két sắt, tìm biên lai và giao kèo",
       "hasSession": false,
       "hints": [
-        "Chìa khóa két sắt bằng thau giấu sau con lắc đồng hồ cao 2m.",
-        "Dùng chìa thau mở két sắt, lấy phong bao niêm phong đỏ chứa bản giao kèo.",
-        "Bật 'Lật Vải' dùng kéo cắt sợi chỉ đen ghim tờ biên lai trả nợ gốc phía sau tờ giao kèo."
+        "Gợi ý trên bản vẽ chỉ đến đồng hồ quả lắc.",
+        "Nhặt chìa khóa bằng thau rồi dùng mở két ở mặt phải.",
+        "Két chứa cả biên lai trả nợ gốc năm 1935 và giao kèo ép hôn; hãy đọc lần lượt hai giấy."
       ],
       "solution": {
         "requiredItemId": "chia_khoa_ket_sat_bang_thau",
-        "rewardItemIds": ["bien_lai_tra_no_goc_1935", "ban_giao_keo_ep_hon"],
-        "dialogueTriggerIds": ["d-c2-bien-lai", "d-c2-giao-keo"]
+        "rewardItemIds": [
+          "bien_lai_tra_no_goc_1935",
+          "ban_giao_keo_ep_hon"
+        ],
+        "dialogueTriggerIds": [
+          "d-c2-bien-lai",
+          "d-c2-giao-keo"
+        ]
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-ca-nghi"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-sketch-assemble"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-mat-ma"
+          }
+        ]
       }
     },
     {
@@ -257,35 +757,145 @@
         "Đưa biên lai thu tiền gốc năm 1935 ra trước các ký giả.",
         "Kéo biên lai trả nợ gốc thả vào đám đông để phơi bày sự lừa dối của Cả Nghị."
       ],
-      "solution": { "presentedItemId": "bien_lai_tra_no_goc_1935" }
+      "solution": {
+        "presentedItemId": "bien_lai_tra_no_goc_1935"
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-ca-nghi"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-sketch-assemble"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-mat-ma"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-safe-open"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-bien-lai"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-giao-keo"
+          }
+        ]
+      }
     },
     {
       "id": "p-c2-present-sketch",
       "type": "present",
-      "title": "Hóa giải Ông Lệ bằng bản vẽ áo dài tân thời",
+      "title": "Trình bản vẽ, để Loan nhận quyền tác giả",
       "hasSession": false,
       "hints": [
-        "Ông Lệ đàm tiếu phụ nữ tân thời phá vỡ khuôn phép gia đình.",
-        "Bản thiết kế áo dài Lemur thanh khiết chứng minh trí tuệ và sự tự chủ của phụ nữ.",
-        "Kéo bản vẽ áo dài tân thời giơ cao trước bóng đen Ông Lệ."
+        "Sau khi trình biên lai, hãy đưa bản vẽ đã phục hồi.",
+        "Loan nhận bản vẽ là công việc của mình, không cần ai quyết định thay.",
+        "Chọn bản vẽ áo dài tân thời để Loan trình trước mọi người."
       ],
-      "solution": { "presentedItemId": "ban_ve_ao_dai_tan_thoi" }
+      "solution": {
+        "presentedItemId": "ban_ve_ao_dai_tan_thoi"
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-ca-nghi"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-sketch-assemble"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-mat-ma"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-safe-open"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-bien-lai"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-giao-keo"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-present-receipt"
+          }
+        ]
+      }
     },
     {
       "id": "p-c2-styling-loan",
       "type": "styling",
-      "title": "Thử thách phối áo dài tân thời thập niên 1930 cho Cụ Loan",
+      "title": "Phối áo Lemur theo lựa chọn của Loan",
       "hasSession": true,
       "hints": [
-        "Phom dáng tân thời Lemur hoặc áo dài cổ đứng không vai bồng cuối thập niên 1930.",
-        "Màu vàng mỡ gà trang nhã hoặc màu hoa đào tươi tắn.",
-        "Phối chuỗi ngọc trai thanh lịch đeo cổ và guốc cao gót mộc quai da."
+        "Chọn phom tân thời và áo dài Lemur.",
+        "Phối khăn vấn đen cùng guốc mộc; cả ba món được mượn trong thử thách.",
+        "Đáp án: áo dài Lemur, khăn vấn đen, guốc mộc. Màu do bạn chọn."
       ],
       "solution": {
         "silhouette": "tan_thoi",
-        "garmentId": "ao-dai-tan-thoi-vang-mo-ga",
+        "garmentId": "ao-dai-lemur",
         "headwearId": "khan-van-den",
-        "footwearId": "guoc-moc"
+        "footwearId": "guoc-moc",
+        "dialogueTriggerId": "d-c2-ending"
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-ca-nghi"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-sketch-assemble"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-mat-ma"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-safe-open"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-bien-lai"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c2-giao-keo"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-present-receipt"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c2-present-sketch"
+          }
+        ]
+      },
+      "loanWardrobe": {
+        "garmentIds": [
+          "ao-dai-lemur"
+        ],
+        "accessoryIds": [
+          "khan-van-den",
+          "guoc-moc"
+        ]
       }
     }
   ]

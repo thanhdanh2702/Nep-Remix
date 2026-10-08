@@ -1,0 +1,58 @@
+# Sprint 01 — Nền gameplay và Mở đầu/C1
+
+Ngày: 06/10/2026. Team: Leader, Core, Frontend, Tester. Đây là kế hoạch bàn giao, chưa giao chạy task hoặc khởi tạo agent.
+
+## Mục tiêu và hiện trạng
+
+Hoàn thiện lát cắt **5 phòng, 8 puzzle** từ save mới: Mở đầu → C1 → về Hub, không cần AI, mua đồ hoặc Lật vải. C1 kết thúc có thể mở trạng thái C2 trên bản đồ nhưng C2 vẫn “đang chuẩn bị”, không playable. Không sửa kịch bản, scene hoặc triển khai UI chuyên biệt cho C2–C5; chỉ giữ tương thích khi mở rộng nền dùng chung.
+
+Căn cứ: [README](README.md), [cốt truyện](01-narrative.md), [gameplay](02-gameplay.md), tuyến Mở đầu/C1 trong [kịch bản](03-chapters.md), [kỹ thuật](04-implementation.md), [art](05-art-audio.md), [văn hóa](06-cultural-review.md), W0/W1 trong [nghiệm thu](07-acceptance.md). [decisions.md](../01-overview/decisions.md) vẫn là nguồn quyết định hiện hành; các thay đổi thiết kế bên dưới cần duyệt trước khi code phần phụ thuộc.
+
+Đã đối chiếu source: `Game.tsx` chỉ cho chơi `prologue/c1`, hai phần đã có scene/assets và `completionDialogueId`. `reward/claim` mới cộng tiền; `applyPuzzleSolved` mở các exit của phòng và cấp clue đầu cho mọi trigger nhưng chỉ bật thoại đầu. Core completion chưa kiểm tra thoại kết; `chapter/replay` xóa tiến trình ngay trong journey chính. `PuzzleModal` giữ lựa chọn bằng state React; store dùng save-v1, chưa có migration sửa quà thiếu. Hint phối C1 còn lệch đáp án. Đây là quan sát mã, chưa phải lỗi đều đã tái hiện bằng browser.
+
+Baseline đã chạy: `npm run test:core` PASS ngày 06/10/2026 (15 self-check và walkthrough hiện có). Suite hiện còn kỳ vọng mở S3 ngay sau cắt dây và cấp clue trước khi đọc; PASS này chưa chứng minh đạt đặc tả mới. Chưa chạy browser/build trong đợt lập kế hoạch.
+
+## Task và quyền sở hữu
+
+| Vai trò / task | Phạm vi file được sửa | Tiêu chí hoàn thành |
+|---|---|---|
+| **Core — C01: gate và command** | `src/core/commands/journey/`, `src/core/state.ts`, `src/core/invariants.ts`, registry/exports liên quan trong `src/core/`; schema/index trong `src/content/` | Một guard/evaluator/outcome dùng chung cho submit và item/use; kiểm tra đúng chương, phòng, gate, sở hữu, kiểu payload. Chặn lối tắt solve/skip hoàn thành không hợp lệ; use nhiều vật đòi đúng tập, không rỗng/trùng/thiếu/dư. Chuyển phòng theo exit hợp lệ, không tự mở mọi exit. Test âm tính không đổi tiến trình, vật hoặc tiền. |
+| **Core — C02: thoại, save, reward, replay** | `src/core/history/`, journey commands, state/invariants; **`src/game/store.ts`** | Queue thoại không mất/nhân đôi khi đóng/reload; clue chỉ cấp khi đọc/xác nhận node tương ứng. Complete buộc đủ puzzle + thoại kết. Claim nguyên tử, đủ mọi quà, đúng một lần. Reload giữa complete/claim vẫn nhận được. Migration giữ bản gốc, repair quà thiếu không cộng lại Sen; lỗi lưu báo đúng. Replay không xóa tiến trình chính, undo/redo không farm thưởng. |
+| **Core — C03: content Mở đầu/C1** | `src/content/chapters/prologue.json`, `c1.json`; `schema.ts`, `index.ts`, `items.json`, `clues.json`, `culture-cards.json`, `studio.json` khi cần cho hai phần | Giữ ID cũ; đủ tuyến W0/W1 bên dưới trên `phai`. Sửa đề/hint/thoại/thẻ đồng bộ, Cầm tự quyết; hộp cạnh cột, không phá đồ thờ. Styling C1 có loan wardrobe, đáp án đúng brief, không chấm màu hay phẩm hạnh. Parse Zod và liên kết hợp lệ; không đổi C2–C5. |
+| **Frontend — F01: luồng chơi và phản hồi** | `src/game/` **trừ `store.ts`**, ưu tiên `Game.tsx`, `RoomScene.tsx`, `room-render.ts`, `DialogueBox.tsx`, `PuzzleModal.tsx`, `InventoryCombine.tsx`, `Studio.tsx`, `StudioWardrobe.tsx`, `JourneyMap.tsx` | Render gate/queue/draft từ Core, không tự hoàn thành bằng effect UI. Dùng/ghép/trình giấy, xem lại chứng cứ, ba hint miễn phí, loan wardrobe và brief rõ. Hủy/đóng giữ draft, vào lại/reload tiếp tục đúng bước. Ending hiển thị quà thực đã cấp, trở Hub an toàn; C2–C5 không playable. |
+| **Frontend — F02: khả năng tiếp cận và scene QA** | `src/ui/`, CSS liên quan; scene/assets helpers trong `src/game/` | Touch ≥44px, Tab/Enter/Escape, focus modal giữ/trả đúng; mobile dọc vẫn chơi được. Không che hotspot/cửa, không méo nền; reduced motion không đổi kết quả, Space không kích hoạt Soi trong modal/input. Lỗi asset/save có phản hồi rõ. Giữ đường dẫn/scale hiện có; cần sửa ảnh/layout trong `assets/` phải báo Leader vì ngoài quyền sở hữu. |
+| **Tester — T01: regression Core/content/save** | `scripts/check-core.ts`, `scripts/check-game.ts`, `scripts/validate-content.ts`, scripts kiểm thử bổ sung và `tests/` | Viết ca tái hiện trước sửa; cập nhật kỳ vọng cũ theo hợp đồng duyệt. W0/W1 dispatch từ fresh state, không cấp vật/debug; test bypass, gate, hai trigger, quà đủ/idempotent, reload, migration và undo/replay. Validator lỗi phải exit nonzero; kiểm tra reachability hai phần, orphan trigger, ID/asset và không phụ thuộc quà cuối chương. |
+| **Tester — T02: browser và biên bản** | `tests/browser/` (ưu tiên `game.spec.ts`, `chapter1.spec.ts`, `journey-map.spec.ts`), fixtures trong `tests/`, scripts kiểm thử | W0/W1 qua UI, thử sai/đi sớm ở mỗi gate; không gọi AI/mua đồ. Reload giữa hai giấy và khi đang phối; reward đủ trong state và Tủ đồ/Bảo tàng. Có bằng chứng viewport, console/404, keyboard và save failure; ghi rõ ca chưa chạy, không coi screenshot là nghiệm thu toàn game. |
+
+Leader sở hữu kế hoạch, review và tích hợp; duyệt thay đổi hợp đồng trước khi consumer đổi theo. Tester không sửa runtime để làm test pass; Frontend không sửa store/content, Core không sửa UI ngoài store. Không revert thay đổi của người khác, không dọn hai thư mục `graphify-out/` đang untracked. File ngoài ownership (kể cả `package.json`, Playwright config, assets) phải được Leader phân công bổ sung cụ thể. Không push/publish hoặc đổi cấu hình người dùng trong sprint này.
+
+## Hợp đồng cần khóa trước tích hợp
+
+Các trường/lệnh mới dưới đây là **đề xuất**, chưa phải API hiện có; Core xuất type/schema, Leader review, Frontend và Tester cùng xác nhận trước triển khai.
+
+| Hợp đồng | Quy tắc thống nhất |
+|---|---|
+| Gate | `Gate = { all: Requirement[] }`, Requirement gồm `puzzleSolved`, `dialogueCompleted`, `itemOwned` với ID có kiểu. Gắn điều kiện exit/hotspot/puzzle/thoại; chuyển `prerequisitePuzzleIds` cũ thành AND. Giữ mapping content `phai/trai` ↔ state `mat_phai/mat_trai`. Không eval; không ID lạ, vòng phụ thuộc hoặc exit khác chương. |
+| Command public | Giữ `interact {targetId, playerPos}`, `area/goTo {areaId}`, `item/combine {itemIds}`, `item/use {itemId, targetPuzzleId}`, `puzzle/submit {puzzleId, answer}`, `dialogue/advance {}`, `dialogue/choose {choiceIndex}`, `chapter/complete {chapterId}`, `reward/claim {chapterId}`. Use nhiều vật qua submit mảng ID; item/use đơn không được bypass đủ bộ. Solve/skip không là đường tắt public. Hub là navigation UI riêng, không dùng chapter ID làm area ID. |
+| Answer và draft | `use/present`: ID hoặc token `interact` đúng action; use nhiều vật: mảng ID duy nhất; styling: `silhouette`, `garmentId`, các trường phụ kiện theo solution hiện có. Thêm draft có discriminator theo loại và lệnh đề xuất `puzzle/updateDraft {puzzleId, draft}`; close chỉ đóng, reset chỉ xóa draft. Chuẩn bị type/evaluator cho sáu loại, hoãn UI order/code/find và bài thêu tới sprint sau. |
+| Dialogue | Giữ `activeDialogue` với node/history, thêm queue ID thứ tự và `completedDialogueIds`; close/suspend không đánh dấu completed. Chỉ node cuối hoặc xác nhận tóm tắt mới hoàn tất; giấy đã nhặt chưa là giấy đã đọc. Queue tự chuyển sang thoại tiếp theo; journal xem lại không tự mở gate mới. |
+| Reward và museum | `reward.id` là khóa idempotency; hợp tập item/garment/accessory/card + cộng Sen + claimed trong một commit. Chốt trường thẻ **được mở** riêng, không dùng `readCardIds/claimedCardIds` để giả là đã đọc/nhận 15 Sen. Loan chỉ trong phiên challenge, không mua, không cấp sở hữu vĩnh viễn trước claim. Tổng delta thưởng sprint = **150 Sen**; fresh save 100 → 250 nếu không có nguồn thu/chi khác. |
+| Store và events | `execute` tiếp tục trả kết quả phân biệt `ok`, tree/events hoặc reason; sai đáp án dùng `puzzleFeedback`, guard lỗi giữ state. UI đọc state đã commit, không cấp quà từ event/animation. Save có version/content version, migrate save-v1 và lịch sử snapshot được giữ; không ghi đè bản hỏng. Chốt status lỗi/thành công giữa `restoreGame`, `saveGame` và UI; không nói “đã lưu” khi thất bại. |
+
+## Thứ tự tích hợp và kiểm thử
+
+1. **Khóa hợp đồng và quyết định:** Leader chốt type, payload, save fixtures, gate W0/W1; chủ dự án duyệt phần thiết kế ảnh hưởng hành vi. Tester viết regression; Frontend chuẩn bị bố cục theo hợp đồng, chưa tự giả lập thành công.
+2. **Tích hợp nền Core:** gate → queue/draft → completion/reward → migration/replay; từng nhóm kèm test Tester. Schema dùng chung vẫn parse toàn content, chưa sửa hoặc bật C2–C5. Leader review guard, invariant, wallet/history và tính tương thích.
+3. **Tích hợp content rồi UI:** Core bàn giao JSON Mở đầu/C1; Frontend nối scene, thoại, Studio và ending. W0: đọc cầu thang → gạt vải → kim → chìa → rương → thư bà → claim (3 puzzle, thước một bản, một thẻ, +50, C1 mở). W1: ghép con thoi/dây → thoát → kéo mở hộp → **đọc cả thư và văn tự** → S3 → trình văn tự → thư → **đọc lời Cầm tự quyết** → phối → thoại cổng → claim (5 puzzle, hai áo/hai thẻ theo `reward-c1`, +100).
+4. **Cổng nghiệm thu:** chạy `npm run lint`, `npx tsx scripts/validate-content.ts`, `npm run test:core`, `npm run build`, `npm run test:assets`, `npm run test:browser`. Shared schema/evaluator chạy cả regression hiện có; không thêm walkthrough C2–C5. Browser W0/W1 trên 1440×900, 1280×720, 390×844, 844×390, 768×1024; bổ sung Safari trên macOS/thiết bị, ghi rõ nếu chưa có môi trường. Test save hỏng/version lạ/storage đầy hoặc bị chặn, pending claim, claimed thiếu quà, node đã đổi, replay/undo quanh claim.
+5. **Leader bàn giao:** review diff theo ownership, đóng P0/P1 ảnh hưởng hai phần bằng test; ghi build/commit, suite, thiết bị, duyệt nội dung và tồn đọng. Chỉ nghiệm thu sprint khi W0/W1 không softlock, thưởng/save đúng, không có console error/asset 404 trên tuyến chính. Playtest đề xuất 5 người, mục tiêu 4/5 qua với hint; chưa thực hiện thì ghi chưa đo, không khẳng định thời lượng.
+
+## Quyết định cần chủ dự án duyệt
+
+- **Điều khiển:** click/chạm là chính, keyboard tương đương theo hồ sơ mới; hòa giải quyết định #18/#21 về di chuyển phím và E. Không tự loại bỏ điều khiển cũ trước duyệt.
+- **Cổng C1 và cách kể:** bắt đọc hai giấy trước S3; contract → letter → lời tự quyết → styling → cổng. Duyệt câu thoại, warning/tóm tắt cảnh ép thủ tiết và diễn đạt hộp cạnh cột; không dùng thư chồng như giấy cấp quyền cho Cầm.
+- **Brief và văn hóa C1:** duyệt áo tay chẽn + khăn đen + guốc, màu tự do, loan wardrobe; tay thụng là quà chứ chưa là đáp án thay thế. VH02/VH03 và thẻ thưởng cần duyệt đồng thời hình/thoại/hint; claim chưa có nguồn được bỏ hoặc gắn giới hạn, không hiển thị như sử liệu xác minh. Schema phân biệt lịch sử/hư cấu/diễn giải phải được chốt; Leader chỉ chuẩn bị hồ sơ, không tự liên hệ chuyên gia.
+- **Undo/replay và save:** ưu tiên undo trong phiên puzzle, replay tách khỏi tiến trình chính; duyệt thay đổi so với #18/#23 và chọn cách giữ/phục hồi bản save hỏng thay vì tự ghi đè. Chốt UX tiếp tục sau complete chưa claim.
+- **Scope/mốc demo:** xác nhận nghiệm thu đợt đầu chỉ nền + Mở đầu/C1; C2 chỉ hiện “đang chuẩn bị”. 50/100 Sen, `latVai=false`, ID và scale An theo #32 đã có quyết định, không cần duyệt lại. Thay ảnh/layout ngoài ownership và sản xuất art/audio mới chỉ bổ sung khi được phân công; không hứa hoàn thành toàn chiến dịch vào 10/10.
+
+Các quyết định mới chỉ có hiệu lực sau khi chủ dự án ghi nhận vào `decisions.md`; các task độc lập vẫn có thể tiến hành, task phụ thuộc quyết định giữ ở trạng thái chờ duyệt.

@@ -1,3 +1,4 @@
+import { enqueueDialogues } from './dialogue-queue.ts';
 import type { DomainEvent } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
@@ -13,19 +14,13 @@ interface SolutionExtras {
   unlocksAreaId?: string;
 }
 
-/**
- * Shared "puzzle solved" transition for puzzle/submit and item/use:
- * marks the puzzle solved, grants reward items, unlocks areas (explicit target + every exit of the
- * current area), collects the first-node clue of each triggered dialogue and opens the first one.
- * Idempotent: an already solved puzzle returns the state untouched (no double reward).
- */
+/** Shared idempotent solve transition: explicit rewards/unlocks and ordered dialogue queue. */
 export function applyPuzzleSolved(
   state: GameState,
   puzzle: Puzzle,
   content: GameContent
 ): { state: GameState; events: DomainEvent[] } {
   const chId = state.currentChapter;
-  const chData = content.chapters[chId];
   const chProgress = state.journey[chId];
 
   if (chProgress.solvedPuzzleIds.includes(puzzle.id)) return { state, events: [] };
@@ -43,37 +38,18 @@ export function applyPuzzleSolved(
     }
   }
 
-  // Area unlocks: explicit target, then every exit of the room the player solved it in
-  let unlockedAreaIds = chProgress.unlockedAreaIds;
-  const currentArea = chData.areas.find((a) => a.id === chProgress.currentArea);
-  const unlocks = [solution.unlocksAreaId, ...Object.values(currentArea?.exits ?? {})];
-  for (const areaId of unlocks) {
-    if (areaId && !unlockedAreaIds.includes(areaId)) unlockedAreaIds = [...unlockedAreaIds, areaId];
-  }
-
-  // Dialogues: every triggered dialogue yields its first-node clue; the first one becomes active.
-  let notebook = state.notebook;
-  let activeDialogue = chProgress.activeDialogue;
-  const triggerIds = [...new Set([solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])])];
-  let opened = false;
-  for (const dialogueId of triggerIds) {
-    const dialogue = chData.dialogues.find((d) => d.id === dialogueId);
-    const firstNode = dialogue?.nodes[0];
-    if (!dialogue || !firstNode) continue;
-    if (firstNode.clueId && !notebook.unlockedClueIds.includes(firstNode.clueId)) {
-      notebook = { ...notebook, unlockedClueIds: [...notebook.unlockedClueIds, firstNode.clueId] };
-      events.push({ type: 'clueCollected', payload: { clueId: firstNode.clueId } });
-    }
-    if (!opened) {
-      activeDialogue = { dialogueId: dialogue.id, currentNodeId: firstNode.id, history: [firstNode.id] };
-      opened = true;
-    }
-  }
+  // Unlock only an explicit solution target; never infer all exits from any solve.
+  const unlockedAreaIds = solution.unlocksAreaId && !chProgress.unlockedAreaIds.includes(solution.unlocksAreaId)
+    ? [...chProgress.unlockedAreaIds, solution.unlocksAreaId] : chProgress.unlockedAreaIds;
+  const solvedState: GameState = { ...state, inventory: { ...state.inventory, itemIds },
+    journey: { ...state.journey, [chId]: { ...chProgress, solvedPuzzleIds: [...chProgress.solvedPuzzleIds, puzzle.id] } } };
+  const queued = enqueueDialogues(solvedState, [solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])], content);
 
   return {
     state: {
       ...state,
-      notebook,
+      activeSession: state.activeSession?.type === 'puzzle' && state.activeSession.puzzleId === puzzle.id
+        ? null : state.activeSession,
       inventory: { ...state.inventory, itemIds },
       journey: {
         ...state.journey,
@@ -81,7 +57,8 @@ export function applyPuzzleSolved(
           ...chProgress,
           solvedPuzzleIds: [...chProgress.solvedPuzzleIds, puzzle.id],
           unlockedAreaIds,
-          activeDialogue
+          activeDialogue: queued.journey[chId].activeDialogue,
+          dialogueQueue: queued.journey[chId].dialogueQueue
         }
       }
     },

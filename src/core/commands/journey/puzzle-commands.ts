@@ -2,7 +2,9 @@ import type { CommandDef } from '../../command.ts';
 import type { GameState, PuzzleDraft } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 import type { Puzzle } from '../../../content/schema.ts';
+import { guardPuzzle } from './gate.ts';
 import { applyPuzzleSolved } from './puzzle-solution.ts';
+import { challengeDraftFromAnswer } from '../studio/challenge-wardrobe.ts';
 
 // ==========================================
 // Text Normalization (Diacritic & Case Insensitive)
@@ -24,7 +26,8 @@ export function normalizeDiacritics(str: string): string {
 
 export function evaluatePuzzleAnswer(puzzle: Puzzle, answer: unknown): boolean {
   if (puzzle.type === 'code') {
-    const rawAnswer = String(answer ?? '');
+    if (typeof answer !== 'string') return false;
+    const rawAnswer = answer;
     const cleanAnswer = normalizeDiacritics(rawAnswer).replace(/\s+/g, '');
     const cleanSolution = normalizeDiacritics(puzzle.solution.combination).replace(/\s+/g, '');
     return cleanAnswer === cleanSolution;
@@ -69,13 +72,11 @@ export function evaluatePuzzleAnswer(puzzle: Puzzle, answer: unknown): boolean {
       return answer === puzzle.solution.requiredItemId;
     }
     if (puzzle.solution.requiredItemIds) {
-      if (Array.isArray(answer)) {
-        const solSet = new Set(puzzle.solution.requiredItemIds);
-        return answer.every((id) => solSet.has(id));
-      }
-      return puzzle.solution.requiredItemIds.includes(answer as any);
+      const required = puzzle.solution.requiredItemIds;
+      return required.length > 0 && Array.isArray(answer) && answer.length === required.length
+        && new Set(answer).size === answer.length && required.every(id => answer.includes(id));
     }
-    return true;
+    return typeof answer === 'string' && answer === puzzle.solution.action;
   }
 
   return false;
@@ -95,31 +96,13 @@ export const puzzleSubmitCommand: CommandDef<PuzzleSubmitPayload> = {
   kind: 'reversible',
 
   guard: (state: GameState, payload: PuzzleSubmitPayload, content: GameContent) => {
-    const { puzzleId } = payload;
-    const chId = state.currentChapter;
-    const chData = content.chapters[chId];
-    const chProgress = state.journey[chId];
-
-    if (!chData || !chProgress) {
-      return { ok: false, reason: `Chương '${chId}' không hợp lệ.` };
+    const guarded = guardPuzzle(state, payload.puzzleId, content);
+    if (guarded !== true) return guarded;
+    const puzzle = content.chapters[state.currentChapter].puzzles.find(p => p.id === payload.puzzleId)!;
+    if (puzzle.type === 'styling' && puzzle.loanWardrobe) {
+      const validated = challengeDraftFromAnswer(state, puzzle.id, payload.answer, content);
+      if (!validated.ok) return validated;
     }
-
-    const puzzle = chData.puzzles.find((p) => p.id === puzzleId);
-    if (!puzzle) {
-      return { ok: false, reason: `Câu đố '${puzzleId}' không thuộc chương hiện tại.` };
-    }
-
-    if (chProgress.solvedPuzzleIds.includes(puzzleId)) {
-      return { ok: false, reason: 'Câu đố này đã được giải rồi.' };
-    }
-
-    if (puzzle.prerequisitePuzzleIds?.some(id => !chProgress.solvedPuzzleIds.includes(id))) {
-      return { ok: false, reason: 'Hãy gỡ tấm vải phủ trước khi mở ổ khóa.' };
-    }
-    if (puzzle.type === 'use' && puzzle.solution.requiredItemId && !state.inventory.itemIds.includes(puzzle.solution.requiredItemId)) {
-      return { ok: false, reason: 'Chưa có vật phẩm cần dùng. Hãy khám phá căn phòng.' };
-    }
-
     return true;
   },
 
@@ -169,25 +152,8 @@ export const puzzleOpenCommand: CommandDef<PuzzleOpenPayload> = {
   kind: 'reversible',
 
   guard: (state: GameState, payload: PuzzleOpenPayload, content: GameContent) => {
-    const { puzzleId } = payload;
-    if (state.activeSession !== null) {
-      return { ok: false, reason: 'Another active session is currently open.' };
-    }
-
-    const chId = state.currentChapter;
-    const chData = content.chapters[chId];
-    const chProgress = state.journey[chId];
-
-    const puzzle = chData?.puzzles.find((p) => p.id === puzzleId);
-    if (!puzzle) {
-      return { ok: false, reason: `Puzzle '${puzzleId}' not found in current chapter.` };
-    }
-
-    if (chProgress.solvedPuzzleIds.includes(puzzleId)) {
-      return { ok: false, reason: `Puzzle '${puzzleId}' is already solved.` };
-    }
-
-    return true;
+    if (state.activeSession !== null) return { ok: false, reason: 'Another session is open.' };
+    return guardPuzzle(state, payload.puzzleId, content, false);
   },
 
   apply: (state: GameState, payload: PuzzleOpenPayload, content: GameContent) => {
@@ -202,7 +168,7 @@ export const puzzleOpenCommand: CommandDef<PuzzleOpenPayload> = {
       chapterId: chId,
       puzzleType: puzzle.type,
       valid: false,
-      data: {},
+      data: { answer: chProgressDraft(state, puzzleId) },
       history: []
     };
 
@@ -238,27 +204,7 @@ export const puzzleSolveCommand: CommandDef<PuzzleSolvePayload> = {
   type: 'puzzle/solve',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: PuzzleSolvePayload) => {
-    if (!payload?.puzzleId) {
-      return { ok: false, reason: 'Puzzle ID is required.' };
-    }
-    const session = state.activeSession;
-    if (session && session.type === 'puzzle') {
-      if (session.puzzleId !== payload.puzzleId) {
-        return {
-          ok: false,
-          reason: `Active session is for '${session.puzzleId}', not '${payload.puzzleId}'.`
-        };
-      }
-      if (!session.valid) {
-        return {
-          ok: false,
-          reason: 'Puzzle session state has not been verified as valid.'
-        };
-      }
-    }
-    return true;
-  },
+  guard: () => ({ ok: false, reason: 'Use puzzle/submit with an evaluated answer.' }),
 
   apply: (state: GameState, payload: PuzzleSolvePayload) => {
     const { puzzleId } = payload;
@@ -312,7 +258,9 @@ export const puzzleHintCommand: CommandDef<PuzzleHintPayload> = {
   type: 'puzzle/hint',
   kind: 'compensable',
 
-  guard: (state: GameState, payload: PuzzleHintPayload) => {
+  guard: (state: GameState, payload: PuzzleHintPayload, content: GameContent) => {
+    const guarded = guardPuzzle(state, payload.puzzleId, content, false);
+    if (guarded !== true) return guarded;
     const { puzzleId } = payload;
     const chId = state.currentChapter;
     const chProgress = state.journey[chId];
@@ -385,17 +333,7 @@ export const puzzleSkipCommand: CommandDef<PuzzleSkipPayload> = {
   type: 'puzzle/skip',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: PuzzleSkipPayload) => {
-    const { puzzleId } = payload;
-    const chId = state.currentChapter;
-    const chProgress = state.journey[chId];
-
-    if (chProgress.solvedPuzzleIds.includes(puzzleId)) {
-      return { ok: false, reason: `Puzzle '${puzzleId}' is already solved.` };
-    }
-
-    return true;
-  },
+  guard: () => ({ ok: false, reason: 'Puzzle skipping cannot complete progress.' }),
 
   apply: (state: GameState, payload: PuzzleSkipPayload) => {
     const { puzzleId } = payload;
@@ -432,3 +370,7 @@ export const puzzleSkipCommand: CommandDef<PuzzleSkipPayload> = {
     };
   }
 };
+
+function chProgressDraft(state: GameState, puzzleId: string): unknown {
+  return state.journey[state.currentChapter].puzzleDrafts?.[puzzleId]?.answer;
+}

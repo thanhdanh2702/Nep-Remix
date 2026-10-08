@@ -74,10 +74,10 @@
   {
     "id": "ao-dai-tay-raglan",
     "title": "Áo dài tay raglan",
-    "timePeriod": "Ra đời khoảng năm 1960 tại Sài Gòn",
-    "historicalFact": "Sáng chế của nhà may Dung Đakao nối tay từ cổ chéo xuống nách giải phóng triệt để nếp nhăn nách áo.",
-    "officialName": "Áo dài ráp-lăng Sài Gòn",
-    "folkName": "Áo dài Đa Kao 1960"
+    "timePeriod": "Mẫu minh họa trong câu chuyện năm 1962",
+    "historicalFact": "Ghi chú kỹ thuật của mẫu minh họa: đường ráp tay raglan đi từ vùng cổ về nách. Không dùng đường ráp để chứng minh lời bói; không khẳng định tác giả hay năm phát minh chưa được kiểm chứng.",
+    "officialName": "Áo dài tay raglan — mẫu minh họa",
+    "folkName": "Áo ráp tay raglan"
   },
   {
     "id": "ao-ba-ba",
@@ -137,19 +137,19 @@
   },
   {
     "id": "card-ky-thuat-ao-dai-raglan-1960",
-    "title": "Kỹ thuật ráp tay raglan 1960",
-    "timePeriod": "Năm 1962",
-    "historicalFact": "Bước đột phá trong kỹ thuật may áo dài tại khu vực Đa Kao Sài Gòn giúp tà áo phẳng phiu.",
-    "officialName": "Kỹ thuật tay raglan Sài Gòn",
-    "folkName": "Áo raglan Đa Kao"
+    "title": "Quan sát đường ráp tay raglan",
+    "timePeriod": "Bối cảnh gia đình hư cấu, năm 1962",
+    "historicalFact": "Ghi chú kỹ thuật của mẫu áo Mai đang làm: quan sát đường ráp tay từ vùng cổ về nách trong preview. Đây không phải bằng chứng bói toán; thẻ không khẳng định tác giả, năm phát minh hoặc một góc ráp cố định.",
+    "officialName": "Quan sát kỹ thuật trên mẫu minh họa",
+    "folkName": "Đường ráp tay raglan"
   },
   {
     "id": "card-phe-phan-hu-tuc-boi-toan",
-    "title": "Phê phán thủ đoạn bói toán trục lợi",
-    "timePeriod": "Thập niên 1960",
-    "historicalFact": "Vạch trần trò bói toán mê tín dị đoan vu khống 'gò má cao sát phu' để ép phụ nữ làm vợ lẽ.",
-    "officialName": "Phê phán mê tín dị đoan",
-    "folkName": "Bói toán sát phu"
+    "title": "Nhận diện hành vi thao túng bằng lời phán",
+    "timePeriod": "Chuyện gia đình hư cấu tại Đa Kao, năm 1962",
+    "historicalFact": "Diễn giải của tác phẩm: biên nhận, sổ gốc, thư thỏa thuận và bản sửa cho thấy hành vi nhận tiền để áp đặt lựa chọn lên Mai. Không một lời phán hay đặc điểm ngoại hình nào quyết định phẩm giá hoặc quyền tự quyết của cô.",
+    "officialName": "Diễn giải của tác phẩm — quyền tự quyết",
+    "folkName": "Đối chiếu chứng cứ, nhận diện thao túng"
   },
   {
     "id": "card-ao-dai-thoi-bao-cap-1980",

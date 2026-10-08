@@ -1,0 +1,1139 @@
+{
+  "version": "production-v1",
+  "chapterId": "c3",
+  "assets": [
+    {
+      "path": "assets/characters/ba-mai/scene-tailor.png",
+      "kind": "character-sprite",
+      "source": "mai-work-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        29,
+        17,
+        146,
+        401
+      ],
+      "sha256": "f703e568d1beab6511ad257b41bc0c5484400263b9a3c4949b33a8c5a92b47bb"
+    },
+    {
+      "path": "assets/characters/ba-mai/portrait-tailor.png",
+      "kind": "portrait",
+      "source": "mai-work-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        26,
+        0,
+        99,
+        128
+      ],
+      "sha256": "fd2b296e67803e6e10d85bf029da26b81cbc8661480dc4c090d9f5e7c3babc28"
+    },
+    {
+      "path": "assets/characters/ba-mai/scene-investigate.png",
+      "kind": "character-sprite",
+      "source": "mai-expressions-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        12,
+        17,
+        163,
+        401
+      ],
+      "sha256": "2c104ffa40ef8f2424eff7f4645e18b5c05bf020969968072f7733fdd7ee86c5"
+    },
+    {
+      "path": "assets/characters/ba-mai/portrait-investigate.png",
+      "kind": "portrait",
+      "source": "mai-expressions-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        12,
+        0,
+        124,
+        128
+      ],
+      "sha256": "6d5a333fe59fdf7d9f7f9f967188f8b46a5ae5ba9c8f31f3570ec9bfb6c9a8a9"
+    },
+    {
+      "path": "assets/characters/ba-mai/scene-speak.png",
+      "kind": "character-sprite",
+      "source": "mai-expressions-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        14,
+        17,
+        161,
+        401
+      ],
+      "sha256": "ee2fc34db90e31a5923490cc0791126e6ebcfc198b37ebb1d051581a8deae0c1"
+    },
+    {
+      "path": "assets/characters/ba-mai/portrait-speak.png",
+      "kind": "portrait",
+      "source": "mai-expressions-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        5,
+        0,
+        122,
+        128
+      ],
+      "sha256": "8b7a008b7df3a2eda8a972fdf28a1e6357ad61eedf97046d8f52a7afa788bae1"
+    },
+    {
+      "path": "assets/characters/ba-mai/scene-relieved.png",
+      "kind": "character-sprite",
+      "source": "mai-expressions-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        17,
+        17,
+        159,
+        401
+      ],
+      "sha256": "2fbd9743ac32d4d1addb52cc03c6a77d23cae124c63b6c9f408993d06e55eaa9"
+    },
+    {
+      "path": "assets/characters/ba-mai/portrait-relieved.png",
+      "kind": "portrait",
+      "source": "mai-expressions-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        22,
+        0,
+        104,
+        128
+      ],
+      "sha256": "3c055521e432e4e2309423d816e360c92df3dacf788fea29d9fb6fd32816278b"
+    },
+    {
+      "path": "assets/characters/ba-mai/view-front.png",
+      "kind": "character-sprite",
+      "source": "mai-work-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        29,
+        17,
+        146,
+        401
+      ],
+      "sha256": "f703e568d1beab6511ad257b41bc0c5484400263b9a3c4949b33a8c5a92b47bb"
+    },
+    {
+      "path": "assets/characters/vinh/scene-idle.png",
+      "kind": "character-sprite",
+      "source": "vinh",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        35,
+        17,
+        141,
+        401
+      ],
+      "sha256": "0d088fd496942167966a62c4470cba6a4ff220db1fa4712b6329bfad68284e1c"
+    },
+    {
+      "path": "assets/characters/vinh/portrait-idle.png",
+      "kind": "portrait",
+      "source": "vinh",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        22,
+        0,
+        104,
+        128
+      ],
+      "sha256": "c880b628c6dd2adc3944d9710c68549fa68bb5ab587ec700368e2572efa25788"
+    },
+    {
+      "path": "assets/characters/vinh/scene-surprised.png",
+      "kind": "character-sprite",
+      "source": "vinh",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        24,
+        17,
+        151,
+        401
+      ],
+      "sha256": "c2987338156f32ea0cbe93a9eca0aee72708ca8779fcc5a139495de36e6ef862"
+    },
+    {
+      "path": "assets/characters/vinh/portrait-surprised.png",
+      "kind": "portrait",
+      "source": "vinh",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        14,
+        0,
+        112,
+        128
+      ],
+      "sha256": "f3f9a379762af7b42f40a38240c34d10a6d46874607a973a8439a5fca9d76347"
+    },
+    {
+      "path": "assets/characters/vinh/scene-witness.png",
+      "kind": "character-sprite",
+      "source": "vinh",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        20,
+        17,
+        155,
+        401
+      ],
+      "sha256": "dc6f739c8e5282133fe499fb4eb0c04f7b2d2a266cac6b7098fee9b9b0a45821"
+    },
+    {
+      "path": "assets/characters/vinh/portrait-witness.png",
+      "kind": "portrait",
+      "source": "vinh",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        15,
+        0,
+        110,
+        128
+      ],
+      "sha256": "3440cdcc2db8c13b88ba58666df43d6d37f45b61d8bb9483c774d643cddc649e"
+    },
+    {
+      "path": "assets/characters/vinh/view-front.png",
+      "kind": "character-sprite",
+      "source": "vinh",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        35,
+        17,
+        141,
+        401
+      ],
+      "sha256": "0d088fd496942167966a62c4470cba6a4ff220db1fa4712b6329bfad68284e1c"
+    },
+    {
+      "path": "assets/characters/ba-lon/scene-stern.png",
+      "kind": "character-sprite",
+      "source": "ba-lon-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        22,
+        17,
+        154,
+        401
+      ],
+      "sha256": "c9415a69e09f60b3406d6514795724dd9d8373881300e1edcdf8499267ca9b98"
+    },
+    {
+      "path": "assets/characters/ba-lon/portrait-stern.png",
+      "kind": "portrait",
+      "source": "ba-lon-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        16,
+        0,
+        103,
+        128
+      ],
+      "sha256": "b2d478f5bc960e796f75b24150a168bcdf7bf73b182648ebb4240c235b7e16af"
+    },
+    {
+      "path": "assets/characters/ba-lon/scene-uneasy.png",
+      "kind": "character-sprite",
+      "source": "ba-lon-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        21,
+        17,
+        154,
+        401
+      ],
+      "sha256": "29d66a009e457ff5d1c5bf6bd2a6791a6afef2f509b69f8c7ba85f0ad12b08be"
+    },
+    {
+      "path": "assets/characters/ba-lon/portrait-uneasy.png",
+      "kind": "portrait",
+      "source": "ba-lon-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        20,
+        0,
+        112,
+        128
+      ],
+      "sha256": "b31e27a9c8e13de2cf6017310b9ca2d8cdc23aea5433881ab8b1397850bfb553"
+    },
+    {
+      "path": "assets/characters/ba-lon/scene-reflective.png",
+      "kind": "character-sprite",
+      "source": "ba-lon-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        25,
+        17,
+        151,
+        401
+      ],
+      "sha256": "797a4221f861def78cbfa34bbe85598b694d8272aa9790c1c9ba8b2cd1d82598"
+    },
+    {
+      "path": "assets/characters/ba-lon/portrait-reflective.png",
+      "kind": "portrait",
+      "source": "ba-lon-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        26,
+        0,
+        108,
+        128
+      ],
+      "sha256": "684709ff4335a6720efc9a431eac469885bac5cf7bb9a227f387ffa195d8c030"
+    },
+    {
+      "path": "assets/characters/ba-lon/view-front.png",
+      "kind": "character-sprite",
+      "source": "ba-lon-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        22,
+        17,
+        154,
+        401
+      ],
+      "sha256": "c9415a69e09f60b3406d6514795724dd9d8373881300e1edcdf8499267ca9b98"
+    },
+    {
+      "path": "assets/characters/thay-ba-can/scene-idle.png",
+      "kind": "character-sprite",
+      "source": "thay-ba-can-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        27,
+        17,
+        149,
+        401
+      ],
+      "sha256": "6a02f081cc350210d5f73b5e6fab485d3e841e9a065bb93de000328db4428592"
+    },
+    {
+      "path": "assets/characters/thay-ba-can/portrait-idle.png",
+      "kind": "portrait",
+      "source": "thay-ba-can-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        15,
+        0,
+        113,
+        128
+      ],
+      "sha256": "992bbea507de13d0af25338851e4df8f94124fae3050d0aca665a6f76d472992"
+    },
+    {
+      "path": "assets/characters/thay-ba-can/scene-anxious.png",
+      "kind": "character-sprite",
+      "source": "thay-ba-can-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        24,
+        17,
+        152,
+        401
+      ],
+      "sha256": "17ad035bdf415a0a48e74b056f2ae2d9550daad3d5e174c39f3966ead68de2b2"
+    },
+    {
+      "path": "assets/characters/thay-ba-can/portrait-anxious.png",
+      "kind": "portrait",
+      "source": "thay-ba-can-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        13,
+        0,
+        115,
+        128
+      ],
+      "sha256": "e8f5119c689fb4192660cf76c259fa17857d429ef3dd5e6cc32d58c7c79f70f3"
+    },
+    {
+      "path": "assets/characters/thay-ba-can/scene-uneasy.png",
+      "kind": "character-sprite",
+      "source": "thay-ba-can-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        29,
+        17,
+        147,
+        401
+      ],
+      "sha256": "af47adb0573ea3db8455fdf35b8af61a98a9c1a5d29d4f03b5d074b75989582a"
+    },
+    {
+      "path": "assets/characters/thay-ba-can/portrait-uneasy.png",
+      "kind": "portrait",
+      "source": "thay-ba-can-v2",
+      "width": 128,
+      "height": 128,
+      "bounds": [
+        19,
+        0,
+        105,
+        128
+      ],
+      "sha256": "15755a5bd8dfe5b0a41bc05597a1dfcf64b8349e636e53720d2ac76ac29eca9e"
+    },
+    {
+      "path": "assets/characters/thay-ba-can/view-front.png",
+      "kind": "character-sprite",
+      "source": "thay-ba-can-v2",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        27,
+        17,
+        149,
+        401
+      ],
+      "sha256": "6a02f081cc350210d5f73b5e6fab485d3e841e9a065bb93de000328db4428592"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--phai.png",
+      "kind": "area-background",
+      "source": "c3-s1",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "82df172bec3a85584a42da1df1151b7defd7e95425e46e2f37ef0080f88de2cb"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--phai.png",
+      "kind": "area-background",
+      "source": "c3-s2",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "4aa6bd0b92d65609679dce11bc9265a86cb6071027fe3838eb61e8ee930b159a"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--phai.png",
+      "kind": "area-background",
+      "source": "c3-s3",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "e44779c4dd05d0034c5b156bc50acdc95cdbb1cbad0ad7da7f60ddcf3c8049f9"
+    },
+    {
+      "path": "assets/garments/ao-dai-raglan/ao-dai-raglan.png",
+      "kind": "garment-layer",
+      "source": "raglan",
+      "width": 528,
+      "height": 416,
+      "bounds": [
+        29,
+        126,
+        510,
+        377
+      ],
+      "sha256": "f654814b15e329e42becd0c1179740aeede4810f2561ffcb0c79fc14b6e24846"
+    },
+    {
+      "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen.png",
+      "kind": "garment-layer",
+      "source": "boat-neck",
+      "width": 528,
+      "height": 416,
+      "bounds": [
+        29,
+        126,
+        510,
+        377
+      ],
+      "sha256": "5a2f2a242b83ffa2bebd7f3679955f959f28eb572ab5697de97ede5c79942b37"
+    },
+    {
+      "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo.png",
+      "kind": "accessory-layer",
+      "source": "cat-eye",
+      "width": 528,
+      "height": 416,
+      "bounds": [
+        61,
+        78,
+        488,
+        101
+      ],
+      "sha256": "fcec36ef4bdc92851a49caef8bb19f47383bf2616f2775c5d385055a22621518"
+    },
+    {
+      "path": "assets/areas/chapter-3/doc-c3-bien-nhan.png",
+      "kind": "doc",
+      "source": "documents",
+      "width": 321,
+      "height": 469,
+      "bounds": [
+        0,
+        0,
+        321,
+        469
+      ],
+      "sha256": "84ec704b50a32d8ab798d08bef001da10596b4daa4a699a07577e9964237cc4e"
+    },
+    {
+      "path": "assets/areas/chapter-3/doc-c3-so-goc.png",
+      "kind": "doc",
+      "source": "documents",
+      "width": 644,
+      "height": 457,
+      "bounds": [
+        0,
+        0,
+        644,
+        457
+      ],
+      "sha256": "0807f88bf7e1dbbb46923478cdc2c571e123fa8a096ed059855b4ef6babee8ed"
+    },
+    {
+      "path": "assets/areas/chapter-3/doc-c3-thu-thoa-thuan.png",
+      "kind": "doc",
+      "source": "documents",
+      "width": 390,
+      "height": 597,
+      "bounds": [
+        0,
+        0,
+        390,
+        597
+      ],
+      "sha256": "00faee7e36d7a12d63a1c99938c6bf7f02a73f39001ecd5a15afc8955b9418c5"
+    },
+    {
+      "path": "assets/areas/chapter-3/doc-c3-ban-sua.png",
+      "kind": "doc",
+      "source": "documents",
+      "width": 367,
+      "height": 607,
+      "bounds": [
+        0,
+        0,
+        367,
+        607
+      ],
+      "sha256": "7868da9d75758b575d1ceca82b5b2b6140c38983cac350edbd99e0f2e1735fd6"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--bien-nhan.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1210,
+        473,
+        1282,
+        489
+      ],
+      "sha256": "a51bb7069819ab6c2d6393f579a05dcb786aac71adfdaa7ce0a4e6aeffd71c55"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--giay-doi-chieu.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1320,
+        475,
+        1386,
+        489
+      ],
+      "sha256": "636340f09fdd47b0af16fe68d697284f1ec28d455eb7badb9e92a6bea3083ba1"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--so-goc.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        760,
+        433,
+        840,
+        451
+      ],
+      "sha256": "21c560c079de2af3b200fa2faa3d3ef71446429acb941aab707c0e512d48c835"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--thu-thoa-thuan.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        875,
+        426,
+        927,
+        442
+      ],
+      "sha256": "5a7f95e2b9e78501f6abaf8be1ce8833e117b655b08b3c891cf6b0359327f1a0"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--ghi-chu-khoa.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        991,
+        408,
+        1032,
+        420
+      ],
+      "sha256": "0a4e1c8b2483a4a80926139250be432dfa53400283ffc3969b143b7155ad403e"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--ho-so-goc.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        640,
+        457,
+        770,
+        477
+      ],
+      "sha256": "d022d16bf59bff40ffb18c7e330dc631ed622d2a167e6f00a92dbc8c23dc225b"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--thu-doi-chieu.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        840,
+        450,
+        910,
+        466
+      ],
+      "sha256": "320075d928f36ee51e1a23c7eeecfa6ae112442e15bd352e2aefcf1de62d640f"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--ban-sua.png",
+      "kind": "area-overlay",
+      "source": "documents",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        970,
+        451,
+        1042,
+        467
+      ],
+      "sha256": "21d41b175bae81c9aa0fe0d436a487baa254ab2df01f54747e471adfc33a069f"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--ruong-mo.png",
+      "kind": "area-overlay",
+      "source": "chest-open",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1050,
+        270,
+        1335,
+        474
+      ],
+      "sha256": "960b59343b8727c6350868322a330ceef51cfc4b834e9a7ce24dfa3cc2e4255f"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--ruong-rong.png",
+      "kind": "area-overlay",
+      "source": "chest-empty",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        1050,
+        270,
+        1335,
+        474
+      ],
+      "sha256": "d060c00268d43c001acf1a93ee67a5f8ac88dba306fc66beaebe5a77fde33001"
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/cg-c3-mai-tu-len-tieng.png",
+      "kind": "cg",
+      "source": "composited from S3 + approved NPC poses",
+      "width": 1672,
+      "height": 941,
+      "bounds": [
+        0,
+        0,
+        1672,
+        941
+      ],
+      "sha256": "6d26e0e388e01f102589949b056a0ed9482771e71bcdc5b7db0a4f62b0176cc1"
+    },
+    {
+      "path": "assets/accessories/guoc-moc/guoc-moc.png",
+      "kind": "reuse",
+      "width": 528,
+      "height": 416,
+      "bounds": [
+        51,
+        377,
+        493,
+        400
+      ],
+      "sha256": "8d516a91da9bd7a9bec643f556fbedbfe38c006631602c9f23ebc7d13e9ecc32"
+    },
+    {
+      "path": "assets/characters/ong-le/view-front.png",
+      "kind": "reuse",
+      "width": 176,
+      "height": 416,
+      "bounds": [
+        25,
+        17,
+        151,
+        401
+      ],
+      "sha256": "342e9f636212eeb58e59c047d663fe139319c7e516cb01f277e79e5466c2c26e"
+    },
+    {
+      "path": "assets/garments/ao-dai-raglan/ao-dai-raglan--icon.png",
+      "kind": "reuse",
+      "width": 96,
+      "height": 96,
+      "bounds": [
+        25,
+        2,
+        71,
+        94
+      ],
+      "sha256": "c83e7c3e7e60d56274de908971a6a6878d3999aafa50d247a16e3228ba805ceb"
+    },
+    {
+      "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen--icon.png",
+      "kind": "reuse",
+      "width": 96,
+      "height": 96,
+      "bounds": [
+        26,
+        4,
+        70,
+        93
+      ],
+      "sha256": "d647b4da802970458d9e38bdce0604ed1426db1aa1bfab8fbe667e79c51620b0"
+    },
+    {
+      "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo--icon.png",
+      "kind": "reuse",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        1,
+        16,
+        47,
+        34
+      ],
+      "sha256": "f23b02caa3a6d8d5d7bebd116e0358cd4b26a50c76bac46560414914922e661d"
+    },
+    {
+      "path": "assets/items/bien-nhan-tien-thay-boi/bien-nhan-tien-thay-boi.png",
+      "kind": "reuse",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        8,
+        5,
+        41,
+        44
+      ],
+      "sha256": "06686f0012b7f5279d03e0952e91eca70bd3e5df19c7cdd256f6b9acf2bc2ffa"
+    },
+    {
+      "path": "assets/items/so-tu-vi-nguyen-ban-1962/so-tu-vi-nguyen-ban-1962.png",
+      "kind": "reuse",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        8,
+        5,
+        42,
+        45
+      ],
+      "sha256": "bb196bff2588af244b368f431e361895406d338e51cff9fcbe94a97b83cac313"
+    },
+    {
+      "path": "assets/items/thu-tay-thoa-thuan-boi-toan/thu-tay-thoa-thuan-boi-toan.png",
+      "kind": "reuse",
+      "width": 48,
+      "height": 48,
+      "bounds": [
+        2,
+        10,
+        46,
+        41
+      ],
+      "sha256": "6474f072ac65b7f27517a1c53b4a3554ebc90f6c4063a6360df0c327b8988fc3"
+    }
+  ],
+  "actors": [
+    {
+      "id": "ba-mai",
+      "poses": [
+        "tailor",
+        "investigate",
+        "speak",
+        "relieved"
+      ],
+      "frame": [
+        176,
+        416
+      ],
+      "footAnchor": [
+        88,
+        400
+      ],
+      "visibleHeight": 384
+    },
+    {
+      "id": "vinh",
+      "poses": [
+        "idle",
+        "surprised",
+        "witness"
+      ],
+      "frame": [
+        176,
+        416
+      ],
+      "footAnchor": [
+        88,
+        400
+      ],
+      "visibleHeight": 384
+    },
+    {
+      "id": "ba-lon",
+      "poses": [
+        "stern",
+        "uneasy",
+        "reflective"
+      ],
+      "frame": [
+        176,
+        416
+      ],
+      "footAnchor": [
+        88,
+        400
+      ],
+      "visibleHeight": 384
+    },
+    {
+      "id": "thay-ba-can",
+      "poses": [
+        "idle",
+        "anxious",
+        "uneasy"
+      ],
+      "frame": [
+        176,
+        416
+      ],
+      "footAnchor": [
+        88,
+        400
+      ],
+      "visibleHeight": 384
+    }
+  ],
+  "sceneActors": [
+    {
+      "areaId": "c3-s1-tiem-may-da-kao",
+      "actorId": "ba-mai",
+      "pose": "tailor",
+      "scale": 1.35,
+      "footPosition": [
+        350,
+        790
+      ],
+      "visibleBounds": [
+        270,
+        272,
+        428,
+        791
+      ]
+    },
+    {
+      "areaId": "c3-s2-phong-phong-thuy",
+      "actorId": "thay-ba-can",
+      "pose": "idle",
+      "scale": 1.35,
+      "footPosition": [
+        580,
+        795
+      ],
+      "visibleBounds": [
+        498,
+        277,
+        662,
+        796
+      ]
+    },
+    {
+      "areaId": "c3-s3-dinh-thu-doi-dau",
+      "actorId": "ba-mai",
+      "pose": "speak",
+      "scale": 1.35,
+      "footPosition": [
+        780,
+        825
+      ],
+      "visibleBounds": [
+        680,
+        307,
+        879,
+        826
+      ]
+    },
+    {
+      "areaId": "c3-s3-dinh-thu-doi-dau",
+      "actorId": "vinh",
+      "pose": "witness",
+      "scale": 1.35,
+      "footPosition": [
+        480,
+        820
+      ],
+      "visibleBounds": [
+        388,
+        302,
+        571,
+        821
+      ]
+    },
+    {
+      "areaId": "c3-s3-dinh-thu-doi-dau",
+      "actorId": "ba-lon",
+      "pose": "reflective",
+      "scale": 1.35,
+      "footPosition": [
+        1170,
+        820
+      ],
+      "visibleBounds": [
+        1085,
+        302,
+        1255,
+        821
+      ]
+    }
+  ],
+  "sourceManifest": "assets/areas/chapter-3/_raw/review-v1/manifest.json",
+  "worldPlacements": [
+    {
+      "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--bien-nhan.png",
+      "areaId": "c3-s1-tiem-may-da-kao",
+      "itemId": "bien_nhan_tien_thay_boi",
+      "topLeft": [
+        1210,
+        473
+      ],
+      "visibleBounds": [
+        1210,
+        473,
+        1282,
+        489
+      ],
+      "toggleOffOnCollect": true
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--giay-doi-chieu.png",
+      "areaId": "c3-s1-tiem-may-da-kao",
+      "itemId": null,
+      "topLeft": [
+        1320,
+        475
+      ],
+      "visibleBounds": [
+        1320,
+        475,
+        1386,
+        489
+      ],
+      "toggleOffOnCollect": true
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--so-goc.png",
+      "areaId": "c3-s2-phong-phong-thuy",
+      "itemId": "so_tu_vi_nguyen_ban_1962",
+      "topLeft": [
+        760,
+        433
+      ],
+      "visibleBounds": [
+        760,
+        433,
+        840,
+        451
+      ],
+      "toggleOffOnCollect": true
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--thu-thoa-thuan.png",
+      "areaId": "c3-s2-phong-phong-thuy",
+      "itemId": "thu_tay_thoa_thuan_boi_toan",
+      "topLeft": [
+        875,
+        426
+      ],
+      "visibleBounds": [
+        875,
+        426,
+        927,
+        442
+      ],
+      "toggleOffOnCollect": true
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--ghi-chu-khoa.png",
+      "areaId": "c3-s2-phong-phong-thuy",
+      "itemId": null,
+      "topLeft": [
+        990,
+        408
+      ],
+      "visibleBounds": [
+        991,
+        408,
+        1032,
+        420
+      ],
+      "toggleOffOnCollect": true
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--ho-so-goc.png",
+      "areaId": "c3-s3-dinh-thu-doi-dau",
+      "itemId": null,
+      "topLeft": [
+        640,
+        457
+      ],
+      "visibleBounds": [
+        640,
+        457,
+        770,
+        477
+      ],
+      "toggleOffOnCollect": true
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--thu-doi-chieu.png",
+      "areaId": "c3-s3-dinh-thu-doi-dau",
+      "itemId": null,
+      "topLeft": [
+        840,
+        450
+      ],
+      "visibleBounds": [
+        840,
+        450,
+        910,
+        466
+      ],
+      "toggleOffOnCollect": true
+    },
+    {
+      "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--ban-sua.png",
+      "areaId": "c3-s3-dinh-thu-doi-dau",
+      "itemId": null,
+      "topLeft": [
+        970,
+        451
+      ],
+      "visibleBounds": [
+        970,
+        451,
+        1042,
+        467
+      ],
+      "toggleOffOnCollect": true
+    }
+  ],
+  "chestROI": [
+    1050,
+    270,
+    1335,
+    474
+  ],
+  "backgroundSize": [
+    1672,
+    941
+  ],
+  "postprocessingPermission": "User explicitly approved mechanical processing as C2",
+  "processing": "Crop, alpha threshold, nearest resize, same-height NPC framing, four-key garment mapping, bounded overlays, native An fitting",
+  "gameplayIntegrated": false,
+  "sharedMetadataUpdated": false,
+  "culturalApproved": false,
+  "technicalExportComplete": true,
+  "visualSignoff": "Awaiting final exported gallery review",
+  "missingRequiredArt": [],
+  "deferredOptionalArt": [
+    "Walk animation atlases",
+    "mat-trai",
+    "audio",
+    "C5 ancestor poses"
+  ],
+  "integrationNotes": [
+    "UI authors all Vietnamese paper text and Càn/Tốn labels; no generated glyphs.",
+    "Copy native garments/accessories; side view right is mirrored by renderer.",
+    "Jewelry slot glasses are hidden in back view by existing renderer.",
+    "Run shared asset audit and C3 integration tests only during leader integration.",
+    "NPCs are static poses, not duplicate-frame animations."
+  ]
+}

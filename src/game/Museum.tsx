@@ -89,7 +89,7 @@ export function Museum({ state, send, onReadingChange }: {
           <label>Thời kỳ<select value={period} onChange={e => setPeriod(e.target.value)}><option value="all">Tất cả</option>{['Nguyễn', '1888', '1934', '1960', '1962', '1980', '1982', '2026'].map(p => <option key={p}>{p}</option>)}</select></label>
           <div className="museum-catalog-results">{options.map(c => {
             const index = content.cultureCards.indexOf(c);
-            return <button key={c.id} onClick={() => open(Math.floor(index / 2), index % 2 * 2)}><strong>{c.title}</strong><small>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc' : c.timePeriod}</small></button>;
+            return <button key={c.id} onClick={() => open(Math.floor(index / 2), index % 2 * 2)}><strong>{c.title}</strong><small>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc' : state.museum.unlockedCardIds?.includes(c.id) ? 'Ký vật đã nhận từ cốt truyện' : c.timePeriod}</small></button>;
           })}{!options.length && <p>Chưa tìm thấy tư liệu phù hợp. Hãy thử từ khóa khác.</p>}</div>
         </div>
       </details>
@@ -107,7 +107,7 @@ export function Museum({ state, send, onReadingChange }: {
           <div className="museum-page-content">
             {page < volume.cards.length * 2 ? <><span className="eyebrow">{card.timePeriod}</span><h3>{card.title}</h3>
               {page % 2 === 0 ? <>{garment && <img className="museum-garment pixel-native" src={asset(garmentAsset(garment.id, true))} alt={garment.name} />}<p className="historical-fact">{card.historicalFact}</p></> : <><span className="museum-section-note">Những tên gọi qua thời gian</span>{card.officialName && <p><strong>Tên chính thức</strong><br />{card.officialName}</p>}{card.folkName && <p><strong>Tên thường gọi</strong><br />{card.folkName}</p>}</>}
-            </> : page === pageCount - 2 ? <><span className="eyebrow">GHI CHÉP CUỐI SỔ</span><h3>Nguồn tư liệu</h3><img className="museum-seal pixel-native" src={asset('assets/screens/museum/citation-seal.png')} alt="" /><p>Tư liệu được cung cấp trong kho nội dung của tiệm.</p><p className="fine-print">Các trích dẫn thư mục chi tiết sẽ được bổ sung khi hoàn thiện nội dung.</p></> : <><span className="eyebrow">KHÉP MỘT NẾP KÝ ỨC</span><h3>Bạn đã đến trang cuối</h3><p>Ghi nhớ những nếp áo vừa khám phá, rồi chọn một cuốn sách khác trên kệ nhé.</p><div className="museum-reading-rewards">{volume.cards.map(c => <div key={c.id}><strong>{c.title}</strong><button className="primary" disabled={state.museum.readCardIds.includes(c.id)} onClick={() => send({ type: 'museum/readCard', payload: { cardId: c.id } })}>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc và nhận thưởng' : 'Đã hiểu · +15 Sen Ngọc'}</button></div>)}</div></>}
+            </> : page === pageCount - 2 ? <><span className="eyebrow">GHI CHÉP CUỐI SỔ</span><h3>Nguồn tư liệu</h3><img className="museum-seal pixel-native" src={asset('assets/screens/museum/citation-seal.png')} alt="" /><p>Tư liệu được cung cấp trong kho nội dung của tiệm.</p><p className="fine-print">Các trích dẫn thư mục chi tiết sẽ được bổ sung khi hoàn thiện nội dung.</p></> : <><span className="eyebrow">KHÉP MỘT NẾP KÝ ỨC</span><h3>Bạn đã đến trang cuối</h3><p>Ghi nhớ những nếp áo vừa khám phá, rồi chọn một cuốn sách khác trên kệ nhé.</p><div className="museum-reading-rewards">{volume.cards.map(c => <div key={c.id}><strong>{c.title}</strong><button className="primary" disabled={state.museum.readCardIds.includes(c.id)} onClick={() => send({ type: 'museum/readCard', payload: { cardId: c.id } })}>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc' : 'Đã hiểu'}</button></div>)}</div></>}
           </div>
           <span className="museum-folio">{String(page + 1).padStart(2, '0')}</span>
         </section>
@@ -117,6 +117,7 @@ export function Museum({ state, send, onReadingChange }: {
         <span role="status" aria-live="polite" aria-atomic="true">Trang {page + 1} / {pageCount}</span>
         <button disabled={page === pageCount - 1} onClick={() => turn(1)}>Trang sau ›</button>
       </nav>
+      <p className="fine-print">Đọc mỗi thẻ lần đầu nhận 15 Sen Ngọc. Thẻ được mở từ cốt truyện chưa được tính là đã đọc.</p>
       <p className="museum-key-hint">Dùng phím ← → để lật trang · Esc để khép sách</p>
     </Modal>}
   </div>;

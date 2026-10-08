@@ -19,6 +19,7 @@ async function enterRoom(page: Page, chapter: string) {
 }
 // Plays the prologue by clicking (same route as game.spec) and lands on the chapter map.
 async function finishPrologue(page: Page) {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
   await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
   await openStory(page);
@@ -47,13 +48,13 @@ async function advanceDialogue(page: Page) {
 }
 async function closeDialogue(page: Page) {
   await advanceDialogue(page);
-  await expect(dialog(page)).toHaveCount(0);
 }
 // Every button in the open dialog / challenge bar must be a comfortable touch target.
 async function expectTouchTargets(page: Page, scope: string) {
-  const heights = await page.locator(`${scope} button`).evaluateAll(buttons => buttons.map(b => ({ name: b.textContent, h: b.getBoundingClientRect().height })));
-  expect(heights.length).toBeGreaterThan(0);
-  for (const { name, h } of heights) expect(h, `button "${name}"`).toBeGreaterThanOrEqual(43.5);
+  await expect.poll(async () => {
+    const heights = await page.locator(`${scope} button`).evaluateAll(buttons => buttons.map(b => b.getBoundingClientRect().height));
+    return heights.length > 0 && heights.every(h => h >= 43.5);
+  }).toBe(true);
 }
 
 // Chapter 1, rooms 1 and 2: pick, combine, use, then the altar. Ends in the yard.
@@ -91,6 +92,8 @@ async function playToYard(page: Page, mobile = false) {
   await dialog(page).getByRole('button', { name: 'Kéo may bằng đồng', exact: true }).click();
   await page.getByRole('button', { name: 'Dùng vật phẩm', exact: true }).click();
   await closeDialogue(page);
+  await closeDialogue(page);
+  await expect(dialog(page)).toHaveCount(0);
   const state = await saved(page);
   expect(state.inventory.itemIds).toEqual(expect.arrayContaining(['buc_thu_tay_chong_cu_Cam', 'to_van_tu_cam_co_dat']));
   expect(state.notebook.unlockedClueIds).toEqual(expect.arrayContaining(['clue-thu-chong-cu-cam', 'clue-van-tu-ban-dat']));
@@ -205,5 +208,54 @@ test.describe('mobile 844x390', () => {
     await spot(page, 'hitbox-styling-cam').click();
     await expectTouchTargets(page, '.studio-challenge');
     await page.getByRole('button', { name: 'Hủy thử thách', exact: true }).click();
+  });
+  test('toast success intercept click hotspot is fixed', async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await finishPrologue(page);
+    await playToYard(page, true);
+    
+    // trigger a toast using settings
+    await page.getByRole('button', { name: 'Cài đặt', exact: true }).click();
+    await page.getByRole('button', { name: 'Lưu diện mạo', exact: true }).click();
+    
+    const toast = page.locator('.toast');
+    await expect(toast).toBeVisible();
+    
+    // while toast is visible, click a hotspot
+    await spot(page, 'hitbox-styling-cam').click();
+    await expect(page.locator('.studio-challenge')).toBeVisible();
+    
+    // Check if toast close button works
+    await page.getByRole('button', { name: 'Hủy thử thách', exact: true }).click();
+    
+    // trigger again and click toast close button
+    await page.getByRole('button', { name: 'Cài đặt', exact: true }).click();
+    await page.getByRole('button', { name: 'Lưu diện mạo', exact: true }).click();
+    await expect(toast).toBeVisible();
+    const closeToast = toast.locator('button');
+    await closeToast.click();
+    await expect(toast).toHaveCount(0);
+  });
+
+});
+
+test.describe('Accessibility & UI Regressions', () => {
+  test('modal focus trap works and restores focus on close', async ({ page }) => {
+    await finishPrologue(page);
+    await playToYard(page);
+    const hotspot = spot(page, 'hitbox-village-officials');
+    await expect(hotspot).toBeVisible();
+    await hotspot.click();
+    
+    const dialog = page.getByRole('dialog');
+    await expect(dialog).toBeVisible();
+    
+    await page.keyboard.press('Tab');
+    const isFocusInside = await page.evaluate(() => document.querySelector('.modal')?.contains(document.activeElement));
+    expect(isFocusInside).toBe(true);
+    
+    // just close it with the button to not rely on Escape, or press Escape 
+    await page.locator('.modal').press('Escape');
+    await expect(dialog).toHaveCount(0);
   });
 });

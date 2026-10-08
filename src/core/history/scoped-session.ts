@@ -145,9 +145,10 @@ export function commitSession(session: ScopedSession<any>): CommitResult {
     return {
       ok: true,
       command: {
-        type: 'puzzle/solve',
+        type: 'puzzle/submit',
         payload: {
-          puzzleId: draft.puzzleId
+          puzzleId: draft.puzzleId,
+          answer: draft.data.answer
         }
       }
     };

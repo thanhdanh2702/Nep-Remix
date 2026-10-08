@@ -121,10 +121,10 @@ const tabs: { id: WardrobeTab; label: string }[] = [
   { id: 'accessory', label: 'Phụ kiện' }, { id: 'footwear', label: 'Giày' },
 ];
 
-export function StudioWardrobe({ state, draft, tab, onTab, palettes, onGarment, onColor, onAccessory, className }: {
+export function StudioWardrobe({ state, draft, tab, onTab, palettes, onGarment, onColor, onAccessory, className, loanGarmentIds = [], loanAccessoryIds = [] }: {
   state: GameState; draft: StudioDraft; tab: WardrobeTab; onTab: (tab: WardrobeTab) => void;
   palettes: StudioPalette[]; onGarment: (garment: Garment) => void; onColor: (palette: StudioPalette) => void;
-  onAccessory: (id: string) => void; className: string;
+  onAccessory: (id: string) => void; className: string; loanGarmentIds?: string[]; loanAccessoryIds?: string[];
 }) {
   const [page, setPage] = useState(0);
   const [fade, setFade] = useState<'none' | 'start' | 'end' | 'both'>('none');
@@ -174,10 +174,10 @@ export function StudioWardrobe({ state, draft, tab, onTab, palettes, onGarment, 
           if (itemIndex >= count) return <div className="wardrobe-empty" key={index} aria-hidden="true" />;
           if (tab === 'garment') {
             const garment = content.garments[itemIndex];
-            const owned = state.closet.unlockedGarmentIds.includes(garment.id);
+            const owned = state.closet.unlockedGarmentIds.includes(garment.id) || loanGarmentIds.includes(garment.id);
             const equipped = garment.id === draft.garmentId;
             return <button key={garment.id} className={`wardrobe-card ${equipped ? 'is-selected' : ''} ${owned ? '' : 'is-locked'}`} aria-disabled={!owned || undefined} aria-pressed={equipped} onClick={() => { if (owned) onGarment(garment); }}>
-              <GarmentPreview garment={garment} colors={garment.defaultColorPalette} locked={!owned} hint={garmentHint(garment.id)} /><span className="wardrobe-name">{garment.name}</span>{equipped && <small>Đang mặc</small>}
+              <GarmentPreview garment={garment} colors={garment.defaultColorPalette} locked={!owned} hint={garmentHint(garment.id)} /><span className="wardrobe-name">{garment.name}</span>{equipped && <small>Đang mặc</small>}{loanGarmentIds.includes(garment.id) && !state.closet.unlockedGarmentIds.includes(garment.id) && <small className="loan-tag">Đồ mượn</small>}
             </button>;
           }
           if (tab === 'color') {
@@ -187,10 +187,10 @@ export function StudioWardrobe({ state, draft, tab, onTab, palettes, onGarment, 
             </button>;
           }
           const accessory = accessories[itemIndex];
-          const owned = state.closet.unlockedAccessoryIds.includes(accessory.id);
+          const owned = state.closet.unlockedAccessoryIds.includes(accessory.id) || loanAccessoryIds.includes(accessory.id);
           const selected = Object.values(draft.equippedAccessories).includes(accessory.id);
           return <button key={accessory.id} className={`wardrobe-card ${selected ? 'is-selected' : ''} ${owned ? '' : 'is-locked'}`} aria-disabled={!owned || undefined} aria-pressed={selected} onClick={() => { if (owned) onAccessory(accessory.id); }}>
-            <AccessoryIcon id={accessory.id} locked={!owned} hint={`${accessory.senNgocPrice} Sen Ngọc`} /><span className="wardrobe-name">{accessory.name}</span>
+            <AccessoryIcon id={accessory.id} locked={!owned} hint={`${accessory.senNgocPrice} Sen Ngọc`} /><span className="wardrobe-name">{accessory.name}</span>{loanAccessoryIds.includes(accessory.id) && !state.closet.unlockedAccessoryIds.includes(accessory.id) && <small className="loan-tag">Đồ mượn</small>}
           </button>;
         })}
       </div>

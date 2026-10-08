@@ -1,3 +1,5 @@
+import { canReadC3Dialogue } from './commands/journey/c3-progress.ts';
+import { validC3StoredDraft } from './commands/journey/c3-draft.ts';
 import type { GameState } from './state.ts';
 import type { GameContent } from '../content/index.ts';
 import type { ChapterId } from '../content/schema.ts';
@@ -351,6 +353,7 @@ export interface ValidationResult {
 }
 
 export function validateState(state: GameState, content: GameContent): ValidationResult {
+  try {
   const errors: string[] = [
     ...validateAreaAndChapter(state, content),
     ...validateFabricFlipFlag(state, content),
@@ -363,11 +366,50 @@ export function validateState(state: GameState, content: GameContent): Validatio
     ...validateSingleActiveSession(state),
     ...validateOneWayRewardClaim(state, content),
     ...validateHintTierBounds(state),
-    ...validateMuseumProgress(state, content)
+    ...validateMuseumProgress(state, content),
+    ...validateJourneyQueues(state, content),
+    ...validateC3Progress(state, content)
   ];
 
   return {
     valid: errors.length === 0,
     errors
   };
+  } catch { return { valid: false, errors: ['Invalid state structure.'] }; }
+}
+
+export function validateJourneyQueues(state: GameState, content: GameContent): string[] {
+  const errors: string[] = [];
+  for (const chapterId of content.chapterOrder) {
+    const progress = state.journey[chapterId as ChapterId];
+    if (!progress) { errors.push(`Missing chapter progress: ${chapterId}`); continue; }
+    const chapter = content.chapters[chapterId];
+    const ids = new Set<string>(chapter.dialogues.map(d => d.id));
+    const queue = progress.dialogueQueue ?? [];
+    if (!Array.isArray(queue) || new Set(queue).size !== queue.length || queue.some(id => !ids.has(id) || progress.completedDialogueIds.includes(id) || progress.activeDialogue?.dialogueId === id)) errors.push(`Invalid dialogue queue: ${chapterId}`);
+    if (progress.completedDialogueIds.some(id => !ids.has(id))) errors.push(`Unknown completed dialogue: ${chapterId}`);
+    if (progress.activeDialogue) {
+      const dialogue = chapter.dialogues.find(d => d.id === progress.activeDialogue!.dialogueId);
+      if (!dialogue?.nodes.some(n => n.id === progress.activeDialogue!.currentNodeId)) errors.push(`Invalid active dialogue: ${chapterId}`);
+    }
+  }
+  for (const id of state.museum.unlockedCardIds ?? []) if (!content.cultureCardsById.has(id)) errors.push(`Unknown unlocked card: ${id}`);
+  return errors;
+}
+
+/** C3-specific restoration checks; legacy claimed snapshots are repaired by the loader first. */
+function validateC3Progress(state: GameState, content: GameContent): string[] {
+  const p = state.journey.c3;
+  const errors: string[] = [];
+  const context = { ...state, currentChapter: 'c3' as const };
+  if (p.activeDialogue && !canReadC3Dialogue(context, p.activeDialogue.dialogueId, content)) errors.push('C3 active dialogue gate is not satisfied.');
+  for (const [id,draft] of Object.entries(p.puzzleDrafts ?? {})) {
+    if (!validC3StoredDraft(state,id,draft,content)) errors.push(`Invalid C3 draft: ${id}`);
+  }
+  if (p.claimed) {
+    const reward = content.chapters.c3.chapter.reward;
+    if (reward.garmentIds?.some(id => !state.closet.unlockedGarmentIds.includes(id))
+      || reward.cardIds?.some(id => !state.museum.unlockedCardIds?.includes(id))) errors.push('Claimed C3 reward is missing gifts.');
+  }
+  return errors;
 }

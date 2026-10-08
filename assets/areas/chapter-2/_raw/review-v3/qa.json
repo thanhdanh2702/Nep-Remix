@@ -1,0 +1,247 @@
+{
+  "date": "2026-10-07",
+  "inspection": "native PNG dimensions, alpha bounds, transparent coverage and SHA256; no image edits",
+  "productionReady": false,
+  "files": [
+    {
+      "file": "backgrounds/a/c2-s1-gac-lung-ve-tranh--phai.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "alpha_bbox": null,
+      "transparent_fraction": 0,
+      "sha256": "72adfeb102644562266bab4fe834ffa7bb027e731854efd053da637381d2eb0e"
+    },
+    {
+      "file": "backgrounds/a/c2-s2-kho-vai-hang-dao--phai.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "alpha_bbox": null,
+      "transparent_fraction": 0,
+      "sha256": "b7cabc346ff64babc0c65ec3f472dcf00e3fd57e48a92d0f95616c9564f0c7c6"
+    },
+    {
+      "file": "backgrounds/a/c2-s3-phong-trien-lam-doi-dau--phai.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "alpha_bbox": null,
+      "transparent_fraction": 0,
+      "sha256": "a86e4cfa627cb154a39d8fe2581bfb3e90cfa7c5fb85a07c8e33200ab0d49d9a"
+    },
+    {
+      "file": "backgrounds/b/c2-s1-gac-lung-ve-tranh--phai.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "alpha_bbox": null,
+      "transparent_fraction": 0,
+      "sha256": "c9f467cf87efeb80b37066279a05206a20ff500fe73a20ac4f674118695a5ab3"
+    },
+    {
+      "file": "backgrounds/b/c2-s2-kho-vai-hang-dao--phai.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "alpha_bbox": null,
+      "transparent_fraction": 0,
+      "sha256": "0346ee4c726aa21cc5ca1d7b4b2aff59421bced720089b91358db621d43ed2a7"
+    },
+    {
+      "file": "backgrounds/b/c2-s3-phong-trien-lam-doi-dau--phai.png",
+      "width": 1672,
+      "height": 941,
+      "mode": "RGB",
+      "alpha_extrema": null,
+      "alpha_bbox": null,
+      "transparent_fraction": 0,
+      "sha256": "296ed5248623ba642e1e96118ce66af4e0c9adcb462c9c0e997946bc23a7982e"
+    },
+    {
+      "file": "characters/ca-nghi.png",
+      "width": 909,
+      "height": 1730,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        37,
+        37,
+        871,
+        1696
+      ],
+      "transparent_fraction": 0.598,
+      "sha256": "c7bd6f53d7f11e8e1f1f10ca8ded5b2ddd012483dcb1d3022ff08ea325d005e1"
+    },
+    {
+      "file": "characters/loan-exhibit.png",
+      "width": 909,
+      "height": 1730,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        50,
+        45,
+        840,
+        1698
+      ],
+      "transparent_fraction": 0.6288,
+      "sha256": "252503d0e7d8cde08ee8ad73949260f0095c65a24e6fb096f4b5ff18557d582c"
+    },
+    {
+      "file": "characters/loan-work.png",
+      "width": 909,
+      "height": 1730,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        50,
+        45,
+        854,
+        1704
+      ],
+      "transparent_fraction": 0.631,
+      "sha256": "e3ad83dbf28ed4a85047b4936385075ab00664e542871a45272ec0ee2ede32ab"
+    },
+    {
+      "file": "characters/ong-le.png",
+      "width": 909,
+      "height": 1730,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        50,
+        19,
+        858,
+        1730
+      ],
+      "transparent_fraction": 0.5791,
+      "sha256": "63a458cea5980e902b5552653eec0155f3c50e8528452ad347de1fe4b9373bc9"
+    },
+    {
+      "file": "characters/reporters.png",
+      "width": 1230,
+      "height": 1278,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        24,
+        1214,
+        1278
+      ],
+      "transparent_fraction": 0.4426,
+      "sha256": "3348d5caac64af13b1cd4c6552cb96d29214c5baa23ad2c1293c392fe8a29b03"
+    },
+    {
+      "file": "props/puzzle-props-a.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        27,
+        41,
+        1510,
+        1024
+      ],
+      "transparent_fraction": 0.4078,
+      "sha256": "c98ffff11d06d72532b20067d0d1636b43922993c6c78ae9a4d7548d1bf07e20"
+    },
+    {
+      "file": "props/puzzle-props-b.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        15,
+        18,
+        1522,
+        992
+      ],
+      "transparent_fraction": 0.3125,
+      "sha256": "c11121366703321df5e50d75dc42e971177fcae01cea2a6e80844fe6f3a36227"
+    },
+    {
+      "file": "props/restored-sketch.png",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        254
+      ],
+      "alpha_bbox": [
+        0,
+        24,
+        1010,
+        1516
+      ],
+      "transparent_fraction": 0.5229,
+      "sha256": "bcd51de3b29542cd5ad73f3378c0540115d2656ac92c1cf8d655daf91cfc5c7c"
+    },
+    {
+      "file": "props/safe-states.png",
+      "width": 1860,
+      "height": 845,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        0,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        50,
+        1856,
+        845
+      ],
+      "transparent_fraction": 0.4155,
+      "sha256": "965c36cab2ce390381bc1548490c49d1e4ebcd5afe59ce7f9e7dd50340c3d84c"
+    },
+    {
+      "file": "references/user-proportion-reference.png",
+      "width": 506,
+      "height": 962,
+      "mode": "RGBA",
+      "alpha_extrema": [
+        255,
+        255
+      ],
+      "alpha_bbox": [
+        0,
+        0,
+        506,
+        962
+      ],
+      "transparent_fraction": 0,
+      "sha256": "3984601f824ffbd1a8632983c965f6aa1efee3b7e4a5705967b301571933ec51"
+    }
+  ]
+}

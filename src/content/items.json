@@ -81,32 +81,32 @@
   },
   {
     "id": "manh_ban_ve_ao_dai_1",
-    "name": "Mảnh bản vẽ 1: Cổ áo Lemur",
-    "description": "Mảnh giấy vẽ phác thảo phần cổ lá sen cách tân của áo dài Lemur.",
+    "name": "Mảnh bản vẽ 1",
+    "description": "Dải thứ 1 trong bốn dải của bản vẽ Lemur. Giữ nguyên hướng, ghép từ trái sang phải theo nét vẽ.",
     "category": "puzzle_piece",
     "consumable": true,
     "icon": "sketch"
   },
   {
     "id": "manh_ban_ve_ao_dai_2",
-    "name": "Mảnh bản vẽ 2: Thân áo chiết eo",
-    "description": "Mảnh giấy vẽ phác thảo đường lượn eo và nách áo dài tân thời.",
+    "name": "Mảnh bản vẽ 2",
+    "description": "Dải thứ 2 trong bốn dải của bản vẽ Lemur. Giữ nguyên hướng, ghép từ trái sang phải theo nét vẽ.",
     "category": "puzzle_piece",
     "consumable": true,
     "icon": "sketch"
   },
   {
     "id": "manh_ban_ve_ao_dai_3",
-    "name": "Mảnh bản vẽ 3: Tay bồng phương Tây",
-    "description": "Mảnh giấy vẽ phần vai bồng nữ tính kiểu Âu phục thập niên 1930.",
+    "name": "Mảnh bản vẽ 3",
+    "description": "Dải thứ 3 trong bốn dải của bản vẽ Lemur. Giữ nguyên hướng, ghép từ trái sang phải theo nét vẽ.",
     "category": "puzzle_piece",
     "consumable": true,
     "icon": "sketch"
   },
   {
     "id": "manh_ban_ve_ao_dai_4",
-    "name": "Mảnh bản vẽ 4: Chữ ký và mật mã",
-    "description": "Mảnh giấy ghi chữ ký họa sĩ và dòng mật mã chỉ nơi giấu chìa khóa két sắt.",
+    "name": "Mảnh bản vẽ 4",
+    "description": "Dải thứ 4 trong bốn dải của bản vẽ Lemur. Giữ nguyên hướng, ghép từ trái sang phải theo nét vẽ.",
     "category": "puzzle_piece",
     "consumable": true,
     "icon": "sketch"
@@ -114,7 +114,7 @@
   {
     "id": "ban_ve_ao_dai_tan_thoi",
     "name": "Bản vẽ áo dài tân thời hoàn chỉnh",
-    "description": "Bản thiết kế áo dài Lemur được ghép lại nguyên vẹn, minh chứng cho tài năng và khí tiết Cụ Loan.",
+    "description": "Bản vẽ áo dài Lemur đã phục hồi. Loan sẽ tự trình bày và ký tên cho công việc của mình.",
     "category": "evidence",
     "consumable": false,
     "icon": "sketch"
@@ -130,7 +130,7 @@
   {
     "id": "bien_lai_tra_no_goc_1935",
     "name": "Biên lai trả nợ gốc năm 1935",
-    "description": "Chứng từ chứng minh cha Cụ Loan đã trả hết món nợ 500 đồng bạc Đông Dương từ sáu tháng trước.",
+    "description": "Chứng từ chứng minh cha Cụ Loan đã trả hết món nợ 500 đồng bạc Đông Dương từ sáu tháng trước. Chứng cứ hư cấu trong câu chuyện tại Hàng Đào, năm 1935.",
     "category": "evidence",
     "consumable": false,
     "icon": "receipt"
@@ -138,47 +138,47 @@
   {
     "id": "ban_giao_keo_ep_hon",
     "name": "Bản giao kèo ép hôn",
-    "description": "Bản giao kèo bất chính giữa Cả Nghị và quan Huyện ép gả Cụ Loan làm vợ lẽ.",
+    "description": "Bản giao kèo bất chính giữa Cả Nghị và quan Huyện ép gả Cụ Loan làm vợ lẽ. Chứng cứ hư cấu trong câu chuyện tại Hàng Đào, năm 1935.",
     "category": "evidence",
     "consumable": false,
     "icon": "contract"
   },
   {
     "id": "bua_chu_tru_yeu_1",
-    "name": "Lọ bùa giấy vàng chậu cảnh",
-    "description": "Chiếc lọ sành nhỏ nhét lá bùa chữ son do thầy Ba Càn lén lút chôn trong chậu mai chiếu thủy.",
+    "name": "Giấy lưu từ bản kể cũ — chậu cảnh",
+    "description": "Vật phẩm legacy của bản kể C3 cũ, giữ để đọc bản lưu. Không là chứng cứ bắt buộc hoặc căn cứ đánh giá tín ngưỡng trong câu chuyện hiện tại.",
     "category": "evidence",
     "consumable": false,
     "icon": "talisman"
   },
   {
     "id": "bua_chu_tru_yeu_2",
-    "name": "Lá bùa đầu lâu chân máy may",
-    "description": "Lá bùa hung hiểm giấu dưới viên gạch bông cạy lỏng chân bàn máy khâu tiệm may Đa Kao.",
+    "name": "Giấy lưu từ bản kể cũ — bàn may",
+    "description": "Vật phẩm legacy của bản kể C3 cũ, giữ để đọc bản lưu. Không là chứng cứ bắt buộc hoặc căn cứ đánh giá tín ngưỡng trong câu chuyện hiện tại.",
     "category": "evidence",
     "consumable": false,
     "icon": "talisman"
   },
   {
     "id": "bien_nhan_tien_thay_boi",
-    "name": "Biên nhận tiền thuê bói toán",
-    "description": "Giấy biên nhận 2000 đồng của bà Hội đồng Vĩnh chi cho thầy Ba Càn để vu khống số sát phu.",
+    "name": "Biên nhận khoản tiền sửa hồ sơ",
+    "description": "Chứng cứ hư cấu tại Đa Kao, Sài Gòn năm 1962: Bà Lớn đưa Thầy Ba Càn 2.000 đồng để viết lại nhận xét trong hồ sơ Mai–Vinh, buộc Mai chấp nhận việc sắp đặt.",
     "category": "evidence",
     "consumable": false,
     "icon": "receipt"
   },
   {
     "id": "so_tu_vi_nguyen_ban_1962",
-    "name": "Sổ tử vi nguyên bản 1962",
-    "description": "Sổ lá số tử vi gốc ghi đúng ngày giờ sinh đại cát của Vinh, không hề xung khắc với Bà Mai.",
+    "name": "Sổ hồ sơ gốc Mai–Vinh, 1962",
+    "description": "Chứng cứ hư cấu tại Đa Kao, Sài Gòn năm 1962: sổ hồ sơ Mai–Vinh ghi nhận nội dung ban đầu, không có dòng yêu cầu Mai làm lẽ hay giao quyền quyết định tiệm. Dùng đối chiếu bản sửa; lời phán không quyết định phẩm giá Mai.",
     "category": "evidence",
     "consumable": false,
     "icon": "book"
   },
   {
     "id": "thu_tay_thoa_thuan_boi_toan",
-    "name": "Thư tay thỏa thuận bói toán",
-    "description": "Bức thư tay hé lộ âm mưu ép Bà Mai làm vợ lẽ và chiếm đoạt tiệm may Đa Kao.",
+    "name": "Thư thỏa thuận sửa hồ sơ",
+    "description": "Chứng cứ hư cấu tại Đa Kao, Sài Gòn năm 1962: thư dẫn chiếu hồ sơ Mai–Vinh, khoản 2.000 đồng Bà Lớn trả Thầy Ba Càn và yêu cầu thêm lời phán để ép Mai làm lẽ, giao quyền quyết định căn tiệm.",
     "category": "evidence",
     "consumable": false,
     "icon": "letter"

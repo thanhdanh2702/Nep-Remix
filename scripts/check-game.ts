@@ -21,8 +21,10 @@ send('interact',{targetId:'hitbox-sewing-basket',playerPos:{x:.835,y:.784}});
 send('puzzle/submit',{puzzleId:'p-c0-mannequin-hand',answer:'kim_gut_bang_bac'});
 send('puzzle/submit',{puzzleId:'p-c0-chest-unlock',answer:'chia_khoa_dong_ba_chau'});
 assert.equal(state().journey.prologue.activeDialogue?.dialogueId,'d-c0-ba-dan-do');
+assert.ok(!state().notebook.unlockedClueIds.includes('clue-ba-dan-do'));
+while(state().journey.prologue.activeDialogue) send('dialogue/advance',{});
 assert.ok(state().notebook.unlockedClueIds.includes('clue-ba-dan-do'));
-send('dialogue/advance',{});send('chapter/complete',{chapterId:'prologue'});send('reward/claim',{chapterId:'prologue'});
+send('chapter/complete',{chapterId:'prologue'});send('reward/claim',{chapterId:'prologue'});
 assert.equal(state().wallet.senNgoc,150);
 assert.equal(dispatch(tree,{type:'reward/claim',payload:{chapterId:'prologue'}},content).ok,false);
 
@@ -78,6 +80,7 @@ assert.ok(['buc_thu_tay_chong_cu_Cam','to_van_tu_cam_co_dat'].every(id=>state().
 assert.ok(c1Progress().unlockedAreaIds.includes(S3));
 const afterAltar=JSON.stringify([state().inventory,state().notebook]);
 const resubmit=dispatch(tree,{type:'puzzle/submit',payload:{puzzleId:'p-c1-altar-cut-threads',answer:'keo_may_bang_dong'}},content);
+console.log('resubmit object:', resubmit);
 assert.ok(!resubmit.ok&&/đã được giải/.test(resubmit.reason),'resubmit is rejected with a Vietnamese reason');
 assert.equal(JSON.stringify([state().inventory,state().notebook]),afterAltar,'resubmit must not double rewards');
 readDialogue('d-c1-thu-chong');

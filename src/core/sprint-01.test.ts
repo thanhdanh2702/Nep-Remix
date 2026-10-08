@@ -1,0 +1,148 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { loadContent } from '../content/index.ts';
+import { createInitialState, createInitialTree, dispatch, runCommand, fromJSON, toJSON } from './index.ts';
+import { evaluatePuzzleAnswer } from './commands/journey/puzzle-commands.ts';
+const content = loadContent();
+const fresh = () => createInitialState(content);
+test('use requires exact unique set and action token', () => {
+  const puzzle = content.chapters.c4.puzzles.find(p => p.id === 'p-c4-embroider-flower')!;
+  for (const answer of [[], ['kim_theu_thep'], ['kim_theu_thep','kim_theu_thep'], 'kim_theu_thep', ['kim_theu_thep','cuon_chi_to_dao','keo_may_bang_dong']]) assert.equal(evaluatePuzzleAnswer(puzzle, answer), false);
+  assert.equal(evaluatePuzzleAnswer(puzzle, ['cuon_chi_to_dao','kim_theu_thep']), true);
+  assert.equal(evaluatePuzzleAnswer(content.chapters.prologue.puzzles[0], {}), false);
+});
+test('remote puzzle and public solve/skip cannot mutate progress', () => {
+  const state = fresh();
+  for (const type of ['puzzle/submit','puzzle/solve','puzzle/skip','item/use']) {
+    const result = runCommand(state,{type,payload:{puzzleId:'p-c0-cloth',answer:'interact',itemId:'keo_may_bang_dong',targetPuzzleId:'p-c0-cloth'}},content);
+    assert.equal(result.ok,false,type); assert.equal(result.state,state);
+  }
+});
+test('multi-trigger queue grants clues only upon acknowledging current node and survives save', () => {
+  const state = fresh(); state.currentChapter='c1'; state.journey.c1.status='in_progress'; state.journey.c1.currentArea='c1-s2-ban-tho-nha-tho-ho';
+  const solved=runCommand(state,{type:'puzzle/submit',payload:{puzzleId:'p-c1-altar-cut-threads',answer:'keo_may_bang_dong'}},content);
+  assert.ok(solved.ok); if(!solved.ok)return;
+  assert.deepEqual(solved.state.notebook.unlockedClueIds,[]);
+  assert.deepEqual((solved.state.journey.c1 as any).dialogueQueue,['d-c1-van-tu']);
+  const restored=fromJSON(toJSON(createInitialTree(solved.state)),content); assert.ok(restored.ok); if(!restored.ok)return;
+  let tree=restored.tree;
+  for(let i=0;i<4;i++){const r=dispatch(tree,{type:'dialogue/advance',payload:{}},content);assert.ok(r.ok);if(r.ok)tree=r.tree;}
+  const final=tree.nodes[tree.headId].snapshot;
+  assert.deepEqual(final.journey.c1.completedDialogueIds,['d-c1-thu-chong','d-c1-van-tu']);
+  assert.deepEqual(final.notebook.unlockedClueIds,['clue-thu-chong-cu-cam','clue-van-tu-ban-dat']);
+});
+test('completion requires ending and reward grants every gift once; legacy repair does not add Sen', () => {
+  const state=fresh(); state.journey.prologue.solvedPuzzleIds=content.chapters.prologue.puzzles.map(p=>p.id);
+  assert.equal(runCommand(state,{type:'chapter/complete',payload:{chapterId:'prologue'}},content).ok,false);
+  state.journey.prologue.completedDialogueIds=['d-c0-ba-dan-do'];
+  const completed=runCommand(state,{type:'chapter/complete',payload:{chapterId:'prologue'}},content);assert.ok(completed.ok);if(!completed.ok)return;
+  const claimed=runCommand(completed.state,{type:'reward/claim',payload:{chapterId:'prologue'}},content);assert.ok(claimed.ok);if(!claimed.ok)return;
+  assert.equal(claimed.state.wallet.senNgoc,150);
+  assert.ok(claimed.state.inventory.itemIds.includes('thuoc_go_tho_may_1888'));
+  assert.ok((claimed.state.museum as any).unlockedCardIds.includes(content.chapters.prologue.chapter.reward.cardIds![0]));
+  assert.deepEqual(claimed.state.museum.readCardIds,[]);
+  assert.equal(runCommand(claimed.state,{type:'reward/claim',payload:{chapterId:'prologue'}},content).ok,false);
+  const legacy=structuredClone(claimed.state);legacy.inventory.itemIds=[];delete (legacy.museum as any).unlockedCardIds;delete (legacy as any).claimedRewardIds;
+  const restored=fromJSON(toJSON(createInitialTree(legacy)),content);assert.ok(restored.ok);if(!restored.ok)return;
+  const repaired=restored.tree.nodes[restored.tree.headId].snapshot;
+  assert.equal(repaired.wallet.senNgoc,150);assert.ok(repaired.inventory.itemIds.includes('thuoc_go_tho_may_1888'));
+});
+test('malformed payload is a rejected command, not an exception',()=>{
+  for(const type of ['puzzle/submit','item/use','interact','dialogue/choose']) assert.equal(runCommand(fresh(),{type,payload:null},content).ok,false);
+});
+test('persistent typed drafts survive close/reopen and reject wrong discriminators', () => {
+  const state=fresh(); state.journey.prologue.currentArea='c0-s2-gac-xep-chiec-ruong';
+  const draft={type:'use',answer:'kim_gut_bang_bac'};
+  const result=runCommand(state,{type:'puzzle/updateDraft',payload:{puzzleId:'p-c0-mannequin-hand',draft}},content);
+  assert.ok(result.ok);if(!result.ok)return;
+  assert.equal(runCommand(state,{type:'puzzle/updateDraft',payload:{puzzleId:'p-c0-mannequin-hand',draft:{type:'code',answer:'12'}}},content).ok,false);
+  const opened=runCommand(result.state,{type:'puzzle/open',payload:{puzzleId:'p-c0-mannequin-hand'}},content);assert.ok(opened.ok);if(!opened.ok)return;
+  const closed=runCommand(opened.state,{type:'puzzle/close',payload:{}},content);assert.ok(closed.ok);if(!closed.ok)return;
+  assert.deepEqual(closed.state.journey.prologue.puzzleDrafts?.['p-c0-mannequin-hand'],draft);
+  const reset=runCommand(closed.state,{type:'puzzle/resetDraft',payload:{puzzleId:'p-c0-mannequin-hand'}},content);assert.ok(reset.ok);if(reset.ok)assert.equal(reset.state.journey.prologue.puzzleDrafts?.['p-c0-mannequin-hand'],undefined);
+});
+test('claimed rewards cannot be erased by replay or history travel', async () => {
+  const {undo,checkout}=await import('./index.ts');
+  const state=fresh(); state.journey.prologue.status='completed';
+  let tree=createInitialTree(state);
+  const result=dispatch(tree,{type:'reward/claim',payload:{chapterId:'prologue'}},content);assert.ok(result.ok);if(!result.ok)return;tree=result.tree;
+  assert.equal(undo(tree).ok,false);
+  assert.equal(checkout(tree,tree.rootId,content).ok,false);
+  const replay=runCommand(tree.nodes[tree.headId].snapshot,{type:'chapter/replay',payload:{chapterId:'prologue'}},content);
+  assert.equal(replay.ok,false);
+});
+test('migration rejects malformed non-head snapshots, unsupported versions and cyclic links', () => {
+  const tree=createInitialTree(fresh());
+  for(const value of [{...tree,version:'999'}, {...tree,nodes:{...tree.nodes,[tree.rootId]:{...tree.nodes[tree.rootId],parentId:tree.rootId}}}, {...tree,nodes:{...tree.nodes,[tree.rootId]:{...tree.nodes[tree.rootId],snapshot:{}}}}]) assert.equal(fromJSON(JSON.stringify(value),content).ok,false);
+});
+test('pickup, hints and exits cannot target another room/chapter', () => {
+  const state=fresh();
+  for (const command of [
+    {type:'item/pick',payload:{itemId:'chia_khoa_dong_ba_chau'}},
+    {type:'puzzle/hint',payload:{puzzleId:'p-c1-escape'}},
+    {type:'area/goTo',payload:{areaId:'c1-s1-buong-det-khoa-kin'}}
+  ]) { const result=runCommand(state,command,content);assert.equal(result.ok,false);assert.equal(result.state,state); }
+});
+test('save preserves original legacy bytes, refuses corrupt overwrite and reports storage failures', async () => {
+  const {restoreGame,saveGame,SAVE_KEY,SAVE_BACKUP_KEY}=await import('../game/store.ts');
+  const bytes = new Map<string,string>();
+  const storage = {getItem:(key:string)=>bytes.get(key)??null,setItem:(key:string,value:string)=>{bytes.set(key,value)}};
+  Object.defineProperty(globalThis,'localStorage',{value:storage,configurable:true});
+  try {
+    const legacy=JSON.stringify(createInitialTree(fresh()));bytes.set(SAVE_KEY,legacy);
+    const restored=restoreGame();assert.equal(restored.status,'migrated');assert.equal(saveGame(restored.tree),true);assert.equal(bytes.get(SAVE_BACKUP_KEY),legacy);
+    bytes.set(SAVE_KEY,'{bad');assert.equal(restoreGame().status,'invalid');assert.equal(saveGame(createInitialTree(fresh())),false);assert.equal(bytes.get(SAVE_KEY),'{bad');
+    Object.defineProperty(globalThis,'localStorage',{value:{...storage,getItem:()=>{throw new Error('blocked')}},configurable:true});
+    assert.equal(restoreGame().status,'unavailable');assert.equal(saveGame(createInitialTree(fresh())),false);
+  } finally {delete (globalThis as any).localStorage;}
+});
+test('content gate schema rejects cross-chapter references and dependency cycles', async () => {
+  const {ChapterContentSchema}=await import('../content/schema.ts');
+  const chapter=structuredClone(content.chapters.prologue);
+  chapter.puzzles[0].when={all:[{kind:'puzzleSolved',puzzleId:'p-c1-escape'}]};
+  assert.equal(ChapterContentSchema.safeParse(chapter).success,false);
+  chapter.puzzles[0].when={all:[{kind:'puzzleSolved',puzzleId:'p-c0-mannequin-hand'}]};
+  chapter.puzzles[1].when={all:[{kind:'puzzleSolved',puzzleId:'p-c0-cloth'}]};
+  assert.equal(ChapterContentSchema.safeParse(chapter).success,false);
+});
+test('invalid queued dialogue snapshots are rejected; readCard retains unlocked cards', () => {
+  const state=fresh();state.journey.prologue.dialogueQueue=['d-c1-van-tu'];
+  assert.equal(fromJSON(toJSON(createInitialTree(state)),content).ok,false);
+  const reading=fresh();reading.museum.unlockedCardIds=['card-ngu-than-nguyen-dynasty'];
+  const result=runCommand(reading,{type:'museum/readCard',payload:{cardId:'card-ngu-than-nguyen-dynasty'}},content);
+  assert.ok(result.ok);if(result.ok)assert.deepEqual(result.state.museum.unlockedCardIds,reading.museum.unlockedCardIds);
+});
+test('fresh Mở đầu/C1 walkthrough grants exactly 150 Sen and complete reward catalogs', () => {
+  let tree=createInitialTree(fresh());
+  const state=()=>tree.nodes[tree.headId].snapshot;
+  const send=(type:string,payload:unknown)=>{const result=dispatch(tree,{type,payload},content);assert.ok(result.ok,!result.ok?result.reason:'');if(result.ok)tree=result.tree;};
+  const tap=(id:string)=>{const p=state().journey[state().currentChapter];const hotspot=content.chapters[state().currentChapter].areas.find(a=>a.id===p.currentArea)!.interactables.find(i=>i.id===id)!;send('interact',{targetId:id,playerPos:hotspot.pos});};
+  const read=()=>{let budget=50;while(state().journey[state().currentChapter].activeDialogue){assert.ok(budget-->0);send('dialogue/advance',{});}};
+  const submit=(puzzleId:string,answer:unknown)=>send('puzzle/submit',{puzzleId,answer});
+  const go=(areaId:string)=>send('area/goTo',{areaId});
+  tap('hitbox-stairs');read();go('c0-s2-gac-xep-chiec-ruong');submit('p-c0-cloth','interact');tap('hitbox-sewing-basket');
+  submit('p-c0-mannequin-hand','kim_gut_bang_bac');submit('p-c0-chest-unlock','chia_khoa_dong_ba_chau');read();
+  send('chapter/complete',{chapterId:'prologue'});send('reward/claim',{chapterId:'prologue'});send('chapter/enter',{chapterId:'c1'});
+  tap('hitbox-loom-shuttle');tap('hitbox-belt-rack');send('item/combine',{itemIds:['con_thoi_go_mun','that_lung_lua_cham']});
+  send('item/use',{itemId:'dung_cu_moc_then_cua',targetPuzzleId:'p-c1-escape'});go('c1-s2-ban-tho-nha-tho-ho');
+  submit('p-c1-altar-cut-threads','keo_may_bang_dong');read();go('c1-s3-cong-dinh-doi-dau');
+  submit('p-c1-present-contract','to_van_tu_cam_co_dat');submit('p-c1-present-letter','buc_thu_tay_chong_cu_Cam');tap('hitbox-stone-step');read();
+  submit('p-c1-styling-cam',{silhouette:'ngu_than_tay_chen',garmentId:'ao-ngu-than-tay-chen',headwearId:'khan-van-den',footwearId:'guoc-moc'});
+  tap('hitbox-village-gate-exit');read();send('chapter/complete',{chapterId:'c1'});
+  const pending=fromJSON(toJSON(tree),content);assert.ok(pending.ok);if(pending.ok)tree=pending.tree;
+  send('reward/claim',{chapterId:'c1'});
+  assert.equal(state().wallet.senNgoc,250);
+  assert.equal(state().inventory.itemIds.filter(id=>id==='thuoc_go_tho_may_1888').length,1);
+  for(const chapterId of ['prologue','c1']) {
+    const reward=content.chapters[chapterId].chapter.reward;
+    assert.ok((reward.garmentIds??[]).every(id=>state().closet.unlockedGarmentIds.includes(id)));
+    assert.ok((reward.cardIds??[]).every(id=>state().museum.unlockedCardIds?.includes(id)));
+  }
+});
+
+test('successful submit closes only the matching puzzle session', () => {
+  const state=fresh();state.journey.prologue.currentArea='c0-s2-gac-xep-chiec-ruong';
+  state.activeSession={type:'puzzle',puzzleId:'p-c0-cloth',chapterId:'prologue',valid:false,data:{}};
+  const result=runCommand(state,{type:'puzzle/submit',payload:{puzzleId:'p-c0-cloth',answer:'interact'}},content);
+  assert.ok(result.ok);if(result.ok)assert.equal(result.state.activeSession,null);
+});

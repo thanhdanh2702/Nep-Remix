@@ -2,6 +2,8 @@ import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 import type { ChapterId } from '../../../content/schema.ts';
+import { enqueueDialogues } from './dialogue-queue.ts';
+import { isGateSatisfied } from './gate.ts';
 
 // ==========================================
 // 1. chapter/enter (reversible)
@@ -36,7 +38,8 @@ export const chapterEnterCommand: CommandDef<ChapterEnterPayload> = {
   apply: (state: GameState, payload: ChapterEnterPayload, content: GameContent) => {
     const { chapterId } = payload;
     const chData = content.chapters[chapterId];
-    const initialArea = chData.areas[0]?.id ?? `${chapterId}-s1`;
+    const previous = state.journey[chapterId];
+    const initialArea = chData.areas.some(a => a.id === previous.currentArea) ? previous.currentArea : chData.areas[0].id;
 
     const nextState: GameState = {
       ...state,
@@ -46,13 +49,13 @@ export const chapterEnterCommand: CommandDef<ChapterEnterPayload> = {
         [chapterId]: {
           ...state.journey[chapterId],
           currentArea: initialArea,
-          navStack: []
+          navStack: previous.navStack
         }
       }
     };
 
     return {
-      state: nextState,
+      state: enqueueDialogues(nextState, [chData.chapter.entryDialogueId], content),
       events: [
         {
           type: 'areaEntered',
@@ -82,56 +85,9 @@ export const chapterReplayCommand: CommandDef<ChapterReplayPayload> = {
   type: 'chapter/replay',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: ChapterReplayPayload, content: GameContent) => {
-    const { chapterId } = payload;
-    if (!chapterId || !content.chapters[chapterId]) {
-      return { ok: false, reason: `Chapter '${chapterId}' does not exist.` };
-    }
-    const chProgress = state.journey[chapterId];
-    if (!chProgress || chProgress.status !== 'completed') {
-      return {
-        ok: false,
-        reason: `Cannot replay chapter '${chapterId}' because it has not been completed yet.`
-      };
-    }
-    return true;
-  },
+  guard: () => ({ ok: false, reason: 'Use createChapterReplayTree to replay without changing the main journey.' }),
 
-  apply: (state: GameState, payload: ChapterReplayPayload, content: GameContent) => {
-    const { chapterId } = payload;
-    const chData = content.chapters[chapterId];
-    const initialArea = chData.areas[0]?.id ?? `${chapterId}-s1`;
-    const oldProgress = state.journey[chapterId];
-
-    const nextState: GameState = {
-      ...state,
-      currentChapter: chapterId,
-      journey: {
-        ...state.journey,
-        [chapterId]: {
-          ...oldProgress,
-          currentArea: initialArea,
-          side: 'mat_phai',
-          navStack: [],
-          completedDialogueIds: [],
-          solvedPuzzleIds: [],
-          hintTiers: {},
-          activeDialogue: null,
-          claimed: oldProgress.claimed // Giữ nguyên cờ claimed vĩnh viễn
-        }
-      }
-    };
-
-    return {
-      state: nextState,
-      events: [
-        {
-          type: 'areaEntered',
-          payload: { areaId: initialArea }
-        }
-      ]
-    };
-  },
+  apply: state => ({ state, events: [] }),
 
   invert: (state: GameState, _payload: ChapterReplayPayload) => {
     return {
@@ -164,6 +120,17 @@ export const chapterCompleteCommand: CommandDef<ChapterCompletePayload> = {
 
     if (chProgress.claimed) {
       return { ok: false, reason: `Chapter '${chId}' reward has already been claimed.` };
+    }
+
+    if (chId !== state.currentChapter || chProgress.status === 'locked') return { ok: false, reason: 'Chapter is not currently playable.' };
+    const ending = chData.chapter.completionDialogueId;
+    if (ending && !chProgress.completedDialogueIds.includes(ending)) return { ok: false, reason: 'Read the ending before completing the chapter.' };
+    if (chId === 'c2' && !isGateSatisfied(state, chData.puzzles.find(p => p.id === 'p-c2-styling-loan')?.when)) {
+      return { ok: false, reason: 'Read the C2 evidence and finish the presentations before completing.' };
+    }
+
+    if (chId === 'c3' && (!ending || !isGateSatisfied(state, chData.dialogues.find(d => d.id === ending)?.when))) {
+      return { ok: false, reason: 'Read all C3 evidence, confrontation and ending before completing.' };
     }
 
     // Verify all declared puzzles in the chapter are solved

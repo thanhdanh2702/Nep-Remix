@@ -1,6 +1,29 @@
 import type { CommandDef } from '../../command.ts';
 import type { GameState, StudioDraft } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
+import { getChallengeWardrobe, validateStudioDraft } from './challenge-wardrobe.ts';
+
+function initialDraft(state: GameState, payload: StudioOpenPayload, content: GameContent): StudioDraft {
+  const saved = state.closet.savedOutfits[0];
+  const garmentId = payload.initialGarmentId ?? saved?.garmentId ?? state.closet.unlockedGarmentIds[0];
+  const garment = content.garmentsById.get(garmentId);
+  return { type: 'studio', eventContextId: 'dao_pho', garmentId, silhouette: garment?.silhouette ?? 'tu_than',
+    colorPalette: [...(garment?.defaultColorPalette ?? ['#FFF','#FFF','#FFF','#000'])],
+    equippedAccessories: payload.initialGarmentId ? {} : { ...saved?.equippedAccessories } };
+}
+function silhouetteDraft(state: GameState, payload: StudioSetSilhouettePayload, content: GameContent): StudioDraft {
+  const session = state.activeSession as StudioDraft;
+  const wardrobe = session.challengePuzzleId ? getChallengeWardrobe(state, session.challengePuzzleId, content) : null;
+  const ids = wardrobe?.ok ? wardrobe.garmentIds : state.closet.unlockedGarmentIds;
+  const id = [payload.previousGarmentId, session.garmentId, ...ids].find(id => id && ids.includes(id) && content.garmentsById.get(id)?.silhouette === payload.silhouette);
+  const garment = id ? content.garmentsById.get(id) : undefined;
+  return { ...session, silhouette: payload.silhouette, garmentId: id ?? '',
+    colorPalette: id === session.garmentId ? session.colorPalette : garment?.defaultColorPalette ?? session.colorPalette };
+}
+function validSession(state: GameState, content: GameContent) {
+  return state.activeSession?.type === 'studio' ? validateStudioDraft(state, state.activeSession, content)
+    : { ok: false as const, reason: 'Studio session is not active.' };
+}
 
 // ==========================================
 // 1. studio/open (reversible)
@@ -14,40 +37,14 @@ export const studioOpenCommand: CommandDef<StudioOpenPayload> = {
   type: 'studio/open',
   kind: 'reversible',
 
-  guard: (state: GameState) => {
-    if (state.activeSession !== null) {
-      return { ok: false, reason: 'Another active session is already open.' };
-    }
-    return true;
+  guard: (state, payload, content) => {
+    if (state.activeSession !== null) return { ok: false, reason: 'Another active session is already open.' };
+    const valid = validateStudioDraft(state, initialDraft(state, payload, content), content, true);
+    return valid.ok ? true : valid;
   },
 
   apply: (state: GameState, payload: StudioOpenPayload, content: GameContent) => {
-    // Determine initial outfit to display on mannequin
-    const chosenGarmentId =
-      payload?.initialGarmentId ??
-      state.closet.savedOutfits[0]?.garmentId ??
-      state.closet.unlockedGarmentIds[0] ??
-      'ao-tu-than';
-
-    const garmentDef = content.garmentsById.get(chosenGarmentId);
-    const silhouette = garmentDef?.silhouette ?? 'tu_than';
-    const colorPalette = garmentDef?.defaultColorPalette ?? [
-      '#F3ECE2',
-      '#EAD8C3',
-      '#C6A98A',
-      '#4A3B32'
-    ];
-
-    const session: StudioDraft = {
-      type: 'studio',
-      eventContextId: 'dao_pho',
-      silhouette,
-      garmentId: chosenGarmentId,
-      colorPalette: [...colorPalette],
-      equippedAccessories: state.closet.savedOutfits[0]?.equippedAccessories
-        ? { ...state.closet.savedOutfits[0].equippedAccessories }
-        : {}
-    };
+    const session = initialDraft(state, payload, content);
 
     const nextState: GameState = {
       ...state,
@@ -81,14 +78,17 @@ export const studioSelectEventCommand: CommandDef<StudioSelectEventPayload> = {
   type: 'studio/selectEvent',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: StudioSelectEventPayload) => {
+  guard: (state: GameState, payload: StudioSelectEventPayload, content: GameContent) => {
     if (!state.activeSession || state.activeSession.type !== 'studio') {
       return { ok: false, reason: 'Studio session is not active.' };
     }
+    const current = validSession(state, content);
+    if (!current.ok) return current;
     if (!payload.eventId) {
       return { ok: false, reason: 'Event ID is required.' };
     }
-    return true;
+    const valid = validateStudioDraft(state, { ...state.activeSession, eventContextId: payload.eventId }, content);
+    return valid.ok ? true : valid;
   },
 
   apply: (state: GameState, payload: StudioSelectEventPayload) => {
@@ -138,41 +138,16 @@ export const studioSetSilhouetteCommand: CommandDef<StudioSetSilhouettePayload> 
   type: 'studio/setSilhouette',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: StudioSetSilhouettePayload) => {
-    if (!state.activeSession || state.activeSession.type !== 'studio') {
-      return { ok: false, reason: 'Studio session is not active.' };
-    }
-    const validSilhouettes = ['tu_than', 'ngu_than_tay_chen', 'ngu_than_tay_thung', 'tan_thoi'];
-    if (!validSilhouettes.includes(payload.silhouette)) {
-      return { ok: false, reason: `Invalid silhouette '${payload.silhouette}'.` };
-    }
-    return true;
+  guard: (state, payload, content) => {
+    const current = validSession(state, content);
+    if (!current.ok) return current;
+    const valid = validateStudioDraft(state, silhouetteDraft(state, payload, content), content);
+    return valid.ok ? true : valid;
   },
 
   apply: (state: GameState, payload: StudioSetSilhouettePayload, content: GameContent) => {
-    const session = state.activeSession as StudioDraft;
-    let nextGarmentId = session.garmentId;
-    let nextPalette = session.colorPalette;
-
-    const currentGarment = content.garmentsById.get(session.garmentId);
-    if (!currentGarment || currentGarment.silhouette !== payload.silhouette) {
-      // Find an unlocked garment matching the new silhouette
-      const candidate = state.closet.unlockedGarmentIds
-        .map((id) => content.garmentsById.get(id))
-        .find((g) => g && g.silhouette === payload.silhouette);
-
-      if (candidate) {
-        nextGarmentId = candidate.id;
-        nextPalette = [...candidate.defaultColorPalette];
-      }
-    }
-
-    const nextSession: StudioDraft = {
-      ...session,
-      silhouette: payload.silhouette,
-      garmentId: nextGarmentId,
-      colorPalette: nextPalette
-    };
+    const nextSession = silhouetteDraft(state, payload, content);
+    const nextGarmentId = nextSession.garmentId;
 
     const nextState: GameState = {
       ...state,
@@ -214,11 +189,13 @@ export const studioSetColorCommand: CommandDef<StudioSetColorPayload> = {
   type: 'studio/setColor',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: StudioSetColorPayload) => {
+  guard: (state: GameState, payload: StudioSetColorPayload, content: GameContent) => {
     if (!state.activeSession || state.activeSession.type !== 'studio') {
       return { ok: false, reason: 'Studio session is not active.' };
     }
-    if (!Array.isArray(payload.colorPalette) || payload.colorPalette.length !== 4) {
+    const current = validSession(state, content);
+    if (!current.ok) return current;
+    if (!Array.isArray(payload.colorPalette) || payload.colorPalette.length !== 4 || payload.colorPalette.some(c => typeof c !== 'string')) {
       return { ok: false, reason: 'Color palette must contain exactly 4 color codes.' };
     }
     return true;
@@ -275,18 +252,14 @@ export const studioEquipCommand: CommandDef<StudioEquipPayload> = {
   type: 'studio/equip',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: StudioEquipPayload, content: GameContent) => {
-    if (!state.activeSession || state.activeSession.type !== 'studio') {
-      return { ok: false, reason: 'Studio session is not active.' };
-    }
+  guard: (state, payload, content) => {
+    const current = validSession(state, content);
+    if (!current.ok) return current;
     const acc = content.accessoriesById.get(payload.accessoryId);
-    if (!acc) {
-      return { ok: false, reason: `Accessory '${payload.accessoryId}' not found.` };
-    }
-    if (!state.closet.unlockedAccessoryIds.includes(payload.accessoryId)) {
-      return { ok: false, reason: `Accessory '${payload.accessoryId}' is not unlocked in closet.` };
-    }
-    return true;
+    if (!acc) return { ok: false, reason: 'Accessory not found.' };
+    const session = state.activeSession as StudioDraft;
+    const valid = validateStudioDraft(state, { ...session, equippedAccessories: { ...session.equippedAccessories, [acc.category]: payload.accessoryId } }, content);
+    return valid.ok ? true : valid;
   },
 
   apply: (state: GameState, payload: StudioEquipPayload, content: GameContent) => {
@@ -352,10 +325,12 @@ export const studioUnequipCommand: CommandDef<StudioUnequipPayload> = {
   type: 'studio/unequip',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: StudioUnequipPayload) => {
+  guard: (state: GameState, payload: StudioUnequipPayload, content: GameContent) => {
     if (!state.activeSession || state.activeSession.type !== 'studio') {
       return { ok: false, reason: 'Studio session is not active.' };
     }
+    const current = validSession(state, content);
+    if (!current.ok) return current;
     const session = state.activeSession as StudioDraft;
     if (!session.equippedAccessories[payload.slot]) {
       return { ok: false, reason: `Slot '${payload.slot}' is already empty.` };
@@ -417,20 +392,13 @@ export const studioApplyPresetCommand: CommandDef<StudioApplyPresetPayload> = {
   type: 'studio/applyPreset',
   kind: 'reversible',
 
-  guard: (state: GameState, payload: StudioApplyPresetPayload, content: GameContent) => {
-    if (!state.activeSession || state.activeSession.type !== 'studio') {
-      return { ok: false, reason: 'Studio session is not active.' };
-    }
-    if (!content.garmentsById.has(payload.preset.garmentId)) {
-      return { ok: false, reason: `Preset garment '${payload.preset.garmentId}' not found.` };
-    }
-    if (!state.closet.unlockedGarmentIds.includes(payload.preset.garmentId)) {
-      return {
-        ok: false,
-        reason: `Preset garment '${payload.preset.garmentId}' is locked in closet.`
-      };
-    }
-    return true;
+  guard: (state, payload, content) => {
+    const current = validSession(state, content);
+    if (!current.ok) return current;
+    if (!payload.preset || typeof payload.preset !== 'object') return { ok: false, reason: 'Preset is required.' };
+    const session = state.activeSession as StudioDraft;
+    const valid = validateStudioDraft(state, { ...session, ...payload.preset, challengePuzzleId: session.challengePuzzleId }, content);
+    return valid.ok ? true : valid;
   },
 
   apply: (state: GameState, payload: StudioApplyPresetPayload) => {

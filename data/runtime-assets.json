@@ -19,6 +19,25 @@
     "sha256": "ad72cb699c1f647979cf55ff912b3138e2a18b236dcf93fa439aea52d0d96960"
   },
   {
+    "path": "assets/accessories/guoc-moc/guoc-moc.png",
+    "kind": "accessory-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      51,
+      377,
+      493,
+      400
+    ],
+    "sha256": "8d516a91da9bd7a9bec643f556fbedbfe38c006631602c9f23ebc7d13e9ecc32"
+  },
+  {
     "path": "assets/accessories/hai-theu/hai-theu--icon.png",
     "kind": "accessory-icon",
     "width": 48,
@@ -74,6 +93,25 @@
       41
     ],
     "sha256": "5d624f412d4a75d9c44f674cbe4f6bf409872bbfe59bfc639269d59d8d372b36"
+  },
+  {
+    "path": "assets/accessories/khan-van-den/khan-van-den.png",
+    "kind": "accessory-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      32,
+      17,
+      502,
+      120
+    ],
+    "sha256": "7c1ed73f7b6632cd6237bdc4981faf51bcc3ed4242cbf5eab36573249ebc5a8c"
   },
   {
     "path": "assets/accessories/khan-van-hoang-yen/khan-van-hoang-yen--icon.png",
@@ -245,6 +283,367 @@
       360
     ],
     "sha256": "68fb0bd426037aabc15262f2ab846c483dbf243dedc78ae44b7babf1926a9939"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--ban-ve-ghep.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      329,
+      280,
+      402,
+      490
+    ],
+    "sha256": "904be72406154a7851bb5e3ee8a2de5208aa6b1ebee08e5bdc6e90a20539e0d1"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-1.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      619,
+      425,
+      652,
+      457
+    ],
+    "sha256": "bab296ddc8bc6e146e56b393c65439e2f3f8137f0dea60787e0a4583b79353a4"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-2.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      998,
+      522,
+      1029,
+      559
+    ],
+    "sha256": "c483087c15ecf2812d52d83a485f2c182cbe823983dd55e9f68b38452d36a290"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-3.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      136,
+      410,
+      166,
+      444
+    ],
+    "sha256": "977fd429b59d788a30758df5a6358ee45e5e754435638afbca08f1f28f2f1477"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--manh-4.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1267,
+      456,
+      1297,
+      489
+    ],
+    "sha256": "470f4bee70b5a114f0b3191d411316a9e4061d3fc071575f1b6da7f3e889ce16"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--phai.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "72adfeb102644562266bab4fe834ffa7bb027e731854efd053da637381d2eb0e"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-ban-ve-hoan-chinh.png",
+    "kind": "area-asset",
+    "width": 512,
+    "height": 1476,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      0,
+      0,
+      512,
+      1476
+    ],
+    "sha256": "c0616da7e9f45abbf2a8084baeafc9687f8730b0eafa557b2c476e617a86c941"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-1.png",
+    "kind": "area-asset",
+    "width": 128,
+    "height": 1476,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      0,
+      0,
+      128,
+      1476
+    ],
+    "sha256": "b3d81c4ea614fa13f8a3af27fac6e25dae37f0d77aa34c1636dc38f3d7ba58ce"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-2.png",
+    "kind": "area-asset",
+    "width": 128,
+    "height": 1476,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      0,
+      0,
+      128,
+      1476
+    ],
+    "sha256": "2562d1756477e9ae4aa7324b4037dad552f6208cbb7fd95e71955c7ea38b092e"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-3.png",
+    "kind": "area-asset",
+    "width": 128,
+    "height": 1476,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      0,
+      0,
+      128,
+      1476
+    ],
+    "sha256": "9688beb1a9f5398bad850de870130a574d137df4e835ad85b9045ef920f4c382"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/doc-c2-manh-ban-ve-4.png",
+    "kind": "area-asset",
+    "width": 128,
+    "height": 1476,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      0,
+      2,
+      128,
+      1476
+    ],
+    "sha256": "2da23db5d5941a3c7fddce09ee8afe9eb185f068d7b2cc0d4363ac96b76cca07"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--chia-khoa.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      409,
+      387,
+      421,
+      413
+    ],
+    "sha256": "990f503999a13b26da30083cfd254c2b2e6ac1f873aa6ac22f12664e3eb1408c"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--ket-mo.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1236,
+      353,
+      1563,
+      609
+    ],
+    "sha256": "5923902b7e7ad7e68c3ac4a81b55767f6b6a9b08ce414ad330badbcb61f68809"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--ket-rong.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1236,
+      353,
+      1563,
+      609
+    ],
+    "sha256": "5fcb54317c17147ffd6c172c52a7021d14086c6993b8b3758a5d54073bf8c7e8"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s2-kho-vai-hang-dao/c2-s2-kho-vai-hang-dao--phai.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "b7cabc346ff64babc0c65ec3f472dcf00e3fd57e48a92d0f95616c9564f0c7c6"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--ban-ve-treo.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      453,
+      280,
+      529,
+      498
+    ],
+    "sha256": "7a12351f45a6df291dcd7604a5fc15e052095e7f77b22586f3d42c687acc9706"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--nguoi-nghe.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1100,
+      414,
+      1425,
+      780
+    ],
+    "sha256": "e1550aa3bc64071e4f29e60688408142d8434f12152f4d7ee1469adb8e1fb055"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/c2-s3-phong-trien-lam-doi-dau--phai.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "a86e4cfa627cb154a39d8fe2581bfb3e90cfa7c5fb85a07c8e33200ab0d49d9a"
+  },
+  {
+    "path": "assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/cg-c2-loan-tu-ky-ten.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "42a61797aae5ec0112321f41d114fcf1b68e9f4773adfe32392b45d7afaa5071"
   },
   {
     "path": "assets/areas/prologue/c0-s1-tiem-may-chieu/c0-s1-tiem-may-chieu--phai.png",
@@ -1121,6 +1520,443 @@
     "sha256": "3dbb46bc01ca0cf5b73cc984a4dc3598f0827dcbde9758e00cd2780aceb85f62"
   },
   {
+    "path": "assets/characters/ca-nghi/portrait-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      5,
+      144,
+      176
+    ],
+    "sha256": "d3133a02ac75da3af96bc379b6880594310d2ae4182c41370cec1576927dad6c"
+  },
+  {
+    "path": "assets/characters/ca-nghi/portrait-retreat.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      35,
+      5,
+      160,
+      176
+    ],
+    "sha256": "1dc634c1cb81664c6be3f912a744ba2627e060b5b796ce6cbcaa948333062488"
+  },
+  {
+    "path": "assets/characters/ca-nghi/portrait-shocked.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      41,
+      62,
+      155,
+      176
+    ],
+    "sha256": "c97f0165a113098eda063accb982f30e54e8948ccdd865d49ecdb7a423e9c420"
+  },
+  {
+    "path": "assets/characters/ca-nghi/portrait-stern.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      5,
+      158,
+      176
+    ],
+    "sha256": "b3928eb0e6e69fd66782a473bbbc27ce4b257d37c307a1cabc6c4809a388849b"
+  },
+  {
+    "path": "assets/characters/ca-nghi/scene-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      17,
+      153,
+      401
+    ],
+    "sha256": "656c3c17e94f6af801c9cffb0c124af47288e655409b6f3013cc91acd08297ee"
+  },
+  {
+    "path": "assets/characters/ca-nghi/scene-retreat.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      16,
+      17,
+      160,
+      401
+    ],
+    "sha256": "7be37006581ce6e7547fb2c322fafc894bc094fba0bb9adb11647b46cf727e02"
+  },
+  {
+    "path": "assets/characters/ca-nghi/scene-shocked.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      8,
+      74,
+      168,
+      401
+    ],
+    "sha256": "c7c3f39927bd0a27acb9e24556467302a2565f7b15c441bb41dddb688c9e7a74"
+  },
+  {
+    "path": "assets/characters/ca-nghi/scene-stern.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      18,
+      17,
+      158,
+      401
+    ],
+    "sha256": "ff26516ebe113a75e27fcf864b5bc5a240f4863a311d910aed4ebb9e4e081ab6"
+  },
+  {
+    "path": "assets/characters/ca-nghi/view-front.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      17,
+      153,
+      401
+    ],
+    "sha256": "656c3c17e94f6af801c9cffb0c124af47288e655409b6f3013cc91acd08297ee"
+  },
+  {
+    "path": "assets/characters/cu-loan/portrait-determined.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      5,
+      133,
+      176
+    ],
+    "sha256": "f2c5f9e5edffafec6444eb5cea64a9ca758cde9b407867116286deb2a7bbafea"
+  },
+  {
+    "path": "assets/characters/cu-loan/portrait-exhibition.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      38,
+      5,
+      140,
+      176
+    ],
+    "sha256": "a46a214ea017613d89e36023f7fa1e5ffdb98cbe4cafac1bfa62b07ca13d6d28"
+  },
+  {
+    "path": "assets/characters/cu-loan/portrait-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      38,
+      5,
+      142,
+      176
+    ],
+    "sha256": "1ab11c71f8ba40f480e690e365acc6a2c9e98328cea44b70f793a9dc47c15ef9"
+  },
+  {
+    "path": "assets/characters/cu-loan/portrait-relieved.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      36,
+      5,
+      138,
+      176
+    ],
+    "sha256": "b9071ddcfd0471ec2992808c3b435a3c8c33075cd0ea05eaee71d515856db12a"
+  },
+  {
+    "path": "assets/characters/cu-loan/portrait-worried.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      43,
+      5,
+      133,
+      176
+    ],
+    "sha256": "678f33454b4b9db57e741318ef4b0bcb3fd7ce4661a2a966f36ebac007f9427a"
+  },
+  {
+    "path": "assets/characters/cu-loan/scene-determined.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      17,
+      151,
+      401
+    ],
+    "sha256": "dcef4aef611b02ee8730c5e7020ae394f239f4776aebf6b4087e84597a74e5e8"
+  },
+  {
+    "path": "assets/characters/cu-loan/scene-exhibition.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      17,
+      145,
+      401
+    ],
+    "sha256": "a3ead393e89a7c38808497aef69b8e39c038641e6deef6a94e9f415aa211a532"
+  },
+  {
+    "path": "assets/characters/cu-loan/scene-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      31,
+      17,
+      145,
+      401
+    ],
+    "sha256": "b8830a6c4b87d4003608c1806b2ac9f4c45c407d48f629c4fd7f50e8cf5dc2c0"
+  },
+  {
+    "path": "assets/characters/cu-loan/scene-relieved.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      27,
+      17,
+      148,
+      401
+    ],
+    "sha256": "cfbc031fb19726242acebf5e0f7d3e6029cb945aa20f2bcf1169578e7e487d65"
+  },
+  {
+    "path": "assets/characters/cu-loan/scene-worried.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      29,
+      17,
+      147,
+      401
+    ],
+    "sha256": "395cc739cf090427544aee0d2e70b2d301ba0d14e40590fc40e9d8f3504d74c5"
+  },
+  {
+    "path": "assets/characters/cu-loan/view-front.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      31,
+      17,
+      145,
+      401
+    ],
+    "sha256": "b8830a6c4b87d4003608c1806b2ac9f4c45c407d48f629c4fd7f50e8cf5dc2c0"
+  },
+  {
+    "path": "assets/characters/ong-le/portrait-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 176,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      26,
+      5,
+      146,
+      176
+    ],
+    "sha256": "352ef82f20b14896b358a506f6fc080a0159d840bd666d12d9b63d01870d8c49"
+  },
+  {
+    "path": "assets/characters/ong-le/scene-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      25,
+      17,
+      151,
+      401
+    ],
+    "sha256": "342e9f636212eeb58e59c047d663fe139319c7e516cb01f277e79e5466c2c26e"
+  },
+  {
+    "path": "assets/characters/ong-le/view-front.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      25,
+      17,
+      151,
+      401
+    ],
+    "sha256": "342e9f636212eeb58e59c047d663fe139319c7e516cb01f277e79e5466c2c26e"
+  },
+  {
     "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen--icon.png",
     "kind": "garment-thumb",
     "width": 96,
@@ -1176,6 +2012,25 @@
       94
     ],
     "sha256": "1a9cc3da84f5726c31968d24a32a2309f15fd46440cec8f1b560c3ff61828c5c"
+  },
+  {
+    "path": "assets/garments/ao-dai-lemur/ao-dai-lemur.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      29,
+      126,
+      510,
+      377
+    ],
+    "sha256": "c7e08255a5cd1343326bd5205f1829a58f814931223f49cabb8515819bd52779"
   },
   {
     "path": "assets/garments/ao-dai-popolin/ao-dai-popolin--icon.png",
@@ -2639,5 +3494,974 @@
       941
     ],
     "sha256": "8a822c69cec5626c58daa5c5481a6f1b593f1a3c5be7618360235a8de8790a8a"
+  },
+  {
+    "path": "assets/characters/ba-mai/scene-tailor.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      29,
+      17,
+      146,
+      401
+    ],
+    "sha256": "f703e568d1beab6511ad257b41bc0c5484400263b9a3c4949b33a8c5a92b47bb"
+  },
+  {
+    "path": "assets/characters/ba-mai/portrait-tailor.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      26,
+      0,
+      99,
+      128
+    ],
+    "sha256": "fd2b296e67803e6e10d85bf029da26b81cbc8661480dc4c090d9f5e7c3babc28"
+  },
+  {
+    "path": "assets/characters/ba-mai/scene-investigate.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      12,
+      17,
+      163,
+      401
+    ],
+    "sha256": "2c104ffa40ef8f2424eff7f4645e18b5c05bf020969968072f7733fdd7ee86c5"
+  },
+  {
+    "path": "assets/characters/ba-mai/portrait-investigate.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      12,
+      0,
+      124,
+      128
+    ],
+    "sha256": "6d5a333fe59fdf7d9f7f9f967188f8b46a5ae5ba9c8f31f3570ec9bfb6c9a8a9"
+  },
+  {
+    "path": "assets/characters/ba-mai/scene-speak.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      17,
+      161,
+      401
+    ],
+    "sha256": "ee2fc34db90e31a5923490cc0791126e6ebcfc198b37ebb1d051581a8deae0c1"
+  },
+  {
+    "path": "assets/characters/ba-mai/portrait-speak.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      5,
+      0,
+      122,
+      128
+    ],
+    "sha256": "8b7a008b7df3a2eda8a972fdf28a1e6357ad61eedf97046d8f52a7afa788bae1"
+  },
+  {
+    "path": "assets/characters/ba-mai/scene-relieved.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      17,
+      17,
+      159,
+      401
+    ],
+    "sha256": "2fbd9743ac32d4d1addb52cc03c6a77d23cae124c63b6c9f408993d06e55eaa9"
+  },
+  {
+    "path": "assets/characters/ba-mai/portrait-relieved.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      0,
+      104,
+      128
+    ],
+    "sha256": "3c055521e432e4e2309423d816e360c92df3dacf788fea29d9fb6fd32816278b"
+  },
+  {
+    "path": "assets/characters/ba-mai/view-front.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      29,
+      17,
+      146,
+      401
+    ],
+    "sha256": "f703e568d1beab6511ad257b41bc0c5484400263b9a3c4949b33a8c5a92b47bb"
+  },
+  {
+    "path": "assets/characters/vinh/scene-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      35,
+      17,
+      141,
+      401
+    ],
+    "sha256": "0d088fd496942167966a62c4470cba6a4ff220db1fa4712b6329bfad68284e1c"
+  },
+  {
+    "path": "assets/characters/vinh/portrait-idle.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      0,
+      104,
+      128
+    ],
+    "sha256": "c880b628c6dd2adc3944d9710c68549fa68bb5ab587ec700368e2572efa25788"
+  },
+  {
+    "path": "assets/characters/vinh/scene-surprised.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      17,
+      151,
+      401
+    ],
+    "sha256": "c2987338156f32ea0cbe93a9eca0aee72708ca8779fcc5a139495de36e6ef862"
+  },
+  {
+    "path": "assets/characters/vinh/portrait-surprised.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      14,
+      0,
+      112,
+      128
+    ],
+    "sha256": "f3f9a379762af7b42f40a38240c34d10a6d46874607a973a8439a5fca9d76347"
+  },
+  {
+    "path": "assets/characters/vinh/scene-witness.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      17,
+      155,
+      401
+    ],
+    "sha256": "dc6f739c8e5282133fe499fb4eb0c04f7b2d2a266cac6b7098fee9b9b0a45821"
+  },
+  {
+    "path": "assets/characters/vinh/portrait-witness.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      0,
+      110,
+      128
+    ],
+    "sha256": "3440cdcc2db8c13b88ba58666df43d6d37f45b61d8bb9483c774d643cddc649e"
+  },
+  {
+    "path": "assets/characters/vinh/view-front.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      35,
+      17,
+      141,
+      401
+    ],
+    "sha256": "0d088fd496942167966a62c4470cba6a4ff220db1fa4712b6329bfad68284e1c"
+  },
+  {
+    "path": "assets/characters/ba-lon/scene-stern.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      17,
+      154,
+      401
+    ],
+    "sha256": "c9415a69e09f60b3406d6514795724dd9d8373881300e1edcdf8499267ca9b98"
+  },
+  {
+    "path": "assets/characters/ba-lon/portrait-stern.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      16,
+      0,
+      103,
+      128
+    ],
+    "sha256": "b2d478f5bc960e796f75b24150a168bcdf7bf73b182648ebb4240c235b7e16af"
+  },
+  {
+    "path": "assets/characters/ba-lon/scene-uneasy.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      21,
+      17,
+      154,
+      401
+    ],
+    "sha256": "29d66a009e457ff5d1c5bf6bd2a6791a6afef2f509b69f8c7ba85f0ad12b08be"
+  },
+  {
+    "path": "assets/characters/ba-lon/portrait-uneasy.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      20,
+      0,
+      112,
+      128
+    ],
+    "sha256": "b31e27a9c8e13de2cf6017310b9ca2d8cdc23aea5433881ab8b1397850bfb553"
+  },
+  {
+    "path": "assets/characters/ba-lon/scene-reflective.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      25,
+      17,
+      151,
+      401
+    ],
+    "sha256": "797a4221f861def78cbfa34bbe85598b694d8272aa9790c1c9ba8b2cd1d82598"
+  },
+  {
+    "path": "assets/characters/ba-lon/portrait-reflective.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      26,
+      0,
+      108,
+      128
+    ],
+    "sha256": "684709ff4335a6720efc9a431eac469885bac5cf7bb9a227f387ffa195d8c030"
+  },
+  {
+    "path": "assets/characters/ba-lon/view-front.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      22,
+      17,
+      154,
+      401
+    ],
+    "sha256": "c9415a69e09f60b3406d6514795724dd9d8373881300e1edcdf8499267ca9b98"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/scene-idle.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      27,
+      17,
+      149,
+      401
+    ],
+    "sha256": "6a02f081cc350210d5f73b5e6fab485d3e841e9a065bb93de000328db4428592"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/portrait-idle.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      0,
+      113,
+      128
+    ],
+    "sha256": "992bbea507de13d0af25338851e4df8f94124fae3050d0aca665a6f76d472992"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/scene-anxious.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      24,
+      17,
+      152,
+      401
+    ],
+    "sha256": "17ad035bdf415a0a48e74b056f2ae2d9550daad3d5e174c39f3966ead68de2b2"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/portrait-anxious.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      13,
+      0,
+      115,
+      128
+    ],
+    "sha256": "e8f5119c689fb4192660cf76c259fa17857d429ef3dd5e6cc32d58c7c79f70f3"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/scene-uneasy.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      29,
+      17,
+      147,
+      401
+    ],
+    "sha256": "af47adb0573ea3db8455fdf35b8af61a98a9c1a5d29d4f03b5d074b75989582a"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/portrait-uneasy.png",
+    "kind": "character-sprite",
+    "width": 128,
+    "height": 128,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      19,
+      0,
+      105,
+      128
+    ],
+    "sha256": "15755a5bd8dfe5b0a41bc05597a1dfcf64b8349e636e53720d2ac76ac29eca9e"
+  },
+  {
+    "path": "assets/characters/thay-ba-can/view-front.png",
+    "kind": "character-sprite",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      27,
+      17,
+      149,
+      401
+    ],
+    "sha256": "6a02f081cc350210d5f73b5e6fab485d3e841e9a065bb93de000328db4428592"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--phai.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "82df172bec3a85584a42da1df1151b7defd7e95425e46e2f37ef0080f88de2cb"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--phai.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "4aa6bd0b92d65609679dce11bc9265a86cb6071027fe3838eb61e8ee930b159a"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--phai.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "e44779c4dd05d0034c5b156bc50acdc95cdbb1cbad0ad7da7f60ddcf3c8049f9"
+  },
+  {
+    "path": "assets/garments/ao-dai-raglan/ao-dai-raglan.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      29,
+      126,
+      510,
+      377
+    ],
+    "sha256": "f654814b15e329e42becd0c1179740aeede4810f2561ffcb0c79fc14b6e24846"
+  },
+  {
+    "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      29,
+      126,
+      510,
+      377
+    ],
+    "sha256": "5a2f2a242b83ffa2bebd7f3679955f959f28eb572ab5697de97ede5c79942b37"
+  },
+  {
+    "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo.png",
+    "kind": "accessory-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      61,
+      78,
+      488,
+      101
+    ],
+    "sha256": "fcec36ef4bdc92851a49caef8bb19f47383bf2616f2775c5d385055a22621518"
+  },
+  {
+    "path": "assets/areas/chapter-3/doc-c3-bien-nhan.png",
+    "kind": "area-asset",
+    "width": 321,
+    "height": 469,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      321,
+      469
+    ],
+    "sha256": "84ec704b50a32d8ab798d08bef001da10596b4daa4a699a07577e9964237cc4e"
+  },
+  {
+    "path": "assets/areas/chapter-3/doc-c3-so-goc.png",
+    "kind": "area-asset",
+    "width": 644,
+    "height": 457,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      644,
+      457
+    ],
+    "sha256": "0807f88bf7e1dbbb46923478cdc2c571e123fa8a096ed059855b4ef6babee8ed"
+  },
+  {
+    "path": "assets/areas/chapter-3/doc-c3-thu-thoa-thuan.png",
+    "kind": "area-asset",
+    "width": 390,
+    "height": 597,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      390,
+      597
+    ],
+    "sha256": "00faee7e36d7a12d63a1c99938c6bf7f02a73f39001ecd5a15afc8955b9418c5"
+  },
+  {
+    "path": "assets/areas/chapter-3/doc-c3-ban-sua.png",
+    "kind": "area-asset",
+    "width": 367,
+    "height": 607,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      367,
+      607
+    ],
+    "sha256": "7868da9d75758b575d1ceca82b5b2b6140c38983cac350edbd99e0f2e1735fd6"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--bien-nhan.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1210,
+      473,
+      1282,
+      489
+    ],
+    "sha256": "a51bb7069819ab6c2d6393f579a05dcb786aac71adfdaa7ce0a4e6aeffd71c55"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s1-tiem-may-da-kao/c3-s1-tiem-may-da-kao--giay-doi-chieu.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1320,
+      475,
+      1386,
+      489
+    ],
+    "sha256": "636340f09fdd47b0af16fe68d697284f1ec28d455eb7badb9e92a6bea3083ba1"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--so-goc.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      760,
+      433,
+      840,
+      451
+    ],
+    "sha256": "21c560c079de2af3b200fa2faa3d3ef71446429acb941aab707c0e512d48c835"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--thu-thoa-thuan.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      875,
+      426,
+      927,
+      442
+    ],
+    "sha256": "5a7f95e2b9e78501f6abaf8be1ce8833e117b655b08b3c891cf6b0359327f1a0"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--ghi-chu-khoa.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      991,
+      408,
+      1032,
+      420
+    ],
+    "sha256": "0a4e1c8b2483a4a80926139250be432dfa53400283ffc3969b143b7155ad403e"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--ho-so-goc.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      640,
+      457,
+      770,
+      477
+    ],
+    "sha256": "d022d16bf59bff40ffb18c7e330dc631ed622d2a167e6f00a92dbc8c23dc225b"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--thu-doi-chieu.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      840,
+      450,
+      910,
+      466
+    ],
+    "sha256": "320075d928f36ee51e1a23c7eeecfa6ae112442e15bd352e2aefcf1de62d640f"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/c3-s3-dinh-thu-doi-dau--ban-sua.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      970,
+      451,
+      1042,
+      467
+    ],
+    "sha256": "21d41b175bae81c9aa0fe0d436a487baa254ab2df01f54747e471adfc33a069f"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--ruong-mo.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1050,
+      270,
+      1335,
+      474
+    ],
+    "sha256": "960b59343b8727c6350868322a330ceef51cfc4b834e9a7ce24dfa3cc2e4255f"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s2-phong-phong-thuy/c3-s2-phong-phong-thuy--ruong-rong.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      1050,
+      270,
+      1335,
+      474
+    ],
+    "sha256": "d060c00268d43c001acf1a93ee67a5f8ac88dba306fc66beaebe5a77fde33001"
+  },
+  {
+    "path": "assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/cg-c3-mai-tu-len-tieng.png",
+    "kind": "area-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "6d26e0e388e01f102589949b056a0ed9482771e71bcdc5b7db0a4f62b0176cc1"
   }
 ]

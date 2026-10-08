@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="vi">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Nếp — Duyệt asset C3</title>
+<style>
+:root{color-scheme:light;--ink:#2b2035;--paper:#fff8ee;--jade:#2e8b7a;--line:#d7c5b1;--mat:#e5dfd4}
+*{box-sizing:border-box}body{margin:0;background:#fff1df;color:var(--ink);font:16px/1.6 system-ui,sans-serif}main{max-width:1240px;margin:auto;padding:28px}h1{font-size:32px;line-height:1.2;margin-bottom:12px}h2{margin-top:36px}h3{margin:0;font-size:18px}p{max-width:90ch}a{color:#075f50}header{border-bottom:2px solid var(--jade);padding-bottom:24px}.tag{display:inline-block;background:#e4efdf;padding:3px 12px;border-radius:4px;font-size:14px}.warning{border-left:4px solid #a72d60;padding:12px 18px;background:var(--paper)}nav{display:flex;gap:18px;flex-wrap:wrap}button{font:inherit;border:1px solid #855064;background:var(--paper);padding:6px 14px;cursor:pointer;color:var(--ink);margin:8px 6px 8px 0}button:focus-visible,a:focus-visible{outline:3px solid #a72d60;outline-offset:3px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}figure{margin:0;background:var(--paper);border:1px solid var(--line);overflow:hidden;border-radius:6px}figcaption{padding:14px 18px}img{display:block;max-width:100%;height:auto}.scene img{width:100%}.sprite{background-color:var(--mat);background-image:linear-gradient(45deg,#00000008 25%,transparent 25%),linear-gradient(-45deg,#00000008 25%,transparent 25%),linear-gradient(45deg,transparent 75%,#00000008 75%),linear-gradient(-45deg,transparent 75%,#00000008 75%);background-size:24px 24px;background-position:0 0,0 12px,12px -12px,-12px 0}.sprite img{width:100%;height:410px;object-fit:contain;padding:10px}.reference img{height:340px}.wide{grid-column:1/-1}.wide.sprite img{height:480px}.subtle{color:#74506e;font-size:14px}.footer{border-top:1px solid var(--line);padding-top:20px;margin-top:36px}@media(max-width:720px){main{padding:18px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.sprite img,.wide.sprite img{height:350px}h1{font-size:26px}}
+</style>
+<main>
+<header><span class="tag">C3 · Đường Chỉ Xuyên Năm Tháng · 1962</span>
+<h1>Sắc ngọc Đa Kao — gói duyệt mỹ thuật</h1>
+<p>Tiếp nối chất pixel và tỷ lệ nhân vật C2; Mai tự đối chiếu hồ sơ và tự lên tiếng. Vinh đứng bên cạnh làm chứng. Giấy tờ không có chữ AI: nội dung tiếng Việt do giao diện dựng.</p>
+<p class="warning">Đây là gallery PNG nguồn, được giữ nguyên. Bộ xuất kỹ thuật đã hoàn thành theo cho phép của người dùng: <a href="../production-v1/gallery.html">Mở production-v1 để duyệt và bàn giao leader</a>. Chưa tích hợp gameplay hoặc thẩm định văn hóa.</p>
+<nav><a href="#scenes">Bối cảnh</a><a href="#people">Nhân vật</a><a href="#wearables">Trang phục</a><a href="#evidence">Chứng cứ & rương</a><a href="../../../../../docs/07-game/10-c3-asset-handoff.md">Bàn giao leader</a><a href="prompts.json">Prompt ImageGen</a><a href="manifest.json">Manifest</a></nav>
+</header>
+<h2 id="scenes">01 — Ba bối cảnh</h2>
+<div class="grid">
+<figure class="scene wide"><a href="c3-s1.png"><img src="c3-s1.png" alt="Tiệm may Đa Kao với máy may, cửa phố và máy hát"></a><figcaption><h3>S1 · Tiệm may Đa Kao</h3>Máy may trái, lối phố giữa, máy hát phải. Thu biên nhận bằng lớp vật phẩm riêng; không thêm puzzle tại tiệm.</figcaption></figure>
+<figure class="scene"><a href="c3-s2.png"><img src="c3-s2.png" alt="Phòng lưu hồ sơ với rương đóng"></a><figcaption><h3>S2 · Phòng hồ sơ</h3>Rương hai nhãn và bàn đọc. Càn / Tốn là chữ UI, không nằm trong ảnh, không phải bài kiểm tra bói toán.</figcaption></figure>
+<figure class="scene"><a href="c3-s3.png"><img src="c3-s3.png" alt="Phòng khách dinh thự với bàn đối chiếu trống"></a><figcaption><h3>S3 · Dinh thự đối chất</h3>Bàn giữa để đối chiếu giấy tờ; Mai giữ vị trí trung tâm, nhân chứng đứng bên cạnh.</figcaption></figure>
+</div>
+<h2 id="people">02 — Nhân vật và biểu cảm</h2>
+<p>Nền ô vuông giúp kiểm tra alpha. Giữ thân và chân dài như bộ C2 đã chọn; không tăng đầu theo mỗi biểu cảm.</p>
+<p><strong>Phân biệt danh tính:</strong> An giữ tóc dài cài hoa và mắt tròn; Loan giữ tóc búi phồng của C2; Mai chuyển sang bob ngắn, mặt thon và mắt hạnh nhân; Bà Lớn dùng tóc rẽ giữa búi thấp, mặt đầy và nét tuổi. Không sửa An/Loan trong đợt này, không dùng màu áo làm dấu hiệu nhận diện duy nhất.</p>
+<div><button data-mat="#e5dfd4">Giấy ấm</button><button data-mat="#ffffff">Nền trắng</button><button data-mat="#2b2035">Nền tối</button></div>
+<div class="grid">
+<figure class="sprite"><a href="mai-work-v2.png"><img src="mai-work-v2.png" alt="Mai tóc bob ngắn ôm gáy, mặt thon mắt hạnh nhân, đang may áo"></a><figcaption><h3>Mai · Diện mạo mới</h3>Tóc bob ngắn uốn ôm gáy, rẽ lệch; mặt thon, mắt hạnh nhân, nụ cười lanh lợi. Giữ áo xanh ngọc, thước dây và phấn may. <a href="mai-work.png">Bản cũ</a>.</figcaption></figure>
+<figure class="sprite reference"><img src="../../../chapter-2/_raw/review-v3/characters/loan-exhibit.png" alt="Loan C2 làm tham chiếu tỷ lệ"><figcaption><h3>Tham chiếu C2 · Loan</h3>Chỉ tham chiếu ngôn ngữ tạo hình, không tái dùng danh tính Loan cho Mai.</figcaption></figure>
+<figure class="sprite wide"><a href="mai-expressions-v2.png"><img src="mai-expressions-v2.png" alt="Mai tóc bob với ba biểu cảm điều tra, lên tiếng và nhẹ nhõm"></a><figcaption><h3>Mai · Điều tra → Lên tiếng → Nhẹ nhõm</h3>Cùng tóc bob và gương mặt mới; bỏ thước dây khi rời tiệm. <a href="mai-expressions.png">Bản cũ</a>.</figcaption></figure>
+<figure class="sprite wide"><a href="vinh.png"><img src="vinh.png" alt="Vinh lắng nghe, bất ngờ và làm chứng"></a><figcaption><h3>Vinh · Lắng nghe → Nhận ra → Làm chứng</h3>Trang phục đô thị theo hồ sơ nhân vật; không tạo hình người hùng giải cứu.</figcaption></figure>
+<figure class="sprite"><a href="ba-lon-v2.png"><img src="ba-lon-v2.png" alt="Bà Lớn tóc rẽ giữa búi thấp có sợi bạc, mặt đầy với nếp tuổi"></a><figcaption><h3>Bà Lớn · Diện mạo mới</h3>Tóc rẽ giữa búi thấp, sợi bạc hai bên; mặt đầy, hàm rõ, mắt hẹp và nét tuổi. Nghiêm nghị → Dao động → Nhìn nhận. <a href="ba-lon.png">Bản cũ</a>.</figcaption></figure>
+<figure class="sprite"><a href="thay-ba-can-v2.png"><img src="thay-ba-can-v2.png" alt="Thầy Ba Càn bản hai, nam lớn tuổi tóc ngắn bạc, ba biểu cảm"></a><figcaption><h3>Thầy Ba Càn · Bản 2</h3>Đã chỉnh nét nam lớn tuổi: tóc bạc chải gọn, trán cao, hàm rõ, mắt hẹp và râu bạc. Bình tĩnh → Lo lắng → Tránh ánh mắt. <a href="thay-ba-can.png">Xem bản cũ</a>.</figcaption></figure>
+</div>
+<h2 id="wearables">03 — Trang phục và phụ kiện</h2>
+<p>Thứ tự ba góc: trước · nghiêng trái · sau. Đây là nguồn, chưa căn về strip An. Áo cần ép bốn key xám và fitting; kính giữ màu theo renderer hiện tại. Guốc mộc tái dùng bộ đã làm C2.</p>
+<div class="grid">
+<figure class="sprite"><a href="raglan.png"><img src="raglan.png" alt="Áo raglan ba góc thang xám"></a><figcaption><h3>Áo raglan</h3>Đường ráp cổ tới nách, không gắn góc số cố định hoặc Bát Quái.</figcaption></figure>
+<figure class="sprite"><a href="boat-neck.png"><img src="boat-neck.png" alt="Áo cổ thuyền ba góc thang xám"></a><figcaption><h3>Áo cổ thuyền</h3>Cổ ngang rộng nông, khác rõ áo cổ đứng; chuẩn bị cho phần thưởng phụ.</figcaption></figure>
+<figure class="sprite wide"><a href="cat-eye.png"><img src="cat-eye.png" alt="Kính mắt mèo trước, nghiêng và gọng sau"></a><figcaption><h3>Kính mắt mèo</h3>Gọng nâu hổ phách. Góc sau chỉ có càng kính; không có tròng sau đầu.</figcaption></figure>
+</div>
+<h2 id="evidence">04 — Chứng cứ và trạng thái</h2>
+<div class="grid">
+<figure class="sprite wide"><a href="documents.png"><img src="documents.png" alt="Bốn mẫu giấy trống: biên nhận, sổ, thư và bản sửa"></a><figcaption><h3>Giấy chứng cứ trống</h3>UI dựng nội dung và điểm khác biệt có nghĩa. Không dùng nếp gấp hoặc màu giấy làm bằng chứng thay cho nội dung.</figcaption></figure>
+<figure class="scene"><a href="chest-open.png"><img src="chest-open.png" alt="Nguồn rương mở có hồ sơ"></a><figcaption><h3>Rương mở · Có hồ sơ</h3>Ảnh nguồn chỉnh sửa. Phải crop ROI và căn lớp phủ; không thay nguyên phòng.</figcaption></figure>
+<figure class="scene"><a href="chest-empty.png"><img src="chest-empty.png" alt="Nguồn rương trống sau thu thập"></a><figcaption><h3>Rương mở · Trống</h3>Cần kiểm tra nắp, thân và góc rương trùng trạng thái mở trước khi xuất.</figcaption></figure>
+</div>
+<p class="footer">Nguồn: docs C3, hồ sơ nhân vật và bộ C2. Gen bằng ImageGen tích hợp; PNG gốc được lưu nguyên bản trong repo. Chưa commit, chưa sửa runtime C2. Mặt trái, animation, audio và cảnh tổ tiên C5 nằm ngoài gói này.</p>
+</main>
+<script>document.querySelectorAll('[data-mat]').forEach(button=>button.addEventListener('click',()=>document.documentElement.style.setProperty('--mat',button.dataset.mat)));</script>
+</html>

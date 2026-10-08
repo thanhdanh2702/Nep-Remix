@@ -105,6 +105,7 @@ export const DialogueIdSchema = z.enum([
   'd-c1-giai-phong',
   'd-c1-gate-exit',
   'd-c2-ca-nghi',
+  'd-c2-ending',
   'd-c2-mat-ma',
   'd-c2-silk-shelves',
   'd-c2-bien-lai',
@@ -118,6 +119,8 @@ export const DialogueIdSchema = z.enum([
   'd-c3-thoa-thuan',
   'd-c3-vinh-stand',
   'd-c3-ong-le-defeat',
+  'd-c3-ban-sua',
+  'd-c3-ending',
   'd-c4-nam-1845',
   'd-c4-altar-incense',
   'd-c4-ao-cuoi',
@@ -206,6 +209,8 @@ export const InteractableIdSchema = z.enum([
   'hitbox-ong-le-shadow',
   'hitbox-exhibition-podium',
   // c3
+  'hitbox-c3-read-receipt',
+  'hitbox-c3-read-revision',
   'hitbox-gramophone',
   'hitbox-bonsai-pot',
   'hitbox-sewing-machine-base',
@@ -351,6 +356,15 @@ export const InteractableActionSchema = z.discriminatedUnion('type', [
 ]);
 export type InteractableAction = z.infer<typeof InteractableActionSchema>;
 
+export const RequirementSchema = z.discriminatedUnion('kind', [
+  z.object({ kind: z.literal('puzzleSolved'), puzzleId: PuzzleIdSchema }),
+  z.object({ kind: z.literal('dialogueCompleted'), dialogueId: DialogueIdSchema }),
+  z.object({ kind: z.literal('itemOwned'), itemId: ItemIdSchema })
+]);
+export const GateSchema = z.object({ all: z.array(RequirementSchema) });
+export type Requirement = z.infer<typeof RequirementSchema>;
+export type Gate = z.infer<typeof GateSchema>;
+
 export const InteractableSchema = z.object({
   id: InteractableIdSchema,
   kind: z.enum(['npc', 'object']),
@@ -358,6 +372,7 @@ export const InteractableSchema = z.object({
   radius: z.number().min(0).max(1),
   rect: NormalizedRectSchema.optional(),
   side: z.enum(['phai', 'trai', 'ca_hai']),
+  when: GateSchema.optional(),
   action: InteractableActionSchema
 });
 export type Interactable = z.infer<typeof InteractableSchema>;
@@ -387,6 +402,7 @@ export const AreaSchema = z.object({
     trai: z.boolean()
   }),
   exits: z.record(z.string(), z.string()),
+  exitGates: z.record(z.string(), GateSchema).optional(),
   /** Point-and-click exit arrows; `via` routes the click through an interactable (e.g. a dialogue before the stairs). */
   exitArrows: z.array(ExitArrowSchema).optional(),
   interactables: z.array(InteractableSchema)
@@ -414,6 +430,7 @@ export const DialogueNodeSchema = z.object({
 export const DialogueSchema = z.object({
   id: DialogueIdSchema,
   speaker: z.string(),
+  when: GateSchema.optional(),
   nodes: z.array(DialogueNodeSchema).nonempty()
 });
 export type Dialogue = z.infer<typeof DialogueSchema>;
@@ -431,6 +448,7 @@ export const PuzzleBaseSchema = z.object({
   id: PuzzleIdSchema,
   title: z.string(),
   hasSession: z.boolean(),
+  when: GateSchema.optional(),
   prerequisitePuzzleIds: z.array(PuzzleIdSchema).optional(),
   hints: z.tuple([z.string(), z.string(), z.string()])
 });
@@ -483,19 +501,25 @@ export const OrderPuzzleSchema = PuzzleBaseSchema.extend({
 export const PresentPuzzleSchema = PuzzleBaseSchema.extend({
   type: z.literal('present'),
   solution: z.object({
-    presentedItemId: ItemIdSchema
+    presentedItemId: ItemIdSchema,
+    dialogueTriggerIds: z.array(DialogueIdSchema).optional()
   })
 });
 
 export const StylingPuzzleSchema = PuzzleBaseSchema.extend({
   type: z.literal('styling'),
+  loanWardrobe: z.object({
+    garmentIds: z.array(GarmentIdSchema),
+    accessoryIds: z.array(AccessoryIdSchema)
+  }).optional(),
   solution: z.object({
     silhouette: z.string(),
     garmentId: GarmentIdSchema,
     headwearId: AccessoryIdSchema.optional(),
     jewelryId: AccessoryIdSchema.optional(),
     footwearId: AccessoryIdSchema.optional(),
-    handheldId: AccessoryIdSchema.optional()
+    handheldId: AccessoryIdSchema.optional(),
+    dialogueTriggerId: DialogueIdSchema.optional()
   })
 });
 
@@ -576,6 +600,7 @@ export const ChapterMetaSchema = z.object({
   year: z.number().int(),
   historicalPeriod: z.enum(['thoi_le', 'thoi_nguyen', 'nam_1934', 'hien_dai']),
   summary: z.string(),
+  entryDialogueId: DialogueIdSchema.optional(),
   /** Dialogue whose completion (after every puzzle is solved) ends the chapter; the UI then runs chapter/complete + reward/claim. */
   completionDialogueId: DialogueIdSchema.optional(),
   reward: RewardSchema
@@ -587,5 +612,61 @@ export const ChapterContentSchema = z.object({
   areas: z.array(AreaSchema),
   dialogues: z.array(DialogueSchema),
   puzzles: z.array(PuzzleSchema)
+}).superRefine((chapter, ctx) => {
+  const error = (message: string) => ctx.addIssue({ code: 'custom', message });
+  const puzzles = new Set<string>(chapter.puzzles.map(p => p.id));
+  const dialogues = new Set<string>(chapter.dialogues.map(d => d.id));
+  const areas = new Set<string>(chapter.areas.map(a => a.id));
+  const dependencies = new Map<string, string[]>();
+  for (const id of [chapter.chapter.entryDialogueId, chapter.chapter.completionDialogueId]) {
+    if (id && !dialogues.has(id)) error(`Foreign chapter dialogue ${id}`);
+  }
+  const checkGate = (owner: string, gate?: Gate) => {
+    const deps = dependencies.get(owner) ?? [];
+    for (const requirement of gate?.all ?? []) {
+      if (requirement.kind === 'puzzleSolved') {
+        if (!puzzles.has(requirement.puzzleId)) error(`${owner}: foreign puzzle requirement ${requirement.puzzleId}`);
+        deps.push(requirement.puzzleId);
+      } else if (requirement.kind === 'dialogueCompleted') {
+        if (!dialogues.has(requirement.dialogueId)) error(`${owner}: foreign dialogue requirement ${requirement.dialogueId}`);
+        deps.push(requirement.dialogueId);
+      }
+    }
+    dependencies.set(owner, deps);
+  };
+  for (const puzzle of chapter.puzzles) {
+    checkGate(puzzle.id, puzzle.when);
+    checkGate(puzzle.id, { all: (puzzle.prerequisitePuzzleIds ?? []).map(puzzleId => ({kind: 'puzzleSolved', puzzleId})) });
+    const solution = puzzle.solution as { requiredItemIds?: string[]; points?: string[]; dialogueTriggerId?: string; dialogueTriggerIds?: string[]; unlocksAreaId?: string };
+    for (const values of [solution.requiredItemIds, solution.points]) {
+      if (values && (!values.length || new Set(values).size !== values.length)) error(`${puzzle.id}: solution must be nonempty and unique`);
+    }
+    for (const id of [solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])]) if (id && !dialogues.has(id)) error(`${puzzle.id}: foreign dialogue trigger ${id}`);
+    if (solution.unlocksAreaId && !areas.has(solution.unlocksAreaId)) error(`${puzzle.id}: foreign area unlock`);
+  }
+  for (const dialogue of chapter.dialogues) {
+    checkGate(dialogue.id, dialogue.when);
+    const nodes = new Set(dialogue.nodes.map(n => n.id));
+    if (nodes.size !== dialogue.nodes.length) error(`${dialogue.id}: duplicate node`);
+    for (const node of dialogue.nodes) for (const id of [node.nextNodeId, ...(node.choices ?? []).map(c => c.nextNodeId)]) if (id && !nodes.has(id)) error(`${dialogue.id}: invalid node link ${id}`);
+  }
+  for (const area of chapter.areas) {
+    if (area.chapterId !== chapter.chapter.id) error(`${area.id}: wrong chapter`);
+    for (const [key, gate] of Object.entries(area.exitGates ?? {})) {
+      if (!area.exits[key] || !areas.has(area.exits[key])) error(`${area.id}: invalid gated exit ${key}`);
+      checkGate(`${area.id}/${key}`, gate);
+    }
+    for (const hotspot of area.interactables) checkGate(hotspot.id, hotspot.when);
+  }
+  const visiting = new Set<string>();
+  const visited = new Set<string>();
+  const visit = (id: string) => {
+    if (visiting.has(id)) { error(`Cyclic gate dependency at ${id}`); return; }
+    if (visited.has(id)) return;
+    visiting.add(id);
+    for (const dependency of dependencies.get(id) ?? []) visit(dependency);
+    visiting.delete(id); visited.add(id);
+  };
+  for (const id of dependencies.keys()) visit(id);
 });
 export type ChapterContent = z.infer<typeof ChapterContentSchema>;

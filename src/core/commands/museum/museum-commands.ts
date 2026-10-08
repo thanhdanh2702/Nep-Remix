@@ -55,6 +55,7 @@ export const museumReadCardCommand: CommandDef<MuseumReadCardPayload> = {
         senNgoc: nextSenNgoc
       },
       museum: {
+        ...state.museum,
         readCardIds: nextRead,
         claimedCardIds: nextClaimed
       }

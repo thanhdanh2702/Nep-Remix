@@ -212,6 +212,7 @@ export function runSelfCheck(): SelfCheckReport {
   let c1Tree: HistoryTree;
   let c1NodeBeforeAltar: string;
   let c1NodeAtAltar: string;
+  let c1BeforeRewardTree: HistoryTree;
 
   executeCheck(5, 'Kịch bản Chương 1 đi hết forward qua validateState; claimed = true đúng một lần', () => {
     let tree = createInitialTree(createInitialState(content, ctx), ctx);
@@ -287,6 +288,22 @@ export function runSelfCheck(): SelfCheckReport {
     if (!d.ok) throw new Error(`Step 11 failed: ${d.reason}`);
     tree = d.tree;
 
+    // Acknowledge the queued evidence and ending; no UI effect may bypass this.
+    while (tree.nodes[tree.headId].snapshot.journey.c1.activeDialogue) {
+      const read = dispatch(tree, { type: 'dialogue/advance', payload: {} }, content, ctx);
+      if (!read.ok) throw new Error(read.reason);
+      tree = read.tree;
+    }
+    const gate = content.chapters.c1.areas[2].interactables.find(i => i.id === 'hitbox-village-gate-exit')!;
+    const openEnding = dispatch(tree, { type: 'interact', payload: { targetId: gate.id, playerPos: gate.pos } }, content, ctx);
+    if (!openEnding.ok) throw new Error(openEnding.reason);
+    tree = openEnding.tree;
+    while (tree.nodes[tree.headId].snapshot.journey.c1.activeDialogue) {
+      const read = dispatch(tree, { type: 'dialogue/advance', payload: {} }, content, ctx);
+      if (!read.ok) throw new Error(read.reason);
+      tree = read.tree;
+    }
+    c1BeforeRewardTree = tree;
     // 12. Complete chapter
     d = dispatch(tree, { type: 'chapter/complete', payload: { chapterId: 'c1' } }, content, ctx);
     if (!d.ok) throw new Error(`Step 12 failed: ${d.reason}`);
@@ -316,7 +333,7 @@ export function runSelfCheck(): SelfCheckReport {
   // Check 6: Kịch bản rẽ nhánh: checkout về trước -> đi nhánh mới -> checkout lại nhánh cũ
   // ----------------------------------------------------
   executeCheck(6, 'Rẽ nhánh lịch sử: checkout về quá khứ, đi nhánh mới và khôi phục nhánh cũ nguyên vẹn', () => {
-    let tree = structuredClone(c1Tree);
+    let tree = structuredClone(c1BeforeRewardTree);
 
     // 1. Checkout to node before altar
     const chk1 = checkout(tree, c1NodeBeforeAltar, content);
@@ -470,7 +487,7 @@ export function runSelfCheck(): SelfCheckReport {
 
     const initialPuzzleDraft: PuzzleDraft = {
       type: 'puzzle',
-      puzzleId: 'p-c0-chest-unlock',
+      puzzleId: 'p-c0-cloth',
       chapterId: 'prologue',
       valid: false,
       data: { placedButtons: [] }
@@ -504,7 +521,7 @@ export function runSelfCheck(): SelfCheckReport {
     session = dispatchSession(session, (d) => ({
       ...d,
       valid: true,
-      data: { placedButtons: [1, 2, 3, 4, 5] }
+      data: { placedButtons: [1, 2, 3, 4, 5], answer: 'interact' }
     }));
 
     const commitSuccess = commitSession(session);
@@ -512,7 +529,9 @@ export function runSelfCheck(): SelfCheckReport {
       throw new Error(`Valid puzzle session commit failed: ${commitSuccess.reason}`);
     }
 
-    // Dispatch puzzle/solve into game tree
+    // Submit the actual answer; the session valid flag alone cannot solve.
+    tree.nodes[tree.headId].snapshot.journey.prologue.currentArea = 'c0-s2-gac-xep-chiec-ruong';
+    // Dispatch puzzle/submit into game tree
     const d = dispatch(tree, commitSuccess.command, content, ctx, 'Giải ma trận chỉ vàng');
     if (!d.ok) throw new Error(`Dispatch puzzle/solve failed: ${d.reason}`);
 

@@ -7,6 +7,8 @@ import type { GameContent } from '../content/index.ts';
 
 export interface StudioDraft {
   type: 'studio';
+  /** Revalidated against the current room/gate; never an ownership grant. */
+  challengePuzzleId?: string;
   eventContextId?: string;
   silhouette: 'tu_than' | 'ngu_than_tay_chen' | 'ngu_than_tay_thung' | 'tan_thoi';
   garmentId: string;
@@ -22,6 +24,12 @@ export interface StudioDraft {
 }
 
 export type StudioSession = StudioDraft;
+
+export type PuzzleAnswerDraft =
+  | { type: 'use' | 'present'; answer: string | string[] }
+  | { type: 'code'; answer: string }
+  | { type: 'find' | 'order'; answer: string[] }
+  | { type: 'styling'; answer: Record<string, string> };
 
 export interface PuzzleDraft {
   type: 'puzzle';
@@ -58,6 +66,8 @@ export interface SavedOutfit {
 }
 
 export interface ActiveDialogueState {
+  /** Revisit only: acknowledgement cannot grant clues or advance progression. */
+  mode?: 'reread';
   dialogueId: string;
   currentNodeId: string;
   history: string[];
@@ -73,6 +83,8 @@ export interface ChapterProgress {
   hintTiers: Record<string, number>;
   claimed: boolean;
   status: 'locked' | 'in_progress' | 'completed';
+  dialogueQueue?: string[];
+  puzzleDrafts?: Record<string, PuzzleAnswerDraft>;
   activeDialogue?: ActiveDialogueState | null;
 }
 
@@ -99,6 +111,7 @@ export interface GameSettings {
 // ==========================================
 
 export interface GameState {
+  claimedRewardIds?: string[];
   profile: PlayerProfile | null;
   features: GameFeatures;
   wallet: {
@@ -118,6 +131,7 @@ export interface GameState {
     savedOutfits: SavedOutfit[];
   };
   museum: {
+    unlockedCardIds?: string[];
     readCardIds: string[];
     claimedCardIds: string[];
   };
@@ -175,11 +189,14 @@ export function createInitialState(
       hintTiers: {},
       claimed: false,
       status: chId === 'prologue' ? 'in_progress' : 'locked',
+      dialogueQueue: [],
+      puzzleDrafts: {},
       activeDialogue: null
     };
   }
 
   return {
+    claimedRewardIds: [],
     profile: {
       name: 'An',
       gender: 'female',
@@ -206,6 +223,7 @@ export function createInitialState(
       savedOutfits: []
     },
     museum: {
+      unlockedCardIds: [],
       readCardIds: [],
       claimedCardIds: []
     },

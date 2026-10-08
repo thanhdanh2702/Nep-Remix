@@ -1,7 +1,8 @@
 import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
-import { applyPuzzleSolved } from './puzzle-solution.ts';
+import { guardPuzzle, isGateSatisfied } from './gate.ts';
+import { puzzleSubmitCommand } from './puzzle-commands.ts';
 
 // Known item combinations from puzzles and game scripts
 export const COMBINATION_RECIPES: Record<string, string> = {
@@ -30,6 +31,11 @@ export const itemPickCommand: CommandDef<ItemPickPayload> = {
     if (state.inventory.itemIds.includes(itemId)) {
       return { ok: false, reason: `Item '${itemId}' is already in inventory.` };
     }
+    const progress = state.journey[state.currentChapter];
+    const area = content.chapters[state.currentChapter].areas.find(a => a.id === progress.currentArea);
+    const hotspot = area?.interactables.find(i => i.action.type === 'item' && i.action.targetId === itemId
+      && (i.side === 'ca_hai' || i.side === (progress.side === 'mat_phai' ? 'phai' : 'trai')) && isGateSatisfied(state, i.when));
+    if (!hotspot || progress.status === 'locked') return { ok: false, reason: 'Item is not available for pickup in this room.' };
     return true;
   },
 
@@ -83,67 +89,15 @@ export const itemUseCommand: CommandDef<ItemUsePayload> = {
     if (!state.inventory.itemIds.includes(itemId)) {
       return { ok: false, reason: `Item '${itemId}' is not in inventory.` };
     }
+    const guarded = guardPuzzle(state, payload.targetPuzzleId, content);
+    if (guarded !== true) return guarded;
+    const puzzle = content.chapters[state.currentChapter].puzzles.find(p => p.id === payload.targetPuzzleId)!;
+    if (puzzle.type !== 'use' && puzzle.type !== 'present') return { ok: false, reason: 'This puzzle does not accept item/use.' };
     return true;
   },
 
-  apply: (state: GameState, payload: ItemUsePayload, content: GameContent) => {
-    const { itemId, targetPuzzleId } = payload;
-    const itemDef = content.itemsById.get(itemId)!;
-    const chId = state.currentChapter;
-    const chData = content.chapters[chId];
-    const chProgress = state.journey[chId];
-
-    const events: any[] = [];
-    let nextInventory = state.inventory.itemIds;
-    let nextProgress = { ...chProgress };
-    let nextNotebook = state.notebook;
-
-    if (targetPuzzleId && chData) {
-      const puzzle = chData.puzzles.find((p) => p.id === targetPuzzleId);
-      if (puzzle && puzzle.type === 'use') {
-        const requiredItem = puzzle.solution.requiredItemId;
-        const requiredList = puzzle.solution.requiredItemIds;
-        const isMatch = requiredItem === itemId || (requiredList && requiredList.includes(itemId as any));
-
-        if (isMatch) {
-          // Solved puzzle: shared rewards / unlocks / dialogue transition
-          const solved = applyPuzzleSolved(state, puzzle, content);
-          nextInventory = solved.state.inventory.itemIds;
-          nextProgress = solved.state.journey[chId];
-          nextNotebook = solved.state.notebook;
-          events.push(...solved.events);
-
-          // Consume item if consumable
-          if (itemDef.consumable) {
-            nextInventory = nextInventory.filter((id) => id !== itemId);
-          }
-        } else {
-          events.push({
-            type: 'puzzleFeedback',
-            payload: { puzzleId: targetPuzzleId, result: 'incorrect' }
-          });
-        }
-      }
-    }
-
-    const nextState: GameState = {
-      ...state,
-      notebook: nextNotebook,
-      inventory: {
-        ...state.inventory,
-        itemIds: nextInventory
-      },
-      journey: {
-        ...state.journey,
-        [chId]: nextProgress
-      }
-    };
-
-    return {
-      state: nextState,
-      events
-    };
-  },
+  apply: (state, payload, content) => puzzleSubmitCommand.apply(state,
+    { puzzleId: payload.targetPuzzleId!, answer: payload.itemId }, content),
 
   invert: (_state: GameState, payload: ItemUsePayload) => {
     return {
@@ -167,7 +121,7 @@ export const itemCombineCommand: CommandDef<ItemCombinePayload> = {
 
   guard: (state: GameState, payload: ItemCombinePayload, content: GameContent) => {
     const { itemIds } = payload;
-    if (!itemIds || itemIds.length !== 2) {
+    if (!Array.isArray(itemIds) || itemIds.length !== 2 || new Set(itemIds).size !== 2) {
       return { ok: false, reason: 'Exactly two item IDs are required for combining.' };
     }
     const [idA, idB] = itemIds;
@@ -191,7 +145,7 @@ export const itemCombineCommand: CommandDef<ItemCombinePayload> = {
 
     // Remove components and add combined item
     const remaining = state.inventory.itemIds.filter((id) => id !== idA && id !== idB);
-    const nextInventory = [...remaining, outputItemId];
+    const nextInventory = [...new Set([...remaining, outputItemId])];
 
     const nextState: GameState = {
       ...state,

@@ -1,0 +1,238 @@
+{
+  "chapter": "c3",
+  "created": "2026-10-07",
+  "tool": "image_gen__imagegen",
+  "mode": "built-in; no CLI/API fallback",
+  "status": "AI review sources; not runtime exports",
+  "jobs": [
+    {
+      "id": "c3-s1",
+      "output": "c3-s1.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": false,
+      "prompt": "Create one wide landscape 16:9 game background for Tiệm May Nếp, chapter 3 set in fictional Đa Kao, Sài Gòn, 1962. Match reference ONLY for crisp detailed pixel-art treatment, stepped dark outlines, rich restrained materials and warm lighting, NOT its Hanoi architecture or objects. Slightly elevated near-frontal 3/4 room camera, believable flat floor for composited actors. Jade green, ivory plaster, warm dark wood, brass, muted terracotta. Keep lower 35% largely clear walkable floor. No people, no baked-in collectible papers, no readable writing or fake glyphs anywhere, no logos, watermark, modern electronics, neon, photorealism, 3D, blur, qipao, hanbok, kimono. Generate an attractive functional game room rather than a mood collage. S1 a modest lively Vietnamese tailor shop. LEFT midground: treadle sewing machine with black metal machine on wooden table, stool, folded fabric and thread spools. LEFT upper wall fabric shelves and a blank pinned-paper board. BACK CENTER: open jade-painted shuttered doorway onto a sunny narrow street, a parked period bicycle partly visible outdoors. RIGHT back corner: small brass-horn gramophone on side cabinet, folded silk on shelves, small potted bonsai. Separate generous clear working tabletop for later receipt overlay, no receipt baked into base. Afternoon sunlight enters from upper left. Everyday productive atmosphere, not mansion, not ancient temple.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--phai.png"
+      ]
+    },
+    {
+      "id": "c3-s2",
+      "output": "c3-s2.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": false,
+      "prompt": "Create one wide landscape 16:9 game background for Tiệm May Nếp, chapter 3 set in fictional Đa Kao, Sài Gòn, 1962. Match reference ONLY for crisp detailed pixel-art treatment, stepped dark outlines, rich restrained materials and warm lighting, NOT its Hanoi architecture or objects. Slightly elevated near-frontal 3/4 room camera, believable flat floor for composited actors. Jade green, ivory plaster, warm dark wood, brass, muted terracotta. Keep lower 35% largely clear walkable floor. No people, no baked-in collectible papers, no readable writing or fake glyphs anywhere, no logos, watermark, modern electronics, neon, photorealism, 3D, blur, qipao, hanbok, kimono. Generate an attractive functional game room rather than a mood collage. S2 a quiet ordinary consultation and record room, more enclosed than the tailor shop. LEFT midground low ceramic incense bowl with only faint smoke, modest chair and side table. BACK CENTER on wall: small plain brass octagonal geometric mirror, NO letters, NO mystical glowing symbols, no zodiac or trigrams as factual clue. RIGHT midground: CLOSED dark wooden document chest with brass hardware and two plain round mechanical dial sockets clearly visible on front; supported on waist-high low cabinet. Center-left writing/reading desk with open clear tabletop and small desk lamp. An EMPTY rectangular wooden note holder by the chest to receive UI-authored Càn/Tốn note later. Jade shutters, muted daylight, warm amber practical light. Foreground clean. Humane everyday setting, no sinister magical stereotypes.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--phai.png"
+      ]
+    },
+    {
+      "id": "c3-s3",
+      "output": "c3-s3.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": false,
+      "prompt": "Create one wide landscape 16:9 game background for Tiệm May Nếp, chapter 3 set in fictional Đa Kao, Sài Gòn, 1962. Match reference ONLY for crisp detailed pixel-art treatment, stepped dark outlines, rich restrained materials and warm lighting, NOT its Hanoi architecture or objects. Slightly elevated near-frontal 3/4 room camera, believable flat floor for composited actors. Jade green, ivory plaster, warm dark wood, brass, muted terracotta. Keep lower 35% largely clear walkable floor. No people, no baked-in collectible papers, no readable writing or fake glyphs anywhere, no logos, watermark, modern electronics, neon, photorealism, 3D, blur, qipao, hanbok, kimono. Generate an attractive functional game room rather than a mood collage. S3 affluent but believable Sài Gòn family mansion salon 1962, a public conversation and evidence comparison space. Ivory and jade plaster, dark wood furniture with restrained Vietnamese floral carving, terrazzo/patterned encaustic floor, tall open shuttered windows at rear, fading warm late-afternoon streetlight. A low wide evidence table centered in MIDGROUND with completely EMPTY clean light wood tabletop; seating set farther back on left and right, no sofas obstructing actor positions. Clear foreground center and either side of table for Mai to speak centrally and witnesses to stand alongside. Small jade ceramic vase at far side, modest chandelier above, not royal palace or imperial throne hall. Warm dignified resolution mood. No paper baked in.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--phai.png"
+      ]
+    },
+    {
+      "id": "mai-work",
+      "output": "mai-work.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Create ONE isolated full-body Vietnamese female tailor Mai age22 in 1962. Transparent background, entire figure and both shoes visible, tall narrow sprite silhouette. Match reference 1 garment illustration/pixel treatment and reference 2 An overall proportion: head including hair about 25% total height, extended torso and legs, NOT giant-head toddler chibi, not realistic adult photography. Mai has a distinct bouffant swept-up black hairdo with neat side-swept fringe, brown eyes, alert warm witty expression. Fitted jade-turquoise low standing-collar Vietnamese ao dai with subtle tiny ivory floral motifs, visible raglan seam from neckline to underarm (no protractor marks), long separated panels over ivory silk long trousers and wooden clogs. Tailor measuring tape draped around neck, one hand holding chalk at waist, other relaxed at side. Front-facing slight3/4. Restrained crisp pixel details, top-left lighting, dark stepped outlines, no shadow beneath feet. No text, letters, labels, watermark, neon, 3D, photographic rendering, qipao, kimono, hanbok.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/review-v3/characters/loan-exhibit.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/an-reference.png"
+      ],
+      "status": "superseded by v2 female identity redesign"
+    },
+    {
+      "id": "vinh",
+      "output": "vinh.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Transparent-background character pose strip for Vietnamese narrative game Tiệm May Nếp C3 set1962. THREE FULL BODY poses of the SAME PERSON, equal-sized clearly separated columns, feet on same horizontal line and no overlapping silhouettes, full hair and both shoes retained. Reference images determine dark outlined crisp pixel illustration language and slender stylized body proportions; head+hair only about one-quarter full height, no oversized-head toddler chibi, elongated torso and legs. Top-left light, no cast shadows, no text, captions, numbers, watermark, frames or objects belonging to other characters. Not photorealistic, 3D, blurred, neon, Chinese qipao, hanbok or kimono. Character Vinh, a24-year-old Vietnamese printing-house intellectual: slim, taller than Mai, neat side-parted black hair, calm brown eyes, narrow face, NO glasses. Consistent muted blue-gray lightweight suit, ivory shirt, narrow deep-plum tie, dark trousers and black shoes, modest1960s Southern Vietnamese urban clothing intentional. LEFT gentle hesitant listening, hands loosely together; CENTER uneasy surprise while holding a closed blank tan document folder at waist; RIGHT resolute compassionate witness, one open palm at chest height as if confirming what he saw, other hand by side. He stands beside Mai, not heroic savior or threatening fist. Same outfit, same hairstyle, same body proportions all three.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/review-v3/characters/loan-exhibit.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/an-reference.png"
+      ]
+    },
+    {
+      "id": "ba-lon",
+      "output": "ba-lon.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Transparent-background character pose strip for Vietnamese narrative game Tiệm May Nếp C3 set1962. THREE FULL BODY poses of the SAME PERSON, equal-sized clearly separated columns, feet on same horizontal line and no overlapping silhouettes, full hair and both shoes retained. Reference images determine dark outlined crisp pixel illustration language and slender stylized body proportions; head+hair only about one-quarter full height, no oversized-head toddler chibi, elongated torso and legs. Top-left light, no cast shadows, no text, captions, numbers, watermark, frames or objects belonging to other characters. Not photorealistic, 3D, blurred, neon, Chinese qipao, hanbok or kimono. Character Bà Lớn, Vietnamese55-year-old affluent family matriarch, natural moderately stocky mature build and upright posture, gently aged face, brown eyes, dark hair in neat updo with single jade pin. Same deep-plum velvet Vietnamese áo dài with subtle small gold chrysanthemum embroidery, ivory long silk trousers, dark low shoes, pearl necklace and jade bracelet. LEFT dignified stern listening, small linen handkerchief held at waist. CENTER unsettled, brow furrowed, one hand near chest, no caricature snarl. RIGHT reflective and visibly acknowledging evidence, shoulders relaxed, handkerchief at side, mouth neutral. Humane individual rather than mocking age, weight, class or tradition. Keep adult maturity and restrained emotions, identical costume all three.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/review-v3/characters/loan-exhibit.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/an-reference.png"
+      ],
+      "status": "superseded by v2 female identity redesign"
+    },
+    {
+      "id": "thay-ba-can",
+      "output": "thay-ba-can.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Transparent-background character pose strip for Vietnamese narrative game Tiệm May Nếp C3 set1962. THREE FULL BODY poses of the SAME PERSON, equal-sized clearly separated columns, feet on same horizontal line and no overlapping silhouettes, full hair and both shoes retained. Reference images determine dark outlined crisp pixel illustration language and slender stylized body proportions; head+hair only about one-quarter full height, no oversized-head toddler chibi, elongated torso and legs. Top-left light, no cast shadows, no text, captions, numbers, watermark, frames or objects belonging to other characters. Not photorealistic, 3D, blurred, neon, Chinese qipao, hanbok or kimono. Character Thầy Ba Càn, Vietnamese man60, slim, gray hair combed back, short gray goatee, ordinary human facial features, no monstrous or demonic marks. Wears faded warm-gray traditional Vietnamese long tunic over dark long trousers, modest dark sandals, simple wooden-bead bracelet. LEFT composed formal listening with closed blank paper folio against body; CENTER anxious as altered records are revealed, one hand touching folio, no occult magic; RIGHT uneasy, lowering folio, avoiding eye contact, not kneeling or comically humiliated. Consistent face costume and scale in every pose. This fictional individual's manipulation is not a visual condemnation of spiritual culture. No readable symbols, fake Chinese text or charms.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/review-v3/characters/loan-exhibit.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/an-reference.png"
+      ],
+      "status": "superseded by thay-ba-can-v2"
+    },
+    {
+      "id": "raglan",
+      "output": "raglan.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Use case: illustration-story. Asset type: transparent grayscale wearable garment layer for An paperdoll in Tiệm May Nếp. Reference1 is EXACT body registration, reference2 EXACT outfit silhouette/arm pose. THREE views separated into equal columns, FRONT | LEFT PROFILE | BACK. Draw ONLY the tunic; NO body, skin, head, hair, hands, trousers, feet, mannequin, background or shadow. Preserve native An proportions and garment placement: top at y127 of each416-high cell, full528x416 sheet if possible. Front sleeves follow hands clasped below waist, LEFT PROFILE arm hangs DOWN naturally (not clasped in front), BACK both arms hang DOWN. Closed filled fabric torso with no cutout holes except neckline. Long flowing Vietnamese ao dai panels, high side splits only below waist, fitted modest bodice. No qipao diagonal thigh slit, no kimono/hanbok. Flat four-key grayscale only: dark33, medium97, light158, highlight224, matching crisp pixel linework. No text, labels, dimensions, letters, watermark, realism,3D or blur. RAGLAN version: a modest LOW STANDING collar, distinctive diagonal construction seam from each neckline side down to UNDERARM, no angular numeric markings. Slim elbow-to-wrist long sleeves integrated into diagonal shoulder seam. Delicate sparse tiny floral accents in grayscale, not big lotus painting. Tunic hem and panels retain native reference silhouette.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/body-reference.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/outfit-reference.png"
+      ]
+    },
+    {
+      "id": "boat-neck",
+      "output": "boat-neck.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Use case: illustration-story. Asset type: transparent grayscale wearable garment layer for An paperdoll in Tiệm May Nếp. Reference1 is EXACT body registration, reference2 EXACT outfit silhouette/arm pose. THREE views separated into equal columns, FRONT | LEFT PROFILE | BACK. Draw ONLY the tunic; NO body, skin, head, hair, hands, trousers, feet, mannequin, background or shadow. Preserve native An proportions and garment placement: top at y127 of each416-high cell, full528x416 sheet if possible. Front sleeves follow hands clasped below waist, LEFT PROFILE arm hangs DOWN naturally (not clasped in front), BACK both arms hang DOWN. Closed filled fabric torso with no cutout holes except neckline. Long flowing Vietnamese ao dai panels, high side splits only below waist, fitted modest bodice. No qipao diagonal thigh slit, no kimono/hanbok. Flat four-key grayscale only: dark33, medium97, light158, highlight224, matching crisp pixel linework. No text, labels, dimensions, letters, watermark, realism,3D or blur. BOAT-NECK version: NO standing collar; clearly WIDE SHALLOW HORIZONTAL SCOOP neckline exposing collarbone region, not plunging cleavage. Clean elegant shoulder line, fitted long sleeves and long silk panels. Subtle small floral accents in grayscale. Distinct neckline from raglan reward; no scarf, no jewelry.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/body-reference.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/outfit-reference.png"
+      ]
+    },
+    {
+      "id": "cat-eye",
+      "output": "cat-eye.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Transparent pixel-art accessory strip for Tiệm May Nếp An paperdoll. Reference image is EXACT front/left/back head registration for a528x416 native canvas. Draw ONLY one pair of1960s cat-eye glasses in EACH of3 equal columns: frontal spectacles, LEFT-FACING side-profile spectacle showing left lens and temple, BACK view only subtle two temple tips that sit behind ears (no lenses on back of head). Do NOT draw person, face, skin, hair, ears, mannequin, text, background or shadow. Three isolated small eyewear objects centered across their columns aligned at eye height of reference, approximatelyy86. Dark brown tortoiseshell upswept cat-eye frames, restrained brass hinges, lightly smoky translucent brown lenses, same physical pair in allviews, crisp outlined pixel art matching native sprite. Not sunglasses with opaque black lenses, neon,3D, photographic, blur, letters, labels, watermark.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/_raw/production-v4/an-reference.png"
+      ]
+    },
+    {
+      "id": "documents",
+      "output": "documents.png",
+      "mode": "built-in-imagegen",
+      "intent": "generate",
+      "transparent_background": true,
+      "prompt": "Transparent sprite sheet of FOUR separate blank fictional1962 Vietnamese evidence-paper props in four clearly separated equal vertical columns, matching reference's crisp warm pixel-art game illustration treatment. LEFT: small ivory receipt, irregular thin aged edges, subtle horizontal fold, ENTIRE writing face blank. SECOND: original record, open thin cream booklet with unmarked pages and bound spine, completely blank faces. THIRD: private agreement, single tall ivory letter partially pulled out of plain tan envelope, completely blank. FOURTH: comparison record, a single tall paper with a small rectangular lighter blank repair patch and fold creases, otherwise completely blank. Distinguishable paper silhouettes and material wear but NO pseudo-writing, lines resembling letters, dates, numbers, text, signatures, stamps, seals, magic glyphs, horoscope charts, logos or watermark. No scissors, ink bottles or otherprops. Even top-left light, dark stepped pixel outlines, limited ivory tan umber palette, no floor shadows, no photorealism/3D/blur. These are empty illustrations for real authored Vietnamese text in UI, not evidence text themselves.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-2/c2-s1-gac-lung-ve-tranh/c2-s1-gac-lung-ve-tranh--phai.png"
+      ]
+    },
+    {
+      "id": "chest-open",
+      "output": "chest-open.png",
+      "mode": "built-in-imagegen",
+      "intent": "edit",
+      "transparent_background": false,
+      "prompt": "Use case: precise-object-edit. Edit the supplied S2 pixel-art room. Preserve the full original canvas, exact camera, perspective, ALL walls, window, mirror, desks, floor, light, shadows, plant, and cabinet without changes. CHANGE ONLY the wooden chest in right midground, approximately normalized x.63-.81 y.36-.50. Keep its bottom/front corners fixed and brass dial sockets exactly in place; lift its hinged lid upward, with realistic perspective. No people, no writing or magic symbols. Show chest OPEN with two plain cream document folders inside, fully blank with NO text. Maintain original chest design and position.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/c3-s2.png"
+      ]
+    },
+    {
+      "id": "chest-empty",
+      "output": "chest-empty.png",
+      "mode": "built-in-imagegen",
+      "intent": "edit",
+      "transparent_background": false,
+      "prompt": "Use case: precise-object-edit. Change ONLY the TWO cream paper folders inside the open wooden chest in the supplied image: remove both folders, replace their occupied area with matching empty dark wooden interior. Preserve EVERY other pixel and especially chest open-lid angle, gold latch, hinges, brass dials, front panel, chest corners and cabinet exactly; same full image dimensions and composition. Do not close chest or move it, do not alter lighting or floor. No new objects, text, people or symbols. This is the 'collected both documents' state of the same scene.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/chest-open.png"
+      ]
+    },
+    {
+      "id": "mai-expressions",
+      "output": "mai-expressions.png",
+      "mode": "built-in-imagegen",
+      "intent": "edit",
+      "transparent_background": true,
+      "prompt": "Use case: style-transfer with identity preservation. IMAGE1 is Mai's canonical PIXEL ART identity and rendering, IMAGE2 is target THREE-POSE composition. Correct IMAGE2's drawing medium ONLY to match IMAGE1: crisp small stepped square-pixel outlines, visible clustered pixel shading in face/hair/fabric, limited flat shade clusters, NO vector-smooth curves, NO airbrush gradients, NO bloom/glow or backdrop. Keep same three poses (reading TWO blank papers / calm firm speaking with one blank paper / gentle proud smile), costume jade ao dai and ivory long trousers and wooden clogs, head/body proportions, hairstyle and flowers. Exact same Mai face as image1, with facial changes limited to expressions. Transparent background, three separated equal-width columns, same full-body height and aligned feet. Full hair and shoes visible, no text, numeric tape, labels, signature, watermark, realistic/3D or qipao/kimono/hanbok. No measuring tape on these outside-workshop poses.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/mai-work.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/mai-expressions-v0.png"
+      ],
+      "status": "superseded by v2 female identity redesign"
+    },
+    {
+      "id": "thay-ba-can-v2",
+      "output": "thay-ba-can-v2.png",
+      "mode": "built-in-imagegen",
+      "intent": "edit",
+      "transparent_background": true,
+      "prompt": "Use case: precise-object-edit. Input image: edit target, three full-body poses of Thầy Ba Càn in Tiệm May Nếp C3. CHANGE ONLY his HEAD/FACE/HAIR in all three poses so he unmistakably reads as the SAME 60-year-old Vietnamese MAN, not a youthful feminine anime character. Short close-cut gray hair combed straight back, visibly receding hairline with higher temples, NO long swept fringe, NO side locks falling beside cheeks or neck. More angular rectangular masculine face and defined jaw/chin, prominent nose bridge, thicker straight gray eyebrows, smaller narrow mature brown eyes with heavier lids, subtle forehead and crow's-feet wrinkles and nasolabial creases, NO eyelashes, NO makeup, NO rosy doll cheeks. Naturally aged skin, a distinct short gray moustache and wispy pointed gray goatee, not a beard pasted on a girl's face. Humane ordinary older man, not monstrous caricature. Preserve the EXACT existing three poses and emotions (left composed, center anxious, right uneasy looking away), body height and proportions, head SIZE, hand and paper positions, faded gray traditional Vietnamese long tunic, dark trousers, sandals and wooden beads. Keep crisp detailed pixel-art texture and stepped outlines consistent with original, NOT photorealism,3D, smooth vector or airbrush. Full body in each of three separate equal columns, aligned feet, no cropping. Transparent background, remove any backdrop haze. No text, labels, signature, watermark or new objects.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/thay-ba-can.png"
+      ]
+    },
+    {
+      "id": "mai-work-v2",
+      "output": "mai-work-v2.png",
+      "mode": "built-in-imagegen",
+      "intent": "edit",
+      "transparent_background": true,
+      "prompt": "Use case: precise-object-edit. Edit target: supplied Mai full-body tailor sprite. Deliberately REDESIGN ONLY FACE AND HAIRSTYLE to distinguish this22-year-old Vietnamese woman from other women in the same game; retain established crisp pixel-art visual language and original head/body SIZE and proportions. NEW HAIR: neat SHORT black curled-under bob ending at nape/jaw, clear left side part with a SMALL shallow rolled wave at forehead, right ear visible; no tall bouffant, no piled updo, no loose cheek tendrils, no long hair down shoulders. A compact1960s-inspired silhouette, not gigantic hair. NEW FACE: longer slender oval with slightly high cheekbones and gently tapered not-pointed chin, distinctly narrower lively almond-shaped brown eyes (not huge round doll eyes), straight short eyebrows, visible subtle nose bridge, wider asymmetrical friendly smile and ONE small beauty mark below outer left eye. Young alert witty tailor, no heavy makeup. Warm medium skin. Keep exact jade floral low-collar raglan Vietnamese ao dai, ivory long silk trousers, wooden clogs, measuring tape, chalk, hand pose and body posture. Keep complete figure from hair through shoes. Pixel clusters and stepped dark outlines, not smooth vector, not3D/photo. Genuine transparent background without haze, no cast shadow. No labels, writing, watermark or new objects. This redesign must be visually obvious even in small portrait.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/mai-work.png"
+      ]
+    },
+    {
+      "id": "mai-expressions-v2",
+      "output": "mai-expressions-v2.png",
+      "mode": "built-in-imagegen",
+      "intent": "edit",
+      "transparent_background": true,
+      "prompt": "Use case: precise-object-edit. IMAGE1 is CANONICAL NEW Mai identity (short curled-under bob and narrower almond eyes), IMAGE2 is edit target three-pose strip. Replace ONLY HEAD/FACE/HAIR in each of IMAGE2's3 poses with EXACT same new Mai identity as IMAGE1. Match short neck-length curled-under black bob, shallow side wave and exposed ear, slim oval face, almond brown eyes, subtle nose, wider smile and small beauty mark under outer left eye. No piled bouffant, updo or long hanging cheek tendrils. Same22-year-old Vietnamese woman in all3 poses, not three related women. Maintain IMAGE2 head SIZE/body proportions, complete full-body height, garment, arms and blank paper arrangement, footwear,3 equal columns and aligned feet. LEFT thoughtfully compares TWO blank papers, CENTER speaks calmly firmly with one open palm and one blank paper, RIGHT gentle proud smile hands together. No measuring tape in outside-workshop poses. Preserve detailed crisp PIXEL rendering and stepped square outlines of IMAGE2, not smooth vector or photographic shading; native long-body proportion, no enlarged chibi heads. Genuine transparent background without glow/haze, no shadow, writing, watermark or new props.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/mai-work-v2.png",
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/mai-expressions.png"
+      ]
+    },
+    {
+      "id": "ba-lon-v2",
+      "output": "ba-lon-v2.png",
+      "mode": "built-in-imagegen",
+      "intent": "edit",
+      "transparent_background": true,
+      "prompt": "Use case: precise-object-edit. Supplied image is edit target, three poses of Vietnamese woman Bà Lớn. REDESIGN ONLY HEAD/FACE/HAIR across ALL3 poses into one consistent DISTINCT55-year-old woman; retain same art style, full bodies, same head SIZE, same three poses and positions, costumes, hands and props. NEW HAIR: black hair with a few silver streaks at temples, SLICK neat center part with forehead fully open, hair tightly pulled into SMALL LOW CHIGNON at nape, single restrained jade pin, NO voluminous swooping fringe, NO bouffant, NO loose cheek curls. NEW FACE: visibly mature broad squarish oval, fuller lower cheeks, wider defined jaw and rounded chin, medium-small narrow hooded brown eyes, low straighter thicker eyebrows, broader nose with softly rounded tip, thin horizontal lips. Subtle forehead lines, under-eye age lines and nasolabial creases; no youthful round doll eyes or tiny pointed chin. Natural55-year-old dignified presence, NOT witch caricature, not exaggerated scowl. Light warm skin. All3 identical facial structure and hair: LEFT composed stern, CENTER unsettled, RIGHT reflective looking down. Preserve plum velvet ao dai/gold chrysanthemum details, pearl necklace, jade bracelet, ivory trousers, low dark shoes, linen handkerchief and native long-body proportions. Detailed crisp pixel-art clusters/stepped outlines consistent with source, no smooth vector/3D/photos. Genuine transparent background, remove haze, no shadow, text or new objects.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/ba-lon.png"
+      ]
+    }
+  ],
+  "iterations": [
+    {
+      "id": "mai-expressions-v0",
+      "output": "mai-expressions-v0.png",
+      "status": "superseded: overly smooth/vector style",
+      "prompt": "Use case: identity-preserve. Create THREE FULL-BODY POSES of exactly the SAME Mai in reference image, separate equal columns, same height, feet aligned, no overlap, genuine transparent background. Preserve her exact facial identity, warm brown eyes, swept bouffant black hair, ivory trousers, wooden clogs, jade-turquoise fitted raglan áo dài with small ivory flowers, slender long-body proportions, head-to-body ratio and crisp pixel treatment. Do not copy or enlarge face into giant toddler head. Full hair through shoes visible in each column. LEFT investigating: focused thoughtful expression, holding TWO different plain blank cream documents one in each hand at waist, looking between them. CENTER speaking for herself: calm firm expression, mouth slightly open, right hand open at chest height, left holds plain blank document. RIGHT relieved and confident: gentle proud smile, hands relaxed together at waist. Remove measuring tape and chalk for all three (she has left workshop), leaving raglan seam from neckline to underarm visible. No slamming tables, panic caricature, crying rescue, other people, paper writing, letters, labels, watermark, shadow, opaque background, neon, realism,3D, blur, qipao/kimono/hanbok.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/mai-work.png"
+      ]
+    },
+    {
+      "id": "chest-empty-initial",
+      "status": "discarded; final derived from chest-open for consistent latch",
+      "prompt": "Use case: precise-object-edit. Edit the supplied S2 pixel-art room. Preserve the full original canvas, exact camera, perspective, ALL walls, window, mirror, desks, floor, light, shadows, plant, and cabinet without changes. CHANGE ONLY the wooden chest in right midground, approximately normalized x.63-.81 y.36-.50. Keep its bottom/front corners fixed and brass dial sockets exactly in place; lift its hinged lid upward, with realistic perspective. No people, no writing or magic symbols. Show chest OPEN and EMPTY with dark brown wooden interior, no paper inside. Maintain original chest design and position.",
+      "reference_images": [
+        "/Users/thanhdanh/Nep-Remix/assets/areas/chapter-3/_raw/review-v1/c3-s2.png"
+      ]
+    }
+  ]
+}
