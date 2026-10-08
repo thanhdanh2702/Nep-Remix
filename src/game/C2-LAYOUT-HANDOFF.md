@@ -1,83 +1,88 @@
-# Bàn Giao Tọa Độ & Layout C2 (Frontend → Core / Leader)
+# Bàn Giao Hình Học, Tọa Độ & Định Tuyến C2 (Frontend → Core / Tester / Leader)
 
-- **Ngày lập:** 07/10/2026
-- **Người lập:** Frontend Owner (`agent/frontend`)
-- **Mục tiêu:** Cung cấp bảng tọa độ chuẩn hóa, vùng bấm mở rộng (accessibility >= 44px), điểm xuất hiện (spawn), lối thoát (exits), và thông số NPC/sàn cho Chương 2 “Tiếng Kéo Đêm Phố Cũ” (Hà Nội 1935).
-- **Quy chuẩn nguồn:** Nền A native kích thước **1672 × 941**, căn cứ theo `assets/areas/chapter-2/manifest.json`.
-- **Ranh giới sở hữu:** Core áp dụng các thông số này vào `src/content/chapters/c2.json`. Frontend **không** tự sửa file JSON của Core.
-
----
-
-## 1. Nguyên Tắc Đo Đạc & Phân Định Tọa Độ
-
-1. **Native Pixel Bounds `[x1, y1, x2, y2]`**: Tọa độ góc trên-trái và góc dưới-phải của pixel thực tế trên canvas 1672×941 (lấy trực tiếp từ manifest).
-2. **Normalized Center `pos = { x, y }`**: Điểm trung tâm chuẩn hóa trong khoảng $[0, 1]$:
-   $$x = \frac{x_1 + x_2}{2 \times 1672}, \quad y = \frac{y_1 + y_2}{2 \times 941}$$
-3. **Visual Bounds `rect_{vis}`**: Hình chữ nhật bao khít phần nhìn thấy được của đối tượng:
-   $$x = \frac{x_1}{1672}, \quad y = \frac{y_1}{941}, \quad w = \frac{x_2 - x_1}{1672}, \quad h = \frac{y_2 - y_1}{941}$$
-4. **Clickable Rect `rect`**: Vùng bấm tương tác được mở rộng nhằm đảm bảo kích thước tối thiểu đạt chuẩn tiếp cận **44 × 44 CSS px** trên mobile (390×844 và 844×390), đồng thời tránh chồng lấn vào các vật thể lân cận hoặc lối thoát.
-5. **Radius `radius`**: Bán kính tương tác chuẩn hóa dùng cho lệnh `interact` của Core engine. Mặc định là `0.08` (tương đương ~134px trên nền 1672px).
-6. **Mặt tương tác (`side`)**: Toàn bộ tương tác C2 bắt buộc đặt tại mặt **`phai`** (`mat_phai`), không dùng `trai` hoặc `latVai`.
+- **Ngày lập:** 08/10/2026
+- **Chi nhánh:** `agent/frontend`
+- **Tương thích:** Tester `f0ba800`, Core `633a0c0`, Leader checkpoint `b354417` / `2038276`.
+- **Nền gốc:** Art native **1672 × 941** (nền A).
+- **Ranh giới sở hữu:** `src/game/room-walker.ts`, `src/game/RoomScene.tsx`, `src/game/Game.tsx`. Không sửa file Core `src/core/`, JSON `src/content/`, hay tests của Tester.
 
 ---
 
-## 2. Bảng Tọa Độ Chi Tiết Ba Phòng C2
+## 1. Bảng 11 Hotspots Hình Học Thực Tế & Kết Quả Nghiệm Thu
 
-### Phòng S1: `c2-s1-gac-lung-ve-tranh` (Căn gác lửng vẽ tranh phố Hàng Đào)
-- **Kích thước gốc:** `1672 × 941`, tỉ lệ `16:9` (gần 8:5)
-- **Sàn đi bộ (`c2` floor):** `floorTop = 0.58` (546 px), `floorBottom = 0.92` (866 px). Vùng An đi lại an toàn: $y \in [0.60, 0.90]$.
-- **Spawn An:** `{ x: 0.25, y: 0.75 }` (sàn phòng bên trái, gần giá vẽ).
+Tất cả tọa độ được lấy từ `src/content/chapters/c2.json` và thuật toán walker thực tế (`targetFor`, `standClear`, `clampToFloor`, `findPath`).
+Sàn C2: `floorTop = 0.58 * 941 = 545.78px`, `floorBottom = 0.92 * 941 = 865.72px`.
+Tất cả 11 hotspots đạt **PASS 100% Core Guards** (bán kính tương tác $\le$ `spot.radius * world.w`).
 
-| Tên đối tượng / Tác vụ | Content ID | Asset Path | Native Bounds `[x1, y1, x2, y2]` | Pos `{ x, y }` | Clickable Rect `{ x, y, w, h }` | Radius | Ghi chú vị trí & Tiếp cận |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Mảnh bản vẽ 1** (dưới bàn) | `hitbox-drawing-desk` (item: `manh_ban_ve_ao_dai_1`) | `c2-s1-gac-lung-ve-tranh--manh-1.png` | `[619, 425, 652, 457]` | `{ x: 0.380, y: 0.469 }` | `{ x: 0.35, y: 0.43, w: 0.06, h: 0.08 }` | `0.08` | Dưới chân bàn vẽ, phía trên sàn; mở rộng 6%×8% đủ 44px. |
-| **Mảnh bản vẽ 2** (trong giỏ) | `hitbox-fabric-basket` (item: `manh_ban_ve_ao_dai_2`) | `c2-s1-gac-lung-ve-tranh--manh-2.png` | `[998, 522, 1029, 559]` | `{ x: 0.606, y: 0.574 }` | `{ x: 0.58, y: 0.53, w: 0.06, h: 0.09 }` | `0.08` | Nằm trong giỏ vải trên sàn; tách xa bàn vẽ và cửa sổ. |
-| **Mảnh bản vẽ 3** (dưới đèn) | `hitbox-gas-lamp` (item: `manh_ban_ve_ao_dai_3`) | `c2-s1-gac-lung-ve-tranh--manh-3.png` | `[136, 410, 166, 444]` | `{ x: 0.090, y: 0.454 }` | `{ x: 0.06, y: 0.41, w: 0.06, h: 0.09 }` | `0.08` | Dưới ngọn đèn ga vách tường bên trái. |
-| **Mảnh bản vẽ 4** (bệ cửa sổ) | `hitbox-french-window` (item: `manh_ban_ve_ao_dai_4`) | `c2-s1-gac-lung-ve-tranh--manh-4.png` | `[1267, 456, 1297, 489]` | `{ x: 0.767, y: 0.502 }` | `{ x: 0.74, y: 0.46, w: 0.06, h: 0.09 }` | `0.08` | Bệ cửa sổ bên phải; **tách biệt khỏi Exit window** (>150px) để tránh chạm nhầm. |
-| **Giá vẽ bản ghép** (ghép dải) | `hitbox-drawing-easel` (puzzle: `p-c2-sketch-assemble`) | `c2-s1-gac-lung-ve-tranh--ban-ve-ghep.png` | `[329, 280, 402, 490]` | `{ x: 0.219, y: 0.409 }` | `{ x: 0.18, y: 0.28, w: 0.08, h: 0.25 }` | `0.08` | Giá vẽ đứng; khi giải xong overlay bản ghép hiển thị tại đây. |
-| **Lối sang kho vải (Exit)** | `window` (dẫn sang `c2-s2-kho-vai-hang-dao`) | Arrow / Cửa sổ vòm | `[1470, 188, 1638, 705]` | `{ x: 0.920, y: 0.380 }` | `{ x: 0.88, y: 0.20, w: 0.10, h: 0.55 }` | — | Khóa bởi cổng G1 (`p-c2-sketch-assemble` solved AND `d-c2-mat-ma` completed). |
-| **NPC Cụ Loan (tĩnh)** | `c2-s1-loan` | `assets/characters/cu-loan/scene-idle.png` | Foot: `[1137, 706]` | `{ x: 0.68, y: 0.75 }` | Box: `{ x: 0.627, y: 0.308, w: 0.105, h: 0.442 }` | — | Loan đứng trên sàn gác lửng giữa giỏ vải và cửa sổ; hoàn toàn không chắn bàn vẽ, giỏ vải hay cửa sổ. |
-
----
-
-### Phòng S2: `c2-s2-kho-vai-hang-dao` (Kho vải ngầm tiệm tơ lụa Hàng Đào)
-- **Kích thước gốc:** `1672 × 941`, tỉ lệ `16:9`
-- **Sàn đi bộ (`c2` floor):** `floorTop = 0.58` (546 px), `floorBottom = 0.92` (866 px). Vùng An đi lại: $y \in [0.60, 0.90]$.
-- **Spawn An:** `{ x: 0.15, y: 0.75 }` (sàn bên trái, cạnh lối quay về S1).
-
-| Tên đối tượng / Tác vụ | Content ID | Asset Path | Native Bounds `[x1, y1, x2, y2]` | Pos `{ x, y }` | Clickable Rect `{ x, y, w, h }` | Radius | Ghi chú vị trí & Tiếp cận |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Chìa khóa két sắt** (sau con lắc) | `hitbox-grandfather-clock` (item: `chia_khoa_ket_sat_bang_thau`) | `c2-s2-kho-vai-hang-dao--chia-khoa.png` | `[409, 387, 421, 413]` | `{ x: 0.248, y: 0.425 }` | `{ x: 0.21, y: 0.32, w: 0.08, h: 0.24 }` | `0.08` | Sau quả lắc đồng hồ đứng góc trái. Nhặt xong biến mất. |
-| **Kệ lụa Hà Đông** (thoại gợi ý) | `hitbox-silk-shelves` (dialogue: `d-c2-silk-shelves`) | Nền phòng | `[702, 207, 1136, 536]` | `{ x: 0.550, y: 0.400 }` | `{ x: 0.42, y: 0.22, w: 0.26, h: 0.35 }` | `0.08` | Các súc vải lụa nhiều tầng giữa phòng. |
-| **Két sắt cổ** (mở két lấy 2 giấy) | `hitbox-iron-safe` (puzzle: `p-c2-safe-open`) | `c2-s2-kho-vai-hang-dao--ket-mo.png` / `--ket-rong.png` | `[1236, 353, 1563, 609]` | `{ x: 0.837, y: 0.511 }` | `{ x: 0.74, y: 0.37, w: 0.20, h: 0.28 }` | `0.08` | **Đổi sang mặt `phai`** (bỏ `trai`). Két mở hé/rỗng khớp inventory thực tế. |
-| **Lối về gác lửng S1 (Exit back)** | `back` (dẫn sang `c2-s1-gac-lung-ve-tranh`) | Mép cửa trái | `[0, 423, 134, 846]` | `{ x: 0.040, y: 0.674 }` | `{ x: 0.00, y: 0.45, w: 0.08, h: 0.45 }` | — | Luôn mở cho người chơi quay lại kiểm tra gác lửng. |
-| **Lối sang triển lãm S3 (Exit hall)** | `hall` (dẫn sang `c2-s3-phong-trien-lam-doi-dau`) | Cửa vòm phải | `[1538, 329, 1672, 752]` | `{ x: 0.960, y: 0.574 }` | `{ x: 0.92, y: 0.35, w: 0.08, h: 0.45 }` | — | Khóa bởi cổng G2 (Safe solved AND cả `d-c2-bien-lai`, `d-c2-giao-keo` completed). |
-| **NPC Cụ Loan (tĩnh)** | `c2-s2-loan` | `assets/characters/cu-loan/scene-worried.png` | Foot: `[602, 659]` | `{ x: 0.36, y: 0.70 }` | Box: `{ x: 0.307, y: 0.258, w: 0.105, h: 0.442 }` | — | Loan đứng lo âu giữa đồng hồ và kệ lụa; không chắn đồng hồ hay két sắt. |
+| Hotspot ID | Area | Content Pos `{x, y}` | Radius | Clickable Rect `{x, y, w, h}` | Left Approach Native (Norm) | Right Approach Native (Norm) | Core Guard | Bằng chứng Vị trí Mặt sàn & Clearance |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| `hitbox-drawing-desk` | S1 | `{0.380, 0.469}` | 0.17 | `{0.35, 0.43, 0.06, 0.08}` | `509.96, 663.41` (`.305, .705`) | `760.76, 663.41` (`.455, .705`) | **PASS** | Đứng trước bàn vẽ, mép sàn $y=663.4$ |
+| `hitbox-fabric-basket` | S1 | `{0.606, 0.574}` | 0.09 | `{0.58, 0.53, 0.06, 0.09}` | `894.52, 583.42` (`.535, .620`) | `1145.32, 583.42` (`.685, .620`)| **PASS** | Sàn mở giữa bàn và giỏ vải |
+| `hitbox-gas-lamp` | S1 | `{0.090, 0.454}` | 0.12 | `{0.06, 0.41, 0.06, 0.09}` | `275.88, 545.78` (`.165, .580`) | same | **PASS** | Vách tường trái, sàn mở $y=545.8$ |
+| `hitbox-french-window` | S1 | `{0.767, 0.502}` | 0.10 | `{0.74, 0.46, 0.06, 0.09}` | `1282.40, 545.78` (`.767, .580`)| `1412.84, 545.78` (`.845, .580`)| **PASS** | **C2-GEO-001 PASS**: Cách Loan $[1080, 1194]$ $\Delta x=88.4\text{px} \ge 80\text{px}$, không đứng sau lưng |
+| `hitbox-drawing-easel` | S1 | `{0.219, 0.409}` | 0.21 | `{0.18, 0.28, 0.08, 0.25}` | `225.72, 545.78` (`.135, .580`) | `509.96, 663.41` (`.305, .705`) | **PASS** | Trước giá vẽ, sàn mở |
+| `hitbox-grandfather-clock` | S2 | `{0.248, 0.425}` | 0.14 | `{0.21, 0.32, 0.08, 0.24}` | `275.88, 545.78` (`.165, .580`) | `560.12, 545.78` (`.335, .580`) | **PASS** | Dưới đồng hồ đứng bên trái |
+| `hitbox-silk-shelves` | S2 | `{0.550, 0.400}` | 0.22 | `{0.42, 0.22, 0.26, 0.35}` | `760.00, 569.30` (`.455, .605`) | `1212.20, 733.98` (`.725, .780`)| **PASS** | **C2-GEO-003 PASS**: Dạt sang $x=760$, cách Loan $[545, 659]$ $\Delta x=101.0\text{px} \ge 80\text{px}$ |
+| `hitbox-iron-safe` | S2 | `{0.837, 0.511}` | 0.18 | `{0.739, 0.37, 0.201, 0.28}`| `1160.37, 611.65` (`.694, .650`)| same | **PASS** | Trước két sắt, sàn mở $y=611.7$ |
+| `hitbox-reporters-crowd`| S3 | `{0.755, 0.634}` | 0.21 | `{0.66, 0.44, 0.20, 0.38}` | `1023.26, 781.03` (`.612, .830`)| `1513.16, 781.03` (`.905, .830`)| **PASS** | Trước đám đông phóng viên |
+| `hitbox-ong-le-shadow` | S3 | `{0.294, 0.413}` | 0.15 | `{0.26, 0.28, 0.08, 0.25}` | `525.00, 564.60` (`.314, .600`) | `525.00, 564.60` (`.314, .600`) | **PASS** | **C2-GEO-005 PASS**: Đứng tại $x=525$, cách Loan $[311, 425]$ $\Delta x=157.2\text{px}$, 0 box overlap, không đè bục |
+| `hitbox-exhibition-podium`| S3 | `{0.450, 0.650}` | 0.18 | `{0.38, 0.50, 0.16, 0.32}` | `560.12, 771.62` (`.335, .820`) | `978.12, 771.62` (`.585, .820`) | **PASS** | Dưới chân bục trình diễn |
 
 ---
 
-### Phòng S3: `c2-s3-phong-trien-lam-doi-dau` (Phòng triển lãm Báo Ngày Nay)
-- **Kích thước gốc:** `1672 × 941`, tỉ lệ `16:9`
-- **Sàn đi bộ (`c2` floor):** `floorTop = 0.58`, `floorBottom = 0.92`. Vùng An đi lại: $y \in [0.60, 0.90]$.
-- **Spawn An:** `{ x: 0.12, y: 0.75 }` (sàn bên trái, gần cửa vào).
+## 2. Giải Pháp Định Tuyến Điểm (Waypoint Routing - `findPath`)
 
-| Tên đối tượng / Tác vụ | Content ID | Asset Path | Native Bounds `[x1, y1, x2, y2]` | Pos `{ x, y }` | Clickable Rect `{ x, y, w, h }` | Radius | Ghi chú vị trí & Tiếp cận |
-| :--- | :--- | :--- | :--- | :--- | :--- | :--- | :--- |
-| **Ký giả & Quan khách** (trình biên lai) | `hitbox-reporters-crowd` (puzzle: `p-c2-present-receipt`) | `c2-s3-phong-trien-lam-doi-dau--nguoi-nghe.png` | `[1100, 414, 1425, 780]` | `{ x: 0.755, y: 0.634 }` | `{ x: 0.66, y: 0.44, w: 0.20, h: 0.38 }` | `0.08` | Đám đông cử tọa bên phải; trình biên lai trả nợ gốc 1935. |
-| **Bóng mờ Ông Lệ** (trình bản vẽ) | `hitbox-ong-le-shadow` (puzzle: `p-c2-present-sketch`) | `assets/characters/ong-le/view-front.png` (ghost) | `[453, 280, 529, 498]` | `{ x: 0.294, y: 0.413 }` | `{ x: 0.26, y: 0.28, w: 0.08, h: 0.25 }` | `0.10` | Bóng mờ đứng đối chất; trình bản vẽ Lemur hoàn chỉnh. |
-| **Bục trình diễn** (thử thách Lemur) | `hitbox-exhibition-podium` (puzzle: `p-c2-styling-loan`) | Nền phòng | `[635, 470, 902, 771]` | `{ x: 0.450, y: 0.650 }` | `{ x: 0.38, y: 0.50, w: 0.16, h: 0.32 }` | `0.08` | Bục danh dự nơi phối áo Lemur, khăn vấn đen và guốc mộc cho Loan. |
-| **Lối về kho vải S2 (Exit back)** | `back` (dẫn sang `c2-s2-kho-vai-hang-dao`) | Cửa vòm trái | `[0, 423, 134, 846]` | `{ x: 0.040, y: 0.674 }` | `{ x: 0.00, y: 0.45, w: 0.08, h: 0.45 }` | — | **Sửa exit:** Quay về S2, **không trỏ về `prologue`** như content legacy. |
-| **NPC Ông Cả Nghị (tĩnh)** | `c2-s3-ca-nghi` | `assets/characters/ca-nghi/scene-stern.png` / `scene-shocked.png` / `scene-retreat.png` | Foot: `[1254, 678]` | `{ x: 0.75, y: 0.72 }` | Box: `{ x: 0.697, y: 0.278, w: 0.105, h: 0.442 }` | — | Đứng cạnh đám đông. Chuyển từ nghiêm nghị → hoảng hốt khi trình biên lai → lùi bước khi trình bản vẽ. |
-| **NPC Cụ Loan (tĩnh)** | `c2-s3-loan` | `assets/characters/cu-loan/scene-worried.png` / `scene-determined.png` / `scene-relieved.png` | Foot: `[368, 678]` | `{ x: 0.22, y: 0.72 }` | Box: `{ x: 0.167, y: 0.278, w: 0.105, h: 0.442 }` | — | Đứng bên bục trình. Chuyển từ lo âu → quyết tâm tự ký tên → nhẹ nhõm sau khi thử thách hoàn thành. |
+Khắc phục triệt để lỗi walker đi thẳng cắt xuyên qua các khối furniture lớn trong art 2.5D:
+
+1. **S1: Tránh Bàn vẽ tranh (`[501.6, 819.3] × [376.4, 644.6]`) - C2-GEO-002**:
+   - Khi An di chuyển giữa khu vực bên trái ($x < 510$) và bên phải ($x > 800$), `findPath` bổ sung các waypoint hành lang dưới: $(460, 700)$ và $(850, 700)$.
+   - An đi vòng dưới chân bàn vẽ thay vì cắt thẳng qua mặt bàn.
+   - **Kết quả nghiệm thu:** $0$ frames/ticks bị clipping qua bàn vẽ.
+
+2. **S2: Tránh Tủ lụa Hàng Đào (`[601.9, 1137.0] × [197.6, 665.3]`) - C2-GEO-004**:
+   - Khi An di chuyển giữa bên trái ($x < 550$) và bên phải ($x > 1130$), `findPath` bổ sung các waypoint hành lang dưới: $(480, 725)$ và $(1150, 725)$.
+   - Waypoint $(480, 725)$ đảm bảo nằm ngoài vùng thân hình Loan $[545, 659]$.
+   - **Kết quả nghiệm thu:** $0$ frames/ticks bị clipping qua tủ lụa.
+
+3. **S3: Tránh Bục đá triển lãm (`[635.4, 902.9] × [470.5, 771.6]`)**:
+   - Khi An di chuyển giữa bên trái ($x < 620$) và bên phải ($x > 920$), `findPath` bổ sung waypoints hành lang dưới $y = 810$: $(600, 810)$ và $(950, 810)$.
+   - Tránh hoàn toàn việc leo chân lên bục triển lãm.
+
+4. **Reduced Motion**:
+   - Với `prefersReducedMotion: reduce`, `arriveNow` đưa An trực tiếp đến điểm đến hợp lệ trên sàn, bỏ qua đường đi từng frame nhưng đảm bảo đích đến hoàn toàn trùng khớp và sạch sẽ khỏi vật cản.
 
 ---
 
-## 3. Khuyến Nghị Áp Dụng Cho Core (`c2.json`)
+## 3. Khắc Phục Va Chạm & Che Khuất NPC (C2-GEO-001, 003, 005)
 
-1. **Chuẩn hóa `side`**: Đảm bảo tất cả interactables và puzzles đều có `side: "phai"`. Xóa bỏ `side: "trai"` tại `hitbox-iron-safe`.
-2. **Cập nhật Exit S3**: Đổi `exits: { "exit": "prologue" }` thành `exits: { "back": "c2-s2-kho-vai-hang-dao" }`.
-3. **Thêm Gate bảo vệ**:
-   - G1 tại Exit `window` của S1: `["p-c2-sketch-assemble", "d-c2-mat-ma"]`.
-   - G2 tại Exit `hall` của S2: `["p-c2-safe-open", "d-c2-bien-lai", "d-c2-giao-keo"]`.
-4. **Phần thưởng & Tiền tệ**: Cập nhật `reward.senNgoc = 100` (thay vì 120 legacy) theo đúng baseline contract.
-5. **NPCs tĩnh**: Core không cần tạo hitbox giả cho Loan hay Cả Nghị trong `interactables`. Frontend quản lý render tĩnh và chuyển pose theo state của các puzzles.
+- **S1 Cửa sổ Pháp (C2-GEO-001)**:
+  - Loan đứng tại $x=1137$, vùng thân $[1080, 1194]$, chân tại $y=706$.
+  - Điểm tiếp cận từ trái của Cửa sổ trước đây dừng tại $x=1162$, An đứng ngay sau lưng tà áo Loan.
+  - Sau chỉnh sửa: Dạt sang $x=1282.4$, khoảng cách $\Delta x = 88.4\text{px} \ge 80\text{px}$.
+  - An hiện diện độc lập, không bị che khuất, tương tác Cửa sổ rõ ràng.
+
+- **S2 Giá lụa (C2-GEO-003)**:
+  - Loan đứng tại $x=601.9$, thân hình ngang $[545, 659]$.
+  - Điểm tiếp cận từ trái trước đây dừng tại $x=627$, An đứng lọt thỏm vào giữa thân Loan.
+  - Sau chỉnh sửa: Dạt sang $x=760.0$, khoảng cách $\Delta x = 101.0\text{px} \ge 80\text{px}$.
+  - An đứng hoàn toàn ngoài thân Loan, trên sàn mở, Core guard PASS.
+
+- **S3 Bóng Ông Lệ (C2-GEO-005)**:
+  - Loan đứng tại $x=367.8$, bounding box $[310.8, 293.5, 114, 384]$. Bục triển lãm bắt đầu từ $x=635.4$.
+  - Điểm dừng trước đây tại $x=359.5$ khiến An (rộng 186px) che lấp $100\%$ thân hình Loan ($\Delta x = 8.3\text{px}$). Tiếp cận từ phải dừng tại $x=643.7$ nằm trên mép bục.
+  - Sau chỉnh sửa: Cả hai hướng tiếp cận thống nhất dừng tại khoảng sàn mở an toàn $x=525.0, y=564.6$.
+  - Khoảng cách tới Loan: $\Delta x = |525.0 - 367.8| = 157.2\text{px} \ge 80\text{px}$.
+  - Bounding box An $[432, 618]$ hoàn toàn tách rời khỏi box Loan $[310.8, 424.8]$ $\implies$ **0 pixel box overlap**.
+  - Khoảng cách tới bục đá: $525.0 < 635.4$, không đè mép bục.
+  - Khoảng cách tương tác tới bóng Ông Lệ: $179.1\text{px} \le 250.8\text{px}$ (Core guard PASS).
+
+---
+
+## 4. Ghi Nhận Observation C2-GEO-006 & C2-GEO-008
+
+- **C2-GEO-006 (Cả Nghị render-only vs Đám đông phóng viên)**:
+  - Sprite Cả Nghị $[1197, 294, 114, 384]$ nằm gọn trong nút Đám đông $[1098.5, 414.0, 339.4, 367.0]$.
+  - Tuân thủ contract C2: Cả Nghị ở S3 là NPC tĩnh render-only (`c2RoomNpcs`), không có ID tương tác riêng. Bấm vào khu vực này kích hoạt tương tác nộp đồ cho Đám đông phóng viên là hành vi thiết kế có chủ đích.
+
+- **C2-GEO-008 (Mid-walk Retargeting)**:
+  - Khi người chơi click mục tiêu mới trong lúc An đang bước, `findPath` tính toán đường mới từ vị trí hiện tại của An đến mục tiêu mới ngay lập tức. Animation rAF tiếp diễn mượt mà, không hủy nhầm hoặc kích hoạt mục tiêu cũ.
