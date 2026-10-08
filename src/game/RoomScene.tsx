@@ -322,7 +322,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const w = walker.current;
     if (!scene || !w) return interact.current(i.id, i.pos);
     if (pending.current?.id === i.id) return; // already on her way there: never fire twice
-    const floor = floorOf(scene, world.h), aim = targetFor(rectOf(i, world.w, world.h), w, floor, world.w, STAND_GAP * world.w);
+    const floor = floorOf(scene, world.h), aim = targetFor(rectOf(i, world.w, world.h), w, floor, world.w, STAND_GAP * world.w, areaId);
     const to = standClear(areaId, aim.to, floor, world), face = aim.face;
     const fire = () => {
       // C2 owns the new measured-feet adapter. Earlier chapters retain their
@@ -340,6 +340,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       return fire();
     }
     const waypoints = findPath(areaId, w, to, floor, world);
+    if (waypoints === null) { stop(); return; }
     pending.current = { id: i.id, fire };
     walker.current = { ...w, goal: { to, face, waypoints } };
     run();
@@ -392,6 +393,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       return fire();
     }
     const waypoints = findPath(areaId, w, to, floor, world);
+    if (waypoints === null) { stop(); return; }
     pending.current = { id: `exit:${arrow.exit}`, fire };
     walker.current = { ...w, goal: { to, face, waypoints } };
     run();
