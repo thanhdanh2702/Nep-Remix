@@ -11,7 +11,7 @@ import { HUD_SELECTOR, measureInsets } from './scene-view';
 import { anLayerPath } from './npc-portraits';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT, type CharacterScene } from './character-scale';
 import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, c2ExitArrows, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
-import { arriveNow, cellFor, clampToFloor, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
+import { arriveNow, cellFor, clampToFloor, findPath, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
 const cutoutBoxes = import.meta.glob<Record<string, Box>>('../../assets/areas/*/*/hotspots.json', { eager: true, import: 'default' });
@@ -218,7 +218,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       setReady(true);
     }).catch(error => { if (!cancelled) setFailure(error.message); });
     return () => { cancelled = true; stop(); };
-  }, [chapterId, areaId, s1, world]);
+  }, [chapterId, areaId, s1, world.w, world.h]);
 
   useEffect(() => {
     if (assets.current && chapterId === 'c2') {
@@ -238,7 +238,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
         paint();
       });
     }
-  }, [state.inventory.itemIds, progress.solvedPuzzleIds, chapterId, areaId, world]);
+  }, [state.inventory.itemIds, progress.solvedPuzzleIds, chapterId, areaId, world.w, world.h]);
 
   useEffect(() => { // An's layers for the player's look, loaded outside the room fade; she appears once ready. A failure leaves the room playable without her.
     let cancelled = false;
@@ -339,8 +339,9 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       paint();
       return fire();
     }
+    const waypoints = findPath(areaId, w, to, floor, world);
     pending.current = { id: i.id, fire };
-    walker.current = { ...w, goal: { to, face } };
+    walker.current = { ...w, goal: { to, face, waypoints } };
     run();
   };
 
@@ -390,8 +391,9 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       paint();
       return fire();
     }
+    const waypoints = findPath(areaId, w, to, floor, world);
     pending.current = { id: `exit:${arrow.exit}`, fire };
-    walker.current = { ...w, goal: { to, face } };
+    walker.current = { ...w, goal: { to, face, waypoints } };
     run();
   };
 
