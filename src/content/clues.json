@@ -51,29 +51,29 @@
   {
     "id": "clue-mua-chuoc-thay-boi",
     "chapterId": "c3",
-    "title": "Biên nhận mua chuộc thầy bói",
-    "description": "Tờ biên nhận 2000 đồng của bà Hội đồng Vĩnh chi cho thầy Ba Càn ngụy tạo quẻ bói 'gò má cao sát phu'.",
+    "title": "Biên nhận khoản tiền sửa hồ sơ",
+    "description": "Chứng cứ hư cấu: Bà Lớn trả Thầy Ba Càn 2.000 đồng để sửa nhận xét trong hồ sơ Mai–Vinh. Khoản tiền nối biên nhận với thư thỏa thuận.",
     "discoveredInDialogueId": "d-c3-mua-chuoc"
   },
   {
     "id": "clue-bagua-hint",
     "chapterId": "c3",
-    "title": "Quy luật quẻ Càn - Tốn",
-    "description": "Đường may raglan ráp xéo 45 độ từ cổ xuống nách tương ứng phương vị Đông Nam (quẻ Tốn) và Tây Bắc (quẻ Càn).",
+    "title": "Ghi chú khóa rương: Càn / Tốn",
+    "description": "Ghi chú của chủ rương trong câu chuyện hư cấu: “Càn trước, Tốn sau”. Đây là thứ tự hai nhãn khóa, không phải phương vị bói toán hoặc quy luật đường may.",
     "discoveredInDialogueId": "d-c3-bagua"
   },
   {
     "id": "clue-so-tu-vi-goc",
     "chapterId": "c3",
-    "title": "Lá số tử vi nguyên bản 1962",
-    "description": "Giờ sinh thật của Vinh là giờ Thìn đại cát, bị thầy bói cố ý tráo thành giờ Dần để vu khống xung sát.",
+    "title": "Nội dung sổ hồ sơ gốc",
+    "description": "Chứng cứ hư cấu: sổ hồ sơ Mai–Vinh không có dòng buộc Mai làm lẽ hay giao quyền quyết định tiệm. So nội dung này với dòng thêm ở bản sửa và yêu cầu trong thư.",
     "discoveredInDialogueId": "d-c3-so-tu-vi"
   },
   {
     "id": "clue-thoa-thuan-boi-toan",
     "chapterId": "c3",
-    "title": "Thư tay âm mưu ép làm vợ lẽ",
-    "description": "Thư tay hé lộ âm mưu ép Bà Mai đi cửa sau làm vợ lẽ để nhà họ Vĩnh thâu tóm tiệm may mặt tiền Đa Kao.",
+    "title": "Thư thỏa thuận và mục đích sửa hồ sơ",
+    "description": "Chứng cứ hư cấu: thư nêu khoản 2.000 đồng Bà Lớn trả Thầy Ba Càn để thêm lời phán ép Mai làm lẽ, giao quyền quyết định tiệm. Người trả, người nhận và mục đích phải được đối chiếu cùng sổ gốc/bản sửa.",
     "discoveredInDialogueId": "d-c3-thoa-thuan"
   },
   {

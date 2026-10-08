@@ -1,8 +1,9 @@
 {
   "missingManifestPaths": [],
   "notes": [
-    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 184 ảnh thật.",
+    "Manifest gốc có các tên tệp cũ; runtime-assets.json đối chiếu 235 ảnh thật.",
     "Không có tệp âm thanh trong assets/audio/.",
-    "Không có nền portrait cho hai khu vực prologue; UI giữ nguyên tỷ lệ 8:5."
+    "Không có nền portrait cho hai khu vực prologue; UI giữ nguyên tỷ lệ 8:5.",
+    "C3 production-v1: đăng ký đủ 59 đường dẫn manifest (51 mới, 8 tái sử dụng); không đăng ký raw/preview. Gameplay, visual/cultural/Safari acceptance chưa hoàn tất."
   ]
 }

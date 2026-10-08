@@ -145,40 +145,40 @@
   },
   {
     "id": "bua_chu_tru_yeu_1",
-    "name": "Lọ bùa giấy vàng chậu cảnh",
-    "description": "Chiếc lọ sành nhỏ nhét lá bùa chữ son do thầy Ba Càn lén lút chôn trong chậu mai chiếu thủy.",
+    "name": "Giấy lưu từ bản kể cũ — chậu cảnh",
+    "description": "Vật phẩm legacy của bản kể C3 cũ, giữ để đọc bản lưu. Không là chứng cứ bắt buộc hoặc căn cứ đánh giá tín ngưỡng trong câu chuyện hiện tại.",
     "category": "evidence",
     "consumable": false,
     "icon": "talisman"
   },
   {
     "id": "bua_chu_tru_yeu_2",
-    "name": "Lá bùa đầu lâu chân máy may",
-    "description": "Lá bùa hung hiểm giấu dưới viên gạch bông cạy lỏng chân bàn máy khâu tiệm may Đa Kao.",
+    "name": "Giấy lưu từ bản kể cũ — bàn may",
+    "description": "Vật phẩm legacy của bản kể C3 cũ, giữ để đọc bản lưu. Không là chứng cứ bắt buộc hoặc căn cứ đánh giá tín ngưỡng trong câu chuyện hiện tại.",
     "category": "evidence",
     "consumable": false,
     "icon": "talisman"
   },
   {
     "id": "bien_nhan_tien_thay_boi",
-    "name": "Biên nhận tiền thuê bói toán",
-    "description": "Giấy biên nhận 2000 đồng của bà Hội đồng Vĩnh chi cho thầy Ba Càn để vu khống số sát phu.",
+    "name": "Biên nhận khoản tiền sửa hồ sơ",
+    "description": "Chứng cứ hư cấu tại Đa Kao, Sài Gòn năm 1962: Bà Lớn đưa Thầy Ba Càn 2.000 đồng để viết lại nhận xét trong hồ sơ Mai–Vinh, buộc Mai chấp nhận việc sắp đặt.",
     "category": "evidence",
     "consumable": false,
     "icon": "receipt"
   },
   {
     "id": "so_tu_vi_nguyen_ban_1962",
-    "name": "Sổ tử vi nguyên bản 1962",
-    "description": "Sổ lá số tử vi gốc ghi đúng ngày giờ sinh đại cát của Vinh, không hề xung khắc với Bà Mai.",
+    "name": "Sổ hồ sơ gốc Mai–Vinh, 1962",
+    "description": "Chứng cứ hư cấu tại Đa Kao, Sài Gòn năm 1962: sổ hồ sơ Mai–Vinh ghi nhận nội dung ban đầu, không có dòng yêu cầu Mai làm lẽ hay giao quyền quyết định tiệm. Dùng đối chiếu bản sửa; lời phán không quyết định phẩm giá Mai.",
     "category": "evidence",
     "consumable": false,
     "icon": "book"
   },
   {
     "id": "thu_tay_thoa_thuan_boi_toan",
-    "name": "Thư tay thỏa thuận bói toán",
-    "description": "Bức thư tay hé lộ âm mưu ép Bà Mai làm vợ lẽ và chiếm đoạt tiệm may Đa Kao.",
+    "name": "Thư thỏa thuận sửa hồ sơ",
+    "description": "Chứng cứ hư cấu tại Đa Kao, Sài Gòn năm 1962: thư dẫn chiếu hồ sơ Mai–Vinh, khoản 2.000 đồng Bà Lớn trả Thầy Ba Càn và yêu cầu thêm lời phán để ép Mai làm lẽ, giao quyền quyết định căn tiệm.",
     "category": "evidence",
     "consumable": false,
     "icon": "letter"

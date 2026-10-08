@@ -52,13 +52,13 @@
     },
     {
       "id": "ao-dai-raglan",
-      "name": "Áo dài tay raglan 1960",
+      "name": "Áo dài tay raglan",
       "silhouette": "tan_thoi",
       "historicalPeriod": "hien_dai",
       "defaultColorPalette": ["#A8DADC", "#457B9D", "#1D3557", "#0D1B2A"],
       "supportedEvents": ["dao_pho", "be_giang", "tet"],
-      "culturalSummary": "Sáng kiến ráp tay raglan của tiệm may Dung Đakao Sài Gòn thập niên 1960, giải phóng hoàn toàn nếp nhăn nách áo.",
-      "spriteBasePath": "assets/game/garments/ao-dai-raglan"
+      "culturalSummary": "Mẫu minh họa trong câu chuyện gia đình hư cấu tại Đa Kao năm 1962. Đường ráp tay đi từ vùng cổ về nách; quan sát kỹ thuật riêng với việc đối chiếu hồ sơ, không suy ra lời bói.",
+      "spriteBasePath": "assets/garments/ao-dai-raglan"
     },
     {
       "id": "ao-dai-co-thuyen",
@@ -67,8 +67,8 @@
       "historicalPeriod": "hien_dai",
       "defaultColorPalette": ["#90E0EF", "#00B4D8", "#0077B6", "#03045E"],
       "supportedEvents": ["dao_pho", "dam_cuoi"],
-      "culturalSummary": "Áo dài cổ thuyền Décolleté khoét rộng thanh thoát, tôn vinh chiếc cổ cao và bờ vai thanh tú của người phụ nữ tự do.",
-      "spriteBasePath": "assets/game/garments/ao-dai-co-thuyen"
+      "culturalSummary": "Mẫu áo cổ thuyền minh họa, phần thưởng phụ của câu chuyện gia đình hư cấu năm 1962. Đây không phải đáp án thay thế áo raglan trong brief phối đồ C3.",
+      "spriteBasePath": "assets/garments/ao-dai-co-thuyen"
     },
     {
       "id": "ao-dai-cuoi-phin",
@@ -171,7 +171,7 @@
       "name": "Kính mắt mèo thời thượng",
       "category": "jewelry",
       "senNgocPrice": 20,
-      "culturalNote": "Kính râm gọng mắt mèo thập niên 1960 Sài Gòn, tôn nét cá tính hiện đại.",
+      "culturalNote": "Phụ kiện kính gọng mắt mèo của brief phối đồ trong câu chuyện hư cấu năm 1962. Cho mượn trong challenge nếu chưa sở hữu; không phải phần thưởng vĩnh viễn của C3.",
       "genderCompatibility": "female"
     },
     {
