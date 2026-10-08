@@ -161,6 +161,7 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
     await expect.poll(async () => (await saved(page)).inventory.itemIds).toContain('manh_ban_ve_ao_dai_4');
 
     const windowFoot = await getAnFoot(page);
+    await page.locator('.room-stage').screenshot({ path: 'artifacts/c2-geometry-fixed-s1-window.png' });
     // Loan S1 bounds: [1080, 1194], foot y = 706
     const loanS1Bounds = { left: 1080, right: 1194, footY: 706 };
     const overlapsHorizontally = windowFoot!.x >= loanS1Bounds.left && windowFoot!.x <= loanS1Bounds.right;
@@ -217,6 +218,7 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
     await expect(page.getByRole('button', { name: 'Khép lời kể' })).toBeVisible();
 
     const shelvesFoot = await getAnFoot(page);
+    await page.locator('.room-stage').screenshot({ path: 'artifacts/c2-geometry-fixed-s2-shelves.png' });
     // Loan in S2: foot (601.9, 658.7), horizontal sprite bounds [545, 659]
     const loanS2Bounds = { left: 545, right: 659, footX: 601.9, footY: 658.7 };
     const insideLoanWidth = shelvesFoot!.x >= loanS2Bounds.left && shelvesFoot!.x <= loanS2Bounds.right;
@@ -240,6 +242,7 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
     await spot(page, 'hitbox-ong-le-shadow').click();
 
     const shadowLeftFoot = await getAnFoot(page);
+    await page.locator('.room-stage').screenshot({ path: 'artifacts/c2-geometry-fixed-s3-shadow.png' });
     const loanS3 = { footX: 367.8, footY: 677.5, box: { x: 310.8, y: 293.5, w: 114, h: 384 } };
 
     // An estimated visible box at arrived foot
@@ -276,8 +279,10 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
     // Verify An is back in S1 on valid floor: floorTop=0.58, floorBottom=0.92
     const returnS1Foot = await getAnFoot(page);
     expect(returnS1Foot).not.toBeNull();
-    expect(returnS1Foot!.normY, 'An foot in S1 after return must be on floor strip').toBeGreaterThanOrEqual(0.57);
-    expect(returnS1Foot!.normY, 'An foot in S1 after return must be on floor strip').toBeLessThanOrEqual(0.93);
+    expect(returnS1Foot!.normY, 'An foot in S1 after return must be on floor strip').toBeGreaterThanOrEqual(0.58);
+    expect(returnS1Foot!.normY, 'An foot in S1 after return must be on floor strip').toBeLessThanOrEqual(0.92);
+    expect(returnS1Foot!.x >= .30 * 1672 && returnS1Foot!.x <= .49 * 1672
+      && returnS1Foot!.y >= .40 * 941 && returnS1Foot!.y <= .685 * 941).toBe(false);
 
     // 2. Go back to S2, solve S2, enter S3
     await page.locator('[data-exit="window"]').click();
@@ -293,8 +298,12 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
     // Verify An is back in S2 on valid floor
     const returnS2Foot = await getAnFoot(page);
     expect(returnS2Foot).not.toBeNull();
-    expect(returnS2Foot!.normY, 'An foot in S2 after return must be on floor strip').toBeGreaterThanOrEqual(0.57);
-    expect(returnS2Foot!.normY, 'An foot in S2 after return must be on floor strip').toBeLessThanOrEqual(0.93);
+    expect(returnS2Foot!.normY, 'An foot in S2 after return must be on floor strip').toBeGreaterThanOrEqual(0.58);
+    expect(returnS2Foot!.normY, 'An foot in S2 after return must be on floor strip').toBeLessThanOrEqual(0.92);
+    for (const r of [{ x: .36, y: .21, w: .32, h: .497 }, { x: .71, y: .35, w: .24, h: .410 }]) {
+      expect(returnS2Foot!.x >= r.x * 1672 && returnS2Foot!.x <= (r.x + r.w) * 1672
+        && returnS2Foot!.y >= r.y * 941 && returnS2Foot!.y <= (r.y + r.h) * 941).toBe(false);
+    }
   });
 
   // 7. Multi-viewport touch targets

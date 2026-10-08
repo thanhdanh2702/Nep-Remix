@@ -1,5 +1,10 @@
 # Bàn Giao Hình Học, Tọa Độ & Định Tuyến C2 (Frontend → Core / Tester / Leader)
 
+> Historical FE candidate aed945d. Leader restored audited furniture and replaced
+> pair-specific routing. Final feet, radius and verification are in
+> [c2-geometry-integration.md](../../docs/07-game/c2-geometry-integration.md).
+> The coordinate/routing claims below do not describe the final integrated build.
+
 - **Ngày lập:** 08/10/2026
 - **Chi nhánh:** `agent/frontend`
 - **Tương thích:** Tester `f0ba800`, Core `633a0c0`, Leader checkpoint `b354417` / `2038276`.

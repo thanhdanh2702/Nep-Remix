@@ -1,5 +1,9 @@
 # C2 — candidate chơi thử tích hợp
 
+> Bản ghi lịch sử. Kết quả tích hợp geometry mới và lỗi visual còn mở được ghi
+> tại [c2-geometry-integration.md](./c2-geometry-integration.md). Không dùng các
+> kết quả PASS dưới đây để kết luận geometry hiện đã nghiệm thu toàn bộ.
+
 Ngày: 2026-10-07. Đây là candidate local, chưa phải nghiệm thu phát hành toàn bộ C2.
 
 ## Nguồn tích hợp

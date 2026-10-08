@@ -1,5 +1,9 @@
 # Frontend C2 — Báo Cáo Trạng Thái & Nghiệm Thu Hình Học C2
 
+> Historical FE report, not final Leader acceptance. See
+> [integrated geometry verification](../../docs/07-game/c2-geometry-integration.md)
+> for fixes after review, test evidence and the remaining Art blocker.
+
 - **Ngày cập nhật:** 08/10/2026
 - **Chi nhánh:** `agent/frontend`
 - **Tương thích:** Tester `f0ba800`, Core `633a0c0`, Leader candidate `main` / `2038276`.

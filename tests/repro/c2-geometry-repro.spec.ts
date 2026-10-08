@@ -1,4 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
+// Historical bug-existence probes, not acceptance tests. Use the repro config
+// on the audited buggy baseline; these assertions should fail on a fixed build.
 import { execFileSync } from 'node:child_process';
 import { readFileSync, existsSync, mkdirSync } from 'node:fs';
 
