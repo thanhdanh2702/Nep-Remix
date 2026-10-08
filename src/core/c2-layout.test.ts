@@ -184,7 +184,9 @@ if (movementRevision) {
       Object.assign(state.journey.c2,{status:'in_progress',currentArea:area.id,side:'mat_phai',
         completedDialogueIds:['d-c2-ca-nghi','d-c2-mat-ma','d-c2-bien-lai','d-c2-giao-keo'],solvedPuzzleIds:ids.slice(0,index)});
       state.inventory.itemIds.push('chia_khoa_ket_sat_bang_thau','bien_lai_tra_no_goc_1935','ban_ve_ao_dai_tan_thoi');
-      const walker={current:newWalker(from)};
+      // Synthetic approach origins must obey the same clear-floor placement as
+      // real entry points. Starting a route inside furniture is unreachable.
+      const walker={current:newWalker(standClear(area.id,from,floor,world))};
       const pending: {current:null|{id:string;fire:()=>void}}={current:null};
       let calls=0;
       const instance=adapter({...movement,HUMAN_HEIGHT,area,areaId:area.id,chapterId:'c2',world,scene:'c2',walker,pending,

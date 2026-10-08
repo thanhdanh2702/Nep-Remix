@@ -12,10 +12,18 @@ const footprints = [
   [{ x: 0, y: .25, w: .48, h: .505 }],
 ];
 const areas = loadContent().chapters.c2.areas;
+// Ground-space occupied by NPC feet, not their full upright sprite canvases.
+const npcFeet = [
+  [{ x: 1080, y: 675, w: 114, h: 50 }],
+  [{ x: 545, y: 635, w: 114, h: 50 }],
+  [{ x: 310.8, y: 647.5, w: 114, h: 50 }, { x: 1197, y: 647.5, w: 114, h: 50 }],
+];
 function check(p: Pt, index: number) {
   assert.ok(p.y >= floor.top && p.y <= floor.bottom, 'feet outside floor band');
   for (const r of footprints[index]) assert.ok(!(p.x >= r.x * world.w && p.x <= (r.x + r.w) * world.w
     && p.y >= r.y * world.h && p.y <= (r.y + r.h) * world.h), `feet in audited furniture: ${JSON.stringify(p)}`);
+  for (const r of npcFeet[index]) assert.ok(!(p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h),
+    `walking through NPC feet: ${JSON.stringify(p)}`);
 }
 
 for (const [index, area] of areas.entries()) {
@@ -23,7 +31,7 @@ for (const [index, area] of areas.entries()) {
     const anchors: Pt[] = [standClear(area.id, { x: area.spawn.x * world.w, y: area.spawn.y * world.h }, floor, world)];
     for (const spot of area.interactables) for (const from of [{ x: 84, y: 800 }, { x: 1588, y: 800 }]) {
       const r = spot.rect!;
-      const aim = targetFor({ x: r.x * world.w, y: r.y * world.h, w: r.w * world.w, h: r.h * world.h }, from, floor, world.w, .045 * world.w);
+      const aim = targetFor({ x: r.x * world.w, y: r.y * world.h, w: r.w * world.w, h: r.h * world.h }, from, floor, world.w, .045 * world.w, area.id);
       anchors.push(standClear(area.id, aim.to, floor, world));
     }
     anchors.forEach(p => check(p, index));
