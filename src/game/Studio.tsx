@@ -33,12 +33,18 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
   const [optionsOpen,setOptionsOpen] = useState(false);
   const [viewIndex,setViewIndex] = useState(0);
   const [sparkle,setSparkle] = useState(0);
+  const [lookbookModalOpen, setLookbookModalOpen] = useState(false);
+  const [lookbookCaptureCount, setLookbookCaptureCount] = useState(0);
   const saveRef = useRef<HTMLButtonElement>(null);
   const view = studioViews[viewIndex];
   const preset = state.profile?.avatarPreset ?? 'an-default';
   const turn = (step:number) => setViewIndex(index => (index + step + studioViews.length) % studioViews.length);
   const draft = session.current;
   const evaluation = evaluateOutfit(draft, {eventId:draft.eventContextId},content);
+  const handleOpenLookbook = () => {
+    setLookbookModalOpen(true);
+    setLookbookCaptureCount(c => c + 1);
+  };
   const update = (cmd:Command) => {
     const result = runCommand({...state,activeSession:draft},cmd,content);
     if (!result.ok) { notify(result.reason); return; }
@@ -80,12 +86,32 @@ export function Studio({ state, send, notify, initial, challenge }: { state: Gam
         </div>
         {undo}{redo}
       </div>
-      <StudioStylist state={state} draft={draft} update={update} notify={notify} />
+      <div className="studio-an-controls-row" role="group" aria-label="Gợi ý và chụp Lookbook">
+        <StudioStylist state={state} draft={draft} update={update} notify={notify} />
+        <button
+          className="studio-ai-button studio-lookbook-open-btn"
+          onClick={handleOpenLookbook}
+        >
+          Chụp Lookbook AI
+        </button>
+        <button
+          className="studio-ai-button studio-reset-btn"
+          onClick={() => setSession(s => resetSession(s))}
+        >
+          Đặt lại
+        </button>
+      </div>
     </MannequinStage>
     {challenge?.(draft)}
     <section className="studio-lookbook" aria-label="Lookbook của bạn">
       <h2 className="studio-lookbook-heading">Lookbook của bạn</h2>
-      <StudioLookbookAi draft={draft} eventTitle={events.find(e=>e.id===draft.eventContextId)?.name ?? events[0].name}
+      <StudioLookbookAi
+        draft={draft}
+        eventTitle={events.find(e=>e.id===draft.eventContextId)?.name ?? events[0].name}
+        isModalOpen={lookbookModalOpen}
+        captureCount={lookbookCaptureCount}
+        onCloseModal={() => setLookbookModalOpen(false)}
+        onOpenModal={handleOpenLookbook}
         actions={<>
           <button onClick={()=>setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>
           <button ref={saveRef} className="primary" onClick={save}>Lưu bộ phối</button>
