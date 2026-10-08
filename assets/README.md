@@ -10,13 +10,13 @@ Tất cả các tài liệu `README.md` con của từng asset trong kho chỉ �
 
 ## 1. Mục Đích & Cây Thư Mục Kho Asset Game
 
-Kho tài nguyên này chuyên biệt phục vụ các thành phần đồ họa, hoạt ảnh và âm thanh trong gameplay (nhân vật, paperdoll, áo dài, phụ kiện, hoạ tiết, vật phẩm, khu vực, overlay, tài liệu cốt truyện, VFX, CG, âm thanh). Các thành phần khung giao diện, nút bấm, HUD và màn hình ứng dụng thuộc quyền quản lý của team UI.
+Kho tài nguyên này chuyên biệt phục vụ các thành phần đồ họa, hoạt ảnh và âm thanh trong gameplay (nhân vật, trang phục lớp, áo dài, phụ kiện, hoạ tiết, vật phẩm, khu vực, overlay, tài liệu cốt truyện, VFX, CG, âm thanh). Các thành phần khung giao diện, nút bấm, HUD và màn hình ứng dụng thuộc quyền quản lý của team UI.
 
 Cấu trúc phân mục chuẩn hóa:
 
 - `characters/`: Sprite nhân vật người chơi và các nhân vật phụ/NPC qua các thời kỳ (đứng, bước đi, tương tác, biểu cảm).
-- `paperdoll/`: Khung cơ thể chuẩn và 13 lớp ghép với hệ thống búp bê giấy cho nhân vật chính An.
-- `garments/`: Các lớp áo dài mặc được (ghép trên khung paperdoll) và ảnh đại diện thu nhỏ (thumbnail) trong Tủ đồ.
+- `paperdoll/`: (Bãi bỏ) Thư mục lưu trữ lớp cơ thể chuẩn và tài liệu hệ thống 13 lớp cho nhân vật chính An.
+- `garments/`: Các lớp áo dài mặc được (ghép trên cơ thể An) và ảnh đại diện thu nhỏ (thumbnail) trong Tủ đồ.
 - `accessories/`: Các lớp phụ kiện mặc được trên nhân vật và biểu tượng phụ kiện (icon) trong Tủ đồ / Cửa hàng.
 - `motifs/`: Hoa văn dệt truyền thống vẽ theo ô lặp liền viền (seamless tile) dùng phủ chất liệu vải.
 - `items/`: Biểu tượng vật phẩm túi đồ, manh mối điều tra và đồ vật tương tác cốt truyện.
@@ -47,7 +47,7 @@ $$\text{Prompt hoàn chỉnh} = [\text{Cụm kỹ thuật theo loại}] + [\text
 - **Nguyên tắc thử nghiệm:** Mỗi lượt chỉnh sửa prompt chỉ thay đổi đúng một chi tiết hoặc một từ khóa duy nhất để kiểm soát chất lượng tạo hình.
 - **Ảnh tham chiếu (Reference Image):**
   - Luôn đính kèm ảnh tham chiếu phong cách mỹ thuật chung của dự án để AI giữ đúng chất pixel hoài niệm Việt Nam.
-  - Đối với các lớp trang phục (`garment-layer`) và phụ kiện (`accessory-layer`) của hệ thống Paperdoll: **BẮT BUỘC** đính kèm hình ảnh khối cơ thể mẫu (`body base`) để mô hình căn khớp chính xác tỷ lệ vai, eo, cổ và tay áo.
+  - Đối với các lớp trang phục (`garment-layer`) và phụ kiện (`accessory-layer`) của hệ thống 13 lớp An: **BẮT BUỘC** đính kèm hình ảnh khối cơ thể mẫu (`body base`) để mô hình căn khớp chính xác tỷ lệ vai, eo, cổ và tay áo.
 
 ---
 
@@ -155,11 +155,11 @@ Các thông số dưới đây tuân thủ chính sách An làm đơn vị chu�
 
 ---
 
-## 7. Quy Chuẩn Paperdoll & Gradient-Map Màu (13 Lớp An)
+## 7. Quy Chuẩn Hệ Thống 13 Lớp & Gradient-Map Màu (An Character Layer System)
 
 ### 7.1. Thứ tự 13 lớp đồ họa (Layer Stacking Order)
 
-Hệ thống hiển thị nhân vật búp bê giấy trên khung lưới chuẩn **176 × 416 pixel**, xếp chồng từ dưới lên trên theo đúng thứ tự (từ `src/game/assets.ts` -> `AN.layers`):
+Hệ thống hiển thị nhân vật An trên khung lưới chuẩn **176 × 416 pixel**, xếp chồng từ dưới lên trên theo đúng thứ tự (từ `src/game/assets.ts` -> `AN.layers`):
 
 1. `shadow` — Bóng chân nhân vật in trên mặt đất
 2. `hair_back` — Tóc sau (phần tóc mặt lưng)
@@ -280,12 +280,12 @@ Mọi hình ảnh trước khi tích hợp vào app đều phải trải qua quy
 - Toàn bộ dùng chữ thường, không dấu tiếng Việt, nối nhau bằng dấu gạch ngang (`kebab-case`), định dạng tệp luôn là `.png`.
 - **Nền khu vực:** `<area-id>--phai.png` (mặt phải thế giới thực).
 - **Mặt trái khu vực:** `<area-id>--trai.png` (cõi dệt lật vải; trạng thái ghi chú: *"hoãn sau 10/10"*).
-- **Lớp phủ trạng thái:** `<area-id>--<trang-thai>.png` (ví dụ: `c0-s2--chest-open.png`, `c1-s1--door-unlatched.png`).
+- **Lớp phủ trạng thái:** `<area-id>--<trang-thai>.png` (Chờ gen lại các overlay trạng thái cảnh kỳ).
 - **Nhân vật:**
-  - Tư thế bối cảnh: `scene-<bien-the>-<pose>.png` (ví dụ: `scene-catwalk.png`, `scene-loom.png`; nếu chỉ có một thời kỳ duy nhất thì lược bỏ `<bien-the>-`).
-  - Chân dung biểu cảm: `portrait-<bien-the>-<bieu-cam>.png` (ví dụ: `portrait-smile.png`, `portrait-determined.png`).
+  - Tư thế bối cảnh: `scene-<bien-the>-<pose>.png` (Chờ gen lại các CG nhân vật).
+  - Chân dung biểu cảm: `portrait-<bien-the>-<bieu-cam>.png` (Chờ gen lại các chân dung biểu cảm).
 - **Trang phục & Phụ kiện:**
-  - Lớp paperdoll mặc trên người: `<id>.png` (ví dụ: `ao-tu-than.png`, `khan-van-den.png`).
+  - Lớp trang phục mặc trên người: `<id>.png` (dùng trong `assets/garments/<id>/` hoặc `assets/accessories/<id>/`).
   - Ảnh đại diện hiển thị: `<id>--icon.png` (cho phụ kiện/vật phẩm hoặc áo trong tủ).
 - **Thư mục ảnh nháp:** Mỗi asset có một thư mục `_raw/` nằm cạnh file `README.md` để lưu trữ các lần tạo ảnh của AI (`<ten>-v1.png`, `<ten>-v2.png`).
 

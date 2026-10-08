@@ -115,6 +115,12 @@ export function Studio({
   const [optionsOpen, setOptionsOpen] = useState(false);
   const [viewIndex, setViewIndex] = useState(0);
   const [sparkle, setSparkle] = useState(0);
+  const [lookbookModalOpen, setLookbookModalOpen] = useState(false);
+  const [lookbookCaptureCount, setLookbookCaptureCount] = useState(0);
+  const handleOpenLookbook = () => {
+    setLookbookModalOpen(true);
+    setLookbookCaptureCount(count => count + 1);
+  };
   const saveRef = useRef<HTMLButtonElement>(null);
   const view = studioViews[viewIndex];
   const preset = state.profile?.avatarPreset ?? 'an-default';
@@ -355,7 +361,15 @@ export function Studio({
           {undo}
           {redo}
         </div>
-        <StudioStylist state={state} draft={draft} update={update} notify={notify} />
+        <div className="studio-an-controls-row" role="group" aria-label="Gợi ý và chụp Lookbook">
+          <StudioStylist state={state} draft={draft} update={update} notify={notify} />
+          <button className="studio-ai-button studio-lookbook-open-btn" onClick={handleOpenLookbook}>
+            Chụp Lookbook AI
+          </button>
+          <button className="studio-ai-button studio-reset-btn" onClick={handleReset}>
+            Đặt lại
+          </button>
+        </div>
       </MannequinStage>
       {challenge?.(draft)}
       <section className="studio-lookbook" aria-label="Lookbook của bạn">
@@ -363,6 +377,10 @@ export function Studio({
         <StudioLookbookAi
           draft={draft}
           eventTitle={events.find(e => e.id === draft.eventContextId)?.name ?? events[0].name}
+          isModalOpen={lookbookModalOpen}
+          captureCount={lookbookCaptureCount}
+          onCloseModal={() => setLookbookModalOpen(false)}
+          onOpenModal={handleOpenLookbook}
           actions={
             <>
               <button onClick={() => setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>

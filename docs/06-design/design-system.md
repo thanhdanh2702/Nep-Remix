@@ -95,7 +95,7 @@ Trong các màn hình giao diện (HUD, bảng điều khiển, thẻ chức nă
 - **Hoa văn thương hiệu (Brand Motif):** Hoa sen cách điệu pixel được sử dụng có tiết chế tại các góc viền khung panel (corner ornament) và trên các huy hiệu phần thưởng.
 - **Xử lý chất liệu nền (Textures):** Vân giấy dó mộc mạc, đường viền thớ gỗ mun hay nếp sợi vải chỉ xuất hiện điểm xuyết nhẹ ở vùng khung trang trí viền; vùng đặt văn bản đọc phải hoàn toàn sạch sẽ, không có texture gây nhiễu thị giác.
 - **Phân định rạch ròi giữa Pixel Nguồn và CSS px:**
-  - *Pixel nguồn của Sprite (An unit):** Nhân vật An 176×416, NPC 176×416, Mèo Nếp 128×128, Chân dung 128×128 được vẽ trên lưới pixel thật, chi tiết 1:1, khử răng cưa mềm. Hiển thị với smoothing (`image-rendering: auto`) khi thu nhỏ bởi scale. Icon UI (48×48 vật phẩm, 24×24 UI, 96×96 thumbnail) và 9-slice/3-slice khung là pixel art chuẩn, phóng theo bội số nguyên với `image-rendering: pixelated` (Nearest-Neighbor).
+  - *Pixel nguồn của Sprite (An unit):** Nhân vật An 176×416, NPC 176×416, Mèo Nếp 128×128 là ảnh vẽ chi tiết 1:1, khử răng cưa mềm (không có lưới khối cố định); chân dung lấy ô front của nhân vật. Hiển thị với smoothing (`image-rendering: auto`) khi thu nhỏ bởi scale. Icon UI (48×48 vật phẩm, 24×24 UI, 96×96 thumbnail) và 9-slice/3-slice khung là pixel art chuẩn, phóng theo bội số nguyên với `image-rendering: pixelated` (Nearest-Neighbor).
   - *CSS px của Giao diện UI:* Panel, nút bấm, chữ viết render bằng HTML/CSS thật trên lưới 4px, giữ nguyên độ nét từng nét chữ mà không bị thu phóng co kéo cưỡng bức toàn màn hình.
 
 ---
@@ -171,7 +171,7 @@ Tất cả các thành phần tuân theo ngôn ngữ thị giác đồng bộ, t
 
 ### 6.2. Khung viền Panel, Hộp thoại & Modal
 - **Panel giấy kem (Paper Panel):** Nền kem giấy `#FFF1DF`, viền ngoài 4px tím mận `#2B2035`, viền trong 2px vàng ấm `#E9B66B`, góc cắt bậc 8px, bóng cứng 8px `#2B2035`.
-- **Hộp thoại NPC (NPC Dialogue Box):** Nền kem giấy `#FFF1DF`, viền 4px `#2B2035`. Chân dung NPC 128×128 đặt khung nổi bên trái/phải. Tên NPC đặt trên nhãn nền vàng ấm `#E9B66B` viền mận chín. Lời thoại chữ 18/28 px màu `#2B2035`.
+- **Hộp thoại NPC (NPC Dialogue Box):** Nền kem giấy `#FFF1DF`, viền 4px `#2B2035`, đặt ở cạnh dưới màn hình. Phía trên hộp là sân khấu đứng: An và NPC vẽ cùng chiều cao khung (ảnh vẽ tay, thu nhỏ mượt); người không nói bị làm mờ. NPC chưa có ảnh theo spec An thì hiện biểu tượng hoa sen thay cho chân dung. Tên NPC đặt trên nhãn nền vàng ấm `#E9B66B` viền mận chín. Lời thoại chữ 18/28 px màu `#2B2035`.
 - **Cửa sổ Modal:** Áp dụng kỹ thuật 9-slice với khung viền gỗ mộc hoặc hoa sen, nền kem sáng `#FFF8EE`, xuất hiện trên nền backdrop màu `#2B2035` có độ mờ 75%.
 
 ### 6.3. Tab danh mục, Thanh tìm kiếm & Ô chọn màu
@@ -220,53 +220,51 @@ Hệ thống nhận diện được ứng dụng nhất quán qua toàn bộ hà
 **Sảnh chính → Phòng phối đồ → Tủ đồ → Bản đồ chương → Khám phá Làng May → Hội thoại NPC → Sổ manh mối → Câu đố → Ghép khuy áo → Nhận thưởng → Lookbook.**
 
 ### 7.1. Màn 1: Sảnh Chính (The Courtyard Hub)
-- **Bối cảnh:** Khoảng sân làng Việt cổ kính lúc hoàng hôn vàng ấm, nền gạch đỏ hoa văn tròn trung tâm, ao sen thanh bình bên trái, dãy nhà ngói hai bên, cổng vòm rêu phong dẫn vào Cốt truyện.
+- **Bối cảnh:** Ảnh `garden-user--landscape.png` (bản gen gốc): sân gạch đỏ nhìn từ trên cao lúc hoàng hôn, vòng hoa sen giữa sân, ao sen góc trái, các dãy nhà ngói phủ hoa. Mèo Nếp đã vẽ sẵn trong ảnh nền.
 - **Bố cục trực quan:**
-  - Thanh HUD ghim cố định cạnh trên (logo, Sen Ngọc, cài đặt).
-  - 4 lối vào biển gỗ điều hướng hiển thị rành mạch: "Phòng phối đồ" (trái), "Tủ đồ" (phải), "Cốt truyện" (giữa sau), "Bảo tàng" (sát tường trắng bên cổng vòm).
-  - Thẻ nổi "Bắt đầu câu chuyện của bạn" đặt trang nhã ở nửa dưới sân với hai nút hành động: *"Tạo nhân vật từ ảnh ▶"* (hồng đậm nổi bật) và *"Dạo quanh sân nhà ▶"* (liên kết phụ).
-  - Chú mèo Nếp nằm sưởi nắng cuộn tròn trên thềm gạch cạnh khóm hoa.
+  - Thanh tiêu đề trên cùng (logo, Màn chờ, Về Nếp, Cách chơi); ví Sen Ngọc (`currency-hud.png`) và nút cài đặt (`settings-button.png`) ở góc phải trên.
+  - 4 biển khu vực (`area-sign-frame.png`) gắn trên mái nhà, đi theo cùng phép biến đổi camera với nền: "Phòng phối đồ" (nhà bên trái), "Cốt truyện" (cổng giữa phía sau), "Tủ đồ" (nhà bên phải), "Bảo tàng" (nhà góc phải phía trước).
+  - An đứng giữa vòng hoa sen, cao khoảng 15% chiều cao nền, đi lại bằng WASD/phím mũi tên (điện thoại có bàn phím ảo Lên/Trái/Xuống/Phải và nút Tương tác).
+  - Lần đầu vào game: thẻ "Bắt đầu câu chuyện của bạn" (khung `action-card-frame--9slice.png`) với hai nút "Chọn diện mạo" và "Dạo quanh sân nhà".
 
 ### 7.2. Màn 2: Phòng Phối Đồ (The Atelier Studio)
-- **Bối cảnh & Bố cục:**
-  - *Nửa bên trái:* Bục đứng tròn bằng gỗ lim tôn vinh nhân vật Paperdoll (ma-nơ-canh), dưới chân có bóng đổ mềm, vòng hào quang bụi sao lấp lánh khi đổi áo.
-  - *Khay điều khiển bên phải:* Bọc trong khung panel giấy kem viền mận chín, hàng trên là dải sự kiện (Tết, Lễ cưới, Đi lễ chùa...), hàng giữa là khay chọn dáng áo và thanh màu truyền thống, hàng dưới là cụm nút hành động chính.
-  - *Góc Lookbook:* Cửa sổ bật lên hiển thị lưới 4 ảnh AI chân thực theo 4 góc nhìn.
-- **Avatar mặc định chuẩn xác:**
-  - Mái tóc đen dài truyền thống buông nhẹ, cài hai bông hoa trắng thanh nhã bên tai.
-  - Diện chiếc **áo dài ngũ thân màu kem lụa dệt điểm xuyết hoa vàng nhạt** thanh khiết.
-  - Quần dài lụa đen rủ chạm mu bàn chân và giày tối màu mộc mạc.
-- **Nguyên tắc tôn vinh trang phục:** Áo dài và trang phục truyền thống là **tiêu điểm thị giác cao nhất**; toàn bộ khung viền, nhãn chữ hay hoa văn trang trí không bao giờ được che lấp vạt áo, hàng khuy cài hay nếp lụa.
+- **Bối cảnh & Bố cục (theo code hiện tại):**
+  - *Nền:* `vietnamese-room--landscape.png` (bản gen gốc), phủ kín màn hình; ảnh được dịch để thảm tròn luôn nằm dưới chân An.
+  - *Giữa – trái:* An đứng trên thảm, cỡ theo độ sâu sàn (`HUMAN_HEIGHT.studio`), hai nút ‹ › xoay 4 góc nhìn. Bên dưới là tên áo, thanh "Độ hài hòa x/100", nút Hoàn tác/Làm lại và nút "Gợi ý từ Gemini" (tối đa 3 bộ gợi ý, mỗi bộ có nút "Mặc thử").
+  - *Phải:* Khung "Lookbook của bạn" (ảnh khung `lookbook-frame.png`): lưới 4 ô Chính diện / Góc nghiêng / Sau lưng / Cận cảnh tự cập nhật theo bộ đang phối, kèm các nút "Tùy chỉnh bộ phối", "Lưu bộ phối", "Chụp Lookbook AI".
+  - *Dưới:* Dock tủ đồ (ảnh khung `wardrobe-frame--landscape.png`) với 4 tab "Áo dài", "Màu vải", "Phụ kiện", "Giày", phân trang 6 ô/trang, khối "Màu sắc" 6 ô màu. Áo chưa mở khóa hiện bóng tối kèm nhãn chương cần hoàn thành.
+  - *Modal "Tùy chỉnh bộ phối":* tên bộ phối, chọn sự kiện, ghim để so sánh, tháo phụ kiện, Hoàn tác/Làm lại/Đặt lại, nhận xét độ hài hòa.
+  - Các ảnh `studio-panel-frame--9slice`, `event-selector-strip--3slice`, `color-palette-bar--3slice`, `lookbook-modal--9slice`, `workbench-ui--*` đã gen nhưng **chưa dùng** trong bố cục này.
+- **Avatar mặc định:** tóc đen dài buông, cài hai bông hoa trắng; áo dài trắng kem thêu hoa vàng nhạt; quần lụa đen, giày tối màu. Khi chưa có lớp áo theo spec An, An mặc bộ đồ gốc được tô theo bảng màu đang chọn.
+- **Nguyên tắc tôn vinh trang phục:** Áo dài và trang phục truyền thống là **tiêu điểm thị giác cao nhất**; khung viền, nhãn chữ hay hoa văn trang trí không được che vạt áo, hàng khuy hay nếp lụa.
 
 ### 7.3. Màn 3: Hội Thoại NPC & Sổ Manh Mối (Dialogue & Clue Archive)
 - **Hộp thoại NPC:**
-  - Panel giấy kem đặt ở cạnh dưới màn hình, viền cứng 4px màu tím mận.
-  - Chân dung NPC pixel 128×128 đặt trang trọng bên góc, ánh nhìn hướng vào lời thoại.
-  - Tên NPC đặt trên nhãn nổi màu vàng ấm `#E9B66B`. Lời thoại kích thước 18/28 px tương phản tối đa, phân tách rõ lời kể và lời dặn dò.
+  - Panel giấy kem ở cạnh dưới màn hình, viền cứng 4px màu tím mận.
+  - Sân khấu đứng phía trên: An và NPC cùng chiều cao khung, người đang nghe bị làm mờ; NPC chưa có ảnh spec An dùng biểu tượng hoa sen.
+  - Tên người nói trên nhãn nổi màu vàng ấm `#E9B66B`. Lời thoại 18/28 px tương phản tối đa, phân tách rõ lời kể và lời dặn dò.
 - **Sổ manh mối:**
   - Trình bày như một cuốn sổ tay đóng gáy chỉ cổ truyền, các trang giấy dó chia theo từng chương thời kỳ.
   - Thông tin có thứ bậc rõ rệt: Tên hiện vật chứng cứ → Ảnh tư liệu phục dựng → Lời khai nhân chứng → Con dấu triện son xác thực nguồn khảo cứu.
 
 ---
 
-## 8. Kỹ Thuật Phóng To Không Làm Mờ Ảnh (Pixel Crisp Rendering)
+## 8. Quy Tắc Hiển Thị Ảnh: Mượt Hay Giữ Nét (Rendering Rules)
 
-Khi hiển thị trên trình duyệt hiện đại, để tránh cơ chế làm mờ điểm ảnh (Bilinear Interpolation), bắt buộc áp dụng:
+Có hai nhóm ảnh, mỗi nhóm một cách hiển thị (khớp mục 3, mục 5 và code hiện tại):
+
+| Nhóm | Ví dụ | CSS / canvas | Lý do |
+| :--- | :--- | :--- | :--- |
+| **Ảnh vẽ độ phân giải cao** | Nền & screen (`garden-user`, `vietnamese-room`, `bookshelf-pink`, `closet-shelf`, `welcome-courtyard`, nền phòng mở đầu), khung hi-res (`currency-hud`, `settings-button`, `area-sign-frame`, `lookbook-frame`, `wardrobe-frame`), nhân vật An/NPC | Class `art-hires` → `image-rendering: auto`; canvas bật smoothing khi vẽ thu/phóng | Ảnh có khử răng cưa, chi tiết 1:1; thu nhỏ mượt mới không bị răng cưa |
+| **Pixel art lưới thật** | Icon vật phẩm 48, thumb áo 96, icon phụ kiện 48, `ui-pixel` 16, khung 9-slice/3-slice, nền chương 1 vẽ bằng code, viền highlight | Class `pixel-native` → `image-rendering: pixelated`; canvas tắt smoothing; phóng theo bội số nguyên | Mỗi điểm ảnh là một khối vuông; làm mượt sẽ nhòe |
 
 ```css
-/* Áp dụng cho toàn bộ hình ảnh sprite, canvas và khung pixel art */
-.pixel-art {
-  image-rendering: pixelated; /* Chuẩn Chrome, Edge, Safari hiện đại */
-  image-rendering: -moz-crisp-edges; /* Firefox */
-  image-rendering: crisp-edges;
-}
+/* src/ui/base.css */
+.art-hires    { image-rendering: auto; }       /* ảnh vẽ hi-res: thu nhỏ mượt */
+.pixel-native { image-rendering: pixelated; }  /* pixel art: giữ nét, bội số nguyên */
 ```
 
-Trong canvas dựng hình của Studio và Gameplay:
-```javascript
-const ctx = canvas.getContext('2d');
-ctx.imageSmoothingEnabled = false; // Tắt hoàn toàn khử răng cưa
-```
+Trên canvas, bật/tắt smoothing theo từng lớp trong cùng một khung hình (`setSmoothing` trong `src/ui/pixel-scale.ts`): nền phòng mở đầu và nhân vật vẽ mượt; nền chương 1 và lớp highlight giữ nét. **Không** áp `pixelated` hay tắt smoothing cho toàn bộ ảnh.
 
 ---
 

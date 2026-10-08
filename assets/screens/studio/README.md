@@ -20,8 +20,7 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
 
 Bộ hình được tạo ngày 01/10/2026 bằng công cụ `image_gen` tích hợp. Nét Việt thể hiện qua khung nhà gỗ lim, mành tre, nền gạch đất nung, gốm men lam, hoa sen, kệ lụa màu chàm/đỏ điều/hoàng yến và dụng cụ may bằng gỗ, đồng. Hoa văn tập trung ở góc khung và hai đầu thanh để không méo khi co giãn. Không vẽ người, chữ hoặc nút điều khiển vào ảnh nền.
 
-- PNG chuẩn hóa nằm ngay trong thư mục này. Ảnh gốc và các lần chỉnh bố cục nằm trong `_raw/`; prompt đầy đủ ở `_raw/generation.json` và `portrait-layout-edit*.json`.
-- Xem toàn bộ bộ hình cùng khung được kéo giãn trong `_raw/preview.png`.
+- PNG chuẩn hóa nằm ngay trong thư mục này. Ảnh gốc và các lần chỉnh bố cục nằm trong `_raw/`.
 - Thông số tích hợp, slice, số màu và SHA-256 nằm trong `asset-manifest.json`.
 - Nền giới hạn 32 màu; khung/thanh tối đa 16 màu RGBA, alpha chỉ 0 hoặc 255. Các cạnh lặp đã được làm phẳng, tâm hai khung để trong suốt.
 - Khi render, dùng nearest-neighbor / `image-rendering: pixelated` và giữ góc/hai đầu nguyên kích thước. Màu mẫu, chữ, tab, ảnh Lookbook và thanh tiến độ được vẽ bằng UI phía trên.
@@ -41,7 +40,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File assets/screens/studio/_raw/p
 
 ### Bố cục ngang (Bố cục chính)
 - **Cảnh nền:** Nền `vietnamese-room--landscape.png` thể hiện không gian xưởng may ấm cúng với kệ cuộn vải lụa, giá treo thước gỗ và ánh sáng tự nhiên từ cửa sổ bên.
-- **Nửa bên trái:** Sân khấu bục đứng của nhân vật Paperdoll (ma-nơ-canh thử đồ).
+- **Nửa bên trái:** Sân khấu bục đứng của nhân vật An (ma-nơ-canh thử đồ).
   - Nhân vật đứng chính giữa bục gỗ tròn, dưới chân có bóng đổ mềm.
   - Vòng hào quang bụi sao lấp lánh xuất hiện khi thay trang phục hoặc phụ kiện.
   - Phía dưới bục có nút xoay góc nhìn hoặc lật mặt vải áo (khi bật tính năng).
@@ -54,7 +53,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File assets/screens/studio/_raw/p
 - **Cửa sổ Lookbook AI:** Khi bấm tạo Lookbook, khung modal `lookbook-frame.png` mở nổi căn giữa màn hình, hiển thị lưới 4 ảnh AI chân thực kèm thanh tiến độ.
 
 ### Bố cục dọc (Bố cục phụ)
-- **Nửa trên:** Bục đứng nhân vật ma-nơ-canh Paperdoll căn giữa khung nhìn trên nền `workbench-ui--portrait.png`.
+- **Nửa trên:** Bục đứng nhân vật An căn giữa khung nhìn trên nền `workbench-ui--portrait.png`.
 - **Nửa dưới:** Bảng điều khiển tab hiển thị dưới dạng ngăn kéo vuốt mở (bottom sheet), chứa dải sự kiện, lưới chọn trang phục và thanh màu.
 - **Cụm nút chính:** "Lưu bộ phối" và "Tạo Lookbook" ghim cố định ở đáy màn hình điện thoại.
 - **Cửa sổ Lookbook:** Mở phủ toàn màn hình, 4 ảnh xếp lưới 2×2 cuộn dọc.
@@ -67,8 +66,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File assets/screens/studio/_raw/p
 
 - **Mô tả chủ thể (EN) cho `vietnamese-room--landscape.png`:**
   ```text
-  pixel art, 800x500 pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing, dithering, spacious traditional Vietnamese tailor atelier and styling studio interior at warm morning light. Left half features an elegant raised circular wooden styling podium with delicate silk scroll accents, leaving central podium space clear for character paperdoll mannequin display. Right half features an organized atelier workspace with polished dark wooden textures and fabric bolts neatly arranged on side shelves, leaving a large open area for the UI tab panel. Soft ambient dust motes in sunbeams, subtle vintage tailoring tools hanging on wall. Pure environmental background without any characters, human figures, or baked text.
+  pixel art, spacious traditional Vietnamese tailor atelier and styling studio interior at warm morning light. Left half features an elegant raised circular wooden styling podium, leaving central podium space clear for character display. Right half features an organized atelier workspace with polished dark wooden textures and fabric bolts neatly arranged on side shelves. Soft ambient dust motes in sunbeams, subtle vintage tailoring tools. Pure environmental background without any characters, human figures, or baked text.
   ```
 
-Quy chuẩn bảng màu truyền thống và thước đo hài hòa xem tại `docs/04-culture/color-and-etiquette.md`.
-Prompt tạo ảnh Lookbook chân thực và quy chuẩn 4 góc nhìn tham khảo tại `docs/01-overview/decisions.md` (mục 17) và `docs/03-features/studio.md`.
+Prompt tạo ảnh chi tiết lưu trong thư mục _raw/.

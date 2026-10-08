@@ -6,60 +6,52 @@ Phòng phối đồ (Studio, nằm ở dãy nhà ngói bên trái sân nhà vớ
 
 ## 2. Các bước người dùng thao tác
 
-Bước 1: Chọn ngữ cảnh sự kiện. Người dùng bấm chọn một trong các thẻ sự kiện: Tết Nguyên đán, Lễ cưới, Bế giảng tốt nghiệp, Đi lễ chùa, Đi viếng tang, hoặc Tự do dạo phố.
+Bước 1: Chọn áo. Ở dock tủ đồ phía dưới, tab "Áo dài" liệt kê 10 dáng áo (6 ô/trang, có nút ‹ ›). Áo chưa mở khóa hiện bóng tối kèm nhãn "Chưa mở khóa · cần Chương N". Bấm một áo đã có thì An trên thảm đổi áo ngay.
 
-Bước 2: Chọn phom dáng áo. Người dùng chọn 1 trong 4 phom dáng y phục: Áo tứ thân, Áo ngũ thân tay chẽn, Áo ngũ thân tay thụng (Áo tấc), hoặc Áo dài tân thời. Nhân vật trên bục đứng lập tức đổi dáng áo tương ứng.
+Bước 2: Tô màu. Tab "Màu vải" đổi bảng màu của bộ đang mặc; khối "Màu sắc" bên phải dock là 6 ô màu truyền thống chọn nhanh.
 
-Bước 3: Tùy biến màu sắc và họa tiết. Người dùng chọn màu tà áo, màu cổ áo và màu quần/váy từ Bảng màu truyền thống cho vải áo (màu củ nâu, chàm, điều, hoàng yến, men lam, giấy dó...).
+Bước 3: Phụ kiện và giày. Tab "Phụ kiện" và tab "Giày" gắn/tháo món đồ theo từng vị trí (đầu, cổ, tay, chân).
 
-Bước 4: Chọn phụ kiện đi kèm. Người dùng chọn thêm các món phụ kiện: Khăn vấn, Nón ba tầm/Nón lá, Guốc mộc, Quạt giấy hoặc Chuỗi hạt.
+Bước 4: Xem và xoay. Nút ‹ › cạnh An xoay 4 góc nhìn; khung "Lookbook của bạn" bên phải luôn hiện 4 ô Chính diện / Góc nghiêng / Sau lưng / Cận cảnh của bộ đang phối. Dưới chân An có tên áo, thanh "Độ hài hòa x/100", nút Hoàn tác / Làm lại.
 
-Bước 5: Xem đánh giá và gợi ý:
-- Xem thanh điểm hài hòa màu sắc (thang điểm 100) và nhận xét ngắn về độ tương phản.
-- Đọc thẻ lưu ý văn hóa nếu cách phối hiện tại có chi tiết dễ gây hiểu lầm hoặc vi phạm lễ nghi (ví dụ: mặc đồ quá sặc sỡ đi viếng tang).
-- Bấm vào mèo Nếp để xem 3 bộ đồ mẫu do Nếp phối sẵn theo sự kiện đã chọn và thời tiết giả định (nắng ấm/mát mẻ/se lạnh).
+Bước 5: Gợi ý từ Gemini. Bấm "Gợi ý từ Gemini" để nhận tối đa 3 bộ gợi ý theo sự kiện đang chọn; mỗi bộ có nút "Mặc thử" (chỉ áp phần đã mở khóa).
 
-Bước 6: Thao tác nâng cao:
-- Bấm "So sánh" để ghim bộ đồ hiện tại và chuyển sang phối bộ thứ hai đặt song song.
-- Bấm "Lưu bộ đồ" để đưa vào Tủ đồ cá nhân.
-- Bấm "Tạo Lookbook" để gửi yêu cầu sinh 4 ảnh chân thực người mẫu do AI tạo theo 4 góc nhìn (chính diện, nghiêng, sau lưng, cận chi tiết; tuyệt đối không dùng khuôn mặt người dùng).
+Bước 6: Tùy chỉnh, lưu và Lookbook AI:
+- "Tùy chỉnh bộ phối" mở modal: đặt tên bộ phối, chọn sự kiện (Tết, Lễ cưới, Bế giảng, Đi lễ chùa, Viếng tang, Dạo phố), "Ghim để so sánh", "Tháo phụ kiện", Hoàn tác / Làm lại / Đặt lại, nhận xét độ hài hòa và lưu ý văn hóa.
+- "Lưu bộ phối" đưa bộ đồ vào Tủ đồ (mục "Bộ đã lưu").
+- "Chụp Lookbook AI" gửi bộ đang phối cho Gemini để sinh 4 ảnh người mẫu hư cấu theo 4 góc nhìn (không dùng khuôn mặt người dùng); "Về ảnh pixel" quay lại 4 ô pixel.
 
 ## 3. Các trạng thái màn hình
 
 ### Bố cục ngang (chính)
-- **Cảnh nền:** Nền gốc `vietnamese-room--landscape.png` kích thước 1585×992, hiển thị theo kích thước thật với smoothing (`image-rendering: auto`) để fit/cover viewport, thể hiện không gian xưởng may Studio ấm cúng với kệ cuộn vải lụa, giá treo thước gỗ và ánh sáng tự nhiên từ cửa sổ bên.
-- **Nửa bên trái (khoảng 380 px):** Sân khấu bục đứng An thử đồ đặt chính giữa (khung 176×416, điểm chân 88,400), hiển thị bóng chân và vòng hào quang lấp lánh khi đổi đồ, phía dưới có các nút xoay góc nhìn hoặc lật mặt vải áo. Áo được vẽ theo lớp garment spec An (dải 528×416: front | side-left | back) tô màu gradient-map từ xám calibrated sang màu palette. Nếu chưa có asset mới thì hiển thị icon hoặc fallback bản 64×96.
-- **Nửa bên phải (khoảng 400 px):** Bảng điều khiển tab được bao bọc bởi khung `studio-panel-frame--9slice.png`:
-  - Hàng trên: Dải chọn sự kiện `event-selector-strip--3slice.png` (Tết, Lễ cưới, Bế giảng, Đi lễ chùa, Tang lễ, Dạo phố).
-  - Thanh tab chuyển danh mục: "Dáng áo", "Màu sắc", "Phụ kiện", "Họa tiết".
-  - Khu vực danh mục: Lưới các ô biểu tượng áo hoặc phụ kiện (icon 48×48 px).
-  - Khi chọn tab màu: Hiển thị thanh màu truyền thống `color-palette-bar--3slice.png` với các nút mẫu màu (củ nâu, chàm, điều, hoàng yến...).
-  - Dưới cùng của bảng: Cụm nút hành động chính gồm "Lưu bộ phối", "Tạo Lookbook AI" và "Mặc thử ngay".
-- **Cửa sổ Lookbook AI:** Khi bấm tạo Lookbook, khung modal `lookbook-modal--9slice.png` mở nổi căn giữa màn hình (kích thước khoảng 560×420 px), hiển thị lưới 4 ảnh AI chân thực theo 4 góc nhìn kèm thanh tiến độ 45 giây.
+- **Cảnh nền:** `vietnamese-room--landscape.png` (bản gen gốc), phủ kín màn hình và vẽ mượt (`art-hires`); ảnh được dịch để thảm tròn luôn nằm dưới chân An.
+- **Giữa – trái (sân khấu):** An đứng trên thảm, cỡ theo độ sâu chỗ chân đứng (`HUMAN_HEIGHT.studio`, 0,34 → 0,48 chiều cao nền; tối đa 1,2× khung 176×416). Hai nút ‹ › xoay góc nhìn; bên dưới là tên áo, thanh độ hài hòa, Hoàn tác / Làm lại, "Gợi ý từ Gemini".
+- **Phải:** Khung "Lookbook của bạn" (ảnh `lookbook-frame.png`) với lưới 4 ô và 3 nút "Tùy chỉnh bộ phối", "Lưu bộ phối", "Chụp Lookbook AI".
+- **Dưới:** Dock tủ đồ (ảnh `wardrobe-frame--landscape.png`) gồm 4 tab "Áo dài", "Màu vải", "Phụ kiện", "Giày", phân trang 6 ô/trang và khối "Màu sắc". Icon áo 96×96 và icon phụ kiện 48×48 là pixel art, phóng theo bội số nguyên (`pixel-native`).
+- **Lớp áo trên An:** khi đã có lớp áo theo spec An (dải 528×416: front | side | back), áo vẽ đè lên An và tô màu bằng gradient-map. Khi chưa có, An mặc bộ đồ gốc được tô theo bảng màu đang chọn; dock hiện icon áo; phụ kiện chưa có lớp thì không vẽ.
+- Các ảnh `studio-panel-frame--9slice`, `event-selector-strip--3slice`, `color-palette-bar--3slice`, `lookbook-modal--9slice`, `workbench-ui--*` đã gen nhưng **chưa dùng**.
 
 ### Bố cục dọc (phụ)
-Màn hình chia làm hai phần: nửa trên là bục đứng của nhân vật pixel phản hồi tức thì mỗi khi thay đổi trang phục, kèm chỉ số điểm màu sắc; nửa dưới là các thanh trượt theo tab (Dáng áo, Màu sắc, Phụ kiện, Sự kiện).
+Màn điện thoại xếp dọc: An và các nút xoay ở nửa trên bên trái, khung Lookbook thu nhỏ ở góc phải trên, thanh độ hài hòa và nút gợi ý dưới chân An, dock tủ đồ ở đáy màn hình. Màn ngang thấp (ví dụ 844×390) chỉ còn một dải hẹp nên An hiển thị nhỏ.
 
 ### Trạng thái đang tải (Loading)
-Xuất hiện khi người dùng bấm nút "Tạo Lookbook". Màn hình hiển thị thanh tiến độ trực quan để người dùng theo dõi, người mẫu do AI tạo hoàn toàn hư cấu (không dùng mặt người dùng). Cơ chế hiển thị tiến độ bất đồng bộ: ảnh nào sinh xong trước sẽ hiện lên khung trước, không cần đợi đủ cả 4 ảnh. Thời gian xử lý tối đa 45 giây.
+Khi bấm "Chụp Lookbook AI" hoặc "Gợi ý từ Gemini", nút chuyển thành "Đang hỏi Gemini…" (vô hiệu hóa) cho đến khi có kết quả. Yêu cầu tự hủy sau 50 giây (`AI_TIMEOUT_MS`). Đổi bộ đồ trong lúc chờ sẽ hủy yêu cầu Lookbook và quay về ảnh pixel.
 
 ### Trạng thái trống (Empty)
-Khi người dùng chuyển sang chế độ "So sánh" nhưng chưa lưu bộ đồ nào để đối chiếu, ô so sánh bên cạnh hiển thị hình bóng mờ của chiếc mắc áo cùng thông báo: "Chưa có bộ đồ thứ hai. Hãy phối thêm một bộ để so sánh nhé!".
+Chưa ghim bộ nào thì modal "Tùy chỉnh bộ phối" chỉ có nút "Ghim để so sánh"; sau khi ghim, bộ đã ghim hiện cạnh bên với nhãn "Bộ phối đã ghim" và nút đổi thành "Đóng so sánh". Tủ đồ chưa có bộ lưu thì mục "Bộ đã lưu" nhắc ghé Phòng phối đồ để lưu bộ đầu tiên.
 
 ### Trạng thái lỗi (Error)
-Xuất hiện khi người dùng chọn kết hợp các món đồ xung đột hiển thị (ví dụ: đội nón ba tầm cùng lúc với nón lá chóp). Hệ thống tự động bỏ chọn món đồ cũ, gắn món đồ mới và hiện thông báo ngắn trong 2 giây: "Đã đổi loại nón phù hợp".
+Mỗi vị trí phụ kiện (đầu, cổ, tay, chân) chỉ giữ một món: chọn món mới cùng vị trí sẽ thay món cũ. Áo hoặc phụ kiện chưa mở khóa không chọn được (hiện bóng tối và nhãn điều kiện mở khóa). Lưu bộ phối không hợp lệ thì hiện thông báo lý do.
 
 ### Trạng thái dự phòng khi AI lỗi (Fallback)
-Đối với tính năng "Tạo Lookbook":
-- Nếu mạng ngắt, API báo lỗi hoặc quá thời gian chờ (sau đúng 45 giây): Khung tạo ảnh thông báo: "Phòng chụp studio đang bận. Tiệm gửi bạn bản phác thảo pixel art để lưu kỷ niệm nhé!".
-- Hệ thống lập tức xuất ra một bức ảnh tổng hợp dạng thẻ bài Polaroid vẽ bằng pixel art thể hiện nhân vật cùng bảng thông tin các món đồ đã phối, kèm nút "Tải ảnh về máy". Người dùng vẫn có sản phẩm để khoe mà không bị đứt đoạn trải nghiệm.
-- Đối với gợi ý của mèo Nếp: Nếu API không trả về gợi ý thời tiết động, hệ thống sử dụng kho 15 bộ quy tắc có sẵn trong mã nguồn để mèo Nếp đưa ra 3 bộ đồ phù hợp nhất với sự kiện.
+- **Lookbook AI:** mạng ngắt, API lỗi hoặc quá 50 giây thì giữ nguyên 4 ô ảnh pixel kèm nhãn "dùng ảnh pixel"; người dùng vẫn lưu được bộ phối.
+- **Gợi ý từ Gemini:** khi AI không phản hồi, máy chủ trả bộ gợi ý dựng sẵn theo sự kiện (nếu có) và hiện nhãn ngoại tuyến; nếu không có gợi ý nào thì hiện thông báo ngắn.
 
 ## 4. Tiêu chí để coi là làm xong (Acceptance Criteria)
 
 - Đổi phom áo, màu sắc và phụ kiện trên nhân vật phản hồi ngay lập tức dưới 100 mili-giây.
-- Bộ lọc sự kiện cập nhật đúng danh sách đồ phù hợp.
+- Đổi sự kiện trong modal cập nhật độ hài hòa và lưu ý văn hóa theo sự kiện mới.
 - Thước đo màu sắc tính toán và hiển thị điểm số nhất quán theo công thức tương phản màu sắc.
 - Thông điệp nhắc nhở văn hóa hiển thị đúng khi vi phạm 5 quy tắc chuẩn mực đã định nghĩa.
 - Tính năng so sánh đặt được 2 bộ đồ cạnh nhau trên màn hình mà không vỡ khung.
-- Luôn có kết quả trả về khi bấm tạo Lookbook (ảnh chân thực nếu thành công, thẻ pixel nếu gặp lỗi).
+- Luôn có kết quả khi bấm "Chụp Lookbook AI" (4 ảnh AI nếu thành công, 4 ô ảnh pixel kèm nhãn ngoại tuyến nếu lỗi).

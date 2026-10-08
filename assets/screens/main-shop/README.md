@@ -44,7 +44,7 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
   pixel art, 800x500 pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing, dithering, wide panoramic view of an ancient Northern Vietnamese courtyard at golden dusk, red terracotta tiled yard with a circular floral center pattern, tranquil lotus pond on the left flank, traditional tiled roof workshops on left and right flanks, grand mossy arched brick gateway in center background, rustic white plaster wall with wooden bookshelf niche beside the gate. Soft sunset golden hour glow, warm amber lantern illumination. Upper area clear for top HUD bar, lower central area clear for floating action card. Pure environmental background without any characters, human figures, or baked text.
   ```
 
-Prompt bối cảnh chi tiết tham khảo tại `docs/07-game/prologue/setup.md` (phân cảnh `c0-s1-tiem-may-chieu`) và `docs/03-features/hub.md`.
+Prompt bối cảnh chi tiết lưu trong thư mục `_raw/` của screen này.
 
 ---
 
@@ -53,5 +53,5 @@ Prompt bối cảnh chi tiết tham khảo tại `docs/07-game/prologue/setup.md
 Đã tạo năm PNG bằng công cụ `image_gen` tích hợp. Hai nền giữ sân nhà hoàng hôn, ao sen bên trái, hai gian nhà, cổng vòm và kệ sách; không có nhân vật hay chữ. Nội dung HUD, nhãn điều hướng, mèo Nếp và thẻ hành động được giao diện phủ riêng lên cảnh.
 
 - Ảnh gốc và phiên bản chỉnh bố cục nằm trong [`_raw/`](./_raw/).
-- Toàn bộ prompt, nguồn tài liệu được lưu trong [`_raw/generation.json`](./_raw/generation.json).
+- Toàn bộ prompt và nguồn tài liệu được lưu trong thư mục `_raw/`.
 - [`asset-manifest.json`](./asset-manifest.json) ghi kích thước, bảng màu, kênh alpha và vùng cắt của từng ảnh.

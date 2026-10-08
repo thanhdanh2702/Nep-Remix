@@ -17,9 +17,9 @@ export const AI_MODELS = {
   /**
    * Model sinh ảnh (Image Generation)
    * Sử dụng để tạo 4 góc ảnh Lookbook studio chân thực
-   * Mặc định theo decisions.md mục 11: gemini-3.1-flash-image
+   * Chọn model image generation mặc định được hỗ trợ bởi @google/genai: gemini-3.1-flash-lite-image
    */
-  IMAGE_GENERATION_MODEL: 'gemini-3.1-flash-image',
+  IMAGE_GENERATION_MODEL: 'gemini-3.1-flash-lite-image',
 
   /**
    * Thời gian chờ tối đa cho tiến trình sinh ảnh Lookbook (mili-giây)

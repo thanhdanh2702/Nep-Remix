@@ -8,51 +8,22 @@ Sảnh tiệm may là không gian trung tâm của ứng dụng, đóng vai trò
 
 ### Bố cục ngang (chính)
 - **Tỷ lệ hiển thị:** Nền gốc `garden-user--landscape.png` kích thước 1586×992, hiển thị theo kích thước thật với smoothing (`image-rendering: auto`) để fit/cover viewport. Thế giới logic 1000×625 px (tỷ lệ ~8:5).
-- **Cảnh nền sân nhà:** Khung cảnh sân gạch đỏ cổ truyền lúc hoàng hôn vàng ấm:
-  - Bên trái: Dãy nhà ngói cổ dẫn vào **"Phòng phối đồ"** (`studio`).
-  - Bên phải: Dãy nhà ngói cổ đối xứng dẫn vào **"Tủ đồ"** (`closet`).
-  - Ở giữa phía sau: Cổng vòm gạch cổ dẫn vào **"Cốt truyện"** (`journey`) kèm hiệu ứng vầng sáng `door-entrance-glow.png`.
-  - Bên trái cổng vòm sát tường vôi trắng: Kệ sách gỗ dẫn vào **"Bảo tàng"** (`museum`).
-  - Góc sân: Bậc thềm gạch cạnh ao sen là nơi chú mèo Nếp nằm sưởi nắng.
-- **Thanh HUD:** Thanh `ui-hud--3slice.png` ghim cố định mép trên cùng (cách mép 8px, rộng 760–784 px, cao 40 px), hiển thị logo tiệm bên trái, số dư Sen Ngọc và nút Cài đặt bên phải.
-- **Thẻ hành động:** Khung thẻ `action-card-frame--9slice.png` hiển thị nổi ở góc dưới bên trái hoặc trung tâm sân gạch với hai nút: "Tạo nhân vật từ ảnh" và "Dạo quanh sân nhà".
+- **Cảnh nền sân nhà:** Sân gạch đỏ nhìn từ trên cao lúc hoàng hôn, vòng hoa sen giữa sân, ao sen góc trái, các dãy nhà ngói phủ hoa (mèo Nếp đã vẽ sẵn trong ảnh). Bốn biển khu vực (`area-sign-frame.png`) gắn trên mái, đi theo cùng phép biến đổi camera với nền:
+  - Nhà bên trái: **"Phòng phối đồ"** (`studio`).
+  - Cổng giữa phía sau: **"Cốt truyện"** (`journey`).
+  - Nhà bên phải: **"Tủ đồ"** (`closet`).
+  - Nhà góc phải phía trước: **"Bảo tàng"** (`museum`).
+- **An:** đứng giữa vòng hoa sen, cao khoảng 15% chiều cao nền (`HUMAN_HEIGHT.hub`), đi lại bằng WASD/phím mũi tên; đến gần biển thì bấm E hoặc nút "Tương tác".
+- **HUD:** thanh tiêu đề trên cùng (logo, Màn chờ, Về Nếp, Cách chơi); ví Sen Ngọc (`currency-hud.png`) và nút Cài đặt (`settings-button.png`) ở góc phải trên. Các ảnh này là bản vẽ hi-res, hiển thị mượt (`art-hires`).
+- **Thẻ chào lần đầu:** khung `action-card-frame--9slice.png` với tiêu đề "Bắt đầu câu chuyện của bạn" và hai nút "Chọn diện mạo", "Dạo quanh sân nhà".
+- Các ảnh `background--landscape/portrait` và `door-entrance-glow` đã gen nhưng **chưa dùng**.
 
 ### Bố cục dọc (phụ)
-Khung cảnh được thiết kế theo tỉ lệ ngang 16:9 chuẩn (với bố cục chuyên biệt cho màn hình dọc), mô phỏng khoảng sân gạch đỏ truyền thống dưới ánh chiều hoàng hôn, bao gồm đầy đủ các thành phần trực quan:
-
-- **Góc trên bên trái:** Logo "Tiệm May Nếp" với dòng phụ "Việt phục Remix", được lồng trong khung hoa văn pixel cách điệu cánh hoa sen hồng nở rộ.
-- **Phía trên ở giữa:** Dải lụa khẩu hiệu mềm mại mang thông điệp chính thức của tiệm: *"Một tà áo. Muôn câu chuyện."*
-- **Cụm HUD góc trên bên phải:** Đặt trên nền tím mận (`plum-900`), hiển thị số Sen Ngọc tích lũy (kèm biểu tượng ngọc hoa sen hồng lấp lánh, ví dụ: `1.250`), nút bật/tắt âm thanh nền pixel art, và khung tròn chân dung avatar thu nhỏ của người chơi.
-- **Không gian sân nhà trung tâm:**
-  - Nền sân lát gạch đỏ ấm áp, chính giữa sân là vòng tròn hoa văn đá cổ kính.
-  - Phía bên trái là hồ sen nở rộ với các tán lá xanh mướt, đài sen hồng và đèn đá cổ soi bóng nước.
-  - Phía sau là bức tường hoa leo, ở chính giữa là cổng vòm gạch cổ dẫn lối vào khu vườn hoa rực rỡ nắng chiều.
-  - Hai bên sân là hai dãy nhà ngói cổ truyền mái cong ấm cúng với đèn lồng đỏ treo cao, bên trong trưng bày bàn ghế may, gương soi, sào treo y phục và vải vóc rực rỡ.
-- **Bốn biển gỗ điều hướng tương tác (Navigation Signboards):**
-  - **Biển "Phòng phối đồ"** (`id: studio`): Treo trước dãy nhà ngói bên trái; dẫn vào không gian phối đồ, chọn màu sắc vải áo, hoa văn và phụ kiện.
-  - **Biển "Tủ đồ"** (`id: closet`): Treo trước dãy nhà ngói bên phải; dẫn vào phân khu tích hợp Tủ đồ cá nhân, Cửa hàng phụ kiện và Xưởng may số hóa.
-  - **Biển "Cốt truyện"** (`id: journey`): Đặt ngay trên vòm cổng hoa ở giữa sân; dẫn vào game giải đố Hành trình ký ức và khám phá chiếc rương cũ trên gác xép.
-  - **Biển "Bảo tàng"** (`id: museum`): Kệ sách gỗ gắn biển đặt sát bức tường trắng bên trái cổng vòm; dẫn vào kho thẻ tư liệu văn hóa và lịch sử y phục người Kinh.
-- **Nhân vật đại diện:** Đứng trang nhã ngay trên tâm vòng hoa văn tròn giữa sân, mặc định diện chiếc áo dài trắng truyền thống điểm xuyết hoa sen thanh lịch.
-- **Mèo Nếp:** Chú mèo mướp lông vàng trắng nằm ngủ cuộn tròn lười biếng trên bậc thềm gạch bên dãy nhà phải, cạnh giá treo áo dài và khóm hoa hồng.
-- **Thẻ "Bắt đầu câu chuyện của bạn" (ở giữa phía dưới):** Khung viền pixel ba lớp viền hoa sen, hiển thị ảnh đại diện nhân vật, tiêu đề *"Bắt đầu câu chuyện của bạn"*, phụ đề *"Từ ảnh của bạn đến nhân vật pixel và lookbook 4 góc."*, nút hành động chính màu hồng sen *"Tạo nhân vật từ ảnh ▶"* và liên kết văn bản phụ bên dưới *"Dạo quanh sân nhà ▶"*.
-- **Thẻ chương cốt truyện (góc dưới bên phải):** Bảng thẻ giấy lụa cuộn viền hoa sen hiển thị phân đoạn đang chơi dở (với người dùng mới, thẻ hiển thị: *"CHƯƠNG 01 - Mở đầu: Căn gác thu 2026"*, kèm biểu tượng hoa cài ngọc và mức thưởng `+50 Sen Ngọc`; các chương tiếp theo hiển thị mức thưởng `+100 Sen Ngọc`).
-
-## 3. Các bước người dùng thao tác
-
-- **Bước 1:** Khi mở ứng dụng, người dùng vào thẳng không gian Sân nhà hoàng hôn mà không bị chặn bởi màn hình giới thiệu độc lập.
-- **Bước 2:** Người dùng quan sát toàn cảnh sân tiệm và có thể tương tác với các điểm chạm:
-  - Bấm vào biển gỗ **"Phòng phối đồ"** (hoặc gian nhà bên trái): Mở phòng thử đồ và sáng tạo trang phục.
-  - Bấm vào biển gỗ **"Tủ đồ"** (hoặc gian nhà bên phải): Mở ngăn tủ cá nhân, cửa hàng phụ kiện và xưởng may số hóa.
-  - Bấm vào biển gỗ **"Cốt truyện"** (hoặc cổng vòm ở giữa): Vào game giải đố hành trình tìm hiểu quá khứ chiếc rương cũ.
-  - Bấm vào biển gỗ **"Bảo tàng"** (hoặc kệ sách gỗ bên tường): Mở kho thẻ bài văn hóa y phục.
-- **Bước 3:** Tại thẻ "Bắt đầu câu chuyện của bạn" ở cạnh dưới:
-  - Chọn nút *"Tạo nhân vật từ ảnh"* để mở giao diện tải ảnh selfie hoặc chọn mẫu nhân vật theo ý muốn.
-  - Chọn *"Dạo quanh sân nhà"* để lập tức tự do khám phá sảnh với nhân vật mẫu áo dài trắng mặc định.
-- **Bước 4:** Chạm vào thẻ chương góc dưới phải để tiếp tục ngay màn chơi dang dở và thu thập Sen Ngọc thưởng.
-- **Bước 5:** Chạm vào chú mèo Nếp trên bậc thềm để lắng nghe câu thoại chào vui vẻ hoặc lời gợi ý thời tiết trong ngày.
-
-## 4. Các trạng thái màn hình
+Màn điện thoại dùng cùng nền `garden-user--landscape.png`, camera bám theo An và cắt bớt hai bên:
+- **Trên cùng:** thanh tiêu đề (logo, nút menu ☰); bên dưới là ví Sen Ngọc và nút cài đặt.
+- **Bốn nút khu vực:** "Phòng phối đồ", "Tủ đồ", "Bảo tàng", "Cốt truyện" xếp lưới 2×2 ở đầu vùng chơi (khung `area-sign-frame.png`), không gắn trên mái như màn ngang.
+- **Giữa:** sân gạch và An (cao khoảng 15% chiều cao nền).
+- **Đáy màn hình:** bàn phím ảo Lên/Trái/Xuống/Phải và nút "E · Tương tác".
 
 ### Trạng thái bình thường
 Toàn bộ khung cảnh sân nhà hoàng hôn hiển thị chi tiết theo phong cách pixel art sắc nét. Nhân vật đại diện đứng giữa sân, mèo Nếp khẽ vẫy đuôi, ánh đèn lồng tỏa sáng nhẹ. Thanh HUD phía trên hiển thị đầy đủ số Sen Ngọc tích lũy, nút âm thanh và ảnh avatar.

@@ -1,6 +1,6 @@
 # Sân tiệm từ trên cao
 
-Tài nguyên dùng trong game: `garden-overview--landscape.png`.
+Tài nguyên: Chưa dùng. Tệp nháp được lưu ở `_raw/garden-overview--landscape-unused.png`.
 
 Tạo bằng công cụ ImageGen tích hợp. Bản cuối giữ sân gạch rộng, ao sen nhỏ ở mép trái và thêm một khu bảo tàng áo dài riêng cạnh ao. Biển khu vực và nhân vật là lớp tương tác trong game, không nằm trong ảnh nền. Nền cũ được giữ nguyên.
 

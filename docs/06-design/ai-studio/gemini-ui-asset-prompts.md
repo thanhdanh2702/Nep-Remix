@@ -19,7 +19,7 @@ Thứ tự ưu tiên (thay dần, không chặn các phase UI khác):
 - **Phong cách:** pixel art 2D sắc cạnh, nhân vật chibi cách điệu (đầu : thân khoảng 1:2.5 đến 1:3), viền cứng, không glassmorphism, không neon, không 3D bóng.
 - **Chốt kích thước ảnh gen:** xin ảnh vuông hoặc dọc, chủ thể chiếm ≥ 70% khung, chừa lề nền xanh đều 4 phía để chroma-key không cắt mép.
 
-Khối "negative" dán vào cuối mọi prompt (rút gọn từ `docs/game-design/story/asset-pipeline.md` §5 ở repo gốc):
+Khối "negative" dán vào cuối mọi prompt (rút gọn từ lời khuyến cáo chung):
 
 ```
 Avoid: photorealistic, 3D render, glow, bloom, blur, soft gradient shading, painterly, text, letters, calligraphy, watermark, signature, logo, Chinese qipao, Korean hanbok, Japanese kimono, modern objects, shadows on the background.
@@ -27,7 +27,7 @@ Avoid: photorealistic, 3D render, glow, bloom, blur, soft gradient shading, pain
 
 ## 2. Chuẩn bị ảnh tham chiếu (làm một lần)
 
-Mục tiêu: đưa cho Gemini ảnh An (đứng thẳng, nhìn thẳng) và NPC để giữ đúng tỷ lệ. Chạy từ thư mục `Nep-Remix` (Pillow đã cài; `artifacts/` đã nằm trong `.gitignore`):
+Mục tiêu: đưa cho Gemini ảnh An (đứng thẳng, nhìn thẳng) để giữ đúng tỷ lệ. Chạy từ thư mục `Nep-Remix` (Pillow đã cài; `artifacts/` đã nằm trong `.gitignore`):
 
 ```python
 # python - <<'E' ... E  (hoặc lưu thành file tạm ngoài repo)
@@ -42,9 +42,9 @@ for name in layers:
     cell.alpha_composite(Image.open(root / f'assets/characters/an/{name}.png').convert('RGBA').crop((0, 0, 176, 416)))
 bg = Image.new('RGBA', cell.size, '#00FF00'); bg.alpha_composite(cell)
 bg.resize((704, 1664), Image.NEAREST).convert('RGB').save(out / 'an-ref-front.png')
-
-# (Ghi chú: NPC file view-front đã xóa; dùng tham chiếu ghép lại từ layer An hoặc ảnh QA nếu có)
 ```
+
+Ghi chú: ảnh tham chiếu được tạo tạm thời trong thư mục `artifacts/ai-ref/` cho mục đích input của AI Studio, không commit.
 
 Ghi chú: sheet An là 1408×4576 = 8 cột × 11 hàng, ô 176×416, chân neo tại (88, 400). Lớp áo thật là `outfit_main.png`; ở ô front idle, vùng áo chiếm khoảng x 50-139, y 127-377 (cao 250 px). Con số này dùng ở bước hậu xử lý (mục 5).
 
@@ -61,7 +61,7 @@ Ghi chú: sheet An là 1408×4576 = 8 cột × 11 hàng, ô 176×416, chân neo 
 
 Mỗi prompt có bản tiếng Anh (dán vào model) và phần giải thích tiếng Việt. Thay `{...}` theo từng áo.
 
-### 4.1. Áo hero trên An (kèm `an-ref-front.png`)
+### 4.1. Áo hero trên An (kèm ảnh tham chiếu An)
 
 Mục tiêu: **chỉ lớp áo**, cùng tỷ lệ, tư thế đứng thẳng, nền xanh, để ghép vào dải spec An (528×416, ô front).
 
@@ -144,7 +144,7 @@ Quy ước đầu ra:
 
 | Asset | Đường dẫn |
 | :--- | :--- |
-| Áo hero trên An | `assets/garments/<id>/<id>--an-<view>.png`, `<view>` ∈ `front`, `left`, `back` (vd. `assets/garments/ao-tu-than/ao-tu-than--an-front.png`) |
+| Áo hero trên An | `assets/garments/<id>/<id>--an-<view>.png`, `<view>` ∈ {`front`, `left`, `back`} *(ví dụ: path pattern cho ao-tu-than)* |
 | Chân dung NPC | `assets/characters/<npc-id>/portrait.png` |
 | Nền dọc | `assets/areas/<tên>-vertical.png` |
 | Ảnh thô (không commit) | `artifacts/ai-raw/raw-<id>-<view>.png` |
@@ -153,11 +153,11 @@ Quy ước đầu ra:
 
 ## 7. Checklist văn hóa (bắt buộc trước khi dùng ảnh)
 
-Nguồn: `docs/04-culture/README.md`, `docs/culture-content-guidelines.md` (repo gốc), design-system §1 và §2.4. Lưu ý: README văn hóa liệt kê `garment-taxonomy.md`, `color-and-etiquette.md`, `differentiation-guide.md`, nhưng thư mục `docs/04-culture/` trong `Nep-Remix` hiện chỉ có `README.md`; hãy đối chiếu bản đầy đủ khi có.
+Nguồn: `docs/04-culture/README.md`, design-system §1 và §2.4. Lưu ý: `docs/04-culture/` trong `Nep-Remix` hiện có README.md; các tài liệu con (phân loại phom dáng, màu sắc và nghi lễ, hướng dẫn phân biệt) hiện chưa hoàn thành *(dự kiến)*; hãy dựa vào design-system và README khi triển khai.
 
 - [ ] Phom đúng loại: áo tứ thân, ngũ thân tay chẽn, tấc tay thụng, tân thời Lemur, cổ đứng không vai bồng (cuối 1930s), đúng tên trong mô tả `assets/garments/<id>/README.md`.
 - [ ] Không lai sườn xám (qipao), hanbok, kimono, hanfu; cổ áo, nẹp, khuy, tà áo là của người Kinh.
-- [ ] Màu vải thuộc bảng truyền thống §2.4 (hoặc biến thể có nguồn). Màu điều/son (`#B83A24`) theo design-system §2.4 là màu cưới hỏi, lễ hội; đối chiếu `color-and-etiquette.md` khi đặt áo vào bối cảnh nghi lễ.
+- [ ] Màu vải thuộc bảng truyền thống design-system §2.4 (hoặc biến thể có nguồn). Màu điều/son (`#B83A24`) là màu cưới hỏi, lễ hội.
 - [ ] Không có chữ đọc được, nhãn hiệu thật, tên cửa hiệu thật, nhân vật chính trị, cờ, khẩu hiệu.
 - [ ] Không có chi tiết hiện đại lạc thời (khóa kéo, nhãn mác, vải in kỹ thuật số) trong bối cảnh cổ.
 - [ ] Hoa văn, họa tiết là Việt (ví dụ sen, trúc, cúc): không tự "bịa" ý nghĩa; nếu nêu ý nghĩa thì có nguồn trong thẻ Bảo tàng.

@@ -9,7 +9,7 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
 | Tên tệp | Loại asset | Trạng thái | Mô tả |
 | :--- | :--- | :---: | :--- |
 | `sewing-machine--landscape.png` | screen-background | Đã gen, chưa dùng trong game | Nền xưởng may số hóa ngang toàn cảnh; không người, không chữ |
-| `sewing-machine--portrait.png` | screen-background | ✅ đã vào app | Nền bàn máy may dọc; không người, không chữ |
+| `sewing-machine--portrait.png` | screen-background | Đã gen, chưa dùng trong game | Nền bàn máy may dọc; không người, không chữ |
 
 ---
 
@@ -41,5 +41,4 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
   pixel art, 800x500 pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing, dithering, panoramic workshop interior blending traditional Vietnamese tailoring craft with modern digital atelier aesthetics. Left side features a wide polished wooden workbench with an antique cast-iron sewing machine and cutting mat, leaving a clear open area for the image upload dropzone. Right side features digital drafting monitors, blueprint scrolls, and neatly labeled fabric drawers, leaving ample open space for AI analysis result panels. Warm amber ambient workshop light with subtle cyan digital accents. Pure environmental background without any characters, human figures, or baked text.
   ```
 
-Prompt hệ thống và schema bóc tách ảnh áo ngoài đời xem tại `docs/03-features/closet-and-workshop.md`.
-Hướng dẫn đối chiếu sườn xám và hanbok xem tại `docs/04-culture/differentiation-guide.md`.
+Hệ thống bóc tách ảnh áo được tích hợp vào mã nguồn; hướng dẫn về khác biệt cốt lõi giữa áo dài Việt Nam và trang phục nước khác xem ở `assets/README.md` mục 9.2.

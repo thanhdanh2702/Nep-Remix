@@ -17,6 +17,7 @@
     "test:c2:geometry": "playwright test tests/browser/c2-geometry.spec.ts",
     "test:c2:acceptance": "playwright test tests/browser/c2-geometry.spec.ts tests/browser/c2-playtest.spec.ts tests/browser/chapter1.spec.ts tests/browser/sprint01-integration.spec.ts",
     "test:c2:repro": "playwright test --config=playwright.repro.config.ts",
+    "test:docs": "node scripts/check-docs.mjs",
     "test:browser": "playwright test",
     "test:assets": "node scripts/check-built-assets.mjs",
     "audit:assets": "python scripts/audit-assets.py",

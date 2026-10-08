@@ -17,7 +17,7 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
 
 ### Bố cục ngang (Bố cục chính)
 - **Cảnh nền:** Nền `closet-shelf--landscape.png` thể hiện không gian phòng phục trang bằng gỗ lim ấm áp, ánh đèn lồng dịu nhẹ và gương soi toàn thân.
-- **Nửa bên trái:** Bục đứng nhân vật mặc thử Paperdoll.
+- **Nửa bên trái:** Bục đứng nhân vật An mặc thử.
   - Hiển thị ngay diện mạo nhân vật khi người chơi bấm chọn bất kỳ áo dài hoặc phụ kiện nào trong tủ.
   - Phía dưới có nút **"Mặc bộ này ra sảnh"** và nút **"Chuyển sang Studio tạo dáng"**.
 - **Nửa bên phải:** Bảng tủ đồ:
@@ -41,4 +41,4 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
   pixel art, 800x500 pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing, dithering, panoramic interior of an elegant heritage Vietnamese dressing room and wardrobe chamber. Left area features a polished teakwood dressing space with a full-length wooden mirror frame and soft warm lantern glow, leaving central space clear for player mannequin. Right area features beautifully carved wooden cabinet shelves and textile drawers, leaving a broad open zone for inventory grid UI panels. Rich lacquer wood, silk fabric rolls on upper shelves. Pure environmental background without any characters, human figures, or baked text.
   ```
 
-Đặc tả danh mục phân loại tủ đồ và giá Sen Ngọc phụ kiện xem tại `docs/03-features/closet-and-workshop.md` và `docs/05-tech/architecture.md`.
+Prompt tạo ảnh chi tiết lưu trong thư mục _raw/.

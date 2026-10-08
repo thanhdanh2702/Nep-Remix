@@ -9,7 +9,7 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
 | Tên tệp | Loại asset | Trạng thái | Mô tả |
 | :--- | :--- | :---: | :--- |
 | `bookshelf-pink--landscape.png` | screen-background | ✅ đã vào app | Nền bảo tàng kệ sách ngang; kệ 12 sổ bên trái, khoảng trống cho thẻ đọc bên phải |
-| `bookshelf-view--landscape.png` | screen-background | ✅ đã vào app | Nền bảo tàng kệ sách ngang (phiên bản 2) |
+| `bookshelf-view--landscape.png` | screen-background | Đã gen, chưa dùng trong game | Nền bảo tàng kệ sách ngang (phiên bản 2) |
 | `bookshelf-view--portrait.png` | screen-background | 🟨 nháp AI | Kệ 12 sổ bố cục dọc, vùng phía trên dành cho HUD/dải lọc |
 | `card-modal--9slice.png` | ui-frame-9slice | 🟨 nháp AI | Viền gỗ lim, mép giấy dó và sen ở góc; nền giấy và nội dung do UI dựng |
 | `museum-filter-bar--3slice.png` | ui-bar-3slice | 🟨 nháp AI | Dải lọc nền giấy dó, hai đầu nụ sen; thân lặp ngang |
@@ -20,7 +20,7 @@ Màn hình áp dụng hai bố cục: **bố cục ngang là bố cục chính**
 Bộ hình được tạo ngày 01/10/2026 bằng công cụ `image_gen` tích hợp, tham chiếu phong cách của nền Studio. Nét Việt thể hiện qua khung nhà và kệ gỗ lim, mành tre, nền gạch đất nung, tường vôi, sổ đóng chỉ bọc lụa, giấy dó, gốm men lam và hoa sen. Ánh sáng ấm, bảng màu cổ kính giữ sự liên tục với các phân khu đã có.
 
 - PNG chuẩn hóa nằm ngay trong thư mục này; ảnh gốc nằm trong [`_raw/`](./_raw/).
-- Toàn bộ prompt và các quyết định xử lý đặc tả nằm trong [`_raw/generation.json`](./_raw/generation.json).
+- Toàn bộ prompt và các quyết định xử lý đặc tả nằm trong thư mục `_raw/`.
 - [`Ảnh xem trước`](./_raw/preview.png) hiển thị hai nền, khung đọc kéo giãn, thanh lọc kéo dài và dấu son phóng lớn.
 - [`asset-manifest.json`](./asset-manifest.json) ghi nguồn ảnh, kích thước, số màu RGBA, alpha, vùng slice và SHA-256.
 - Khi hiển thị, dùng nearest-neighbor / `image-rendering: pixelated`, giữ góc và hai đầu ở kích thước nguyên. Các dải giữa đã được làm liền mạch để lặp; tâm khung đọc trong suốt.
@@ -66,5 +66,4 @@ Bỏ `-VerifyOnly` để chuẩn hóa lại từ ảnh gốc. Nếu PNG đích �
   pixel art, 800x500 pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing, dithering, wide interior view of a traditional Vietnamese archival study and heritage museum. Left half features a grand antique dark timber bookshelf with neatly partitioned compartments for vintage notebooks, scrolls, and ceramic scholarly ornaments. Right half features an open wooden scholar reading desk with soft ambient lantern light and warm sunbeams, leaving a large open area for the reading card UI panels. Muted heritage tones, aged wood grain texture, tranquil intellectual atmosphere. Pure environmental background without any characters, human figures, or baked text.
   ```
 
-Nội dung 12 thẻ văn hóa bảo tàng xem tại `docs/04-culture/culture-cards.md`.
-Thư mục tài liệu tham khảo chính sử xem tại `docs/04-culture/bibliography.md`.
+Nội dung 12 thẻ văn hóa bảo tàng và tài liệu tham khảo được tích hợp vào ứng dụng.

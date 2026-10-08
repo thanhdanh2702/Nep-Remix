@@ -1,6 +1,6 @@
-# Hệ Thống Khung Búp Bê Giấy (paperdoll) — BÃIWBỎ
+# Hệ Thống 13 Lớp An — BÃIBỎ (Paperdoll Legacy)
 
-**Trạng thái:** Bãi bỏ kể từ 05/10/2026. Hệ thống búp bê giấy cũ (paperdoll-layer 64×96) được thay thế bằng 13 lớp chính thức của nhân vật An (176×416), xem `assets/README.md` mục 7.1.
+**Trạng thái:** Bãi bỏ kể từ 05/10/2026. Hệ thống búp bê giấy cũ (64×96) được thay thế bằng 13 lớp chính thức của nhân vật An (176×416), xem `assets/README.md` mục 7.1.
 
 ## Tệp Còn Lại
 
