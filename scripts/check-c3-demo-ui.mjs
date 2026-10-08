@@ -1,0 +1,38 @@
+import assert from 'node:assert/strict';
+import { createServer } from 'vite';
+import { transformSync } from 'esbuild';
+import { chromium } from '@playwright/test';
+const code=`import React,{useState} from 'react';
+import{createRoot}from'react-dom/client';
+import{InventoryCombine}from'/src/game/InventoryCombine.tsx';
+import{DocumentViewer,C3_DOCUMENTS}from'/src/game/DocumentViewer.tsx';
+import{content}from'/src/game/store.ts';
+import{createInitialState}from'/src/core/index.ts';
+function Probe(){const [mode,setMode]=useState('journal'),[open,setOpen]=useState(true),[acks,setAcks]=useState(0);const s=createInitialState(content);s.inventory.itemIds=['bien_nhan_tien_thay_boi'];s.journey.c3.completedDialogueIds=['d-c3-mua-chuoc'];return <><p>DIAGNOSTIC COMPONENT FIXTURE — NOT GAMEPLAY ACCEPTANCE</p><p data-testid="acks">{acks}</p><button onClick={()=>{setMode('active');setOpen(true)}}>Active document probe</button>{open&&(mode==='journal'?<InventoryCombine state={s} initialItem="" send={()=>{throw Error('Unexpected command')}} notify={()=>{}} onClose={()=>setOpen(false)}/>:<DocumentViewer document={C3_DOCUMENTS['doc-c3-bien-nhan']} onAdvance={()=>{setAcks(x=>x+1);setOpen(false)}}/>)}</>};createRoot(document.getElementById('root')).render(<Probe/>);`;
+const srv=await createServer({root:process.cwd(),configFile:false,server:{host:'127.0.0.1',port:0,strictPort:true},plugins:[{name:'local-reader-review',resolveId(id){if(id==='/__c3_review.tsx')return '\0c3-reader-review.tsx'},load(id){if(id==='\0c3-reader-review.tsx')return transformSync(code,{loader:'tsx',jsx:'automatic',format:'esm'}).code},configureServer(s){s.middlewares.use((req,res,next)=>{if(req.url==='/__reader_review'){res.setHeader('Content-Type','text/html');res.end('<html><body><div id="root"></div><script type="module" src="/__c3_review.tsx"></script></body></html>')}else next()})}}]});
+await srv.listen();
+const browser=await chromium.launch({channel:'chrome',headless:true});
+try {
+ const page=await browser.newPage();
+ const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(srv.resolvedUrls.local[0]+'__reader_review');
+ await page.getByRole('button',{name:/^Đọc văn bản /}).click();
+ assert.equal(await page.getByRole('dialog').count(),1,'Only the document modal may be active');
+ await page.keyboard.press('Tab');
+ assert.ok(await page.locator('.document-viewer-modal').evaluate(el=>el.contains(document.activeElement)),'Tab stays inside viewer');
+ await page.keyboard.press('Shift+Tab');
+ assert.ok(await page.locator('.document-viewer-modal').evaluate(el=>el.contains(document.activeElement)),'Shift+Tab stays inside viewer');
+ await page.keyboard.press('Escape');
+ await page.getByRole('dialog',{name:'Túi đồ & Sổ manh mối',exact:true}).waitFor();
+ await page.waitForTimeout(100);
+ assert.ok(await page.getByRole('button',{name:/^Đọc văn bản /}).evaluate(el=>el===document.activeElement),'Focus returns to document trigger');
+ await page.getByRole('dialog').getByRole('button',{name:'Đóng',exact:true}).click();
+ await page.getByRole('button',{name:'Active document probe',exact:true}).click();
+ await page.keyboard.press('Escape');
+ assert.equal(await page.getByTestId('acks').textContent(),'0','Escape must not acknowledge an unread document');
+ assert.equal(await page.getByRole('dialog').count(),1,'Unread document remains recoverable');
+ await page.getByRole('button',{name:'Xác nhận đã đọc',exact:true}).click();
+ assert.equal(await page.getByTestId('acks').textContent(),'1','Explicit acknowledgement advances exactly once');
+ assert.deepEqual(errors,[]);
+ console.log('PASS: mounted document reader, journal return, focus trap and explicit acknowledgement (fixture, not gameplay acceptance)');
+} finally {await browser.close();await srv.close();}
