@@ -33,7 +33,7 @@
     { "id": "front", "labelVi": "Chính diện", "prompt": "Full-length shot at eye level with a 50mm lens. Standing naturally and facing the camera, hands relaxed." },
     { "id": "turn", "labelVi": "Ngoảnh lại", "prompt": "Three-quarter view with an 85mm lens. Walking slightly away, then glancing back over the shoulder toward the camera, hair catching the sunlight." },
     { "id": "back", "labelVi": "Sau lưng", "prompt": "Full-length shot from behind. Standing and looking at the flowers, showing the back panel of the áo dài and the hair; holding a small bouquet of white flowers." },
-    { "id": "detail", "labelVi": "Cận cảnh", "prompt": "Waist-up shot with an 85mm lens, slight three-quarter turn, gaze off-camera; the collar shape and the long sleeves are clearly visible." }
+    { "id": "detail", "labelVi": "Cận cảnh", "prompt": "Close-up from the chest up with an 85mm lens, the garment filling most of the frame, slight three-quarter turn, gaze off-camera; the collar shape, the fastening and the sleeves are sharp and clearly visible." }
   ],
   "garments": {
     "ao-tu-than": "A traditional northern Vietnamese four-panel áo tứ thân dress with an open neckline that shows an inner silk halter (yếm) and long sleeves. The two front panels hang open and are knotted together at the waist with a silk sash, so the knot alone closes the front. It falls to the knee over a long, full, dark skirt.",
