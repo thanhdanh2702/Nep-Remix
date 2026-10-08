@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type FocusEvent, type PointerEvent } from 'react';
 import './room-scene.css';
 import type { GameState } from '../core';
+import { isGateSatisfied } from '../core/commands/journey/gate';
 import type { ExitArrow, Interactable } from '../content/schema';
 import { AN, areaAsset, areaFolder, assetInfo, assetRegistry, chapterFolder, loadImage } from './assets';
 import { content } from './store';
@@ -111,6 +112,8 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const boxes = boxesFor(chapterId, areaId);
     const stage = { x: 0, y: 0, w: box.w, h: box.h };
     return area.interactables
+      // C3 evidence actions share an art anchor; unavailable actions must not intercept pickup.
+      .filter(i => chapterId !== 'c3' || isGateSatisfied(state, i.when))
       // Same filter as matchesSide in core (src/core/commands/journey/interact-command.ts:18).
       .filter(i => i.side === 'ca_hai' || `mat_${i.side}` === progress.side)
       // Same skips as nearestInteractable: picked items, solved puzzles and puzzles still waiting on a prerequisite have no hotspot.
@@ -127,13 +130,15 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
           : a.type === 'puzzle' ? progress.solvedPuzzleIds.includes(a.targetId) : progress.completedDialogueIds.includes(a.targetId);
         return { i, label: labelFor(i, chapter), used, hit: hitOf(r, stage), world: boxes[i.id], rect: r, area: r.w * r.h };
       })
-      .sort((a, b) => b.area - a.area) // smaller rects later in the DOM, so they sit on top
+      .sort((a, b) => chapterId === 'c3' && a.used !== b.used
+        ? Number(b.used) - Number(a.used) // pending actions sit above reread regions sharing the art
+        : b.area - a.area) // smaller rects later in the DOM, so they sit on top
       .map((s, _, all) => {
         const rect = { x: s.rect.x * stage.w, y: s.rect.y * stage.h, w: s.rect.w * stage.w, h: s.rect.h * stage.h };
         const centres = all.filter(o => o.area > s.area).map(o => ({ x: (o.rect.x + o.rect.w / 2) * stage.w, y: (o.rect.y + o.rect.h / 2) * stage.h }));
         return { i: s.i, label: s.label, used: s.used, world: s.world, hit: limitHit(s.hit, rect, centres) };
       });
-  }, [area, chapterId, areaId, box.w, box.h, progress.side, progress.solvedPuzzleIds, progress.completedDialogueIds, state.inventory.itemIds, chapter]);
+  }, [area, chapterId, areaId, box.w, box.h, progress.side, progress.solvedPuzzleIds, progress.completedDialogueIds, state.inventory.itemIds, chapter, state]);
   const staticNpcs = useMemo(
     () => chapterId === 'c3'
       ? c3RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world)

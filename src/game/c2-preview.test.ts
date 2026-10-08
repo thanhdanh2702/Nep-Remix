@@ -1,11 +1,18 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { loadContent } from '../content';
+import { createInitialState } from '../core';
+import { isChapterPlayable } from './chapter-availability';
 
-test('C2 playtest is available through normal chapter selection; C3–C5 stay unavailable', () => {
+test('C2 remains available through normal selection; C3 requires completed C2 and C4/C5 stay unavailable', () => {
   const source = readFileSync(new URL('./Game.tsx', import.meta.url), 'utf8');
-  const declaration = source.match(/const PLAYABLE:ChapterId\[\]=\[([^\]]+)\]/);
-  assert.ok(declaration, 'chapter availability declaration must exist');
-  const chapters = [...declaration[1].matchAll(/'([^']+)'/g)].map(match => match[1]);
-  assert.deepEqual(chapters, ['prologue', 'c1', 'c2']);
+  assert.match(source, /if\(!isChapterPlayable\(id, state\)\)/);
+  assert.match(source, /state\.journey\[id\]\.status==='locked'/);
+  const state = createInitialState(loadContent());
+  assert.equal(isChapterPlayable('c2', state), true);
+  assert.equal(isChapterPlayable('c3', state), false);
+  state.journey.c2.status = 'completed';
+  assert.equal(isChapterPlayable('c3', state), true);
+  for (const id of ['c4', 'c5'] as const) assert.equal(isChapterPlayable(id, state), false);
 });

@@ -5,6 +5,7 @@ import './hub.css';
 import './stage-embed.css';
 import { type Command, type GameState, type StudioDraft } from '../core';
 import { content, execute, freshTree, restoreGame, saveGame } from './store';
+import { isChapterPlayable } from './chapter-availability';
 import { asset, itemAsset, brandingAssets } from './assets';
 import { Scene, type Destination } from './Scene';
 import { RoomScene } from './RoomScene';
@@ -34,7 +35,6 @@ function Coins({ value }: { value: number }) {
   return <span ref={ref}>{value.toLocaleString('vi-VN')}</span>;
 }
 type Panel = 'journal' | 'settings' | 'restart' | 'ending' | null;
-const PLAYABLE:ChapterId[]=['prologue','c1','c2']; // C2 local playtest candidate; C3–C5 remain unavailable.
 const screenNames:Record<Screen,string>={hub:'Sân nhà',studio:'Phòng phối đồ',closet:'Tủ đồ',museum:'Bảo tàng',journey:'Cốt truyện'};
 export default function Game({ embedded = false, paused = false, navigationRequest, onBlockedChange, pendingAvatarPreset, onAvatarApplied }: {
   embedded?: boolean;
@@ -114,7 +114,7 @@ export default function Game({ embedded = false, paused = false, navigationReque
     const head=treeRef.current.nodes[treeRef.current.headId].snapshot;
     const id=head.currentChapter, current=head.journey[id], data=content.chapters[id];
     const ending=data.chapter.completionDialogueId;
-    if(!PLAYABLE.includes(id) || current.claimed || current.activeDialogue || current.dialogueQueue?.length
+    if(!isChapterPlayable(id, head) || current.claimed || current.activeDialogue || current.dialogueQueue?.length
       || !ending || !current.completedDialogueIds.includes(ending)
       || !data.puzzles.every(p=>current.solvedPuzzleIds.includes(p.id)))return;
     if(current.status!=='completed' && !send({type:'chapter/complete',payload:{chapterId:id}}))return;
@@ -125,7 +125,7 @@ export default function Game({ embedded = false, paused = false, navigationReque
   const openMap=()=>{setPanel(null);setJourneyView('map');setScreen('journey');};
   const selectChapter=(id:ChapterId)=>{
     if(blocked || state.journey[id].status==='locked')return;
-    if(!PLAYABLE.includes(id)){setMapChapter(id);return;}
+    if(!isChapterPlayable(id, state)){setMapChapter(id);return;}
     if(state.currentChapter!==id && !send({type:'chapter/enter',payload:{chapterId:id}}))return;
     setJourneyView('scene');
   };

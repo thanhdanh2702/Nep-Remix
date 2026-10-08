@@ -109,7 +109,13 @@ async function present(page: Page, hotspot: string, item: string) {
 }
 async function wardrobePick(page: Page, tab: string, name: string) {
   await page.getByRole('tab', { name: tab }).click();
-  await page.locator('.wardrobe-card', { hasText: name }).first().click();
+  const card = page.locator('.wardrobe-card', { hasText: name }).first();
+  const next = page.getByRole('button', { name: 'Trang trang phục tiếp', exact: true });
+  for (let i = 0; i < 10 && !(await card.count()); i++) {
+    if (!(await next.isEnabled())) break;
+    await next.click();
+  }
+  await card.click();
 }
 
 import { readFileSync } from 'node:fs';
@@ -244,7 +250,7 @@ test('natural menu journey Prologue → C1 → C2 → C3 demo', async ({page})=>
     await expect.poll(async()=> (await saved(page)).inventory.itemIds).toContain('bien_nhan_tien_thay_boi');
     await spot(page, 'hitbox-c3-read-receipt').click();
     await page.getByRole('button',{name:'Xác nhận đã đọc',exact:true}).click();
-    await exitArrow(page,'street').click();
+    await spot(page,'hitbox-street-exit').click();
     await page.getByRole('button',{name:'Ra phố Đa Kao',exact:true}).click();
     await exitArrow(page,'street').click();
     await inArea(page,'c3-s2-phong-phong-thuy');
@@ -268,7 +274,7 @@ test('natural menu journey Prologue → C1 → C2 → C3 demo', async ({page})=>
     await page.getByRole('button',{name:'Khép lời kể',exact:true}).click();
     await page.getByRole('button',{name:'Khép lời kể',exact:true}).click();
     await spot(page,'hitbox-styling-mai').click();
-    await wardrobePick(page,'Áo dài','Áo dài Raglan');
+    await wardrobePick(page,'Áo dài','Áo dài tay raglan');
     await wardrobePick(page,'Phụ kiện','Kính mắt mèo');
     await wardrobePick(page,'Giày','Guốc mộc');
     const before=(await saved(page)).wallet.senNgoc;

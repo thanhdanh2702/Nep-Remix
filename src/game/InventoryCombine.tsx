@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import type { Command, GameState } from '../core';
 import { content } from './store';
 import { asset, itemAsset } from './assets';
@@ -28,6 +28,19 @@ export function InventoryCombine({
 }) {
   const [picked, setPicked] = useState<string[]>(initialItem ? [initialItem] : []);
   const [viewingDoc, setViewingDoc] = useState<DocumentContent | null>(null);
+  const documentTrigger = useRef<string | null>(null);
+  useEffect(() => {
+    if (viewingDoc || !documentTrigger.current) return;
+    const frame = requestAnimationFrame(() => {
+      const label = documentTrigger.current;
+      if (label) document.querySelector<HTMLButtonElement>(`button[aria-label="${CSS.escape(label)}"]`)?.focus();
+    });
+    return () => cancelAnimationFrame(frame);
+  }, [viewingDoc]);
+  const openDocument = (doc: DocumentContent, trigger: HTMLButtonElement) => {
+    documentTrigger.current = trigger.getAttribute('aria-label');
+    setViewingDoc(doc);
+  };
 
   const toggle = (id: string) =>
     setPicked(list => (list.includes(id) ? list.filter(x => x !== id) : [...list, id].slice(-2)));
@@ -42,7 +55,7 @@ export function InventoryCombine({
 
   return (
     <>
-      <Modal title="Túi đồ & Sổ manh mối" wide className="journal-modal" onClose={onClose}>
+      {!viewingDoc && <Modal title="Túi đồ & Sổ manh mối" wide className="journal-modal" onClose={onClose}>
         <div className="journal-columns">
           <section>
             <h3>Vật phẩm của An</h3>
@@ -69,7 +82,7 @@ export function InventoryCombine({
                         className="journal-read-button"
                         onClick={e => {
                           e.stopPropagation();
-                          setViewingDoc(doc);
+                          openDocument(doc, e.currentTarget);
                         }}
                         aria-label={`Đọc văn bản ${doc.title}`}
                       >
@@ -100,7 +113,7 @@ export function InventoryCombine({
                     <button
                       type="button"
                       className="journal-read-button"
-                      onClick={() => setViewingDoc(doc)}
+                      onClick={e => openDocument(doc, e.currentTarget)}
                       aria-label={`Xem lại tài liệu ${doc.title}`}
                     >
                       Xem lại tài liệu
@@ -118,7 +131,7 @@ export function InventoryCombine({
                 <button
                   type="button"
                   className="journal-read-button"
-                  onClick={() => setViewingDoc(C3_DOCUMENTS['doc-c3-ban-sua'])}
+                  onClick={e => openDocument(C3_DOCUMENTS['doc-c3-ban-sua'], e.currentTarget)}
                   aria-label="Xem lại Bản sửa hồ sơ Mai–Vinh"
                 >
                   Xem lại bản sửa
@@ -127,7 +140,7 @@ export function InventoryCombine({
             )}
           </section>
         </div>
-      </Modal>
+      </Modal>}
 
       {/* Read-only Document Viewer for Journal Reread */}
       {viewingDoc && (

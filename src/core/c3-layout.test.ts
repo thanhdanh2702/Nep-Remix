@@ -21,7 +21,7 @@ const input = {
     "src/game/C3-LAYOUT-HANDOFF.md": "8149d5b9b5c15fb3d829305d5e8423f6664fbb1b96e70302cad7c78f536f0417",
     "src/game/c3-m1.test.ts": "7ab1471c19114dced8af6963c6a0736282005a0655b2a9c797b98a5c3747f6df",
     "src/game/room-walker.ts": "31063822f43a41dfc8b0d17276724c891409877bbaf8cc82bc33384479792cad",
-    "src/game/RoomScene.tsx": "66a6eded8a4aa0cebfcdae5bd121164ab7e173c96334fcc1876bfec3f5dd02b2",
+    "src/game/RoomScene.tsx": "5b7d09cf3eea30d5545d5f6449990dbdc58fd4a658536825d6dc67d4929fafd7",
     "src/game/room-render.ts": "59be77c9087e14e534c53cd3f517e244c91fe15708e827dd637e088a0183aa7b",
     "src/game/character-scale.ts": "2cda1b2172950fd6e82cfc24926fa91aeeff84512c4c00f21c6429715829ebfa",
     "src/game/c3-layout.test.ts": "f7d97dca15412c1ebe1946d22eab711f59ae2755042503f351be6563de70da25"

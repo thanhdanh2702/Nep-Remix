@@ -79,7 +79,7 @@ export function DocumentViewer({
       title={doc.title}
       wide
       className="document-viewer-modal"
-      onClose={readOnly ? onClose : handleAction}
+      onClose={readOnly ? onClose : undefined}
     >
       <div ref={containerRef} className="document-viewer-container" data-testid="document-viewer">
         <header className="document-viewer-header">
