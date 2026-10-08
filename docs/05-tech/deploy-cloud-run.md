@@ -8,7 +8,7 @@ Lệnh viết cho Git Bash; chỗ khác biệt có kèm bản PowerShell. Chạy
 
 - Cài [Google Cloud CLI](https://cloud.google.com/sdk/docs/install), có tài khoản Google.
 - Một GCP project **đã bật billing** (Cloud Run, Cloud Build và ảnh Lookbook AI đều cần). Không bật billing thì không deploy được.
-- `GEMINI_API_KEY` lấy tại https://aistudio.google.com/apikey. Tạo ảnh (`gemini-3.1-flash-image`) không có ở free tier; thiếu billing thì Lookbook rơi về ảnh pixel.
+- `GEMINI_API_KEY` lấy tại https://aistudio.google.com/apikey. Tạo ảnh (`gemini-3.1-flash-lite-image`) không có ở free tier; thiếu billing thì Lookbook rơi về ảnh pixel.
 - Nên chạy local `npm run build` thành công trước.
 
 ## 1. Đăng nhập và chọn project
@@ -88,6 +88,8 @@ gcloud billing budgets create \
 
 Budget chỉ **cảnh báo**, không tự ngắt dịch vụ. Khi nhận mail, kiểm tra Lookbook/min-instances và tắt nếu cần (mục 8, 12).
 
+**Spend cap của project Gemini (làm tay, một lần):** vào AI Studio, trang Spend của project đang giữ `GEMINI_API_KEY`, đặt spend cap (gợi ý không vượt số credit đã trả trước) và xác nhận auto-reload đang tắt. Đây là lớp chặn thứ hai sau trần ngày của Lookbook (mục 6): budget alert chỉ báo, còn spend cap mới chặn được chi phí Gemini.
+
 ## 5b. Chỉ có API key (bước tối thiểu)
 
 Nếu không muốn cấu hình Secret Manager: đặt `GEMINI_API_KEY` trực tiếp trong lệnh deploy (bất an, chỉ để thử nghiệm):
@@ -123,7 +125,11 @@ gcloud run deploy tiem-may-nep \
 PowerShell: thay `\` cuối dòng bằng dấu backtick `` ` ``, hoặc viết trên một dòng.
 
 - `--set-secrets ...:1` ghim version 1 (không dùng `latest`).
-- `--timeout 120`: Lookbook gọi Gemini tối đa 45 s, 120 s là đủ.
+- `--timeout 120`: một lần chụp Lookbook có ngân sách tối đa 100 s (mỗi ảnh chờ Gemini tối đa 45 s, hero chụp trước rồi 3 góc còn lại chạy song song), nên 120 s vẫn đủ để luồng đóng gọn.
+- Biến môi trường Lookbook (đều tùy chọn, xem `docs/05-tech/lookbook-api.md`):
+  - `LOOKBOOK_DAILY_LIMIT`: trần số bộ ảnh mỗi ngày UTC, mặc định 10. Bộ đếm nằm trong bộ nhớ từng instance, nên tối đa thực tế là số instance nhân với trần này.
+  - `LOOKBOOK_HERO_SECRET`: khóa ký token ảnh hero; nên đặt cố định (secret) khi chạy nhiều instance, để trống thì mỗi instance tự sinh khóa riêng.
+  Ví dụ thêm vào lệnh deploy: `--update-env-vars LOOKBOOK_DAILY_LIMIT=10`.
 - `--max-instances 2`: rate limit 20 req/phút/IP và cache nằm trong bộ nhớ từng instance, không chia sẻ; giới hạn instance để chi phí và hành vi dễ đoán.
 - `--allow-unauthenticated` cần để giám khảo mở được; rate limit là lớp bảo vệ chi phí duy nhất, nên giữ nguyên.
 - Nếu hỏi tạo Artifact Registry repo, trả lời `Y`. Lần build đầu mất vài phút.

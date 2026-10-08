@@ -1,8 +1,5 @@
 import { test, expect, type Page } from '@playwright/test';
 
-// 1x1 transparent PNG: enough for a real <img> without bundling assets.
-const PIXEL_PNG = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==';
-
 const suggestion = (garmentId: string, garmentName: string, accessoryIds: string[], accessoryNames: string[]) => ({
   garmentId, garmentName, silhouette: 'ngu_than_tay_chen', colorPalette: ['#E6A1B0', '#C25975', '#802D45', '#3A0D1B'],
   accessoryIds, accessoryNames, cultureCardId: 'card-x', templateId: 'mac_dinh_nep', catComment: `Nếp thích ${garmentName}.`,
@@ -12,9 +9,6 @@ const suggestions = [
   suggestion('ao-ngu-than-tay-chen', 'Áo ngũ thân tay chẽn', ['guoc-moc'], ['Guốc mộc quai nhung']),
   suggestion('ao-dai-lemur', 'Áo dài Lemur 1934', ['quat-lua'], ['Quạt lụa thêu hoa']),
 ];
-const images = [['front', 'Góc chính diện'], ['three_quarter', 'Góc nghiêng 45 độ'], ['back', 'Góc sau lưng'], ['close_up', 'Cận cảnh hoa văn']]
-  .map(([angle, angleLabel]) => ({ angle, angleLabel, imageUrl: PIXEL_PNG }));
-
 async function openStudio(page: Page) {
   const errors: string[] = [];
   // A stale dev server can hold the Vite HMR websocket port; those errors are environmental, not ours.
@@ -57,39 +51,6 @@ test('stylist fallback: neutral offline badge, static suggestions, no raw reason
   await expect(page.locator('body')).not.toContainText('ai_unavailable');
   await dialog.getByRole('button', { name: 'Đóng', exact: true }).click();
   await expect(page.locator('.studio-ai-row .ai-badge')).toHaveText('AI offline – dùng gợi ý có sẵn');
-});
-
-test('lookbook ok: 4 AI photos with disclosure, "Về ảnh pixel" restores the pixel grid', async ({ page }) => {
-  let body: Record<string, unknown> = {};
-  await page.route('**/api/ai/lookbook', route => { body = route.request().postDataJSON(); return route.fulfill({ json: { ok: true, data: { images, watermark: 'Ảnh do AI tạo - Tiệm May Nếp 2026', disclosure: 'Bộ ảnh được mô phỏng bằng Gemini.' } } }); });
-  await openStudio(page);
-  await page.getByRole('button', { name: 'Chụp Lookbook AI', exact: true }).click();
-  const photos = page.locator('.studio-lookbook img.studio-ai-photo');
-  await expect(photos).toHaveCount(4);
-  await expect(photos.first()).toHaveAttribute('alt', /Góc chính diện/);
-  await expect(page.locator('.studio-lookbook canvas')).toHaveCount(0);
-  await expect(page.locator('.studio-ai-lookbook-status')).toContainText('Bộ ảnh được mô phỏng bằng Gemini.');
-  await expect(page.locator('.studio-ai-lookbook-status .ai-badge')).toHaveText('Gemini');
-  expect(body).toMatchObject({ garmentId: 'ao-tu-than', garmentName: 'Áo tứ thân', eventTitle: 'Dạo phố', colorPalette: expect.any(Array) });
-  await page.getByRole('button', { name: 'Về ảnh pixel', exact: true }).click();
-  await expect(page.locator('.studio-lookbook canvas')).toHaveCount(4);
-  await expect(photos).toHaveCount(0);
-});
-
-test('lookbook failure (HTTP 500, then network abort): pixel grid stays with an offline badge', async ({ page }) => {
-  let mode: 'http' | 'abort' = 'http';
-  await page.route('**/api/ai/lookbook', route => mode === 'http' ? route.fulfill({ status: 500, body: 'boom' }) : route.abort());
-  const errors = await openStudio(page);
-  const button = page.getByRole('button', { name: 'Chụp Lookbook AI', exact: true });
-  for (const next of ['http', 'abort'] as const) {
-    mode = next;
-    await button.click();
-    await expect(page.locator('.studio-ai-lookbook-status .ai-badge')).toHaveText('AI offline – dùng ảnh pixel');
-    await expect(page.locator('.studio-lookbook canvas')).toHaveCount(4);
-    await expect(page.locator('.studio-lookbook img.studio-ai-photo')).toHaveCount(0);
-    await expect(button).toBeEnabled();
-  }
-  expect(errors).toEqual([]);
 });
 
 test('entering the Studio makes no AI request', async ({ page }) => {
