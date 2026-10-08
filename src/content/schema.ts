@@ -119,6 +119,8 @@ export const DialogueIdSchema = z.enum([
   'd-c3-thoa-thuan',
   'd-c3-vinh-stand',
   'd-c3-ong-le-defeat',
+  'd-c3-ban-sua',
+  'd-c3-ending',
   'd-c4-nam-1845',
   'd-c4-altar-incense',
   'd-c4-ao-cuoi',
@@ -207,6 +209,8 @@ export const InteractableIdSchema = z.enum([
   'hitbox-ong-le-shadow',
   'hitbox-exhibition-podium',
   // c3
+  'hitbox-c3-read-receipt',
+  'hitbox-c3-read-revision',
   'hitbox-gramophone',
   'hitbox-bonsai-pot',
   'hitbox-sewing-machine-base',
@@ -497,7 +501,8 @@ export const OrderPuzzleSchema = PuzzleBaseSchema.extend({
 export const PresentPuzzleSchema = PuzzleBaseSchema.extend({
   type: z.literal('present'),
   solution: z.object({
-    presentedItemId: ItemIdSchema
+    presentedItemId: ItemIdSchema,
+    dialogueTriggerIds: z.array(DialogueIdSchema).optional()
   })
 });
 

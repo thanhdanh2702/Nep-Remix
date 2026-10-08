@@ -41,7 +41,9 @@ export function applyPuzzleSolved(
   // Unlock only an explicit solution target; never infer all exits from any solve.
   const unlockedAreaIds = solution.unlocksAreaId && !chProgress.unlockedAreaIds.includes(solution.unlocksAreaId)
     ? [...chProgress.unlockedAreaIds, solution.unlocksAreaId] : chProgress.unlockedAreaIds;
-  const queued = enqueueDialogues(state, [solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])], content);
+  const solvedState: GameState = { ...state, inventory: { ...state.inventory, itemIds },
+    journey: { ...state.journey, [chId]: { ...chProgress, solvedPuzzleIds: [...chProgress.solvedPuzzleIds, puzzle.id] } } };
+  const queued = enqueueDialogues(solvedState, [solution.dialogueTriggerId, ...(solution.dialogueTriggerIds ?? [])], content);
 
   return {
     state: {

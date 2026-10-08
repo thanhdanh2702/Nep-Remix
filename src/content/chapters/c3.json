@@ -4,14 +4,21 @@
     "title": "Chương 3: Đường Chỉ Xuyên Năm Tháng",
     "year": 1962,
     "historicalPeriod": "hien_dai",
-    "summary": "Bà Lê Thị Mai tại tiệm may Đa Kao Sài Gòn đập tan định kiến bói toán gò má cao sát phu và âm mưu ép làm vợ lẽ, mở ra tà áo raglan hiện đại.",
+    "summary": "Chuyện gia đình hư cấu tại Đa Kao, Sài Gòn, năm 1962: Mai đối chiếu hồ sơ và thỏa thuận nhận tiền để chỉ ra hành vi sửa lời nhận xét nhằm quyết định thay mình.",
     "reward": {
       "id": "reward-c3",
       "chapterId": "c3",
-      "senNgoc": 150,
-      "garmentIds": ["ao-dai-raglan", "ao-dai-co-thuyen"],
-      "cardIds": ["card-ky-thuat-ao-dai-raglan-1960", "card-phe-phan-hu-tuc-boi-toan"]
-    }
+      "senNgoc": 100,
+      "garmentIds": [
+        "ao-dai-raglan",
+        "ao-dai-co-thuyen"
+      ],
+      "cardIds": [
+        "card-ky-thuat-ao-dai-raglan-1960",
+        "card-phe-phan-hu-tuc-boi-toan"
+      ]
+    },
+    "completionDialogueId": "d-c3-ending"
   },
   "areas": [
     {
@@ -19,147 +26,605 @@
       "chapterId": "c3",
       "title": "Tiệm may Mai Sài Gòn tại Đa Kao",
       "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.15, "y": 0.50 },
-      "sides": { "phai": true, "trai": true },
-      "exits": { "street": "c3-s2-phong-phong-thuy" },
+      "logicalSize": {
+        "w": 800,
+        "h": 500
+      },
+      "notes": "Geometry legacy chưa nghiệm thu; chờ bảng đo native/normalized, bounds, approach, spawn/exit/floor từ Frontend. Không dùng để chứng minh geometry PASS.",
+      "spawn": {
+        "x": 0.15,
+        "y": 0.5
+      },
+      "sides": {
+        "phai": true,
+        "trai": false
+      },
+      "exits": {
+        "street": "c3-s2-phong-phong-thuy"
+      },
       "interactables": [
         {
           "id": "hitbox-gramophone",
           "kind": "object",
-          "pos": { "x": 0.80, "y": 0.44 },
+          "pos": {
+            "x": 0.8,
+            "y": 0.44
+          },
           "radius": 0.08,
-          "rect": { "x": 0.74, "y": 0.35, "w": 0.12, "h": 0.18 },
+          "rect": {
+            "x": 0.74,
+            "y": 0.35,
+            "w": 0.12,
+            "h": 0.18
+          },
           "side": "phai",
-          "action": { "type": "dialogue", "targetId": "d-c3-gramophone" }
-        },
-        {
-          "id": "hitbox-bonsai-pot",
-          "kind": "object",
-          "pos": { "x": 0.89, "y": 0.775 },
-          "radius": 0.08,
-          "rect": { "x": 0.82, "y": 0.65, "w": 0.14, "h": 0.25 },
-          "side": "phai",
-          "action": { "type": "item", "targetId": "bua_chu_tru_yeu_1" }
-        },
-        {
-          "id": "hitbox-sewing-machine-base",
-          "kind": "object",
-          "pos": { "x": 0.31, "y": 0.725 },
-          "radius": 0.08,
-          "rect": { "x": 0.22, "y": 0.55, "w": 0.18, "h": 0.35 },
-          "side": "phai",
-          "action": { "type": "item", "targetId": "bua_chu_tru_yeu_2" }
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c3-gramophone"
+          }
         },
         {
           "id": "hitbox-fabric-attic",
           "kind": "object",
-          "pos": { "x": 0.225, "y": 0.26 },
+          "pos": {
+            "x": 0.225,
+            "y": 0.26
+          },
           "radius": 0.08,
-          "rect": { "x": 0.10, "y": 0.15, "w": 0.25, "h": 0.22 },
+          "rect": {
+            "x": 0.1,
+            "y": 0.15,
+            "w": 0.25,
+            "h": 0.22
+          },
           "side": "phai",
-          "action": { "type": "item", "targetId": "bien_nhan_tien_thay_boi" }
+          "action": {
+            "type": "item",
+            "targetId": "bien_nhan_tien_thay_boi"
+          }
         },
         {
           "id": "hitbox-street-exit",
           "kind": "object",
-          "pos": { "x": 0.525, "y": 0.89 },
+          "pos": {
+            "x": 0.525,
+            "y": 0.89
+          },
           "radius": 0.08,
-          "rect": { "x": 0.45, "y": 0.80, "w": 0.15, "h": 0.18 },
+          "rect": {
+            "x": 0.45,
+            "y": 0.8,
+            "w": 0.15,
+            "h": 0.18
+          },
           "side": "phai",
-          "action": { "type": "dialogue", "targetId": "d-c3-street-exit" }
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c3-street-exit"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-mua-chuoc"
+              }
+            ]
+          }
+        },
+        {
+          "id": "hitbox-c3-read-receipt",
+          "kind": "object",
+          "pos": {
+            "x": 0.225,
+            "y": 0.26
+          },
+          "radius": 0.08,
+          "rect": {
+            "x": 0.1,
+            "y": 0.15,
+            "w": 0.25,
+            "h": 0.22
+          },
+          "side": "phai",
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c3-mua-chuoc"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              }
+            ]
+          }
         }
-      ]
+      ],
+      "exitGates": {
+        "street": {
+          "all": [
+            {
+              "kind": "itemOwned",
+              "itemId": "bien_nhan_tien_thay_boi"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c3-mua-chuoc"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c3-street-exit"
+            }
+          ]
+        }
+      }
     },
     {
       "id": "c3-s2-phong-phong-thuy",
       "chapterId": "c3",
       "title": "Gian phòng phong thủy Thầy Ba Càn",
       "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.10, "y": 0.60 },
-      "sides": { "phai": true, "trai": true },
-      "exits": { "mansion": "c3-s3-dinh-thu-doi-dau", "back": "c3-s1-tiem-may-da-kao" },
+      "logicalSize": {
+        "w": 800,
+        "h": 500
+      },
+      "notes": "Geometry legacy chưa nghiệm thu; chờ bảng đo native/normalized, bounds, approach, spawn/exit/floor từ Frontend. Không dùng để chứng minh geometry PASS.",
+      "spawn": {
+        "x": 0.1,
+        "y": 0.6
+      },
+      "sides": {
+        "phai": true,
+        "trai": false
+      },
+      "exits": {
+        "mansion": "c3-s3-dinh-thu-doi-dau",
+        "back": "c3-s1-tiem-may-da-kao"
+      },
       "interactables": [
         {
           "id": "hitbox-incense-bowl",
           "kind": "object",
-          "pos": { "x": 0.33, "y": 0.555 },
+          "pos": {
+            "x": 0.33,
+            "y": 0.555
+          },
           "radius": 0.08,
-          "rect": { "x": 0.28, "y": 0.48, "w": 0.10, "h": 0.15 },
+          "rect": {
+            "x": 0.28,
+            "y": 0.48,
+            "w": 0.1,
+            "h": 0.15
+          },
           "side": "phai",
-          "action": { "type": "dialogue", "targetId": "d-c3-incense-smoke" }
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c3-incense-smoke"
+          }
         },
         {
           "id": "hitbox-bagua-mirror",
           "kind": "object",
-          "pos": { "x": 0.52, "y": 0.24 },
+          "pos": {
+            "x": 0.52,
+            "y": 0.24
+          },
           "radius": 0.08,
-          "rect": { "x": 0.46, "y": 0.15, "w": 0.12, "h": 0.18 },
+          "rect": {
+            "x": 0.46,
+            "y": 0.15,
+            "w": 0.12,
+            "h": 0.18
+          },
           "side": "phai",
-          "action": { "type": "dialogue", "targetId": "d-c3-bagua" }
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c3-bagua"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-mua-chuoc"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-street-exit"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-bagua-chest",
           "kind": "object",
-          "pos": { "x": 0.52, "y": 0.525 },
+          "pos": {
+            "x": 0.52,
+            "y": 0.525
+          },
           "radius": 0.08,
-          "rect": { "x": 0.42, "y": 0.40, "w": 0.20, "h": 0.25 },
-          "side": "trai",
-          "action": { "type": "puzzle", "targetId": "p-c3-bagua-lock" }
+          "rect": {
+            "x": 0.42,
+            "y": 0.4,
+            "w": 0.2,
+            "h": 0.25
+          },
+          "side": "phai",
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c3-bagua-lock"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-mua-chuoc"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-street-exit"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-bagua"
+              }
+            ]
+          }
         }
-      ]
+      ],
+      "exitGates": {
+        "mansion": {
+          "all": [
+            {
+              "kind": "itemOwned",
+              "itemId": "bien_nhan_tien_thay_boi"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c3-mua-chuoc"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c3-street-exit"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c3-bagua"
+            },
+            {
+              "kind": "puzzleSolved",
+              "puzzleId": "p-c3-bagua-lock"
+            },
+            {
+              "kind": "itemOwned",
+              "itemId": "so_tu_vi_nguyen_ban_1962"
+            },
+            {
+              "kind": "itemOwned",
+              "itemId": "thu_tay_thoa_thuan_boi_toan"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c3-so-tu-vi"
+            },
+            {
+              "kind": "dialogueCompleted",
+              "dialogueId": "d-c3-thoa-thuan"
+            }
+          ]
+        },
+        "back": {
+          "all": []
+        }
+      }
     },
     {
       "id": "c3-s3-dinh-thu-doi-dau",
       "chapterId": "c3",
-      "title": "Dinh thự Hội đồng Vĩnh",
+      "title": "Phòng đối chất tại dinh thự",
       "aspect": "8:5",
-      "logicalSize": { "w": 800, "h": 500 },
-      "notes": "đo lại khi có nền 800×500",
-      "spawn": { "x": 0.10, "y": 0.60 },
-      "sides": { "phai": true, "trai": true },
-      "exits": { "exit": "prologue" },
+      "logicalSize": {
+        "w": 800,
+        "h": 500
+      },
+      "notes": "Geometry legacy chưa nghiệm thu; chờ bảng đo native/normalized, bounds, approach, spawn/exit/floor từ Frontend. Không dùng để chứng minh geometry PASS.",
+      "spawn": {
+        "x": 0.1,
+        "y": 0.6
+      },
+      "sides": {
+        "phai": true,
+        "trai": false
+      },
+      "exits": {
+        "back": "c3-s2-phong-phong-thuy"
+      },
       "interactables": [
         {
           "id": "hitbox-salon-table",
           "kind": "object",
-          "pos": { "x": 0.50, "y": 0.70 },
+          "pos": {
+            "x": 0.5,
+            "y": 0.7
+          },
           "radius": 0.08,
-          "rect": { "x": 0.32, "y": 0.55, "w": 0.36, "h": 0.30 },
+          "rect": {
+            "x": 0.32,
+            "y": 0.55,
+            "w": 0.36,
+            "h": 0.3
+          },
           "side": "phai",
-          "action": { "type": "puzzle", "targetId": "p-c3-present-evidence" }
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c3-present-evidence"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-mua-chuoc"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-street-exit"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-bagua"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c3-bagua-lock"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "so_tu_vi_nguyen_ban_1962"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "thu_tay_thoa_thuan_boi_toan"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-so-tu-vi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-thoa-thuan"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-ban-sua"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-vinh-support",
           "kind": "npc",
-          "pos": { "x": 0.26, "y": 0.625 },
+          "pos": {
+            "x": 0.26,
+            "y": 0.625
+          },
           "radius": 0.08,
-          "rect": { "x": 0.18, "y": 0.40, "w": 0.16, "h": 0.45 },
+          "rect": {
+            "x": 0.18,
+            "y": 0.4,
+            "w": 0.16,
+            "h": 0.45
+          },
           "side": "phai",
-          "action": { "type": "dialogue", "targetId": "d-c3-vinh-stand" }
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c3-vinh-stand"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-mua-chuoc"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-street-exit"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-bagua"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c3-bagua-lock"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "so_tu_vi_nguyen_ban_1962"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "thu_tay_thoa_thuan_boi_toan"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-so-tu-vi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-thoa-thuan"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-ban-sua"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c3-present-evidence"
+              }
+            ]
+          }
         },
         {
-          "id": "hitbox-ong-le-crystal",
+          "id": "hitbox-c3-read-revision",
           "kind": "npc",
-          "pos": { "x": 0.525, "y": 0.255 },
-          "radius": 0.10,
-          "rect": { "x": 0.40, "y": 0.08, "w": 0.25, "h": 0.35 },
+          "pos": {
+            "x": 0.525,
+            "y": 0.255
+          },
+          "radius": 0.1,
+          "rect": {
+            "x": 0.4,
+            "y": 0.08,
+            "w": 0.25,
+            "h": 0.35
+          },
           "side": "phai",
-          "action": { "type": "dialogue", "targetId": "d-c3-ong-le-defeat" }
+          "action": {
+            "type": "dialogue",
+            "targetId": "d-c3-ban-sua"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-mua-chuoc"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-street-exit"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-bagua"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c3-bagua-lock"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "so_tu_vi_nguyen_ban_1962"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "thu_tay_thoa_thuan_boi_toan"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-so-tu-vi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-thoa-thuan"
+              }
+            ]
+          }
         },
         {
           "id": "hitbox-styling-mai",
           "kind": "object",
-          "pos": { "x": 0.50, "y": 0.55 },
+          "pos": {
+            "x": 0.5,
+            "y": 0.55
+          },
           "radius": 0.08,
-          "rect": { "x": 0.40, "y": 0.40, "w": 0.20, "h": 0.30 },
+          "rect": {
+            "x": 0.4,
+            "y": 0.4,
+            "w": 0.2,
+            "h": 0.3
+          },
           "side": "phai",
-          "action": { "type": "puzzle", "targetId": "p-c3-styling-mai" }
+          "action": {
+            "type": "puzzle",
+            "targetId": "p-c3-styling-mai"
+          },
+          "when": {
+            "all": [
+              {
+                "kind": "itemOwned",
+                "itemId": "bien_nhan_tien_thay_boi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-mua-chuoc"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-street-exit"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-bagua"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c3-bagua-lock"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "so_tu_vi_nguyen_ban_1962"
+              },
+              {
+                "kind": "itemOwned",
+                "itemId": "thu_tay_thoa_thuan_boi_toan"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-so-tu-vi"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-thoa-thuan"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-ban-sua"
+              },
+              {
+                "kind": "puzzleSolved",
+                "puzzleId": "p-c3-present-evidence"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-vinh-stand"
+              },
+              {
+                "kind": "dialogueCompleted",
+                "dialogueId": "d-c3-ong-le-defeat"
+              }
+            ]
+          }
         }
-      ]
+      ],
+      "exitGates": {
+        "back": {
+          "all": []
+        }
+      }
     }
   ],
   "dialogues": [
@@ -169,7 +634,7 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Tiếng nhạc bolero du dương trên chiếc máy hát đĩa than, nhưng ngoài cửa tiệm rình rập những âm mưu chiếm đoạt."
+          "text": "Mai: Chiếc máy hát ở góc tiệm là một khoảng nghỉ. Tôi còn đang chỉnh đường ráp tay áo từ cổ về nách."
         }
       ]
     },
@@ -179,9 +644,21 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Phố xá Đa Kao nhộn nhịp, mình phải đến tận sào huyệt của thầy Ba Càn tìm cho ra cuốn sổ tử vi gốc."
+          "text": "Biên nhận cho thấy có người trả tiền để viết lại nhận xét. Tôi sẽ tới phòng hồ sơ để đối chiếu giấy tờ."
         }
-      ]
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          }
+        ]
+      }
     },
     {
       "id": "d-c3-incense-smoke",
@@ -189,7 +666,7 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Mùi khói nhang thuốc bắc ngột ngạt bao trùm căn phòng bói toán lừa bịp."
+          "text": "Trên bàn có ghi chú khóa và một tráp hồ sơ. Tôi cần đọc giấy tờ để biết điều gì đã bị thay đổi."
         }
       ]
     },
@@ -199,10 +676,26 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Đường may raglan ráp xéo 45 độ từ cổ xuống nách ứng với quẻ Tốn (Đông Nam) và quẻ Càn (Tây Bắc) trên gương bát quái!",
+          "text": "Ghi chú của chủ tráp: “Càn trước, Tốn sau”. Hai nhãn này là mã khóa hư cấu, không phải lời giải bằng phương vị hay bói toán.",
           "clueId": "clue-bagua-hint"
         }
-      ]
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          }
+        ]
+      }
     },
     {
       "id": "d-c3-mua-chuoc",
@@ -210,10 +703,18 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Tờ biên nhận 2000 đồng của bà Hội đồng thuê vu khống gò má cao sát phu!",
+          "text": "Chuyện gia đình hư cấu — Biên nhận: Bà Lớn đưa Thầy Ba Càn 2.000 đồng để viết lại nhận xét hồ sơ Mai–Vinh, buộc Mai chấp nhận sự sắp đặt.",
           "clueId": "clue-mua-chuoc-thay-boi"
         }
-      ]
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          }
+        ]
+      }
     },
     {
       "id": "d-c3-so-tu-vi",
@@ -221,10 +722,42 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Giờ sinh thật của Vinh là giờ Thìn đại cát, thầy bói đã tráo thành giờ Dần để lừa đảo.",
+          "text": "Chuyện gia đình hư cấu — Sổ gốc, hồ sơ Mai–Vinh: phần ghi nhận ban đầu không có dòng yêu cầu Mai làm lẽ hoặc giao quyền quyết định căn tiệm. Đây là nội dung để đối chiếu với bản sửa.",
           "clueId": "clue-so-tu-vi-goc"
         }
-      ]
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          }
+        ]
+      }
     },
     {
       "id": "d-c3-thoa-thuan",
@@ -232,10 +765,46 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Bức thư tay thỏa thuận ép tôi làm vợ lẽ đi cửa sau để cướp trắng căn nhà tiệm may Đa Kao!",
+          "text": "Chuyện gia đình hư cấu — Thư thỏa thuận cùng hồ sơ Mai–Vinh: Thầy Ba Càn nhận của Bà Lớn 2.000 đồng để thêm lời phán ép Mai làm lẽ và giao quyền quyết định căn tiệm.",
           "clueId": "clue-thoa-thuan-boi-toan"
         }
-      ]
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-so-tu-vi"
+          }
+        ]
+      }
     },
     {
       "id": "d-c3-vinh-stand",
@@ -243,9 +812,57 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Mai ơi, anh sẽ rời khỏi dinh thự này để cùng em xây dựng hạnh phúc bằng lao động chân chính!"
+          "text": "Tôi đã thấy bản sửa và thỏa thuận nhận tiền cùng hồ sơ Mai–Vinh. Tôi sẽ làm chứng về những gì đã thấy."
         }
-      ]
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-so-tu-vi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-thoa-thuan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-ban-sua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-present-evidence"
+          }
+        ]
+      }
     },
     {
       "id": "d-c3-ong-le-defeat",
@@ -253,55 +870,369 @@
       "nodes": [
         {
           "id": "node-1",
-          "text": "Gò má cao là nụ cười kiêu hãnh của phụ nữ tự chủ, không phải cái cớ để các người ép làm lẽ!"
+          "text": "Biên nhận, sổ gốc, thư thỏa thuận và bản sửa cho thấy các người đã dùng lời phán để áp đặt việc làm lẽ và quyền quyết định căn tiệm. Cuộc đời và công việc của tôi do tôi quyết định."
         }
-      ]
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-so-tu-vi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-thoa-thuan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-ban-sua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-present-evidence"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-vinh-stand"
+          }
+        ]
+      }
+    },
+    {
+      "id": "d-c3-ban-sua",
+      "speaker": "Mai",
+      "nodes": [
+        {
+          "id": "node-1",
+          "text": "Chuyện gia đình hư cấu — Bản sửa hồ sơ Mai–Vinh. DÒNG THÊM: “Mai phải chấp nhận làm lẽ và giao quyền quyết định căn tiệm.” Sổ gốc không có dòng này; thư thỏa thuận nối khoản 2.000 đồng với yêu cầu sửa."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-so-tu-vi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-thoa-thuan"
+          }
+        ]
+      }
+    },
+    {
+      "id": "d-c3-ending",
+      "speaker": "Mai",
+      "nodes": [
+        {
+          "id": "node-1",
+          "text": "Tôi không cần một lời phán tốt hơn. Tôi cần các người ngừng dùng lời phán để quyết định thay tôi."
+        }
+      ],
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-so-tu-vi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-thoa-thuan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-ban-sua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-present-evidence"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-vinh-stand"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-ong-le-defeat"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-styling-mai"
+          }
+        ]
+      }
     }
   ],
   "puzzles": [
     {
       "id": "p-c3-bagua-lock",
       "type": "code",
-      "title": "Xoay ổ khóa Bát quái Càn - Tốn",
+      "title": "Mở tráp bằng hai nhãn Càn / Tốn",
       "hasSession": true,
       "hints": [
-        "Ổ khóa tráp của thầy bói xoay tròn theo 8 quẻ Dịch.",
-        "Quy luật ráp tay raglan chéo 45 độ ứng với hướng Đông Nam và Tây Bắc.",
-        "Xoay hai vòng khóa về đúng hai quẻ Càn và Tốn để mở tráp."
+        "Mã nằm trong ghi chú của chủ tráp.",
+        "Đọc thứ tự hai nhãn trên ghi chú.",
+        "Chọn Càn trước, Tốn sau."
       ],
       "solution": {
         "combination": "CAN_TON",
-        "rewardItemIds": ["so_tu_vi_nguyen_ban_1962", "thu_tay_thoa_thuan_boi_toan"],
-        "dialogueTriggerIds": ["d-c3-so-tu-vi", "d-c3-thoa-thuan"]
+        "rewardItemIds": [
+          "so_tu_vi_nguyen_ban_1962",
+          "thu_tay_thoa_thuan_boi_toan"
+        ],
+        "dialogueTriggerIds": [
+          "d-c3-so-tu-vi",
+          "d-c3-thoa-thuan"
+        ]
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          }
+        ]
       }
     },
     {
       "id": "p-c3-present-evidence",
       "type": "present",
-      "title": "Vạch trần âm mưu ép làm vợ lẽ tại tiệm rượu",
+      "title": "Đối chiếu hồ sơ và trình bộ chứng cứ",
       "hasSession": false,
       "hints": [
-        "Khách khứa và luật sư đang tề tựu tại phòng khách dinh thự.",
-        "Ném bằng chứng sổ tử vi thật và thư tay thỏa thuận lên bàn salon.",
-        "Kéo sổ tử vi gốc vào bàn salon để đập tan trò mê tín dị đoan."
+        "Đọc bản sửa và so với sổ gốc.",
+        "Thư thỏa thuận nối người nhận tiền với yêu cầu sửa hồ sơ.",
+        "Trình sổ gốc làm đại diện, kèm thư thỏa thuận và bản sửa đã đọc."
       ],
-      "solution": { "presentedItemId": "so_tu_vi_nguyen_ban_1962" }
+      "solution": {
+        "presentedItemId": "so_tu_vi_nguyen_ban_1962",
+        "dialogueTriggerIds": [
+          "d-c3-vinh-stand",
+          "d-c3-ong-le-defeat"
+        ]
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-so-tu-vi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-thoa-thuan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-ban-sua"
+          }
+        ]
+      }
     },
     {
       "id": "p-c3-styling-mai",
       "type": "styling",
-      "title": "Thử thách phối áo dài Sài Gòn thập niên 1960 cho Bà Mai",
+      "title": "Thử áo raglan Mai chọn cùng kính mắt mèo và guốc mộc",
       "hasSession": true,
       "hints": [
-        "Phom dáng áo dài tay raglan ráp xéo hoặc áo dài cổ thuyền Décolleté kiêu sa.",
-        "Màu xanh ngọc bích quý phái hoặc lụa hoa nhí tươi tắn miền nhiệt đới.",
-        "Phối kính mát mắt mèo thời thượng, guốc mộc sơn bóng quai nhung."
+        "Quan sát đường ráp tay từ cổ về nách.",
+        "Chọn áo raglan, kính mắt mèo và guốc mộc trong đồ mượn.",
+        "Dùng phom tân thời và áo raglan; màu tự chọn."
       ],
       "solution": {
         "silhouette": "tan_thoi",
         "garmentId": "ao-dai-raglan",
         "jewelryId": "kinh-mat-meo",
-        "footwearId": "guoc-moc"
+        "footwearId": "guoc-moc",
+        "dialogueTriggerId": "d-c3-ending"
+      },
+      "when": {
+        "all": [
+          {
+            "kind": "itemOwned",
+            "itemId": "bien_nhan_tien_thay_boi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-mua-chuoc"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-street-exit"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-bagua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-bagua-lock"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "so_tu_vi_nguyen_ban_1962"
+          },
+          {
+            "kind": "itemOwned",
+            "itemId": "thu_tay_thoa_thuan_boi_toan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-so-tu-vi"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-thoa-thuan"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-ban-sua"
+          },
+          {
+            "kind": "puzzleSolved",
+            "puzzleId": "p-c3-present-evidence"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-vinh-stand"
+          },
+          {
+            "kind": "dialogueCompleted",
+            "dialogueId": "d-c3-ong-le-defeat"
+          }
+        ]
+      },
+      "loanWardrobe": {
+        "garmentIds": [
+          "ao-dai-raglan"
+        ],
+        "accessoryIds": [
+          "kinh-mat-meo",
+          "guoc-moc"
+        ]
       }
     }
   ]

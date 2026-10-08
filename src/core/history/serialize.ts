@@ -1,3 +1,4 @@
+import { migrateC3Snapshot } from './c3-migration.ts';
 import type { HistoryTree } from './history-tree.ts';
 import type { GameContent } from '../../content/index.ts';
 import type { GameState } from '../state.ts';
@@ -5,7 +6,7 @@ import { validateState } from '../invariants.ts';
 import { grantRewardGifts } from '../commands/journey/reward-commands.ts';
 import { enqueueDialogues } from '../commands/journey/dialogue-queue.ts';
 
-export const CONTENT_VERSION = 'sprint-02-core-1';
+export const CONTENT_VERSION = 'sprint-03-core-1';
 export interface SerializedHistoryEnvelope {
   saveFormatVersion: 'tiem-may-nep-save-v1';
   schemaVersion: string;
@@ -21,7 +22,7 @@ export function toJSON(tree: HistoryTree): string {
   };
   return JSON.stringify(envelope);
 }
-function migrateSnapshot(original: GameState, content: GameContent, legacyC2: boolean): GameState {
+function migrateSnapshot(original: GameState, content: GameContent, legacyC2: boolean, legacyC3: boolean): GameState {
   let state = structuredClone(original);
   state.claimedRewardIds ??= [];
   state.museum.unlockedCardIds ??= [];
@@ -29,7 +30,7 @@ function migrateSnapshot(original: GameState, content: GameContent, legacyC2: bo
     const chapter = content.chapters[id];
     if (!chapter) throw new Error(`Unknown chapter ${id}`);
     // Reconstruct unread triggered dialogues from old snapshots, without completing them.
-    if (!progress.dialogueQueue && !(id === 'c2' && legacyC2)) {
+    if (!progress.dialogueQueue && id !== 'c3' && !(id === 'c2' && legacyC2)) {
       const triggers = chapter.puzzles.filter(p => progress.solvedPuzzleIds.includes(p.id)).flatMap(p => {
         const sol = p.solution as { dialogueTriggerId?: string; dialogueTriggerIds?: string[] };
         return [sol.dialogueTriggerId, ...(sol.dialogueTriggerIds ?? [])].filter((value): value is string => !!value);
@@ -76,12 +77,16 @@ function migrateSnapshot(original: GameState, content: GameContent, legacyC2: bo
         progress.dialogueQueue = queued.journey.c2.dialogueQueue;
       }
     }
-    if (progress.activeDialogue) {
-      const dialogue = chapter.dialogues.find(d => d.id === progress.activeDialogue!.dialogueId);
+    if (id === 'c3') {
+      state = migrateC3Snapshot(state, content, legacyC3);
+    }
+    const activeProgress = state.journey[chapter.chapter.id];
+    if (activeProgress.activeDialogue) {
+      const dialogue = chapter.dialogues.find(d => d.id === activeProgress.activeDialogue!.dialogueId);
       if (!dialogue) throw new Error('Saved dialogue does not exist');
-      if (!dialogue.nodes.some(n => n.id === progress.activeDialogue!.currentNodeId)) {
+      if (!dialogue.nodes.some(n => n.id === activeProgress.activeDialogue!.currentNodeId)) {
         const first = dialogue.nodes[0].id;
-        progress.activeDialogue = { ...progress.activeDialogue, dialogueId: dialogue.id, currentNodeId: first, history: [first] };
+        activeProgress.activeDialogue = { ...activeProgress.activeDialogue, dialogueId: dialogue.id, currentNodeId: first, history: [first] };
       }
     }
     if (progress.claimed) {
@@ -96,13 +101,14 @@ export function fromJSON(jsonStr: string, content: GameContent): FromJSONResult 
     const parsed = JSON.parse(jsonStr);
     if (!parsed || typeof parsed !== 'object') throw new Error('Save must be an object');
     if (parsed.saveFormatVersion && parsed.saveFormatVersion !== 'tiem-may-nep-save-v1') throw new Error('Unsupported save version');
-    if (parsed.contentVersion && ![CONTENT_VERSION, 'sprint-01-core-1'].includes(parsed.contentVersion)) throw new Error('Unsupported content version');
+    if (parsed.contentVersion && ![CONTENT_VERSION, 'sprint-02-core-1', 'sprint-01-core-1'].includes(parsed.contentVersion)) throw new Error('Unsupported content version');
     const candidate = parsed.tree ?? parsed;
     if (candidate.version !== '1.0.0') throw new Error('Unsupported schema version');
     if (!candidate.nodes || !candidate.nodes[candidate.rootId] || !candidate.nodes[candidate.headId]) throw new Error('Missing root/head snapshot');
     const tree: HistoryTree = structuredClone(candidate);
-    const legacyC2 = parsed.contentVersion !== CONTENT_VERSION;
-    let migrated = legacyC2;
+    const legacyC2 = !parsed.contentVersion || parsed.contentVersion === 'sprint-01-core-1';
+    const legacyC3 = parsed.contentVersion !== CONTENT_VERSION;
+    let migrated = legacyC2 || legacyC3;
     for (const [id, node] of Object.entries(tree.nodes)) {
       if (node.id !== id || !Array.isArray(node.childIds) || !node.snapshot
         || (node.parentId !== null && !tree.nodes[node.parentId])
@@ -113,7 +119,7 @@ export function fromJSON(jsonStr: string, content: GameContent): FromJSONResult 
         if (seen.has(cursor) || !tree.nodes[cursor]) throw new Error('Cyclic history');
         seen.add(cursor); cursor = tree.nodes[cursor].parentId;
       }
-      const snapshot = migrateSnapshot(node.snapshot, content, legacyC2);
+      const snapshot = migrateSnapshot(node.snapshot, content, legacyC2, legacyC3);
       migrated ||= JSON.stringify(snapshot) !== JSON.stringify(node.snapshot);
       node.snapshot = snapshot;
       const validation = validateState(snapshot, content);

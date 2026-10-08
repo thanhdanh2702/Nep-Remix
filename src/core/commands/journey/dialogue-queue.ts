@@ -1,3 +1,4 @@
+import { reconcileC3Progress } from './c3-progress.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
 
@@ -17,5 +18,6 @@ export function enqueueDialogues(state: GameState, ids: Array<string | undefined
         ...(completed ? { mode: 'reread' as const } : {}) };
     } else queue.push(dialogue.id);
   }
-  return { ...state, journey: { ...state.journey, [chapterId]: { ...progress, activeDialogue: active, dialogueQueue: queue } } };
+  const next = { ...state, journey: { ...state.journey, [chapterId]: { ...progress, activeDialogue: active, dialogueQueue: queue } } };
+  return chapterId === 'c3' ? reconcileC3Progress(next, content) : next;
 }

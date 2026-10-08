@@ -1,3 +1,4 @@
+import { canReadC3Dialogue } from './c3-progress.ts';
 import type { CommandDef, DomainEvent } from '../../command.ts';
 import type { GameState } from '../../state.ts';
 import type { GameContent } from '../../../content/index.ts';
@@ -47,6 +48,7 @@ export const dialogueAdvanceCommand: CommandDef<DialogueAdvancePayload> = {
   type: 'dialogue/advance', kind: 'reversible',
   guard: (state, _payload, content) => {
     const { node, dialogue } = current(state, content);
+    if (state.currentChapter === 'c3' && (!dialogue || !canReadC3Dialogue(state, dialogue.id, content))) return { ok: false, reason: 'C3 dialogue prerequisites are not completed.' };
     if (!node) return { ok: false, reason: 'No valid active dialogue node.' };
     if (node.choices?.length) return { ok: false, reason: 'Use dialogue/choose for this node.' };
     if (node.nextNodeId && !dialogue!.nodes.some(n => n.id === node.nextNodeId)) return { ok: false, reason: 'Dialogue link is invalid.' };
@@ -60,6 +62,7 @@ export const dialogueChooseCommand: CommandDef<DialogueChoosePayload> = {
   type: 'dialogue/choose', kind: 'reversible',
   guard: (state, payload, content) => {
     const { node, dialogue } = current(state, content);
+    if (state.currentChapter === 'c3' && (!dialogue || !canReadC3Dialogue(state, dialogue.id, content))) return { ok: false, reason: 'C3 dialogue prerequisites are not completed.' };
     if (!Number.isInteger(payload.choiceIndex) || !node?.choices || payload.choiceIndex < 0 || payload.choiceIndex >= node.choices.length) return { ok: false, reason: 'Invalid dialogue choice.' };
     const nextId = node.choices[payload.choiceIndex].nextNodeId;
     if (nextId && !dialogue!.nodes.some(n => n.id === nextId)) return { ok: false, reason: 'Dialogue link is invalid.' };

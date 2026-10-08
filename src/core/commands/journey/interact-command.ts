@@ -123,6 +123,8 @@ export const interactCommand: CommandDef<InteractPayload> = {
       return { ok: false, reason: `Invalid chapter '${chId}'.` };
     }
 
+    if (chId === 'c3' && chProgress.status === 'locked') return { ok: false, reason: 'C3 is locked.' };
+
     const currentArea = chData.areas.find((a) => a.id === chProgress.currentArea);
     if (!currentArea) {
       return { ok: false, reason: `Area '${chProgress.currentArea}' not found in content.` };

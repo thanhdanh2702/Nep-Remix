@@ -43,7 +43,7 @@ export const rewardClaimCommand: CommandDef<RewardClaimPayload> = {
 
     // Completed legacy snapshots keep their history, but pending claims must
     // pass today's C2 reading gates. Claimed rewards were rejected above.
-    if (chapterId === 'c2') return chapterCompleteCommand.guard(state, { chapterId }, content);
+    if (chapterId === 'c2' || chapterId === 'c3') return chapterCompleteCommand.guard(state, { chapterId }, content);
 
     return true;
   },

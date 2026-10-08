@@ -19,7 +19,7 @@ function legacyBytes(state = ready()) {
   return JSON.stringify(envelope);
 }
 test('save accepts old/new/unversioned content, rejects unknown version and marks migration', () => {
-  assert.equal(CONTENT_VERSION,'sprint-02-core-1');
+  assert.equal(CONTENT_VERSION,'sprint-03-core-1');
   const state = ready();
   for (const bytes of [legacyBytes(state),JSON.stringify(createInitialTree(state)),toJSON(createInitialTree(state))]) {
     const result = fromJSON(bytes,content); assert.ok(result.ok);

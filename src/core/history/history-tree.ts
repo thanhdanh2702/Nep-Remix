@@ -328,6 +328,7 @@ export function revert(
   // Compute inverse using parent snapshot
   const parentNode = targetNode.parentId ? tree.nodes[targetNode.parentId] : null;
   const baseSnapshot = parentNode ? parentNode.snapshot : targetNode.snapshot;
+  if (!preservesClaims(tree, baseSnapshot)) return { ok: false, tree, reason: 'Cannot revert a command before a claimed reward.' };
   const inverseCmd = def.invert(baseSnapshot, targetNode.command.payload, content);
 
   if (!inverseCmd) {

@@ -1,3 +1,4 @@
+import { reconcileC3Progress } from './c3-progress.ts';
 import { isGateSatisfied } from './gate.ts';
 import type { CommandDef } from '../../command.ts';
 import type { GameState } from '../../state.ts';
@@ -44,7 +45,7 @@ export const areaGoToCommand: CommandDef<AreaGoToPayload> = {
     return true;
   },
 
-  apply: (state: GameState, payload: AreaGoToPayload) => {
+  apply: (state: GameState, payload: AreaGoToPayload, content: GameContent) => {
     const { areaId } = payload;
     const chId = state.currentChapter;
     const chProgress = state.journey[chId];
@@ -63,7 +64,7 @@ export const areaGoToCommand: CommandDef<AreaGoToPayload> = {
     };
 
     return {
-      state: nextState,
+      state: content ? reconcileC3Progress(nextState, content) : nextState,
       events: [
         {
           type: 'areaEntered',
@@ -101,7 +102,7 @@ export const areaGoBackCommand: CommandDef<AreaGoBackPayload> = {
     return areaGoToCommand.guard(state, { areaId: chProgress.navStack.at(-1)! }, content);
   },
 
-  apply: (state: GameState, _payload: AreaGoBackPayload) => {
+  apply: (state: GameState, _payload: AreaGoBackPayload, content: GameContent) => {
     const chId = state.currentChapter;
     const chProgress = state.journey[chId];
     const newNavStack = [...chProgress.navStack];
@@ -120,7 +121,7 @@ export const areaGoBackCommand: CommandDef<AreaGoBackPayload> = {
     };
 
     return {
-      state: nextState,
+      state: content ? reconcileC3Progress(nextState, content) : nextState,
       events: [
         {
           type: 'areaEntered',

@@ -129,6 +129,10 @@ export const chapterCompleteCommand: CommandDef<ChapterCompletePayload> = {
       return { ok: false, reason: 'Read the C2 evidence and finish the presentations before completing.' };
     }
 
+    if (chId === 'c3' && (!ending || !isGateSatisfied(state, chData.dialogues.find(d => d.id === ending)?.when))) {
+      return { ok: false, reason: 'Read all C3 evidence, confrontation and ending before completing.' };
+    }
+
     // Verify all declared puzzles in the chapter are solved
     const solvedSet = new Set(chProgress.solvedPuzzleIds);
     for (const puzzle of chData.puzzles) {
