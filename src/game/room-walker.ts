@@ -75,6 +75,15 @@ const OBSTACLES: Record<string, Rect[]> = {
   'c2-s3-phong-trien-lam-doi-dau': [{ x: 0, y: 0.25, w: 0.48, h: 0.505 }],
 };
 const FRONT_GAP = 0.02; // share of the room height between a footprint's front edge and her feet
+// Native ground-space below the render-only NPCs. Avoid feet, not the entire
+// upright sprite: normal 2.5D layering remains meaningful while passing them.
+const NPC_FEET: Record<string, Rect[]> = {
+  'c2-s1-gac-lung-ve-tranh': [{ x: 1080, y: 675, w: 114, h: 50 }],
+  'c2-s2-kho-vai-hang-dao': [{ x: 545, y: 635, w: 114, h: 50 }],
+  'c2-s3-phong-trien-lam-doi-dau': [
+    { x: 310.8, y: 647.5, w: 114, h: 50 }, { x: 1197, y: 647.5, w: 114, h: 50 },
+  ],
+};
 
 export function standClear(areaId: string, p: Pt, floor: Floor, world: { w: number; h: number }): Pt {
   const hit = (OBSTACLES[areaId] ?? []).find(r => p.x >= r.x * world.w && p.x <= (r.x + r.w) * world.w && p.y >= r.y * world.h && p.y <= (r.y + r.h) * world.h);
@@ -94,7 +103,10 @@ export function findPath(
   if (!areaId.startsWith('c2-')) return [];
   const boxes = (OBSTACLES[areaId] ?? []).map(r => ({
     x: r.x * world.w, y: r.y * world.h, w: r.w * world.w, h: r.h * world.h,
-  }));
+  })).concat((NPC_FEET[areaId] ?? []).map(r => ({
+    x: r.x * world.w / 1672, y: r.y * world.h / 941,
+    w: r.w * world.w / 1672, h: r.h * world.h / 941,
+  })));
   const inside = (p: Pt, r: Rect) => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h;
   const valid = (p: Pt) => p.x >= EDGE * world.w && p.x <= (1 - EDGE) * world.w
     && p.y >= floor.top && p.y <= floor.bottom && !boxes.some(r => inside(p, r));

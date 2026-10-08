@@ -51,26 +51,50 @@ async function getAnFoot(page: Page) {
   });
 }
 
+async function startTrajectory(page: Page) {
+  await page.evaluate(() => {
+    const host = window as typeof window & { geoTrace?: { points: { x: number; y: number }[]; frame: number } };
+    const trace: { points: { x: number; y: number }[]; frame: number } = { points: [], frame: 0 };
+    host.geoTrace = trace;
+    const sample = () => {
+      const canvas = document.querySelector('.room-stage canvas') as HTMLCanvasElement;
+      trace.points.push({ x: Number(canvas.dataset.anX), y: Number(canvas.dataset.anY) });
+      trace.frame = requestAnimationFrame(sample);
+    };
+    sample();
+  });
+}
+async function finishTrajectory(page: Page) {
+  const points = await page.evaluate(() => {
+    const host = window as typeof window & { geoTrace?: { points: { x: number; y: number }[]; frame: number } };
+    if (!host.geoTrace) throw new Error('Trajectory sampler was not started');
+    cancelAnimationFrame(host.geoTrace.frame);
+    return host.geoTrace.points;
+  });
+  expect(points.length, 'Trajectory must actually be measured').toBeGreaterThan(1);
+  expect(points.every(p => Number.isFinite(p.x) && Number.isFinite(p.y))).toBe(true);
+  return points;
+}
+
 async function startC2(page: Page, width = 1440, height = 900, motion: 'no-preference' | 'reduce' = 'no-preference') {
   await page.setViewportSize({ width, height });
   await page.emulateMedia({ reducedMotion: motion });
-  await page.addInitScript(({ saveKey, raw }) => {
-    if (!sessionStorage.getItem('c2-geo-init')) {
+  await page.addInitScript(({ saveKey, raw, marker }) => {
+    if (!sessionStorage.getItem(marker)) {
       localStorage.setItem(saveKey, raw);
       localStorage.setItem('tiem-may-nep-visited', 'true');
-      sessionStorage.setItem('c2-geo-init', 'true');
+      sessionStorage.setItem(marker, 'true');
     }
-  }, { saveKey: key, raw: fixture() });
+  }, { saveKey: key, raw: fixture(), marker: `c2-geo-init-${width}-${height}-${motion}` });
 
   await page.goto('/');
   await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
   await page.getByRole('button', { name: 'Cốt truyện', exact: true }).first().click();
   await page.locator('[data-chapter="c2"] .journey-map-label').click();
   const closeBtn = page.getByRole('button', { name: 'Khép lời kể' });
-  if (await closeBtn.isVisible({ timeout: 3000 }).catch(() => false)) {
-    await closeBtn.click();
-  }
-  await page.waitForSelector('.room-scene');
+  await expect(closeBtn).toBeVisible();
+  await closeBtn.click();
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-ready', 'true');
 }
 
 async function solveS1(page: Page) {
@@ -113,17 +137,11 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
       yMin: 0.40 * 941,  // 376.4
       yMax: 0.685 * 941, // 644.6
     };
-    const sampledPoints: { x: number; y: number }[] = [];
-    const interval = setInterval(async () => {
-      try {
-        const p = await getAnFoot(page);
-        if (p) sampledPoints.push({ x: p.x, y: p.y });
-      } catch {}
-    }, 25);
+    await startTrajectory(page);
 
     await spot(page, 'hitbox-french-window').click();
     await expect.poll(async () => (await saved(page)).inventory.itemIds).toContain('manh_ban_ve_ao_dai_4');
-    clearInterval(interval);
+    const sampledPoints = await finishTrajectory(page);
 
     const clippedPoints = sampledPoints.filter(p =>
       p.x >= deskObstacle.xMin && p.x <= deskObstacle.xMax &&
@@ -170,17 +188,11 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
       yMin: 0.21 * 941,  // 197.6
       yMax: 0.707 * 941, // 665.3
     };
-    const sampledS2Points: { x: number; y: number }[] = [];
-    const interval = setInterval(async () => {
-      try {
-        const p = await getAnFoot(page);
-        if (p) sampledS2Points.push({ x: p.x, y: p.y });
-      } catch {}
-    }, 25);
+    await startTrajectory(page);
 
     await spot(page, 'hitbox-iron-safe').click();
-    await page.waitForTimeout(2000);
-    clearInterval(interval);
+    await expect(page.getByRole('dialog')).toBeVisible();
+    const sampledS2Points = await finishTrajectory(page);
 
     const clippedS2 = sampledS2Points.filter(p =>
       p.x >= s2CabinetObstacle.xMin && p.x <= s2CabinetObstacle.xMax &&
@@ -202,7 +214,7 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
 
     // Walk to silk shelves from left
     await spot(page, 'hitbox-silk-shelves').click();
-    await page.waitForTimeout(1000);
+    await expect(page.getByRole('button', { name: 'Khép lời kể' })).toBeVisible();
 
     const shelvesFoot = await getAnFoot(page);
     // Loan in S2: foot (601.9, 658.7), horizontal sprite bounds [545, 659]
@@ -226,7 +238,6 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
     await page.waitForSelector('canvas[data-area="c2-s3-phong-trien-lam-doi-dau"]');
 
     await spot(page, 'hitbox-ong-le-shadow').click();
-    await page.waitForTimeout(1000);
 
     const shadowLeftFoot = await getAnFoot(page);
     const loanS3 = { footX: 367.8, footY: 677.5, box: { x: 310.8, y: 293.5, w: 114, h: 384 } };
@@ -322,8 +333,9 @@ test.describe('C2 Geometry & Movement Standard Acceptance Suite (RED until fixed
     page.setDefaultTimeout(15_000);
     await startC2(page);
 
+    const start = await getAnFoot(page);
     await spot(page, 'hitbox-french-window').click();
-    await page.waitForTimeout(200);
+    await expect.poll(async () => Math.abs((await getAnFoot(page))!.x - start!.x)).toBeGreaterThan(20);
 
     // Retarget to gas lamp
     await spot(page, 'hitbox-gas-lamp').click();
