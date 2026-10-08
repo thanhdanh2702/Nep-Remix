@@ -1,8 +1,9 @@
 # C2 — native layout applied; Frontend walker fixes still required
 
-**Latest audit: FE `1692327`, see the revision audit below.** Spawn/arrival
-adapter requests from the earlier b6bb71a report have been addressed in source;
-visual floor/path acceptance is still open. Content radii are unchanged.
+**Latest audit: Tester `9d32c34`, FE `edece11`, integration content `2038276`; see
+the final section.** Earlier tables below retain their historical revisions.
+Core content is unchanged here; Leader has separately changed four radii.
+Engine reachability passes with that integration content; path acceptance is RED.
 
 Baseline Core `b3f7246`, clean `agent/core` before work. Layout source read-only:
 `git show b6bb71a:src/game/C2-LAYOUT-HANDOFF.md`. No Frontend merge. Manifest
@@ -278,3 +279,104 @@ actual JSON (pos/radius/rect), exact floor/obstacles, before/after final feet in
 both units, spawn/return entries and screenshots/path evidence on background A.
 Then provide the Leader candidate SHA/checkout for integrated rerun. No content
 change is warranted until a verified clear-floor point is rejected by a guard.
+
+## Tester 9d32c34 follow-up — engine GREEN, path RED
+
+Core started clean at `19d6c1168f7e7bbad5764f4fb441e0ac6c36879a`.
+Read Tester `9d32c34:tests/c2-geometry-audit.md` and its browser reproducer.
+FE inspected by immutable SHA: `edece1126f15ae9296bf89989d093e5b10db5fdb`.
+Tester audited integration `2038276e1d14926a5b109ba2a70b84d947998c39`, which
+already contains this walker revision. This is not a post-audit routing fix.
+No branches were merged, no FE/Tester files changed.
+
+### Revision pairing matters
+
+FE enlarged obstacle footprints but `tick` still walks straight toward its goal;
+`standClear` only projects the endpoint in front of an obstacle. Leader content
+already changed desk .11→.17, easel .15→.21, shelves .22→.30, shadow .15→.25.
+These are observed existing Leader changes, not changes proposed/applied here.
+Do not copy those values back over another owner's content or infer visual PASS.
+
+The initial probe of newer FE against this checkout's old content was 11/18:
+four native-radius failures, two adapter proximity failures, plus an obsolete
+S3 raw-spawn assertion. The harness now checks the actual clamp/standClear
+projection (S3 spawn becomes .12,.775). It also supplies chapterId='c2' to the
+actual adapter, including integration's separate legacy-chapter branch.
+
+`C2_CONTENT_REVISION` explicitly loads and schema-validates committed C2 JSON;
+`C2_MOVEMENT_REVISION` explicitly loads the committed walker and RoomScene.
+Missing revisions fail; there is no fallback to another worktree. Catalog and
+Core commands remain this checkout's versions. These are cross-revision probes,
+not a full integration-checkout or browser execution claim.
+
+### Final feet with integration content
+
+Native world 1672×941; parentheses are normalized coordinates. Radii read from
+2038276 JSON; final feet follow actual targetFor/clamp/standClear/tick or
+arriveNow. Both approaches and normal/reduced motion deliver actual arrived
+feet to Core interact, and far-point negatives are rejected for all 11 actions.
+Spawn/return are additionally executed through the actual adapter. PASS means
+proximity/arrival only, with the normal progression preconditions satisfied.
+
+| Hotspot | Radius | Left approach native (normalized) | Right approach native (normalized) | Guard |
+| --- | --- | --- | --- | --- |
+| hitbox-drawing-desk | .17 | 509.96,663.41 (.305,.705) | 760.76,663.41 (.455,.705) | PASS |
+| hitbox-fabric-basket | .09 | 894.52,583.42 (.535,.620) | 1145.32,583.42 (.685,.620) | PASS |
+| hitbox-gas-lamp | .12 | 275.88,545.78 (.165,.580) | same | PASS |
+| hitbox-french-window | .10 | 1162.04,545.78 (.695,.580) | 1412.84,545.78 (.845,.580) | PASS |
+| hitbox-drawing-easel | .21 | 225.72,545.78 (.135,.580) | 509.96,663.41 (.305,.705) | PASS |
+| hitbox-grandfather-clock | .14 | 275.88,545.78 (.165,.580) | 560.12,545.78 (.335,.580) | PASS |
+| hitbox-silk-shelves | .30 | 627.00,684.11 (.375,.727) | 1212.20,733.98 (.725,.780) | PASS |
+| hitbox-iron-safe | .18 | 1160.37,611.65 (.694,.650) | same | PASS |
+| hitbox-reporters-crowd | .21 | 1023.26,781.03 (.612,.830) | 1513.16,781.03 (.905,.830) | PASS |
+| hitbox-ong-le-shadow | .25 | 359.48,729.27 (.215,.775) | 643.72,729.27 (.385,.775) | PASS |
+| hitbox-exhibition-podium | .18 | 560.12,771.62 (.335,.820) | 978.12,771.62 (.585,.820) | PASS |
+
+### Prepared failing path regressions
+
+Use the actual go callback and actual tick, not a duplicated walker algorithm.
+The optional acceptance gate asserts **zero** sampled feet inside the audited
+furniture, unlike the Tester reproducer which asserts the bug is present.
+Both start from the real arrived foot of the preceding action; dt=.05 seconds,
+speed=.35 world widths/sec. Counts below are sampled ticks, not browser frames.
+
+| Reproducer | Start → destination final native foot | Furniture native bounds | RED evidence |
+| --- | --- | --- | --- |
+| GEO-002 S1 lamp → window | 275.88,545.78 → 1162.04,545.78 | x501.60..819.28, y376.40..644.59 | 11 clipped ticks; first 509.96,545.78 (.305,.580) |
+| GEO-004 S2 clock → safe | 275.88,545.78 → 1160.37,611.65 | x601.92..1136.96, y197.61..665.29 | 18 clipped ticks; first 626.03,571.86 (.374,.608) |
+
+```sh
+C2_MOVEMENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 C2_CONTENT_REVISION=2038276e1d14926a5b109ba2a70b84d947998c39 C2_CHECK_PATH_CLEARANCE=1 node --import tsx --test --test-reporter=tap src/core/c2-layout.test.ts
+```
+
+Actual result: **18 PASS / 2 FAIL**, exactly GEO-002 and GEO-004. This is the RED
+checkpoint awaiting a Frontend routing fix; Core must not widen radius to make
+it GREEN. Without the optional path gate the layout/adapter probe is 18/18.
+The switch keeps established contract tests runnable while exposing an explicit
+failing acceptance command; it must be run for the next FE/candidate handoff.
+Finite path samples are a regression detector, not proof of continuous collision
+avoidance or rendered clearance. Reduced motion checks endpoints, not a path.
+
+### Browser reproducer corrections and remaining dependencies
+
+- GEO-005: the left-P4 browser click in Tester source precedes solving P3.
+  Earn G2 and solve P3 before clicking hitbox-ong-le-shadow. P4 being hidden or
+  rejected before P3 is correct; do not weaken the gate to reproduce geometry.
+- GEO-006: Ca Nghi remains render-only. Its sprite/crowd target overlap is a FE
+  layout/target-clarity issue; no new hotspot or dialogue is approved.
+- GEO-007: the five-viewport test restarts C2 and measures visible S1 targets.
+  That code alone does not prove all three rooms/11 targets have touch acceptance.
+- GEO-001/003/005: Tester reports Loan sprite occlusion near window, shelves and
+  left P4. Engine feet above are reproducible; visible legs, y-sort, furniture and
+  NPC clearance still require new screenshots/video on the integrated candidate.
+- Adapter execution stubs paint/run and delivers the pending arrival callback;
+  DOM/rAF timing, cancellation, sprite occlusion and full browser flow are not
+  covered by these unit tests. No browser/visual PASS is claimed here.
+
+**WAITING FE:** a committed routing/NPC fix SHA, final feet after all projection/
+clamps, updated floor/obstacle data and screenshots/path evidence at both
+approaches, spawn/return and normal/reduced motion. Then Leader supplies the
+integrated candidate SHA/checkout for a fresh rerun. Content delta here: **none**.
+Any valid clear-floor foot rejected by proximity needs a concrete reproducer
+and Leader coordination before a minimal content change. Missing secondary
+reward layer remains BLOCKED Art; preserve the existing reward.

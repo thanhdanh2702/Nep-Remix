@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { loadContent } from '../content/index.ts';
+import { ChapterContentSchema } from '../content/schema.ts';
 import { createInitialState, runCommand } from './index.ts';
 import { transformSync } from 'esbuild';
 
@@ -26,7 +27,15 @@ if(movementRevision) console.log(`C2 movement revision: ${execFileSync('git',['r
 
 // Native measurements supplied by Frontend b6bb71a, not placeholder hitboxes.
 // Import the real pure walker; RoomScene's C2 floor and STAND_GAP are adapter inputs.
-const content = loadContent();
+const contentRevision = process.env.C2_CONTENT_REVISION;
+const baseContent = loadContent();
+// Compare committed integration content without merging it or mutating cached content.
+// Catalog/commands stay those of this checkout; this is a cross-revision probe,
+// not a claim that the integrated checkout's full suite has run.
+const content = contentRevision ? { ...baseContent, chapters: { ...baseContent.chapters,
+  c2: ChapterContentSchema.parse(JSON.parse(execFileSync('git',['show',`${contentRevision}:src/content/chapters/c2.json`],{encoding:'utf8'}))) }
+} : baseContent;
+if(contentRevision) console.log(`C2 content revision: ${execFileSync('git',['rev-parse',`${contentRevision}^{commit}`],{encoding:'utf8'}).trim()}`);
 const areas = content.chapters.c2.areas;
 const world = { w: 1672, h: 941 };
 const floor = { top: .58 * world.h, bottom: .92 * world.h };
@@ -144,7 +153,7 @@ if (movementRevision) {
   const initialize=slice('    const entry = effectiveExitArrows.find','    const folder =');
   const go=slice('  const go = (i: Interactable) => {','  const hover =');
   const adapterCode=transformSync(`export function adapter(env) {
-    const { HUMAN_HEIGHT, area, areaId, effectiveExitArrows, prevArea, scene, world,
+    const { HUMAN_HEIGHT, area, areaId, chapterId, effectiveExitArrows, prevArea, scene, world,
       walker, interact, pending, prefersReducedMotion, stop, paint, run,
       clampToFloor, newWalker, standClear, targetFor, arriveNow }=env;
     ${slice('const STAND_GAP =','const floorOf =')}
@@ -157,19 +166,15 @@ if (movementRevision) {
     const origins: {x:number;y:number}[]=[];
     for(const previous of [undefined,...Object.values(area.exits)]) {
       const walker: {current: import('../game/room-walker.ts').Walker|null}={current:null};
-      const instance=adapter({ ...movement,HUMAN_HEIGHT,area,areaId:area.id,world,
+      const instance=adapter({ ...movement,HUMAN_HEIGHT,area,areaId:area.id,chapterId:'c2',world,
         effectiveExitArrows:area.exitArrows,prevArea:{current:previous},scene:'c2',walker,
         interact:{current:()=>{}},pending:{current:null},prefersReducedMotion:()=>false,
         stop:()=>{},paint:()=>{},run:()=>{} });
       instance.initialize();assert.ok(walker.current);
       origins.push({x:walker.current.x,y:walker.current.y});
       assert.ok(walker.current.y>=floor.top && walker.current.y<=floor.bottom);
-      // The content spawn in S3 lies on the newly measured podium footprint.
-      // Entry must retain spawn X but project feet onto clear floor, not furniture.
-      if(previous===undefined) assert.deepEqual(origins.at(-1),{
-        x:area.spawn.x*world.w,
-        y:(area.id==='c2-s3-phong-trien-lam-doi-dau' ? .775 : area.spawn.y)*world.h
-      });
+      if(previous===undefined) assert.deepEqual(origins.at(-1),standClear(area.id,
+        movement.clampToFloor({x:area.spawn.x*world.w,y:area.spawn.y*world.h},floor,world.w),floor,world));
     }
     origins.push({x:.05*world.w,y:.75*world.h},{x:.95*world.w,y:.75*world.h});
     for(const spot of area.interactables) for(const from of origins) for(const reduced of [false,true]) {
@@ -182,7 +187,7 @@ if (movementRevision) {
       const walker={current:newWalker(from)};
       const pending: {current:null|{id:string;fire:()=>void}}={current:null};
       let calls=0;
-      const instance=adapter({...movement,HUMAN_HEIGHT,area,areaId:area.id,world,scene:'c2',walker,pending,
+      const instance=adapter({...movement,HUMAN_HEIGHT,area,areaId:area.id,chapterId:'c2',world,scene:'c2',walker,pending,
         prefersReducedMotion:()=>reduced,stop:()=>{pending.current=null;},paint:()=>{},run:()=>{},
         interact:{current:(id:string,feet:{x:number;y:number})=>{
           calls++;assert.equal(id,spot.id);
@@ -199,5 +204,31 @@ if (movementRevision) {
       }
       assert.equal(calls,1);
     }
+  });
+
+  // Optional acceptance gate for Tester 9d32c34's normal-motion reproducers.
+  // These remain RED until FE routes around furniture; do not fix with radius.
+  if(process.env.C2_CHECK_PATH_CLEARANCE==='1') for(const scenario of [
+    {area:areas[0],start:'hitbox-gas-lamp',end:'hitbox-french-window',bug:'C2-GEO-002',
+      footprint:{x:.30,y:.40,w:.19,h:.285}},
+    {area:areas[1],start:'hitbox-grandfather-clock',end:'hitbox-iron-safe',bug:'C2-GEO-004',
+      footprint:{x:.36,y:.21,w:.32,h:.497}},
+  ]) test(`${scenario.bug}: actual FE go/tick path stays outside audited furniture`,()=>{
+    const {area}=scenario;const walker={current:newWalker({x:area.spawn.x*world.w,y:area.spawn.y*world.h})};
+    const pending:{current:null|{id:string;fire:()=>void}}={current:null};
+    let reduced=true;
+    const instance=adapter({...movement,HUMAN_HEIGHT,area,areaId:area.id,chapterId:'c2',world,scene:'c2',walker,pending,
+      prefersReducedMotion:()=>reduced,stop:()=>{pending.current=null;},paint:()=>{},run:()=>{},interact:{current:()=>{}}});
+    instance.go(area.interactables.find(i=>i.id===scenario.start)!);
+    const from={x:walker.current.x,y:walker.current.y};
+    reduced=false;instance.go(area.interactables.find(i=>i.id===scenario.end)!);
+    let arrived=false;const clipped:{x:number;y:number}[]=[];const r=scenario.footprint;
+    for(let frame=0;frame<1000 && !arrived;frame++) {
+      ({walker:walker.current,arrived}=tick(walker.current,.05,WALK_SPEED*world.w));
+      const {x,y}=walker.current;
+      if(x>=r.x*world.w && x<=(r.x+r.w)*world.w && y>=r.y*world.h && y<=(r.y+r.h)*world.h) clipped.push({x,y});
+    }
+    assert.ok(arrived);
+    assert.equal(clipped.length,0,`${scenario.bug}: from ${JSON.stringify(from)} crossed furniture ${clipped.length} ticks; first ${JSON.stringify(clipped[0])}`);
   });
 }
