@@ -5,7 +5,7 @@
 /** An's drawn figure height inside her 176×416 cell, in art px. */
 export const AN_FIGURE_H = 389;
 
-export type CharacterScene = 'c0' | 'c1' | 'c2' | 'hub' | 'studio' | 'closet' | 'workshop';
+export type CharacterScene = 'c0' | 'c1' | 'c2' | 'c3' | 'hub' | 'studio' | 'closet' | 'workshop';
 type Human = { back: number; front: number; floorTop: number; floorBottom: number };
 
 /** An's height / background height. `back` applies at the top of the floor strip, `front` at its bottom
@@ -14,6 +14,7 @@ export const HUMAN_HEIGHT: Record<CharacterScene, Human> = {
   c0: { back: 0.38, front: 0.5, floorTop: 0.6, floorBottom: 0.95 },
   c1: { back: 0.42, front: 0.42, floorTop: 0.6, floorBottom: 0.95 },
   c2: { back: 0.38, front: 0.48, floorTop: 0.58, floorBottom: 0.92 },
+  c3: { back: 518.4 / 941, front: 518.4 / 941, floorTop: 0.68, floorBottom: 0.92 },
   hub: { back: 0.15, front: 0.15, floorTop: 0, floorBottom: 1 },
   // Measured from the furniture in each room's art (side table/vanity ≈ 75 cm, chair ≈ 1 m): a 1.55 m person
   // is ~31% of the closet art at the back wall and ~43% mid-floor; the studio floor runs wall base → platform edge.

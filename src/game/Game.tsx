@@ -21,6 +21,7 @@ import { AreaSign } from './AreaSign';
 import { JourneyMap } from './JourneyMap';
 import { Toast, toneFor } from './Toast';
 import { DialogueBox } from './DialogueBox';
+import { DocumentViewer, isC3DocumentDialogue, c3DocumentForDialogue } from './DocumentViewer';
 import { ErrorBoundary } from './ErrorBoundary';
 import { countUp, shake, withViewTransition } from '../ui/motion';
 
@@ -198,7 +199,20 @@ export default function Game({ embedded = false, paused = false, navigationReque
     </main>
     {screen!=='hub' && <span className={`save-state ${saveFailed?'error':''}`} role="status">{saveFailed?'Chưa lưu được trên thiết bị':'Đã lưu trên thiết bị'}</span>}
     {toast && <Toast message={toast} tone={toneFor(toast)} onClose={closeToast}/>}
-    {dialogue && node && <DialogueBox key={dialogue.id} speaker={dialogue.speaker} text={node.text} preset={state.profile?.avatarPreset ?? 'an-default'}>{node.choices?.length?<div className="actions">{node.choices.map((c,i)=><button key={i} onClick={()=>send({type:'dialogue/choose',payload:{choiceIndex:i}})}>{c.text}</button>)}</div>:<button className="primary" onClick={advance}>{ACTION_LABEL[dialogue.id]??(node.nextNodeId?'Tiếp tục':'Khép lời kể')}</button>}</DialogueBox>}
+    {dialogue && node && (
+      isC3DocumentDialogue(dialogue.id) && c3DocumentForDialogue(dialogue.id) ? (
+        <DocumentViewer
+          key={dialogue.id}
+          document={c3DocumentForDialogue(dialogue.id)!}
+          dialogueText={node.text}
+          speaker={dialogue.speaker}
+          isReread={progress.activeDialogue?.mode === 'reread'}
+          onAdvance={advance}
+        />
+      ) : (
+        <DialogueBox key={dialogue.id} speaker={dialogue.speaker} text={node.text} preset={state.profile?.avatarPreset ?? 'an-default'}>{node.choices?.length?<div className="actions">{node.choices.map((c,i)=><button key={i} onClick={()=>send({type:'dialogue/choose',payload:{choiceIndex:i}})}>{c.text}</button>)}</div>:<button className="primary" onClick={advance}>{ACTION_LABEL[dialogue.id]??(node.nextNodeId?'Tiếp tục':'Khép lời kể')}</button>}</DialogueBox>
+      )
+    )}
     {puzzle && <PuzzleModal key={puzzle.id} puzzle={puzzle} itemIds={state.inventory.itemIds} hintTier={progress.hintTiers[puzzle.id]??0} feedback={feedback} draft={progress.puzzleDrafts?.[puzzle.id]} onUpdateDraft={draft=>send({type:'puzzle/updateDraft',payload:{puzzleId:puzzle.id,draft}})} onSubmit={answer=>submitPuzzle(puzzle,answer)} onHint={()=>hint(puzzle)} onClose={()=>{if(send({type:'puzzle/close',payload:{}}))setPuzzleId(null);}}/>}
     {panel==='journal' && <InventoryCombine state={state} initialItem={selectedItem} send={command=>{lastTarget.current='';return send(command);}} notify={setToast} onClose={()=>setPanel(null)}/>}
     {panel==='settings' && <Modal title="Diện mạo & Cài đặt" onClose={()=>setPanel(null)}><label>Tên nhân vật<input value={profileName} maxLength={12} onChange={e=>setProfileName(e.target.value)}/></label><label>Nếp tóc<select value={preset.includes('bob')?'bob':'long'} onChange={e=>setPreset(`an-${e.target.value}-${preset.includes('jade')?'jade':preset.includes('rose')?'rose':'default'}`)}><option value="long">Tóc dài</option><option value="bob">Tóc ngắn</option></select></label><label>Nếp áo<select value={preset.includes('jade')?'jade':preset.includes('rose')?'rose':'default'} onChange={e=>setPreset(`an-${preset.includes('bob')?'bob':'long'}-${e.target.value}`)}><option value="default">Kem lụa</option><option value="jade">Xanh ngọc</option><option value="rose">Hồng sen</option></select></label><p className="fine-print">Chọn từ các lớp hình đã có trong tiệm. Hiện chưa có tệp âm thanh để phát.</p><div className="actions"><button className="primary" onClick={()=>{send({type:'profile/update',payload:{name:profileName.trim()||'An',avatarPreset:preset}});setPanel(null);}}>Lưu diện mạo</button><button onClick={()=>setPanel('restart')}>Chơi lại từ đầu</button></div></Modal>}

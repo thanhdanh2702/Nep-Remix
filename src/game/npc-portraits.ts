@@ -23,6 +23,8 @@ const bySpeaker: Record<string, Portrait> = {
   'Ông Cả Nghị': sprite('ca-nghi'),
   'Bà Mai': sprite('ba-mai'),
   'Băng ghi âm Bà Mai': sprite('ba-mai', true),
+  'Thầy Ba Càn': sprite('thay-ba-can'),
+  'Bà Lớn': sprite('ba-lon'),
   'Vinh': sprite('vinh'),
   'Chú Sửu': sprite('chu-suu'),
   'Cô Phương': sprite('me-phuong'),
