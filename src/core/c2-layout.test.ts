@@ -155,7 +155,7 @@ if (movementRevision) {
   const adapterCode=transformSync(`export function adapter(env) {
     const { HUMAN_HEIGHT, area, areaId, chapterId, effectiveExitArrows, prevArea, scene, world,
       walker, interact, pending, prefersReducedMotion, stop, paint, run,
-      clampToFloor, newWalker, standClear, targetFor, arriveNow }=env;
+      clampToFloor, newWalker, standClear, targetFor, arriveNow, findPath }=env;
     ${slice('const STAND_GAP =','const floorOf =')}
     ${definitions}
     ${go}
