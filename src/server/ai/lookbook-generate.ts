@@ -82,8 +82,28 @@ export function isLookbookCached(req: LookbookRequest): boolean {
   return Boolean(key && !req.noCache && cacheGet(key));
 }
 
+// Gemini answers 503 UNAVAILABLE ("high demand") or 500 in bursts; a short wait usually clears it.
+const TRANSIENT_STATUS = new Set([500, 503]);
+const TRANSIENT_RETRY_DELAYS_MS = [1500, 3000];
+
+const wait = (ms: number, signal: AbortSignal) => new Promise<void>(resolve => {
+  const timer = setTimeout(resolve, ms);
+  signal.addEventListener('abort', () => { clearTimeout(timer); resolve(); }, { once: true });
+});
+
 // ---- one image call: never throws, returns a reason code ----
 async function callImage(parts: Part[], signal: AbortSignal): Promise<ImageResult> {
+  for (const delay of TRANSIENT_RETRY_DELAYS_MS) {
+    const result = await callImageOnce(parts, signal);
+    if (result !== 'transient') return result;
+    await wait(delay, signal);
+    if (signal.aborted) return { ok: false, reason: 'ai_unavailable' };
+  }
+  const last = await callImageOnce(parts, signal);
+  return last === 'transient' ? { ok: false, reason: 'ai_unavailable' } : last;
+}
+
+async function callImageOnce(parts: Part[], signal: AbortSignal): Promise<ImageResult | 'transient'> {
   try {
     const response = await ai.models.generateContent({
       model: AI_MODELS.IMAGE_GENERATION_MODEL,
@@ -105,7 +125,9 @@ async function callImage(parts: Part[], signal: AbortSignal): Promise<ImageResul
       || (outParts.length > 0 && outParts.every(p => typeof p.text === 'string'));
     return { ok: false, reason: blocked ? 'safety_blocked' : 'invalid_output' };
   } catch (err) {
-    if ((err as { status?: unknown } | null)?.status === 403) console.warn('[lookbook] gemini answered 403: billing/credit or permission?');
+    const status = (err as { status?: unknown } | null)?.status;
+    if (typeof status === 'number' && TRANSIENT_STATUS.has(status) && !signal.aborted) return 'transient';
+    if (status === 403) console.warn('[lookbook] gemini answered 403: billing/credit or permission?');
     return { ok: false, reason: toFallbackReason(err) };
   }
 }

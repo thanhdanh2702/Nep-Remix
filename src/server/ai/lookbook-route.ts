@@ -1,4 +1,5 @@
 // Lookbook HTTP layer: validation, per-IP unit limiter, daily cap, server-side photo check, SSE plumbing.
+import crypto from 'node:crypto';
 import type { Request, Response } from 'express';
 import { LOOKBOOK_LIMITS } from '../../config/lookbook-limits.ts';
 import { toFallbackReason } from './sanitize.ts';
@@ -38,6 +39,28 @@ function spend(ip: string, units: number): 'rate_limited' | 'quota_exhausted' | 
   return null;
 }
 
+// ---- photos that already passed the check ----
+// The age/one-person check is not deterministic: the same photo can pass /check and then fail a later
+// re-check mid-shoot. Remember a SHA-256 digest (never the photo) of passed photos for a while.
+const passedPhotos = new Map<string, number>();
+const PASSED_PHOTO_TTL_MS = 30 * 60_000;
+const PASSED_PHOTO_MAX = 500;
+const photoDigest = (image: string) => crypto.createHash('sha256').update(image).digest('hex');
+
+function rememberPassed(image: string): void {
+  const now = Date.now();
+  if (passedPhotos.size >= PASSED_PHOTO_MAX) {
+    for (const [key, expiresAt] of passedPhotos) if (expiresAt < now) passedPhotos.delete(key);
+    if (passedPhotos.size >= PASSED_PHOTO_MAX) passedPhotos.delete(passedPhotos.keys().next().value as string);
+  }
+  passedPhotos.set(photoDigest(image), now + PASSED_PHOTO_TTL_MS);
+}
+
+function hasPassed(image: string): boolean {
+  const expiresAt = passedPhotos.get(photoDigest(image));
+  return expiresAt !== undefined && expiresAt > Date.now();
+}
+
 // ---- shared gate for /lookbook and /lookbook/angle ----
 function newAbort(res: Response): AbortController {
   const ac = new AbortController();
@@ -57,13 +80,14 @@ async function admit(req: Request, res: Response, data: LookbookRequest | undefi
     res.status(429).json({ ok: false, fallback: { reason: denied } });
     return false;
   }
-  if (data.mode === 'personal') {
+  if (data.mode === 'personal' && !hasPassed(data.personImage as string)) {
     try {
       const check = await checkPersonPhoto(data.personImage as string, ac.signal);
       if (check.verdict === 'block') {
         res.status(422).json({ ok: false, fallback: { reason: 'safety_blocked' }, check });
         return false;
       }
+      rememberPassed(data.personImage as string);
     } catch (err) {
       if (ac.signal.aborted) return false;
       const reason = toFallbackReason(err);
@@ -87,7 +111,9 @@ export async function handleLookbookCheck(req: Request, res: Response): Promise<
   if (!parsed.success) { res.status(400).json({ ok: false }); return; }
   const ac = newAbort(res);
   try {
-    res.json({ ok: true, data: await checkPersonPhoto(parsed.data.personImage, ac.signal) });
+    const check = await checkPersonPhoto(parsed.data.personImage, ac.signal);
+    if (check.verdict !== 'block') rememberPassed(parsed.data.personImage);
+    res.json({ ok: true, data: check });
   } catch (err) {
     if (ac.signal.aborted) return;
     const reason = toFallbackReason(err);
