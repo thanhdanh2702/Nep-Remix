@@ -1,0 +1,122 @@
+/* Lookbook dialog: HTML panel (320px) beside the painted 1144x1375 frame. Portalled to body, so nothing here depends on .room. */
+.modal-backdrop.lookbook-dialog { padding: var(--sp-4); align-items: center; overflow: auto; }
+.lookbook-shell { display: flex; align-items: flex-start; justify-content: center; gap: var(--sp-4); max-width: 100%; outline: none; }
+
+/* Left panel: model + mood + toolbar */
+.lookbook-panel {
+  flex: none; width: 320px; max-height: calc(100dvh - 2 * var(--sp-4)); overflow-y: auto; box-sizing: border-box;
+  display: flex; flex-direction: column; gap: var(--sp-4); padding: var(--sp-4);
+  color: var(--c-deep-plum); font-family: var(--font-body); background: var(--c-paper-cream);
+  border: var(--bw-thick) solid var(--c-deep-plum); box-shadow: var(--shadow-sm);
+}
+.lookbook-panel-head { display: flex; align-items: center; justify-content: space-between; gap: var(--sp-2); }
+.lookbook-panel-head h2 { margin: 0; font-family: var(--font-display); font-size: var(--fs-panel-title); line-height: var(--lh-tight); }
+.lookbook-section { display: flex; flex-direction: column; gap: var(--sp-2); }
+.lookbook-section h3 { margin: 0; font-size: var(--fs-card-title); line-height: var(--lh-tight); }
+.lookbook-panel button {
+  min-height: var(--target-min); padding: var(--sp-1) var(--sp-3); font: 600 var(--fs-caption)/var(--lh-tight) var(--font-body);
+  color: var(--c-deep-plum); background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border); box-shadow: none; cursor: pointer;
+}
+.lookbook-panel button:hover:not(:disabled) { background: var(--c-soft-pink); }
+.lookbook-panel button:disabled { color: var(--c-disabled-fg); background: var(--c-disabled-bg); cursor: not-allowed; }
+.lookbook-panel button[aria-pressed="true"] { background: var(--c-soft-pink); border: var(--bw-thin) solid var(--c-crimson); }
+.lookbook-toggle-row { display: flex; gap: var(--sp-2); }
+.lookbook-toggle-row button { flex: 1; min-height: var(--target-primary); }
+.lookbook-mood-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: var(--sp-2); }
+.lookbook-note { margin: 0; font-size: var(--fs-caption); line-height: var(--lh-body); color: var(--c-muted-plum); }
+.lookbook-note.is-small { font-size: var(--fs-min); }
+.lookbook-error { margin: 0; font-size: var(--fs-caption); color: var(--c-error); }
+.lookbook-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+
+/* Photo pickers */
+.lookbook-person { display: grid; grid-template-columns: 96px 1fr; gap: var(--sp-3); align-items: start; }
+.lookbook-person-side { display: flex; flex-direction: column; gap: var(--sp-2); min-width: 0; }
+.lookbook-bg-row { display: grid; grid-template-columns: 96px 1fr; gap: var(--sp-3); align-items: start; }
+.lookbook-thumb {
+  display: flex; align-items: center; justify-content: center; overflow: hidden; width: 96px;
+  font-size: var(--fs-min); color: var(--c-muted-plum); background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-sub-border);
+}
+.lookbook-thumb.is-portrait { height: 128px; }
+.lookbook-thumb.is-landscape { height: 72px; }
+.lookbook-thumb img { width: 100%; height: 100%; object-fit: cover; }
+.lookbook-consent { grid-column: 1 / -1; display: flex; align-items: flex-start; gap: var(--sp-2); min-height: var(--target-min); font-size: var(--fs-caption); line-height: var(--lh-body); cursor: pointer; }
+.lookbook-consent input { flex: none; width: 24px; height: 24px; margin: 0; accent-color: var(--c-crimson); }
+.lookbook-gate { grid-column: 1 / -1; display: flex; flex-direction: column; align-items: flex-start; gap: var(--sp-2); font-size: var(--fs-caption); }
+.lookbook-gate p, .lookbook-gate ul { margin: 0; }
+.lookbook-gate ul { padding-left: var(--sp-4); }
+.lookbook-gate.is-ok { color: var(--c-success); }
+.lookbook-gate.is-warn { padding: var(--sp-2); color: var(--c-hint); background: var(--c-hint-bg); }
+.lookbook-gate.is-block { padding: var(--sp-2); color: var(--c-error); background: var(--c-error-bg); }
+.lookbook-gate.is-unavailable { color: var(--c-muted-plum); }
+.lookbook-toolbar { display: flex; flex-direction: column; gap: var(--sp-2); }
+
+/* Painted frame: every child is placed in % of the 1144x1375 art. Fonts scale with the frame width. */
+.lookbook-frame {
+  position: relative; flex: none; container-type: inline-size; aspect-ratio: 1144 / 1375;
+  width: min(calc((100dvh - 2 * var(--sp-4)) * 1144 / 1375), calc(100vw - 320px - 3 * var(--sp-4)));
+  color: var(--c-deep-plum); font-family: var(--font-body); user-select: none;
+}
+.lookbook-frame-art { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: fill; pointer-events: none; }
+.lookbook-frame-slots { position: absolute; inset: 0; pointer-events: none; }
+.lookbook-frame-slot {
+  position: absolute; width: 34.96%; height: 26.91%; margin: 0; overflow: hidden; pointer-events: auto;
+  display: flex; align-items: center; justify-content: center; text-align: center; background: rgb(255 248 238 / 60%);
+}
+.lookbook-frame-slot[data-angle="front"], .lookbook-frame-slot[data-angle="back"] { left: 12.24%; }
+.lookbook-frame-slot[data-angle="turn"], .lookbook-frame-slot[data-angle="detail"] { left: 52.01%; }
+.lookbook-frame-slot[data-angle="front"], .lookbook-frame-slot[data-angle="turn"] { top: 12%; }
+.lookbook-frame-slot[data-angle="back"], .lookbook-frame-slot[data-angle="detail"] { top: 42.76%; }
+.lookbook-frame-slot[data-status="generating"] { background: var(--c-soft-pink); }
+.lookbook-frame-slot[data-status="generating"]::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: linear-gradient(90deg, transparent 0 35%, rgb(255 255 255 / 55%) 50%, transparent 65% 100%); background-size: 300% 100%;
+  animation: lookbook-shimmer 1.2s steps(4) infinite;
+}
+.lookbook-frame-slot[data-status="error"] { background: var(--c-hint-bg); box-shadow: inset 0 0 0 var(--bw-thin) var(--c-hint); }
+@keyframes lookbook-shimmer { from { background-position: 100% 0; } to { background-position: 0 0; } }
+.lookbook-slot-text { margin: 0; padding: 0 var(--sp-2); font-size: var(--fs-caption); line-height: var(--lh-tight); color: var(--c-muted-plum); }
+.lookbook-slot-open { position: absolute; inset: 0; padding: 0; border: 0; background: none; cursor: zoom-in; }
+.lookbook-slot-img { display: block; width: 100%; height: 100%; object-fit: contain; }
+.lookbook-chip { position: absolute; margin: 0; padding: 2px 6px; font: 600 var(--fs-min)/1.3 var(--font-body); pointer-events: none; }
+.lookbook-chip.is-label { left: 4px; bottom: 4px; color: var(--c-paper-cream); background: var(--c-deep-plum); }
+.lookbook-chip.is-ai { left: 4px; top: 4px; color: var(--c-deep-plum); background: var(--c-warm-gold); }
+.lookbook-slot-redo {
+  position: absolute; right: 4px; bottom: 4px; width: var(--target-min); height: var(--target-min); padding: 0; font-size: 20px; line-height: 1;
+  color: var(--c-paper-cream); background: var(--c-deep-plum); border: var(--bw-thin) solid var(--c-paper-cream); cursor: pointer;
+}
+.lookbook-slot-redo:disabled { opacity: .5; cursor: not-allowed; }
+.lookbook-slot-fail { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); width: 100%; max-height: 100%; padding: var(--sp-1) var(--sp-2) 28px; overflow-y: auto; box-sizing: border-box; }
+.lookbook-slot-error { margin: 0; font-size: var(--fs-min); line-height: var(--lh-tight); color: var(--c-hint); }
+.lookbook-slot-fail button { width: 100%; min-height: var(--target-min); font: 600 var(--fs-caption) var(--font-body); color: var(--c-deep-plum); background: var(--c-light-cream); border: var(--bw-thin) solid var(--c-hint); cursor: pointer; }
+.lookbook-frame-progress {
+  position: absolute; left: 12.24%; top: 70.1%; width: 74.73%; height: 2.4%; display: flex; align-items: center; justify-content: center;
+  font: 600 max(var(--fs-min), 2.1cqw)/1 var(--font-body); white-space: nowrap;
+}
+.lookbook-frame-progress > span:last-child { overflow: hidden; text-overflow: ellipsis; }
+.lookbook-frame-bar { position: absolute; left: 0; bottom: 0; height: 4px; background: var(--c-crimson); transition: width var(--dur-slow) steps(4); }
+/* Transparent buttons over the painted ones ("Chụp 4 ảnh" / "Lưu bộ phối"); the label is painted, the name comes from aria-label. */
+.lookbook-frame-btn { position: absolute; top: 72.5%; width: 40.5%; height: 8.65%; min-height: var(--target-min); padding: 0; border: 0; background: none; cursor: pointer; }
+.lookbook-frame-btn.is-capture { left: 8.13%; }
+.lookbook-frame-btn.is-save { left: 50.4%; }
+.lookbook-frame-btn:hover:not(:disabled) { background: rgb(255 255 255 / 15%); }
+.lookbook-frame-btn:disabled { background: rgb(255 241 223 / 60%); cursor: not-allowed; }
+.lookbook-frame-btn:focus-visible { outline-offset: -6px; box-shadow: 0 0 0 2px var(--c-warm-gold); }
+/* Covers the painted subtitle line; #fbd3c0 is sampled from the painted story box. */
+.lookbook-frame-story {
+  position: absolute; left: 21.7%; top: 90%; width: 65.7%; height: 6.5%; overflow-y: auto; box-sizing: border-box; padding: 0 var(--sp-1);
+  font-size: var(--fs-min); line-height: 1.2; color: var(--c-deep-plum); background: #fbd3c0; user-select: text;
+}
+
+.lookbook-lightbox-img { display: block; width: 100%; max-height: min(70dvh, calc(100dvh - 260px)); object-fit: contain; }
+.lookbook-lightbox .lookbook-note { margin: var(--sp-2) 0; }
+
+@media (max-width: 640px) {
+  .modal-backdrop.lookbook-dialog { align-items: flex-start; padding: var(--sp-3); }
+  .lookbook-shell { flex-direction: column; align-items: center; width: 100%; }
+  .lookbook-panel { width: 100%; max-height: none; overflow: visible; }
+  .lookbook-frame { width: min(100%, 616px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lookbook-frame-slot[data-status="generating"]::after { animation: none; }
+  .lookbook-frame-bar { transition: none; }
+}

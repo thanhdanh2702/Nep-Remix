@@ -111,7 +111,9 @@ const statuses = (s: LookbookState) => Object.values(s.slots).map(x => x.status)
   assert.equal(r.slots.turn.image, IMG('NEW'));
   // exhausted
   const quota = run(s, { type: 'end', runId: 1, outcome: 'failed', reason: 'quota_exhausted' });
-  assert.ok(selectExhausted(quota) && selectBadge(quota) === 'fallback');
+  // front already arrived, so the badge still says Gemini; it falls back only when nothing came back
+  assert.ok(selectExhausted(quota) && selectBadge(quota) === 'ok');
+  assert.equal(selectBadge({ ...quota, slots: { ...quota.slots, front: { ...quota.slots.turn } } }), 'fallback');
   assert.ok(!selectExhausted(ended) && !selectExhausted(all) && !selectExhausted(createLookbookState()));
 }
 

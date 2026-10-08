@@ -114,8 +114,9 @@ const slotList = (s: LookbookState) => LOOKBOOK_ANGLE_IDS.map(id => s.slots[id])
 export const selectDoneCount = (s: LookbookState): number => slotList(s).filter(x => x.status === 'done').length;
 export const selectAllDone = (s: LookbookState): boolean => selectDoneCount(s) === LOOKBOOK_ANGLE_IDS.length;
 export const selectBusy = (s: LookbookState): boolean => slotList(s).some(x => x.status === 'queued' || x.status === 'generating');
+/** "AI offline" only when nothing came back from Gemini; a partly failed set still shows real AI photos. */
 export const selectBadge = (s: LookbookState): 'ok' | 'cached' | 'fallback' =>
-  slotList(s).some(x => x.status === 'error') ? 'fallback' : s.cached ? 'cached' : 'ok';
+  !slotList(s).some(x => x.status === 'done') && slotList(s).some(x => x.status === 'error') ? 'fallback' : s.cached ? 'cached' : 'ok';
 /** True when every failed slot failed because the daily cap is used up (UI shows the "out of turns" line). */
 export const selectExhausted = (s: LookbookState): boolean => {
   const failed = slotList(s).filter(x => x.status === 'error');
