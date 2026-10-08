@@ -10,7 +10,7 @@ import { ARROW_UP, CURSOR_DEFAULT, CURSOR_EXIT, CURSOR_HAND, cursorCss, gridToDa
 import { HUD_SELECTOR, measureInsets } from './scene-view';
 import { anLayerPath } from './npc-portraits';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT, type CharacterScene } from './character-scale';
-import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, c2ExitArrows, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
+import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, c2ExitArrows, c3AreaOverlays, c3RoomNpcs, c3ExitArrows, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
 import { arriveNow, cellFor, clampToFloor, findPath, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
@@ -22,7 +22,7 @@ const boxesFor = (chapterId: string, areaId: string) => cutoutBoxes[`../../asset
 const SHOP_AREA = 'c0-s1-tiem-may-chieu';
 const CAT_SPRITE = 'assets/characters/cat-nep/view-front.png';
 // Chapter -> character-scale scene. Chapters without an entry draw no people and keep click-to-interact immediate.
-const SCENE_OF: Record<string, CharacterScene | undefined> = { prologue: 'c0', c1: 'c1', c2: 'c2' };
+const SCENE_OF: Record<string, CharacterScene | undefined> = { prologue: 'c0', c1: 'c1', c2: 'c2', c3: 'c3' };
 const NPC_VIEWS = ['front', 'left', 'right', 'back'] as const;
 const STAND_GAP = 0.045; // world widths of clear floor between An and the object she walks to
 const floorOf = (scene: CharacterScene, h: number) => ({ top: HUMAN_HEIGHT[scene].floorTop * h, bottom: HUMAN_HEIGHT[scene].floorBottom * h });
@@ -135,7 +135,9 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
       });
   }, [area, chapterId, areaId, box.w, box.h, progress.side, progress.solvedPuzzleIds, progress.completedDialogueIds, state.inventory.itemIds, chapter]);
   const staticNpcs = useMemo(
-    () => c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world),
+    () => chapterId === 'c3'
+      ? c3RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world)
+      : c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world),
     [chapterId, areaId, progress.solvedPuzzleIds, world]
   );
   const npcs = useMemo(() => {
@@ -145,8 +147,10 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     return [...interactableNpcs, ...staticNpcs.map(n => ({ id: n.id, rect: n.rect }))];
   }, [area.interactables, progress.side, world, staticNpcs]);
   const effectiveExitArrows = useMemo(
-    () => (area.exitArrows && area.exitArrows.length > 0 ? area.exitArrows : c2ExitArrows(areaId)),
-    [area.exitArrows, areaId]
+    () => (area.exitArrows && area.exitArrows.length > 0
+      ? area.exitArrows
+      : (chapterId === 'c3' ? c3ExitArrows(areaId) : c2ExitArrows(areaId))),
+    [area.exitArrows, chapterId, areaId]
   );
   const via = useMemo(() => new Set(effectiveExitArrows.map(a => a.via)), [effectiveExitArrows]);
   const buttons = spots.filter(s => !via.has(s.i.id));
@@ -190,13 +194,17 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const folder = areaFolder(chapterId, areaId);
     const ids = Object.keys(boxesFor(chapterId, areaId)).filter(id => assetRegistry[`${folder}/hotspot-${id}.png`]);
     const npcIds = area.interactables.map(i => i.id).filter(id => ROOM_NPCS[id]);
-    const staticNpcItems = c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
+    const staticNpcItems = chapterId === 'c3'
+      ? c3RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world)
+      : c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
     const allNpcLoaders = [
       ...npcIds.map(id => loadViews(id)),
       ...staticNpcItems.map(n => loadViews(n.id, n.path)),
     ];
     const allNpcIds = [...npcIds, ...staticNpcItems.map(n => n.id)];
-    const overlaySpecs = c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds);
+    const overlaySpecs = chapterId === 'c3'
+      ? c3AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds)
+      : c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds);
     const validOverlays = overlaySpecs.filter(o => assetRegistry[o.path]);
     Promise.all([
       Promise.all([loadImage(areaAsset(chapterId, areaId)), s1 && assetRegistry[CAT_SPRITE] ? loadImage(CAT_SPRITE) : undefined]),
@@ -221,14 +229,19 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
   }, [chapterId, areaId, s1, world.w, world.h]);
 
   useEffect(() => {
-    if (assets.current && chapterId === 'c2') {
+    if (assets.current && (chapterId === 'c2' || chapterId === 'c3')) {
       if (assets.current.overlays) {
-        const liveSpecs = Object.fromEntries(c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds).map(o => [o.id, o.visible]));
+        const specs = chapterId === 'c3'
+          ? c3AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds)
+          : c2AreaOverlays(chapterId, areaId, state.inventory.itemIds, progress.solvedPuzzleIds);
+        const liveSpecs = Object.fromEntries(specs.map(o => [o.id, o.visible]));
         assets.current.overlays.forEach(o => {
           if (liveSpecs[o.id] !== undefined) o.visible = liveSpecs[o.id];
         });
       }
-      const currentStatics = c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
+      const currentStatics = chapterId === 'c3'
+        ? c3RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world)
+        : c2RoomNpcs(chapterId, areaId, progress.solvedPuzzleIds, world);
       Promise.all(currentStatics.map(n => loadViews(n.id, n.path))).then(loadedViews => {
         if (!assets.current) return;
         currentStatics.forEach((n, idx) => {
@@ -325,9 +338,9 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     const floor = floorOf(scene, world.h), aim = targetFor(rectOf(i, world.w, world.h), w, floor, world.w, STAND_GAP * world.w, areaId);
     const to = standClear(areaId, aim.to, floor, world), face = aim.face;
     const fire = () => {
-      // C2 owns the new measured-feet adapter. Earlier chapters retain their
+      // C2 and C3 own the new measured-feet adapter. Earlier chapters retain their
       // existing logical interaction anchors until their geometry is migrated.
-      if (chapterId !== 'c2') return interact.current(i.id, i.pos);
+      if (chapterId !== 'c2' && chapterId !== 'c3') return interact.current(i.id, i.pos);
       const arrivedFeet = walker.current
         ? { x: walker.current.x / world.w, y: walker.current.y / world.h }
         : { x: to.x / world.w, y: to.y / world.h };

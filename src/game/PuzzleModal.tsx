@@ -17,15 +17,15 @@ import './puzzle.css';
 
 type Chapter = (typeof content.chapters)[ChapterId];
 
-// Button text authored per puzzle / dialogue id; the content schema has no label field yet.
-export const ACTION_LABEL: Record<string, string> = {
-  'p-c0-cloth': 'Gỡ tấm vải phủ',
-  'd-c0-stairs': 'Bước lên gác xép',
-  'p-c2-sketch-assemble': 'Ghép bản vẽ',
-  'p-c2-safe-open': 'Mở hòm sắt',
-  'p-c2-present-receipt': 'Trình biên lai',
-  'p-c2-present-sketch': 'Trình bản vẽ',
-};
+import { ACTION_LABEL } from './puzzle-actions';
+export { ACTION_LABEL };
+import {
+  BAGUA_TRIGRAMS,
+  parseBaguaDraft,
+  formatBaguaDraft,
+  isBaguaComplete,
+  isBaguaPuzzle,
+} from './bagua-puzzle';
 // 'use' puzzles that name a required item and every 'present' puzzle are answered with an inventory item.
 const needsItem = (puzzle: Puzzle) => puzzle.type === 'present' || (puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemId || puzzle.solution.requiredItemIds));
 
@@ -281,6 +281,184 @@ export function PuzzleModal({ puzzle, itemIds, draft, hintTier, feedback, onSubm
     );
   }
 
+  if (isBaguaPuzzle(puzzle)) {
+    const { ring1, ring2 } = parseBaguaDraft(draft?.answer);
+
+    const selectRing1 = (id: string) => {
+      const next = formatBaguaDraft(id, ring2);
+      onUpdateDraft({ type: 'code', answer: next });
+    };
+
+    const selectRing2 = (id: string) => {
+      const next = formatBaguaDraft(ring1, id);
+      onUpdateDraft({ type: 'code', answer: next });
+    };
+
+    const canSubmit = isBaguaComplete(ring1, ring2);
+    const label = ACTION_LABEL[puzzle.id] ?? 'Mở khóa Bát Quái';
+
+    return (
+      <Modal title={puzzle.title} wide onClose={onClose}>
+        <p>Xoay hai vòng khóa Bát Quái theo manh mối ghi lại: quẻ mở đầu và quẻ tiếp nối.</p>
+        <div className="bagua-lock-panel" aria-label="Khung điều khiển khóa Bát Quái">
+          <div className="bagua-current-display" role="status" aria-label="Tổ hợp hiện tại">
+            <div className={`bagua-slot ${ring1 ? 'is-filled' : ''}`}>
+              <span className="bagua-slot-label">Vòng 1 (Trước)</span>
+              <span className="bagua-slot-value">{BAGUA_TRIGRAMS.find(t => t.id === ring1)?.name ?? '—'}</span>
+            </div>
+            <span style={{ fontSize: '24px', color: 'var(--c-muted-plum)' }}>➔</span>
+            <div className={`bagua-slot ${ring2 ? 'is-filled' : ''}`}>
+              <span className="bagua-slot-label">Vòng 2 (Sau)</span>
+              <span className="bagua-slot-value">{BAGUA_TRIGRAMS.find(t => t.id === ring2)?.name ?? '—'}</span>
+            </div>
+          </div>
+
+          <div className="bagua-rings-container">
+            <div className="bagua-ring-section">
+              <h4>Vòng 1: Chọn quẻ đầu tiên</h4>
+              <div className="bagua-trigram-grid" role="radiogroup" aria-label="Vòng thứ nhất">
+                {BAGUA_TRIGRAMS.map(t => (
+                  <button
+                    key={`r1-${t.id}`}
+                    type="button"
+                    className={`bagua-trigram-btn ${ring1 === t.id ? 'is-active' : ''}`}
+                    onClick={() => selectRing1(t.id)}
+                    aria-pressed={ring1 === t.id}
+                  >
+                    <span className="bagua-trigram-symbol">{t.symbol}</span>
+                    <span>{t.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="bagua-ring-section">
+              <h4>Vòng 2: Chọn quẻ tiếp theo</h4>
+              <div className="bagua-trigram-grid" role="radiogroup" aria-label="Vòng thứ hai">
+                {BAGUA_TRIGRAMS.map(t => (
+                  <button
+                    key={`r2-${t.id}`}
+                    type="button"
+                    className={`bagua-trigram-btn ${ring2 === t.id ? 'is-active' : ''}`}
+                    onClick={() => selectRing2(t.id)}
+                    aria-pressed={ring2 === t.id}
+                  >
+                    <span className="bagua-trigram-symbol">{t.symbol}</span>
+                    <span>{t.name}</span>
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="actions">
+          <button
+            className="primary"
+            disabled={!canSubmit}
+            onClick={() => onSubmit(formatBaguaDraft(ring1, ring2))}
+          >
+            {label}
+          </button>
+          <button
+            type="button"
+            disabled={!ring1 && !ring2}
+            onClick={() => onUpdateDraft({ type: 'code', answer: '' })}
+          >
+            Đặt lại
+          </button>
+          <button disabled={hintTier >= 3} onClick={onHint}>
+            Nếp gợi ý ({hintTier}/3)
+          </button>
+        </div>
+        <Hints puzzle={puzzle} tier={hintTier} />
+        <Feedback text={feedback} />
+      </Modal>
+    );
+  }
+
+  if (puzzle.id === 'p-c3-present-evidence') {
+    const hasI2 = itemIds.includes('so_tu_vi_nguyen_ban_1962');
+    const hasI3 = itemIds.includes('thu_tay_thoa_thuan_boi_toan');
+    const canPresent = hasI2 && hasI3;
+    const isSelected = draft?.answer === 'so_tu_vi_nguyen_ban_1962';
+
+    return (
+      <Modal title={puzzle.title} wide onClose={onClose}>
+        <p>Đối chiếu chứng cứ gốc và bản sửa để vạch trần âm mưu áp đặt trước mặt gia đình.</p>
+        <div className="evidence-present-panel" aria-label="Bảng đối chiếu chứng cứ">
+          <div className="evidence-docs-grid">
+            <div className="evidence-doc-card is-original">
+              <h4>1. Sổ tử vi nguyên bản (1962)</h4>
+              <p className="evidence-doc-text">
+                Hồ sơ xem ngày ban đầu giữa Mai và Vinh. Không có điều kiện ép buộc, không hề có dòng yêu cầu Mai làm lẽ hay giao quyền quyết định tiệm may.
+              </p>
+              <span className="fine-print" style={{ color: '#2d6a5d', fontWeight: 600 }}>
+                {hasI2 ? '✓ Đã có trong túi' : '✗ Chưa có'}
+              </span>
+            </div>
+
+            <div className="evidence-doc-card is-letter">
+              <h4>2. Thư tay thỏa thuận</h4>
+              <p className="evidence-doc-text">
+                Thỏa thuận nhận khoản tiền 2.000 đồng kèm yêu cầu viết chèn thêm điều kiện nhằm buộc Mai phải chấp nhận làm lẽ và giao quyền quyết định tiệm may.
+              </p>
+              <span className="fine-print" style={{ color: '#8a6d1c', fontWeight: 600 }}>
+                {hasI3 ? '✓ Đã có trong túi' : '✗ Chưa có'}
+              </span>
+            </div>
+
+            <div className="evidence-doc-card is-altered">
+              <h4>3. Bản sửa áp đặt (Đối chiếu)</h4>
+              <p className="evidence-doc-text">
+                Cùng tên hồ sơ nhưng chèn thêm điều kiện áp đặt: <span className="evidence-doc-highlight">“Mai phải chấp nhận làm lẽ và giao quyền quyết định tiệm may”</span>.
+              </p>
+              <span className="fine-print" style={{ color: 'var(--c-error)', fontWeight: 600 }}>
+                Nội dung chèn thêm điều kiện ép buộc
+              </span>
+            </div>
+          </div>
+
+          <div className="evidence-selection-tray">
+            <h4>Chọn chứng cứ đại diện đưa ra đối chất:</h4>
+            {!canPresent ? (
+              <p className="fine-print">
+                Cần có cả <strong>Sổ tử vi nguyên bản</strong> và <strong>Thư tay thỏa thuận</strong> trong túi đồ để đối chất.
+              </p>
+            ) : (
+              <div className="puzzle-items">
+                <button
+                  type="button"
+                  className={isSelected ? 'selected' : ''}
+                  aria-pressed={isSelected}
+                  onClick={() => onUpdateDraft({ type: 'present', answer: 'so_tu_vi_nguyen_ban_1962' })}
+                >
+                  {itemAsset('so_tu_vi_nguyen_ban_1962') && <img src={asset(itemAsset('so_tu_vi_nguyen_ban_1962')!)} alt="" />}
+                  {content.itemsById.get('so_tu_vi_nguyen_ban_1962')?.name ?? 'Sổ tử vi nguyên bản 1962'}
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="actions">
+          <button
+            className="primary"
+            disabled={!canPresent || !isSelected}
+            onClick={() => onSubmit('so_tu_vi_nguyen_ban_1962')}
+          >
+            Trình chứng cứ
+          </button>
+          <button disabled={hintTier >= 3} onClick={onHint}>
+            Nếp gợi ý ({hintTier}/3)
+          </button>
+        </div>
+        <Hints puzzle={puzzle} tier={hintTier} />
+        <Feedback text={feedback} />
+      </Modal>
+    );
+  }
+
   const isMulti = puzzle.type === 'use' && Boolean(puzzle.solution.requiredItemIds);
   const answer = draft?.answer;
   const picked = isMulti ? (Array.isArray(answer) ? answer : []) : (typeof answer === 'string' ? answer : '');
@@ -340,6 +518,11 @@ const ENDING_ART: Partial<Record<ChapterId, { title: string; src: string; alt: s
     title: 'Khoản nợ đã trả, bản vẽ tự ký tên',
     src: 'assets/areas/chapter-2/c2-s3-phong-trien-lam-doi-dau/cg-c2-loan-tu-ky-ten.png',
     alt: 'Cụ Trần Thị Loan tự mình ký tên lên bản vẽ áo dài Tân thời trước sự chứng kiến của công chúng',
+  },
+  c3: {
+    title: 'Tiếng kéo đêm phố cũ — Mai tự quyết định',
+    src: 'assets/areas/chapter-3/c3-s3-dinh-thu-doi-dau/cg-c3-mai-tu-len-tieng.png',
+    alt: 'Bà Lê Thị Mai đứng vững vàng trong tiệm may Đa Kao, cất tiếng bảo vệ tự do và tay nghề của chính mình',
   },
 };
 

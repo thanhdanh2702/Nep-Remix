@@ -73,6 +73,18 @@ const OBSTACLES: Record<string, Rect[]> = {
     { x: 0.71, y: 0.35, w: 0.24, h: 0.410 },
   ],
   'c2-s3-phong-trien-lam-doi-dau': [{ x: 0, y: 0.25, w: 0.48, h: 0.505 }],
+  'c3-s1-tiem-may-da-kao': [
+    { x: 0.12, y: 0.50, w: 0.17, h: 0.32 },
+    { x: 0.68, y: 0.48, w: 0.21, h: 0.34 },
+  ],
+  'c3-s2-phong-phong-thuy': [
+    { x: 0.275, y: 0.48, w: 0.145, h: 0.34 },
+    { x: 0.44, y: 0.45, w: 0.19, h: 0.36 },
+    { x: 0.63, y: 0.45, w: 0.18, h: 0.36 },
+  ],
+  'c3-s3-dinh-thu-doi-dau': [
+    { x: 0.36, y: 0.48, w: 0.28, h: 0.35 },
+  ],
 };
 const FRONT_GAP = 0.02; // share of the room height between a footprint's front edge and her feet
 // Native ground-space below the render-only NPCs. Avoid feet, not the entire
@@ -82,6 +94,13 @@ const NPC_FEET: Record<string, Rect[]> = {
   'c2-s2-kho-vai-hang-dao': [{ x: 545, y: 635, w: 114, h: 50 }],
   'c2-s3-phong-trien-lam-doi-dau': [
     { x: 310.8, y: 647.5, w: 114, h: 50 }, { x: 1197, y: 647.5, w: 114, h: 50 },
+  ],
+  'c3-s1-tiem-may-da-kao': [{ x: 293, y: 750, w: 114, h: 45 }],
+  'c3-s2-phong-phong-thuy': [{ x: 523, y: 755, w: 114, h: 45 }],
+  'c3-s3-dinh-thu-doi-dau': [
+    { x: 423, y: 780, w: 114, h: 45 },
+    { x: 723, y: 785, w: 114, h: 45 },
+    { x: 1113, y: 780, w: 114, h: 45 },
   ],
 };
 
@@ -99,8 +118,8 @@ export function findPath(
   floor: Floor,
   world: { w: number; h: number }
 ): Pt[] | null {
-  // Do not change legacy chapter movement in the C2 sprint.
-  if (!areaId.startsWith('c2-')) return [];
+  // Do not change legacy chapter movement in the C2/C3 sprint.
+  if (!areaId.startsWith('c2-') && !areaId.startsWith('c3-')) return [];
   const boxes = (OBSTACLES[areaId] ?? []).map(r => ({
     x: r.x * world.w, y: r.y * world.h, w: r.w * world.w, h: r.h * world.h,
   })).concat((NPC_FEET[areaId] ?? []).map(r => ({
@@ -108,8 +127,8 @@ export function findPath(
     w: r.w * world.w / 1672, h: r.h * world.h / 941,
   })));
   const inside = (p: Pt, r: Rect) => p.x >= r.x && p.x <= r.x + r.w && p.y >= r.y && p.y <= r.y + r.h;
-  const valid = (p: Pt) => p.x >= EDGE * world.w && p.x <= (1 - EDGE) * world.w
-    && p.y >= floor.top && p.y <= floor.bottom && !boxes.some(r => inside(p, r));
+  const valid = (p: Pt) => p.x >= EDGE * world.w - 1e-4 && p.x <= (1 - EDGE) * world.w + 1e-4
+    && p.y >= floor.top - 1e-4 && p.y <= floor.bottom + 1e-4 && !boxes.some(r => inside(p, r));
   if (!valid(from) || !valid(to)) return null;
   // Slab intersection checks the full closed segment, including its endpoints.
   const intersects = (a: Pt, b: Pt, r: Rect) => {

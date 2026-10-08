@@ -39,6 +39,36 @@ export function c2AreaOverlays(
   return [];
 }
 
+export function c3AreaOverlays(
+  chapterId: string,
+  areaId: string,
+  inventoryItemIds: string[],
+  solvedPuzzleIds: string[]
+): { id: string; path: string; visible: boolean }[] {
+  if (chapterId !== 'c3') return [];
+  const folder = areaFolder(chapterId, areaId);
+  if (areaId === 'c3-s1-tiem-may-da-kao') {
+    return [
+      { id: 'bien-nhan', path: `${folder}/c3-s1-tiem-may-da-kao--bien-nhan.png`, visible: !inventoryItemIds.includes('bien_nhan_tien_thay_boi') },
+      { id: 'giay-doi-chieu', path: `${folder}/c3-s1-tiem-may-da-kao--giay-doi-chieu.png`, visible: true },
+    ];
+  }
+  if (areaId === 'c3-s2-phong-phong-thuy') {
+    return [
+      { id: 'ghi-chu-khoa', path: `${folder}/c3-s2-phong-phong-thuy--ghi-chu-khoa.png`, visible: true },
+      { id: 'ruong-rong', path: `${folder}/c3-s2-phong-phong-thuy--ruong-rong.png`, visible: solvedPuzzleIds.includes('p-c3-bagua-lock') },
+    ];
+  }
+  if (areaId === 'c3-s3-dinh-thu-doi-dau') {
+    return [
+      { id: 'ho-so-goc', path: `${folder}/c3-s3-dinh-thu-doi-dau--ho-so-goc.png`, visible: true },
+      { id: 'thu-doi-chieu', path: `${folder}/c3-s3-dinh-thu-doi-dau--thu-doi-chieu.png`, visible: true },
+      { id: 'ban-sua', path: `${folder}/c3-s3-dinh-thu-doi-dau--ban-sua.png`, visible: true },
+    ];
+  }
+  return [];
+}
+
 // Canvas drawing for point-and-click rooms. Everything is pure canvas math over loaded images;
 // RoomScene owns state, DOM and timing. The stage canvas is exactly the room background, so world px
 // (the background's own pixel size) map to device px by `k`.
@@ -183,6 +213,107 @@ export function c2ExitArrows(areaId: string): ExitArrow[] {
   }
   return [];
 }
+
+/** C3 static scene characters (Bà Mai, Thầy Ba Càn, Vinh, Bà Lớn) placed on the room floor per manifest sceneActors. */
+export function c3RoomNpcs(
+  chapterId: string,
+  areaId: string,
+  solvedPuzzleIds: string[],
+  world: { w: number; h: number }
+): RoomNpc[] {
+  if (chapterId !== 'c3') return [];
+  const W = world.w, H = world.h;
+  const npcBox = (footNativeX: number, footNativeY: number, visibleW: number, visibleH: number): Box => {
+    const footX = Math.round((footNativeX / 1672) * W);
+    const footY = Math.round((footNativeY / 941) * H);
+    const w = Math.round((visibleW / 1672) * W);
+    const h = Math.round((visibleH / 941) * H);
+    return {
+      x: footX - Math.round(w / 2),
+      y: footY - h,
+      w,
+      h,
+    };
+  };
+
+  if (areaId === 'c3-s1-tiem-may-da-kao') {
+    return [
+      {
+        id: 'c3-s1-mai',
+        name: 'Bà Mai',
+        path: 'assets/characters/ba-mai/scene-tailor.png',
+        rect: npcBox(350, 790, 158, 519),
+      },
+    ];
+  }
+
+  if (areaId === 'c3-s2-phong-phong-thuy') {
+    const canPath = solvedPuzzleIds.includes('p-c3-bagua-lock')
+      ? 'assets/characters/thay-ba-can/scene-anxious.png'
+      : 'assets/characters/thay-ba-can/scene-idle.png';
+    return [
+      {
+        id: 'c3-s2-can',
+        name: 'Thầy Ba Càn',
+        path: canPath,
+        rect: npcBox(580, 795, 164, 519),
+      },
+    ];
+  }
+
+  if (areaId === 'c3-s3-dinh-thu-doi-dau') {
+    const vinhPath = solvedPuzzleIds.includes('p-c3-present-evidence')
+      ? 'assets/characters/vinh/scene-witness.png'
+      : 'assets/characters/vinh/scene-idle.png';
+
+    const maiPath = solvedPuzzleIds.includes('p-c3-styling-mai')
+      ? 'assets/characters/ba-mai/scene-relieved.png'
+      : 'assets/characters/ba-mai/scene-speak.png';
+
+    const baLonPath = solvedPuzzleIds.includes('p-c3-present-evidence')
+      ? 'assets/characters/ba-lon/scene-reflective.png'
+      : 'assets/characters/ba-lon/scene-stern.png';
+
+    return [
+      {
+        id: 'c3-s3-vinh',
+        name: 'Vinh',
+        path: vinhPath,
+        rect: npcBox(480, 820, 183, 519),
+      },
+      {
+        id: 'c3-s3-mai',
+        name: 'Bà Mai',
+        path: maiPath,
+        rect: npcBox(780, 825, 199, 519),
+      },
+      {
+        id: 'c3-s3-ba-lon',
+        name: 'Bà Lớn',
+        path: baLonPath,
+        rect: npcBox(1170, 820, 170, 519),
+      },
+    ];
+  }
+
+  return [];
+}
+
+export function c3ExitArrows(areaId: string): ExitArrow[] {
+  if (areaId === 'c3-s1-tiem-may-da-kao') {
+    return [{ exit: 'street', rect: { x: 0.90, y: 0.55, w: 0.08, h: 0.35 }, dir: 'right' }];
+  }
+  if (areaId === 'c3-s2-phong-phong-thuy') {
+    return [
+      { exit: 'back', rect: { x: 0.00, y: 0.55, w: 0.08, h: 0.35 }, dir: 'left' },
+      { exit: 'mansion', rect: { x: 0.92, y: 0.55, w: 0.08, h: 0.35 }, dir: 'right' },
+    ];
+  }
+  if (areaId === 'c3-s3-dinh-thu-doi-dau') {
+    return [{ exit: 'back', rect: { x: 0.00, y: 0.55, w: 0.08, h: 0.35 }, dir: 'left' }];
+  }
+  return [];
+}
 /** Sprite sheets at An's spec share her art px and foot anchor (AN.anchor); the 128x128 cat has ~14 px under its paws. */
 const CAT = { cell: 128, foot: { x: 64, y: 114 }, world: { x: 677, y: 458 }, height: 100, share: 0.26 };
 
@@ -230,9 +361,9 @@ export function drawRoom(ctx: CanvasRenderingContext2D, assets: RoomAssets, area
   const { k, t } = f;
   ctx.setTransform(1, 0, 0, 1, 0, 0);
   ctx.clearRect(0, 0, f.w, f.h);
-  // Painted prologue art (c0-*) and chapter 2 art (c2-*) are smoothed; chapter backgrounds are code-drawn pixel art and stay crisp.
+  // Painted prologue art (c0-*), chapter 2 art (c2-*), and chapter 3 art (c3-*) are smoothed; chapter backgrounds are code-drawn pixel art and stay crisp.
   // The stage has the background's aspect, so it fills the canvas exactly.
-  setSmoothing(ctx, areaId.startsWith('c0-') || areaId.startsWith('c2-'));
+  setSmoothing(ctx, areaId.startsWith('c0-') || areaId.startsWith('c2-') || areaId.startsWith('c3-'));
   ctx.setTransform(k, 0, 0, k, 0, 0);
   ctx.drawImage(assets.bg, 0, 0);
   if (assets.overlays) {
@@ -262,7 +393,8 @@ export function drawRoom(ctx: CanvasRenderingContext2D, assets: RoomAssets, area
       if (!img) continue;
       draws.push({ y: foot.y, draw: () => {
         ctx.globalAlpha = (ROOM_NPCS[id]?.ghost || id.includes('ong-le')) ? .7 : 1; // ghosts are see-through
-        figure(img, img.naturalWidth, img.naturalHeight, AN.anchor, foot, characterScale(scene, bgH, foot.y) * spriteScaleFor(img), img.naturalHeight >= 128);
+        const scale = scene === 'c3' ? 1.35 : characterScale(scene, bgH, foot.y) * spriteScaleFor(img);
+        figure(img, img.naturalWidth, img.naturalHeight, AN.anchor, foot, scale, img.naturalHeight >= 128);
         ctx.globalAlpha = 1;
       } });
     }
