@@ -379,6 +379,8 @@ export function Studio({
           onClose={() => setLookbookModalOpen(false)}
           openerRef={lookbookOpenRef}
           onSave={save}
+          garmentIds={[...new Set([...state.closet.unlockedGarmentIds, ...loanGarmentIds])]}
+          onGarment={id => { const garment = content.garmentsById.get(id); if (garment) selectGarment(garment); }}
           actions={
             <>
               <button onClick={() => setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>

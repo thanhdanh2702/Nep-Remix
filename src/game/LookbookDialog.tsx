@@ -5,6 +5,7 @@ import { asset } from './assets';
 import { useDialogFocus, type LookbookInputs, type PhotoGate } from './use-lookbook-dialog';
 import { LookbookModelPicker } from './LookbookModelPicker';
 import { LookbookMoodPicker } from './LookbookMoodPicker';
+import { LookbookGarmentPicker, type LookbookGarmentOption } from './LookbookGarmentPicker';
 import { LookbookSlotGrid } from './LookbookSlotGrid';
 import { LookbookToolbar } from './LookbookToolbar';
 import { COPY } from './lookbook-copy';
@@ -16,6 +17,8 @@ export interface LookbookDialogProps {
   gender: 'female' | 'male';
   eventName: string;
   garment: { id: string; name: string; story: string };
+  garments: LookbookGarmentOption[];
+  onGarment: (id: string) => void;
   disabledReason?: string;
   onCapture: () => void;
   onSave: () => void;
@@ -47,6 +50,7 @@ export function LookbookDialog(p: LookbookDialogProps) {
             <button type="button" onClick={p.onClose}>{COPY.close}</button>
           </header>
           <LookbookModelPicker inputs={p.inputs} gender={p.gender} gate={p.gate} />
+          <LookbookGarmentPicker garments={p.garments} selectedId={p.garment.id} disabled={busy} onSelect={p.onGarment} />
           <LookbookMoodPicker inputs={p.inputs} eventName={p.eventName} />
           <LookbookToolbar state={p.state} garmentId={p.garment.id} garmentName={p.garment.name} onCancel={p.onCancel} />
         </aside>

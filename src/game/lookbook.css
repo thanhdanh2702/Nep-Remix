@@ -22,6 +22,10 @@
 .lookbook-panel button[aria-pressed="true"] { background: var(--c-soft-pink); border: var(--bw-thin) solid var(--c-crimson); }
 .lookbook-toggle-row { display: flex; gap: var(--sp-2); }
 .lookbook-toggle-row button { flex: 1; min-height: var(--target-primary); }
+.lookbook-garment-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: var(--sp-2); max-height: 196px; overflow-y: auto; }
+.lookbook-garment-grid button { display: flex; flex-direction: column; align-items: center; gap: var(--sp-1); padding: var(--sp-1); font-size: var(--fs-min); line-height: 1.3; }
+.lookbook-garment-grid img { width: 48px; height: 48px; object-fit: contain; }
+.lookbook-garment-grid button[aria-pressed="true"] { background: var(--c-soft-pink); border-color: var(--c-crimson); }
 .lookbook-mood-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(84px, 1fr)); gap: var(--sp-2); }
 .lookbook-note { margin: 0; font-size: var(--fs-caption); line-height: var(--lh-body); color: var(--c-muted-plum); }
 .lookbook-note.is-small { font-size: var(--fs-min); }

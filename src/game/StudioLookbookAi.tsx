@@ -23,12 +23,15 @@ export interface StudioLookbookAiProps {
   onClose: () => void;
   openerRef: RefObject<HTMLButtonElement | null>;
   onSave: () => void;
+  /** Garments the player may wear now (unlocked or lent by a challenge), in wardrobe order. */
+  garmentIds: string[];
+  onGarment: (id: string) => void;
   children: ReactNode;
   actions: ReactNode;
 }
 
 /** Side panel (4 pixel portraits, or the AI photos once shot) + the Lookbook dialog/lightbox (portalled to body). */
-export function StudioLookbookAi({ draft, gender, eventId, eventName, open, onClose, openerRef, onSave, children, actions }: StudioLookbookAiProps) {
+export function StudioLookbookAi({ draft, gender, eventId, eventName, open, onClose, openerRef, onSave, garmentIds, onGarment, children, actions }: StudioLookbookAiProps) {
   const { state, capture, retry, cancel, checkPhoto } = useLookbookSession();
   const inputs = useLookbookInputs(checkPhoto, () => { if (selectBusy(state) || state.check) cancel(); });
   const [enlarged, setEnlarged] = useState<LookbookAngleId | null>(null);
@@ -118,6 +121,7 @@ export function StudioLookbookAi({ draft, gender, eventId, eventName, open, onCl
     {open && !(enlarged && enlargedImage) && <LookbookDialog
       state={state} inputs={inputs} gate={gate} gender={gender} eventName={eventName}
       garment={{ id: draft.garmentId, name: garmentName, story: garment?.culturalSummary ?? '' }}
+      garments={garmentIds.map(id => ({ id, name: content.garmentsById.get(id)?.name ?? id }))} onGarment={onGarment}
       disabledReason={disabledReason} onCapture={() => void startCapture()} onSave={save} onRetry={retryAngle}
       onOpenSlot={setEnlarged} onCancel={cancel} onClose={close} />}
     {open && enlarged && enlargedImage && <LookbookLightbox angle={enlarged} label={angleLabel(enlarged)} garmentId={draft.garmentId}
