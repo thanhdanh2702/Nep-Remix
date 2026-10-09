@@ -53,7 +53,7 @@
 - **Lý do:** Chuẩn hóa cấu trúc thư mục tài nguyên theo đúng chuẩn Vite bundler và phân định rõ ràng giữa tài nguyên phân phối web và tài liệu lưu trữ prompt kỹ thuật.
 
 ### 9. Quyền riêng tư & Cơ chế nhận diện diện mạo (Privacy & Avatar Mapping)
-- **Quyết định:** Tuyệt đối không lưu trữ hay tái tạo ảnh khuôn mặt chân thực từ ảnh selfie của người dùng. Ảnh selfie chỉ được AI phân tích thuộc tính ngoại hình (kiểu tóc, màu tóc, kính mắt) để gán vào sprite nhân vật pixel tương ứng; không tự động đoán giới tính mà để người dùng tự chọn.
+- **Quyết định:** Tuyệt đối không lưu trữ hay tái tạo ảnh khuôn mặt chân thực từ ảnh selfie của người dùng. Ảnh selfie chỉ được AI phân tích thuộc tính ngoại hình (kiểu tóc, màu tóc, kính mắt) để gán vào sprite nhân vật pixel tương ứng; không tự động đoán giới tính mà để người dùng tự chọn. Quy định này áp dụng cho luồng tạo avatar pixel; Lookbook chế độ "Ảnh của tôi" (người dùng chủ động tải ảnh và tick đồng ý) theo mục 17.
 - **Lý do:** Bảo vệ nghiêm ngặt quyền riêng tư sinh trắc học và tôn trọng quyền tự quyết bản dạng của người dùng.
 
 ### 10. Nguyên tắc khai báo cấu hình Model AI
@@ -61,7 +61,7 @@
 - **Lý do:** Triệt để áp dụng nguyên lý Single Source of Truth, tránh tình trạng tài liệu bị lỗi thời khi nâng cấp định danh model.
 
 ### 11. Chỉ định phiên bản Model AI
-- **Quyết định:** Model sinh ảnh bắt buộc sử dụng **`gemini-3.1-flash-image`** (tuyệt đối không dùng `gemini-2.5-flash-image` do lịch trình ngừng hoạt động vào ngày 02/10/2026). Model đọc ảnh sử dụng **Gemini Flash mới nhất** với chế độ Structured Output (JSON Schema).
+- **Quyết định:** Model sinh ảnh dùng **`gemini-3.1-flash-lite-image`**: bản stable rẻ nhất (khoảng $0.0336 mỗi ảnh 1K, nhận tối đa 14 ảnh tham chiếu, có tỉ lệ 3:4). Tuyệt đối không dùng `gemini-2.5-flash-image` vì model này đã ngừng hoạt động từ ngày 02/10/2026. Model đọc ảnh sử dụng **Gemini Flash mới nhất** với chế độ Structured Output (JSON Schema).
 - **Lý do:** Đảm bảo độ bền vững dài hạn của hệ thống, phòng tránh lỗi sập dịch vụ do vòng đời ngừng hỗ trợ và đảm bảo đầu ra dữ liệu được kiểm soát cấu trúc chặt chẽ.
 
 ### 12. Mốc thời gian Áo Lemur
@@ -88,9 +88,16 @@
   - Khi về già, bà Mai trở ra Hà Nội, mở lại tiệm may trong chính căn nhà cũ của cụ Loan tại phố Hàng Đào và đặt tên là Tiệm May Nếp. Bà mất năm 2024 ở tuổi 84, An tiếp quản.
 - **Lý do:** Xâu chuỗi liền mạch hành trình địa lý từ Bắc vào Nam rồi quay trở về cội nguồn Hà Nội, gắn kết chặt chẽ mọi thế hệ vào cùng một không gian di sản.
 
-### 17. Quy chuẩn tạo ảnh Lookbook trong Studio
-- **Quyết định:** Lookbook sinh 4 ảnh tương ứng với 4 góc nhìn: chính diện, nghiêng, sau lưng và cận chi tiết. Sử dụng người mẫu do AI tạo dựng, **tuyệt đối không dùng mặt người dùng**. Giao diện có thanh tiến độ thời gian thực. Ảnh nào hoàn thành trước thì hiển thị trước. Nếu quá thời gian chờ (45 giây) thì tự động chuyển sang thẻ pixel dự phòng.
-- **Lý do:** Tối ưu hóa trải nghiệm thị giác đa chiều, đảm bảo tính công thái học và giữ an toàn quyền riêng tư cá nhân.
+### 17. Quy chuẩn tạo ảnh Lookbook trong Studio (2 chế độ)
+- **Quyết định:**
+  - **"Người mẫu của tiệm" (mặc định):** người mẫu hư cấu do AI tạo, giới tính theo nhân vật người chơi.
+  - **"Ảnh của tôi":** người dùng tải 1 ảnh của chính mình và tick đồng ý. Server kiểm tra ảnh: đúng 1 người, thấy rõ mặt, trông như người lớn. Ảnh không thấy toàn thân thì chỉ cảnh báo là dáng người được ước đoán.
+  - **4 góc:** chính diện, ngoảnh lại, sau lưng, cận cảnh nửa người (cổ áo và tay áo).
+  - **Đồng nhất:** ảnh chính diện (hero) được tạo trước và làm mốc cho 3 góc còn lại ở **cả hai chế độ**. Mô tả áo dựng từ catalog, giống hệt nhau ở cả 4 ảnh. Không khí ảnh thay đổi theo sự kiện (viếng tang thì trang nghiêm, Tết thì tươi vui).
+  - **Hiển thị:** ảnh nào xong thì hiện trước, có thanh tiến độ. Ô lỗi có nút chụp lại riêng. Không bao giờ treo: hết thời gian hoặc AI lỗi thì giữ ảnh pixel.
+  - **Riêng tư:** ảnh người chỉ tồn tại trong RAM của một request. Không ghi file, không log, không cache phía server, không lưu localStorage. Client chỉ gửi mã định danh và mã màu, server tự dựng toàn bộ prompt. Ảnh kết quả có nhãn "Ảnh do AI tạo". Demo chỉ dùng ảnh của thành viên trong đội.
+  - **Chi phí:** giới hạn số lượt theo từng người dùng, trần lượt chụp mỗi ngày, cộng thêm spend cap của project. Hết lượt thì hiện ảnh pixel kèm câu thông báo thân thiện.
+- **Lý do:** Ảnh của chính mình làm Lookbook có ý nghĩa hơn, nhưng chỉ khi người dùng chủ động đồng ý và ảnh không bị lưu lại. Dùng ảnh hero làm mốc để 4 ảnh trông như cùng một buổi chụp. Trần chi phí để credit trả trước còn đủ cho giám khảo trải nghiệm.
 
 ### 18. Kiểu chơi cốt truyện & tương tác thế giới
 - **Quyết định:** Giữ nguyên toàn bộ chương hồi, nhân vật, vật phẩm, câu đố từ `docs/07-game` nhưng tương tác theo thiết kế UI với cơ chế đi lại trong khu vực bằng phím, bấm E để tương tác với NPC/vật, thu thập manh mối qua hội thoại vào sổ manh mối, câu đố nhiều bước có tính năng Hoàn tác/Làm lại và điều hướng qua bản đồ chương. *(Lịch sử: spec hitbox từ `docs/07-game` được thay bằng `src/content` JSON và `src/core/physics.ts` ngày 05/10/2026)*

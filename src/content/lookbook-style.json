@@ -1,0 +1,90 @@
+{
+  "version": 2,
+  "blocks": {
+    "identityPersonal": "Image {person} is the person. Keep their face, facial features, hairstyle, hair color, skin tone and body proportions exactly as in image {person}; the same person must be clearly recognizable.",
+    "identityFictional": {
+      "female": "A fictional young Vietnamese woman with natural black hair; she is not a real or famous person.",
+      "male": "A fictional young Vietnamese man with short natural black hair; he is not a real or famous person."
+    },
+    "heroAnchor": "Image {hero} is the first photo of this set: same person, same outfit, same light and color grade; only the pose and camera angle change.",
+    "garmentWithReference": "The person wears the exact áo dài shown in image {garment}: {garmentPrompt} Recolor the fabric to {mainColor} with {accentColor} accents, keeping the original motif placement. {accessories}The garment fully replaces the person's original clothing and looks identical in every photo of this set.",
+    "garmentTextOnly": "The person wears a Vietnamese áo dài: {garmentPrompt} The fabric is {mainColor} with {accentColor} accents. {accessories}The garment fully replaces the person's original clothing and looks identical in every photo of this set.",
+    "accessoriesLead": "Accessories: ",
+    "moodLead": "The photo is taken ",
+    "style": "Shot on 35mm film, Kodak Portra 400 look. Bright, airy exposure with lifted shadows and soft warm late-afternoon sunlight; gentle golden backlight that rims the hair. Natural skin texture, subtle fine film grain, true-to-life colors with a fresh, slightly warm grade. Shallow depth of field, softly blurred background. Candid, relaxed lifestyle feel, not a studio shoot.",
+    "output": "One photograph only, a single frame, aspect ratio 3:4. Clean image without any text, letters, logos or borders. Authentic Vietnamese garment construction exactly as described above."
+  },
+  "moods": [
+    { "id": "pho-co", "labelVi": "Phố cổ", "prompt": "on a quiet old Hanoi street with mustard-yellow lime-washed walls, wooden shutters and tiled roofs, dappled sun through tree leaves." },
+    { "id": "vuon-hoa", "labelVi": "Vườn hoa", "prompt": "beside a wall covered in flowering vines (bougainvillea and yellow trumpet flowers), lush green leaves, sunlit sidewalk." },
+    { "id": "tuong-voi", "labelVi": "Tường vôi", "prompt": "against a weathered white lime-washed wall with climbing ivy and a vintage bicycle with a red frame nearby." },
+    { "id": "san-nha", "labelVi": "Sân nhà", "prompt": "in a traditional Vietnamese courtyard with terracotta floor tiles, potted lotus and an old wooden door." },
+    { "id": "custom", "labelVi": "Nền của tôi", "prompt": "in the location shown in image {background}; keep its layout and light direction." }
+  ],
+  "events": [
+    { "id": "dao_pho", "prompt": "Easy weekend-stroll mood: relaxed, natural posture and a light, natural smile." },
+    { "id": "tet", "prompt": "Festive Lunar New Year mood: bright, joyful expression, with a few soft peach-blossom or yellow apricot-blossom branches in the scene." },
+    { "id": "dam_cuoi", "prompt": "Joyful wedding-day mood: warm, graceful smile and a refined, celebratory atmosphere." },
+    { "id": "be_giang", "prompt": "Graduation-day mood: youthful, proud and relaxed, with a soft smile." },
+    { "id": "le_chua", "prompt": "Calm temple-visit mood: serene, modest expression and a gentle, quiet posture." },
+    { "id": "vieng_tang", "prompt": "Solemn mourning mood: serious, respectful expression without a smile, quiet restrained posture, muted and subdued colors in the surroundings." }
+  ],
+  "angles": [
+    { "id": "front", "labelVi": "Chính diện", "prompt": "Full-length shot at eye level with a 50mm lens. Standing naturally and facing the camera, hands relaxed." },
+    { "id": "turn", "labelVi": "Ngoảnh lại", "prompt": "Three-quarter view with an 85mm lens. Walking slightly away, then glancing back over the shoulder toward the camera, hair catching the sunlight." },
+    { "id": "back", "labelVi": "Sau lưng", "prompt": "Full-length shot from behind. Standing and looking at the flowers, showing the back panel of the áo dài and the hair; holding a small bouquet of white flowers." },
+    { "id": "detail", "labelVi": "Cận cảnh", "prompt": "Close-up from the chest up with an 85mm lens, the garment filling most of the frame, slight three-quarter turn, gaze off-camera; the collar shape, the fastening and the sleeves are sharp and clearly visible." }
+  ],
+  "garments": {
+    "ao-tu-than": "A traditional northern Vietnamese four-panel áo tứ thân dress with an open neckline that shows an inner silk halter (yếm) and long sleeves. The two front panels hang open and are knotted together at the waist with a silk sash, so the knot alone closes the front. It falls to the knee over a long, full, dark skirt.",
+    "ao-ngu-than-tay-chen": "A traditional Vietnamese five-panel áo ngũ thân with a low standing collar and narrow, fitted sleeves. Small round cloth buttons run from the collar across the right shoulder and down the right side seam (Vietnamese side fastening). The panels fall below the knee over loose silk trousers.",
+    "ao-ngu-than-tay-thung": "A ceremonial Vietnamese five-panel robe (áo tấc) with a low standing collar and very wide, flowing sleeves. Cloth buttons run along the right shoulder and the right side seam (Vietnamese side fastening). The robe reaches the ankles over loose silk trousers.",
+    "ao-dai-lemur": "A 1930s reformed Vietnamese áo dài with a scalloped lotus-leaf collar, softly puffed shoulders and a fitted waist. It closes with Vietnamese side fastening along the right shoulder and side seam. Long front and back panels fall over loose silk trousers.",
+    "ao-dai-tan-thoi-vang-mo-ga": "A late-1930s fitted Vietnamese áo dài with a standing collar and plain, smooth shoulders above slim sleeves. Small snap buttons run from the collar along the right shoulder and down the right side seam (Vietnamese side fastening). Long front and back panels fall over loose silk trousers.",
+    "ao-dai-raglan": "A 1960s fitted Vietnamese áo dài with a standing collar and raglan sleeves seamed diagonally from the collar to the underarm. Snap buttons run from the collar along the right raglan seam and down the right side seam (Vietnamese side fastening). Long panels with high side slits fall over loose silk trousers.",
+    "ao-dai-co-thuyen": "A 1960s fitted Vietnamese áo dài with a wide boat neckline that sits across the collarbones and shows the neck and shoulders. Snap buttons run down the right side seam (Vietnamese side fastening). The fitted bodice flows into long front and back panels over loose silk trousers.",
+    "ao-dai-cuoi-phin": "A simple 1980s Vietnamese wedding áo dài in cotton poplin with a standing collar and small embroidered peach-blossom sprigs on the chest. It closes with Vietnamese side fastening along the right shoulder and side seam. Long panels fall over loose silk trousers.",
+    "ao-dai-popolin": "A 1980s Vietnamese áo dài in poplin with a standing collar and a small chrysanthemum print scattered over the fabric. It closes with Vietnamese side fastening along the right shoulder and side seam. Long panels fall over loose silk trousers.",
+    "ao-ngu-than-remix-2026": "A modern Vietnamese five-panel áo dài, a 2026 remix of the áo ngũ thân, with a low standing collar, narrow fitted sleeves and color-blocked panels. Cloth buttons run along the right shoulder and side seam (Vietnamese side fastening). The panels fall below the knee over loose trousers."
+  },
+  "accessories": {
+    "khan-van-den": "A black velvet headscarf (khăn vấn) wound neatly around the head in a smooth, low turban.",
+    "khan-van-hoang-yen": "A canary-yellow silk headscarf (khăn vấn) wound neatly around the head in a smooth, low turban.",
+    "khan-mo-qua": "A square dark cloth scarf (khăn mỏ quạ) folded diagonally on the head, its pointed end jutting forward like a crow's beak.",
+    "non-quai-thao": "A wide, round, flat palm-leaf hat (nón ba tầm) worn on the head, with silk chin straps (quai thao) hanging down to the chest.",
+    "non-la": "A conical palm-leaf hat (nón lá) held in one hand, with its silk chin strap visible.",
+    "guoc-moc": "A pair of plain carved wooden clogs (guốc mộc) with velvet straps across the instep, worn on the feet.",
+    "hai-theu": "A pair of curved-toe cloth shoes (hài) embroidered with lotus flowers in multicolored thread, worn on the feet.",
+    "kieng-bac": "A rigid silver necklace ring (kiềng bạc) engraved with floral patterns, resting at the base of the neck.",
+    "kinh-mat-meo": "A pair of 1960s cat-eye sunglasses with upswept outer corners, worn on the face.",
+    "quat-lua": "A round silk hand fan embroidered with plum blossom, chrysanthemum and bamboo, held in one hand."
+  },
+  "colorNames": [
+    { "hex": "#6b4423", "en": "earthy yam-dyed brown" }, { "hex": "#1e2a38", "en": "deep indigo" }, { "hex": "#2d3e50", "en": "indigo blue" },
+    { "hex": "#b83a24", "en": "vermilion red" }, { "hex": "#8b261e", "en": "deep carmine red" }, { "hex": "#cfa449", "en": "silk gold" },
+    { "hex": "#e8d399", "en": "pale butter yellow" }, { "hex": "#2d6a5d", "en": "celadon green" }, { "hex": "#2e8b7a", "en": "jade green" },
+    { "hex": "#4e6b7a", "en": "smoky slate blue" }, { "hex": "#f5efeb", "en": "ivory white" }, { "hex": "#1c1614", "en": "ebony black" },
+    { "hex": "#2e1c12", "en": "dark ironwood brown" }, { "hex": "#3d261a", "en": "dark walnut brown" }, { "hex": "#b58a42", "en": "antique brass" },
+    { "hex": "#f2c94c", "en": "golden yellow" }, { "hex": "#fdeace", "en": "light cream" }, { "hex": "#fde5c8", "en": "peach cream" },
+    { "hex": "#f3c098", "en": "light apricot" }, { "hex": "#d37c74", "en": "dusty rose" }, { "hex": "#e75788", "en": "lotus pink" },
+    { "hex": "#a53556", "en": "raspberry red" }, { "hex": "#7b3248", "en": "ripe plum" }, { "hex": "#411d3a", "en": "deep plum" },
+    { "hex": "#251728", "en": "dark aubergine" }, { "hex": "#1e1523", "en": "ink black" }, { "hex": "#e09b5a", "en": "bronze orange" },
+    { "hex": "#fb9a99", "en": "sunset pink" }, { "hex": "#ffffff", "en": "pure white" }, { "hex": "#c4a482", "en": "light tan" },
+    { "hex": "#e6a1b0", "en": "soft pink" }, { "hex": "#c25975", "en": "rose pink" }, { "hex": "#e7a08e", "en": "salmon pink" },
+    { "hex": "#ffccd5", "en": "blush pink" }, { "hex": "#fb6f92", "en": "bright pink" }, { "hex": "#c9365f", "en": "deep rose red" },
+    { "hex": "#5e0e27", "en": "burgundy" }, { "hex": "#fff3b0", "en": "pale lemon yellow" }, { "hex": "#a8dadc", "en": "pale aqua" },
+    { "hex": "#457b9d", "en": "steel blue" }, { "hex": "#1d3557", "en": "dark navy blue" }, { "hex": "#0d1b2a", "en": "midnight navy" },
+    { "hex": "#90e0ef", "en": "pale sky blue" }, { "hex": "#00b4d8", "en": "bright cyan blue" }, { "hex": "#0077b6", "en": "cobalt blue" },
+    { "hex": "#03045e", "en": "navy blue" }, { "hex": "#d6ccc2", "en": "warm greige" }, { "hex": "#8d8175", "en": "taupe grey" },
+    { "hex": "#e9edc9", "en": "pale celery green" }, { "hex": "#ccd5ae", "en": "sage green" }, { "hex": "#d4a373", "en": "camel" },
+    { "hex": "#606c38", "en": "olive green" }, { "hex": "#ffd166", "en": "sunflower yellow" }, { "hex": "#ef476f", "en": "coral pink" },
+    { "hex": "#06d6a0", "en": "mint green" }, { "hex": "#118ab2", "en": "ocean blue" }, { "hex": "#637687", "en": "slate blue grey" },
+    { "hex": "#b1d0be", "en": "pale celadon" }, { "hex": "#e8c547", "en": "mustard yellow" }, { "hex": "#c49b18", "en": "dark gold" },
+    { "hex": "#7d620a", "en": "olive gold" }, { "hex": "#382b02", "en": "very dark olive brown" }, { "hex": "#5c3a21", "en": "chestnut brown" },
+    { "hex": "#8b5a2b", "en": "saddle brown" }, { "hex": "#3a0d1b", "en": "dark wine" }, { "hex": "#802d45", "en": "wine red" },
+    { "hex": "#9b8342", "en": "khaki brown" }, { "hex": "#3d3315", "en": "dark khaki brown" }, { "hex": "#e9d8a6", "en": "sand beige" },
+    { "hex": "#f3df9f", "en": "pale wheat yellow" }, { "hex": "#101720", "en": "blue black" }, { "hex": "#204d44", "en": "deep teal green" },
+    { "hex": "#102923", "en": "very dark green" }, { "hex": "#3a1916", "en": "dark mahogany" }, { "hex": "#50321a", "en": "coffee brown" },
+    { "hex": "#2c1608", "en": "espresso brown" }, { "hex": "#907030", "en": "old gold" }, { "hex": "#f0efeb", "en": "off white" }
+  ]
+}

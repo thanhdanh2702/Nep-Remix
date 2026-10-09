@@ -12,7 +12,7 @@ Bảng dưới đây tổng hợp toàn bộ các tính năng dự kiến của 
 | F06 | Chấm điểm hài hòa màu sắc | Phòng phối đồ (Studio) | Đo độ tương phản và sắc độ, đưa điểm số và nhận xét ngắn | Có |
 | F07 | Nhắc nhở quy tắc văn hóa | Phòng phối đồ (Studio) | Đưa cảnh báo nhẹ khi phối đồ lệch nghi lễ truyền thống, không cấm đoán | Có |
 | F08 | So sánh song song trang phục | Phòng phối đồ (Studio) | Hiển thị 2 bộ đồ cạnh nhau để người dùng quan sát và chọn lựa | Có |
-| F09 | Tạo bộ ảnh Lookbook chân thực | Phòng phối đồ (Studio) | Gọi Gemini tạo 4 bức ảnh người mẫu mặc đồ phối trong bối cảnh studio | Có (code done; fallback pixel nếu offline) |
+| F09 | Lookbook AI hai chế độ (người mẫu của tiệm / ảnh của tôi có đồng ý) | Phòng phối đồ (Studio) | Gemini chụp 4 góc (chính diện, ngoảnh lại, sau lưng, cận cảnh) bộ đang phối, trên người mẫu hư cấu hoặc ảnh của chính người chơi sau khi tick đồng ý; chụp lại từng góc, lưu PNG | Có (code done; hết lượt hoặc offline thì giữ ảnh pixel) |
 | F10 | Kho lưu trữ trang phục cá nhân | Tủ đồ (Closet) | Xem lại các bộ đồ đã lưu, các mẫu áo đã mở khóa hoặc mua được | Có |
 | F11 | Cửa hàng phụ kiện bằng Sen Ngọc | Tủ đồ (Closet) | Dùng Sen Ngọc thưởng để mở khóa thêm các phụ kiện truyền thống | Có |
 | F12 | Xưởng may số hóa áo thật | Xưởng may (nằm trong Tủ đồ) | Quét ảnh áo thật, Gemini nhận diện dáng/cổ/hoa văn/màu và mở Phòng phối đồ với dáng + màu tương ứng | Có (Gemini extract cần API key) |

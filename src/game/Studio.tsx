@@ -116,12 +116,8 @@ export function Studio({
   const [viewIndex, setViewIndex] = useState(0);
   const [sparkle, setSparkle] = useState(0);
   const [lookbookModalOpen, setLookbookModalOpen] = useState(false);
-  const [lookbookCaptureCount, setLookbookCaptureCount] = useState(0);
-  const handleOpenLookbook = () => {
-    setLookbookModalOpen(true);
-    setLookbookCaptureCount(count => count + 1);
-  };
   const saveRef = useRef<HTMLButtonElement>(null);
+  const lookbookOpenRef = useRef<HTMLButtonElement>(null);
   const view = studioViews[viewIndex];
   const preset = state.profile?.avatarPreset ?? 'an-default';
   const turn = (step: number) => setViewIndex(index => (index + step + studioViews.length) % studioViews.length);
@@ -363,7 +359,7 @@ export function Studio({
         </div>
         <div className="studio-an-controls-row" role="group" aria-label="Gợi ý và chụp Lookbook">
           <StudioStylist state={state} draft={draft} update={update} notify={notify} />
-          <button className="studio-ai-button studio-lookbook-open-btn" onClick={handleOpenLookbook}>
+          <button ref={lookbookOpenRef} className="studio-ai-button studio-lookbook-open-btn" onClick={() => setLookbookModalOpen(true)}>
             Chụp Lookbook AI
           </button>
           <button className="studio-ai-button studio-reset-btn" onClick={handleReset}>
@@ -376,11 +372,15 @@ export function Studio({
         <h2 className="studio-lookbook-heading">Lookbook của bạn</h2>
         <StudioLookbookAi
           draft={draft}
-          eventTitle={events.find(e => e.id === draft.eventContextId)?.name ?? events[0].name}
-          isModalOpen={lookbookModalOpen}
-          captureCount={lookbookCaptureCount}
-          onCloseModal={() => setLookbookModalOpen(false)}
-          onOpenModal={handleOpenLookbook}
+          gender={state.profile?.gender ?? 'female'}
+          eventId={draft.eventContextId ?? 'dao_pho'}
+          eventName={events.find(e => e.id === draft.eventContextId)?.name ?? events[0].name}
+          open={lookbookModalOpen}
+          onClose={() => setLookbookModalOpen(false)}
+          openerRef={lookbookOpenRef}
+          onSave={save}
+          garmentIds={[...new Set([...state.closet.unlockedGarmentIds, ...loanGarmentIds])]}
+          onGarment={id => { const garment = content.garmentsById.get(id); if (garment) selectGarment(garment); }}
           actions={
             <>
               <button onClick={() => setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>
