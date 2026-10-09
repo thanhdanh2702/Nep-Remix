@@ -405,7 +405,25 @@ button.journal-item.selected{background:var(--c-soft-pink);border-color:var(--c-
   gap: var(--sp-3);
   max-height: 58vh;
   overflow-y: auto;
+  overscroll-behavior: contain;
   padding: var(--sp-1) 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .document-viewer-body {
+    scroll-behavior: smooth;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .document-viewer-body {
+    scroll-behavior: auto;
+  }
+}
+
+.document-viewer-body:focus-visible {
+  outline: 2px solid var(--c-warm-gold);
+  outline-offset: 2px;
 }
 
 .document-paper-frame {

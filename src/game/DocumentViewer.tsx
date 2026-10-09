@@ -41,6 +41,80 @@ export interface DocumentViewerProps {
  * - Read-only reread mode: Used in Journal/Inventory; allows inspecting documents without mutating state or granting rewards.
  * - Semantic Vietnamese comparative content: Compares Sổ gốc, Thư thỏa thuận, Bản sửa, and Biên nhận without relying on handwriting, paper folds, or good fortune claims.
  */
+export interface DocumentScrollTarget {
+  scrollTop: number;
+  scrollHeight: number;
+  clientHeight: number;
+  style?: { scrollBehavior?: string };
+}
+
+/**
+ * Pure keyboard scroll handler for DocumentViewer reading region.
+ * Handles ArrowDown, ArrowUp, PageDown, PageUp, Home, End.
+ * Clamps within [0, scrollHeight - clientHeight].
+ * Invokes preventDefault() to prevent outer page / modal scrolling.
+ * Bypasses smooth scrolling on key repeat or reduced-motion to prevent animation lag.
+ */
+export function handleDocumentBodyKeyDown(
+  el: DocumentScrollTarget,
+  e: { key: string; repeat?: boolean; preventDefault?: () => void },
+  prefersReducedMotion = false
+): boolean {
+  const maxScroll = Math.max(0, el.scrollHeight - el.clientHeight);
+  const scrollStep = 40;
+  const pageStep = Math.max(120, Math.round(el.clientHeight * 0.8));
+
+  let delta = 0;
+  let targetScroll: number | null = null;
+
+  switch (e.key) {
+    case 'ArrowDown':
+      delta = scrollStep;
+      break;
+    case 'ArrowUp':
+      delta = -scrollStep;
+      break;
+    case 'PageDown':
+      delta = pageStep;
+      break;
+    case 'PageUp':
+      delta = -pageStep;
+      break;
+    case 'Home':
+      targetScroll = 0;
+      break;
+    case 'End':
+      targetScroll = maxScroll;
+      break;
+    default:
+      return false;
+  }
+
+  e.preventDefault?.();
+
+  const nextScroll = targetScroll !== null
+    ? targetScroll
+    : Math.max(0, Math.min(maxScroll, el.scrollTop + delta));
+
+  const isHtmlEl = typeof HTMLElement !== 'undefined' && el instanceof HTMLElement;
+  const isJumpOrRepeat = Boolean(e.key === 'Home' || e.key === 'End' || e.repeat);
+  const isReduced = Boolean(
+    prefersReducedMotion ||
+    (typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)')?.matches)
+  );
+
+  if (isHtmlEl && (isJumpOrRepeat || isReduced) && el.style) {
+    const prevBehavior = el.style.scrollBehavior;
+    el.style.scrollBehavior = 'auto';
+    el.scrollTop = nextScroll;
+    el.style.scrollBehavior = prevBehavior;
+  } else {
+    el.scrollTop = nextScroll;
+  }
+
+  return true;
+}
+
 export function DocumentViewer({
   document: doc,
   dialogueText,
@@ -51,12 +125,23 @@ export function DocumentViewer({
   onClose,
 }: DocumentViewerProps) {
   const containerRef = useRef<HTMLDivElement>(null);
+  const bodyRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Focus the modal or primary button on mount
-    const btn = containerRef.current?.querySelector<HTMLButtonElement>('button.primary, button');
-    btn?.focus();
+    // Focus the document reading body on mount so keyboard users read the evidence first
+    if (bodyRef.current) {
+      bodyRef.current.focus();
+    } else {
+      const btn = containerRef.current?.querySelector<HTMLButtonElement>('button.primary, button');
+      btn?.focus();
+    }
   }, [doc.id]);
+
+  const handleBodyKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    const el = bodyRef.current;
+    if (!el) return;
+    handleDocumentBodyKeyDown(el, e);
+  };
 
   const handleAction = () => {
     if (readOnly) {
@@ -96,7 +181,14 @@ export function DocumentViewer({
           <p className="doc-subtitle">{doc.subtitle}</p>
         </header>
 
-        <div className="document-viewer-body">
+        <div
+          ref={bodyRef}
+          className="document-viewer-body"
+          tabIndex={0}
+          role="region"
+          aria-label={`Văn bản chứng cứ: ${doc.title}`}
+          onKeyDown={handleBodyKeyDown}
+        >
           {/* Visual production paper preview */}
           <div className="document-paper-frame">
             <img

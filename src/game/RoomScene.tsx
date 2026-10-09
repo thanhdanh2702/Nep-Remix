@@ -12,7 +12,8 @@ import { HUD_SELECTOR, measureInsets } from './scene-view';
 import { anLayerPath } from './npc-portraits';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT, type CharacterScene } from './character-scale';
 import { anCell, drawRoom, ROOM_NPCS, c2AreaOverlays, c2RoomNpcs, c2ExitArrows, c3AreaOverlays, c3RoomNpcs, c3ExitArrows, type Box, type Highlight, type NpcViews, type RoomAssets } from './room-render';
-import { arriveNow, cellFor, clampToFloor, findPath, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
+import { arriveNow, cellFor, clampToFloor, C3_HOTSPOT_LABELS, entryPoint, findPath, newWalker, standClear, targetFor, tick, WALK_SPEED, type Walker } from './room-walker';
+export { C3_HOTSPOT_LABELS };
 
 // Cutout bboxes written by scripts/build-hotspot-cutouts.py: id -> {x,y,w,h} in world px (the room background's pixels).
 const cutoutBoxes = import.meta.glob<Record<string, Box>>('../../assets/areas/*/*/hotspots.json', { eager: true, import: 'default' });
@@ -27,11 +28,6 @@ const SCENE_OF: Record<string, CharacterScene | undefined> = { prologue: 'c0', c
 const NPC_VIEWS = ['front', 'left', 'right', 'back'] as const;
 const STAND_GAP = 0.045; // world widths of clear floor between An and the object she walks to
 const floorOf = (scene: CharacterScene, h: number) => ({ top: HUMAN_HEIGHT[scene].floorTop * h, bottom: HUMAN_HEIGHT[scene].floorBottom * h });
-// Under a floor arrow she stands just above it; a wall arrow (stairs) floats over the floor, so she stands beside
-// it (left of it unless that runs off the room) and the arrow never covers her.
-const entryPoint = (r: { x: number; y: number; w: number; h: number }, floor: { top: number }, world: { w: number; h: number }) =>
-  (r.y + r.h) * world.h > floor.top ? { x: (r.x + r.w / 2) * world.w, y: r.y * world.h }
-    : { x: r.x > 0.15 ? (r.x - 0.06) * world.w : (r.x + r.w + 0.06) * world.w, y: floor.top };
 const rectOf = (i: Interactable, w: number, h: number): Box => { const r = i.rect ?? { x: i.pos.x - .03, y: i.pos.y - .03, w: .06, h: .06 }; return { x: r.x * w, y: r.y * h, w: r.w * w, h: r.h * h }; };
 // Every loaded view of one NPC (front, left, right, back); a missing file just leaves that view out.
 const loadViews = (id: string, customPath?: string): Promise<NpcViews> => {
@@ -51,7 +47,11 @@ const DIR_LABEL = { up: 'Đi lên', down: 'Đi xuống', left: 'Sang trái', rig
 type Chapter = (typeof content.chapters)[keyof typeof content.chapters];
 type Spot = { i: Interactable; label: string; used: boolean; hit: Box; world: Box | undefined };
 
+
 const labelFor = (i: Interactable, chapter: Chapter) => {
+  if (chapter.chapter.id === 'c3' && C3_HOTSPOT_LABELS[i.id]) {
+    return C3_HOTSPOT_LABELS[i.id];
+  }
   const a = i.action;
   if (a.type === 'item') return content.itemsById.get(a.targetId)?.name ?? i.id;
   if (a.type === 'puzzle') return chapter.puzzles.find(p => p.id === a.targetId)?.title ?? i.id;
@@ -193,7 +193,7 @@ export function RoomScene({ state, blocked, onInteract, onExit }: {
     prevArea.current = areaId;
     const floor = scene && floorOf(scene, world.h);
     const initialPos = entry && floor
-      ? entryPoint(entry.rect, floor, world)
+      ? entryPoint(entry, floor, world, chapterId, areaId)
       : (area.spawn ? { x: area.spawn.x * world.w, y: area.spawn.y * world.h } : { x: world.w / 2, y: world.h });
     walker.current = floor ? newWalker(standClear(areaId, clampToFloor(initialPos, floor, world.w), floor, world)) : null;
     const folder = areaFolder(chapterId, areaId);

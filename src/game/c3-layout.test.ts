@@ -2,7 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { AN_FIGURE_H, characterScale, HUMAN_HEIGHT } from './character-scale';
 import { c3AreaOverlays, c3RoomNpcs, c3ExitArrows } from './room-render';
-import { findPath, standClear, targetFor, clampToFloor } from './room-walker';
+import { findPath, standClear, targetFor, clampToFloor, entryPoint } from './room-walker';
+import type { ExitArrow } from '../content/schema';
 
 const W = 1672;
 const H = 941;
@@ -187,60 +188,55 @@ test('C3 walker routing avoids furniture and stays on open floor with clear rout
 
 test('C3 walker placement: initial fallback spawn, transition entry from exit arrows, resume and reachability', () => {
   const floor = { top: 0.68 * H, bottom: 0.92 * H };
-  const entryPoint = (r: { x: number; y: number; w: number; h: number }, fl: { top: number }, world: { w: number; h: number }) =>
-    (r.y + r.h) * world.h > fl.top ? { x: (r.x + r.w / 2) * world.w, y: r.y * world.h }
-      : { x: r.x > 0.15 ? (r.x - 0.06) * world.w : (r.x + r.w + 0.06) * world.w, y: fl.top };
 
   // 1. Initial fallback spawn from area.spawn (used on fresh entry or resume without transition history)
-  // S1: spawn {0.15, 0.5} -> clamped y=639.88, standClear pushes past sewing table to y=790.44
+  // S1: spawn {0.15, 0.5} -> clamped y=639.88, standClear pushes past sewing table to open floor y=790.44
   const s1Initial = standClear('c3-s1-tiem-may-da-kao', clampToFloor({ x: 0.15 * W, y: 0.5 * H }, floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s1Initial.x - 250.8) < 1e-4, 'S1 initial spawn x should be 250.8');
   assert.ok(Math.abs(s1Initial.y - 790.44) < 1e-4, 'S1 initial spawn y should be 790.44');
 
-  // S2: spawn {0.1, 0.6} -> clamped y=639.88, no obstacle at x=167.2, stands at y=639.88
+  // S2: spawn {0.1, 0.6} -> clamped y=639.88, standClear pushes past armchair obstacle to open floor y=795.15
   const s2Initial = standClear('c3-s2-phong-phong-thuy', clampToFloor({ x: 0.1 * W, y: 0.6 * H }, floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s2Initial.x - 167.2) < 1e-4, 'S2 initial spawn x should be 167.2');
-  assert.ok(Math.abs(s2Initial.y - 639.88) < 1e-4, 'S2 initial spawn y should be 639.88');
+  assert.ok(Math.abs(s2Initial.y - 795.145) < 1e-3, 'S2 initial spawn y should be ~795.15');
 
-  // S3: spawn {0.1, 0.6} -> clamped y=639.88, no obstacle at x=167.2, stands at y=639.88
+  // S3: spawn {0.1, 0.6} -> clamped y=639.88, standClear pushes past left console obstacle to open floor y=819.61
   const s3Initial = standClear('c3-s3-dinh-thu-doi-dau', clampToFloor({ x: 0.1 * W, y: 0.6 * H }, floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s3Initial.x - 167.2) < 1e-4, 'S3 initial spawn x should be 167.2');
-  assert.ok(Math.abs(s3Initial.y - 639.88) < 1e-4, 'S3 initial spawn y should be 639.88');
+  assert.ok(Math.abs(s3Initial.y - 819.611) < 1e-3, 'S3 initial spawn y should be ~819.61');
 
   // 2. Room-to-room transitions via exit arrows (entryPoint + clampToFloor + standClear)
   // S1 -> S2 forward transition: entering S2 from S1 (arrow back at left)
   const s2ArrowBack = c3ExitArrows('c3-s2-phong-phong-thuy').find(a => a.exit === 'back')!;
-  const s2EntryFromS1 = standClear('c3-s2-phong-phong-thuy', clampToFloor(entryPoint(s2ArrowBack.rect, floor, { w: W, h: H }), floor, W), floor, { w: W, h: H });
+  const s2EntryFromS1 = standClear('c3-s2-phong-phong-thuy', clampToFloor(entryPoint(s2ArrowBack, floor, { w: W, h: H }, 'c3', 'c3-s2-phong-phong-thuy'), floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s2EntryFromS1.x - 83.6) < 1e-4, 'S2 entry from S1 x should be 83.6');
-  assert.ok(Math.abs(s2EntryFromS1.y - 639.88) < 1e-4, 'S2 entry from S1 y should be 639.88');
+  assert.ok(Math.abs(s2EntryFromS1.y - 795.15) < 1e-3, 'S2 entry from S1 y should be 795.15');
 
   // S3 -> S2 return transition: returning to S2 from S3 (arrow mansion at right)
   const s2ArrowMansion = c3ExitArrows('c3-s2-phong-phong-thuy').find(a => a.exit === 'mansion')!;
-  const s2EntryFromS3 = standClear('c3-s2-phong-phong-thuy', clampToFloor(entryPoint(s2ArrowMansion.rect, floor, { w: W, h: H }), floor, W), floor, { w: W, h: H });
+  const s2EntryFromS3 = standClear('c3-s2-phong-phong-thuy', clampToFloor(entryPoint(s2ArrowMansion, floor, { w: W, h: H }, 'c3', 'c3-s2-phong-phong-thuy'), floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s2EntryFromS3.x - 1588.4) < 1e-4, 'S2 entry from S3 x should be 1588.4');
-  assert.ok(Math.abs(s2EntryFromS3.y - 639.88) < 1e-4, 'S2 entry from S3 y should be 639.88');
+  assert.ok(Math.abs(s2EntryFromS3.y - 795.15) < 1e-3, 'S2 entry from S3 y should be 795.15');
 
   // S2 -> S3 forward transition: entering S3 from S2 (arrow back at left)
   const s3ArrowBack = c3ExitArrows('c3-s3-dinh-thu-doi-dau').find(a => a.exit === 'back')!;
-  const s3EntryFromS2 = standClear('c3-s3-dinh-thu-doi-dau', clampToFloor(entryPoint(s3ArrowBack.rect, floor, { w: W, h: H }), floor, W), floor, { w: W, h: H });
+  const s3EntryFromS2 = standClear('c3-s3-dinh-thu-doi-dau', clampToFloor(entryPoint(s3ArrowBack, floor, { w: W, h: H }, 'c3', 'c3-s3-dinh-thu-doi-dau'), floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s3EntryFromS2.x - 83.6) < 1e-4, 'S3 entry from S2 x should be 83.6');
-  assert.ok(Math.abs(s3EntryFromS2.y - 639.88) < 1e-4, 'S3 entry from S2 y should be 639.88');
+  assert.ok(Math.abs(s3EntryFromS2.y - 819.61) < 1e-3, 'S3 entry from S2 y should be 819.61');
 
   // S2 -> S1 return transition: returning to S1 from S2 (arrow street at right)
   const s1ArrowStreet = c3ExitArrows('c3-s1-tiem-may-da-kao').find(a => a.exit === 'street')!;
-  const s1EntryFromS2 = standClear('c3-s1-tiem-may-da-kao', clampToFloor(entryPoint(s1ArrowStreet.rect, floor, { w: W, h: H }), floor, W), floor, { w: W, h: H });
+  const s1EntryFromS2 = standClear('c3-s1-tiem-may-da-kao', clampToFloor(entryPoint(s1ArrowStreet, floor, { w: W, h: H }, 'c3', 'c3-s1-tiem-may-da-kao'), floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s1EntryFromS2.x - 1571.68) < 1e-4, 'S1 return entry x should be 1571.68');
-  assert.ok(Math.abs(s1EntryFromS2.y - 639.88) < 1e-4, 'S1 return entry y should be 639.88');
+  assert.ok(Math.abs(s1EntryFromS2.y - 790.44) < 1e-3, 'S1 return entry y should be 790.44');
 
-  // 3. Candidate proposed mid-floor spawns (if Core updates c3.json to place An at mid-floor matching art)
-  // S2 proposed spawn: {0.10, 0.845} -> native [167.2, 795.15]
+  // 3. Proposed mid-floor spawns match fallback spawns
   const s2Proposed = standClear('c3-s2-phong-phong-thuy', clampToFloor({ x: 0.10 * W, y: 0.845 * H }, floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s2Proposed.x - 167.2) < 1e-4, 'S2 proposed spawn x should be 167.2');
   assert.ok(Math.abs(s2Proposed.y - 795.145) < 1e-3, 'S2 proposed spawn y should be ~795.15');
   const s2ProposedPath = findPath('c3-s2-phong-phong-thuy', s2Proposed, { x: 1004.76, y: 781.03 }, floor, { w: W, h: H });
   assert.ok(s2ProposedPath !== null, 'S2 path from proposed mid-floor spawn to Bagua chest must exist');
 
-  // S3 proposed spawn: {0.10, 0.871} -> native [167.2, 819.61]
   const s3Proposed = standClear('c3-s3-dinh-thu-doi-dau', clampToFloor({ x: 0.10 * W, y: 0.871 * H }, floor, W), floor, { w: W, h: H });
   assert.ok(Math.abs(s3Proposed.x - 167.2) < 1e-4, 'S3 proposed spawn x should be 167.2');
   assert.ok(Math.abs(s3Proposed.y - 819.611) < 1e-3, 'S3 proposed spawn y should be ~819.61');
@@ -253,22 +249,22 @@ test('C3 walker placement: initial fallback spawn, transition entry from exit ar
     areaSpawn: { x: number; y: number } | undefined,
     prevAreaId: string | null,
     exits: Record<string, string>,
-    exitArrows: { exit: string; rect: { x: number; y: number; w: number; h: number } }[]
+    exitArrows: { exit: string; rect: { x: number; y: number; w: number; h: number }; dir?: ExitArrow['dir'] }[]
   ) => {
     const entry = exitArrows.find(x => exits[x.exit] === prevAreaId);
     const initialPos = entry
-      ? entryPoint(entry.rect, floor, { w: W, h: H })
+      ? entryPoint(entry, floor, { w: W, h: H }, 'c3', currentAreaId)
       : (areaSpawn ? { x: areaSpawn.x * W, y: areaSpawn.y * H } : { x: W / 2, y: H });
     return standClear(currentAreaId, clampToFloor(initialPos, floor, W), floor, { w: W, h: H });
   };
 
   // Resume directly in S2 (no transition history):
   const s2Resumed = resolveSceneEntry('c3-s2-phong-phong-thuy', { x: 0.1, y: 0.6 }, null, { back: 'c3-s1-tiem-may-da-kao', mansion: 'c3-s3-dinh-thu-doi-dau' }, c3ExitArrows('c3-s2-phong-phong-thuy'));
-  assert.deepEqual(s2Resumed, s2Initial, 'Resume in S2 must use area.spawn fallback');
+  assert.deepEqual(s2Resumed, s2Initial, 'Resume in S2 must match fallback spawn on open floor');
 
   // Resume directly in S3 (no transition history):
   const s3Resumed = resolveSceneEntry('c3-s3-dinh-thu-doi-dau', { x: 0.1, y: 0.6 }, null, { back: 'c3-s2-phong-phong-thuy' }, c3ExitArrows('c3-s3-dinh-thu-doi-dau'));
-  assert.deepEqual(s3Resumed, s3Initial, 'Resume in S3 must use area.spawn fallback');
+  assert.deepEqual(s3Resumed, s3Initial, 'Resume in S3 must match fallback spawn on open floor');
 
   // 5. Path reachability: all spawns and entries can find paths to interior targets
   const s1Path = findPath('c3-s1-tiem-may-da-kao', s1Initial, { x: 1385.24, y: 790.44 }, floor, { w: W, h: H });

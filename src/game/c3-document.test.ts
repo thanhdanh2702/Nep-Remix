@@ -1,5 +1,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { renderToStaticMarkup } from 'react-dom/server';
+import React from 'react';
 import { loadContent } from '../content/index.ts';
 import {
   createInitialState,
@@ -13,9 +15,18 @@ import {
   c3DocumentForItem,
   c3DocumentForClue,
 } from './c3-documents.ts';
+import {
+  DocumentViewer,
+  handleDocumentBodyKeyDown,
+} from './DocumentViewer.tsx';
+import { assetRegistry } from './assets.ts';
 import { anLayerPath, portraitFor, standingSource } from './npc-portraits.ts';
 import { AN_FIGURE_H, characterScale, spriteScaleFor } from './character-scale.ts';
 import { c2AreaOverlays, c3AreaOverlays, c2ExitArrows, c2RoomNpcs } from './room-render.ts';
+import { C3_HOTSPOT_LABELS } from './room-walker.ts';
+
+// In Node test runner (outside Vite), populate frame asset so Modal component can render without error
+assetRegistry['assets/screens/main-shop/action-card-frame--9slice.png'] = '/mock-frame.png';
 
 const content = loadContent();
 
@@ -372,3 +383,176 @@ test('Room render helper coverage for C2/C3 overlays, exit arrows, and room NPCs
   assert.deepEqual(c3AreaOverlays('c3', 'unknown', [], []), []);
 });
 
+test('C3 Document Viewer Keyboard Accessibility: mounted markup and real handleDocumentBodyKeyDown implementation', () => {
+  const docIds = ['doc-c3-bien-nhan', 'doc-c3-so-goc', 'doc-c3-thu-thoa-thuan', 'doc-c3-ban-sua'] as const;
+
+  for (const id of docIds) {
+    const doc = C3_DOCUMENTS[id];
+    const expectedLabel = `Văn bản chứng cứ: ${doc.title}`;
+
+    // 1. Verify mounted markup via React server rendering for both active and readOnly modes
+    const activeHtml = renderToStaticMarkup(
+      React.createElement(DocumentViewer, { document: doc, readOnly: false })
+    );
+    assert.ok(activeHtml.includes('role="region"'), `${id} active HTML must render role="region"`);
+    assert.ok(activeHtml.includes('tabindex="0"'), `${id} active HTML must render tabindex="0"`);
+    assert.ok(activeHtml.includes(`aria-label="${expectedLabel}"`), `${id} active HTML must render accessible aria-label`);
+    assert.ok(activeHtml.includes('class="document-viewer-body"'), `${id} active HTML must have .document-viewer-body`);
+    assert.ok(activeHtml.includes(doc.summaryText), `${id} active HTML must include summary text`);
+    assert.ok(activeHtml.includes(doc.highlightText), `${id} active HTML must include highlight text ("Điểm then chốt")`);
+    assert.ok(activeHtml.includes(doc.comparativeRole), `${id} active HTML must include comparative role`);
+
+    const expectedActionLabel = doc.id === 'doc-c3-so-goc' ? 'Đọc tiếp thư thỏa thuận' : 'Xác nhận đã đọc';
+    assert.ok(activeHtml.includes(expectedActionLabel), `${id} active HTML must render button "${expectedActionLabel}"`);
+
+    const readOnlyHtml = renderToStaticMarkup(
+      React.createElement(DocumentViewer, { document: doc, readOnly: true })
+    );
+    assert.ok(readOnlyHtml.includes('Sổ manh mối · Chỉ đọc'), `${id} readOnly HTML must render read-only badge`);
+    assert.ok(readOnlyHtml.includes('Đóng văn bản'), `${id} readOnly HTML must render "Đóng văn bản" button`);
+
+    // 2. Exercise the actual exported handleDocumentBodyKeyDown implementation
+    const target = {
+      scrollTop: 0,
+      scrollHeight: 873,
+      clientHeight: 490,
+      style: { scrollBehavior: 'smooth' },
+    };
+    let prevented = false;
+    const createEv = (key: string, repeat = false) => ({
+      key,
+      repeat,
+      preventDefault: () => { prevented = true; },
+    });
+
+    const scrollStep = 40;
+    const pageStep = Math.max(120, Math.round(target.clientHeight * 0.8)); // 392
+    const maxScroll = target.scrollHeight - target.clientHeight; // 383
+
+    // ArrowDown scrolls down by 40px and calls preventDefault
+    prevented = false;
+    const resDown = handleDocumentBodyKeyDown(target, createEv('ArrowDown'));
+    assert.equal(resDown, true, 'ArrowDown must be handled');
+    assert.equal(prevented, true, 'ArrowDown must call preventDefault');
+    assert.equal(target.scrollTop, scrollStep, 'ArrowDown must advance scrollTop by 40px');
+
+    // PageDown scrolls by pageStep and clamps to maxScroll (383)
+    prevented = false;
+    const resPageDown = handleDocumentBodyKeyDown(target, createEv('PageDown'));
+    assert.equal(resPageDown, true, 'PageDown must be handled');
+    assert.equal(prevented, true, 'PageDown must call preventDefault');
+    assert.equal(target.scrollTop, maxScroll, 'PageDown must reach and clamp to maxScroll (383)');
+
+    // PageDown again stays capped at maxScroll
+    prevented = false;
+    handleDocumentBodyKeyDown(target, createEv('PageDown'));
+    assert.equal(target.scrollTop, maxScroll, 'PageDown must remain clamped at maxScroll');
+
+    // ArrowUp scrolls up by 40px
+    prevented = false;
+    const resUp = handleDocumentBodyKeyDown(target, createEv('ArrowUp'));
+    assert.equal(resUp, true, 'ArrowUp must be handled');
+    assert.equal(prevented, true, 'ArrowUp must call preventDefault');
+    assert.equal(target.scrollTop, maxScroll - scrollStep, 'ArrowUp must decrement scrollTop by 40px');
+
+    // Home jumps back to top (0)
+    prevented = false;
+    const resHome = handleDocumentBodyKeyDown(target, createEv('Home'));
+    assert.equal(resHome, true, 'Home must be handled');
+    assert.equal(prevented, true, 'Home must call preventDefault');
+    assert.equal(target.scrollTop, 0, 'Home must reset scrollTop to 0');
+
+    // End jumps to maximum (383)
+    prevented = false;
+    const resEnd = handleDocumentBodyKeyDown(target, createEv('End'));
+    assert.equal(resEnd, true, 'End must be handled');
+    assert.equal(prevented, true, 'End must call preventDefault');
+    assert.equal(target.scrollTop, maxScroll, 'End must set scrollTop to maxScroll');
+
+    // PageUp scrolls up by pageStep
+    prevented = false;
+    const resPageUp = handleDocumentBodyKeyDown(target, createEv('PageUp'));
+    assert.equal(resPageUp, true, 'PageUp must be handled');
+    assert.equal(prevented, true, 'PageUp must call preventDefault');
+    assert.equal(target.scrollTop, Math.max(0, maxScroll - pageStep), 'PageUp must decrement scrollTop by pageStep');
+
+    // Unhandled keys (Tab, Escape, Enter, Space, letter 'a') must return false without calling preventDefault
+    for (const key of ['Tab', 'Escape', 'Enter', ' ', 'a', 'F5']) {
+      prevented = false;
+      const unhandled = handleDocumentBodyKeyDown(target, createEv(key));
+      assert.equal(unhandled, false, `Key ${key} must not be handled by reader`);
+      assert.equal(prevented, false, `Key ${key} must not call preventDefault`);
+    }
+
+    // Key repeat handling: verifies repeat flag is processed cleanly
+    prevented = false;
+    const repeatRes = handleDocumentBodyKeyDown(target, createEv('ArrowDown', true));
+    assert.equal(repeatRes, true, 'ArrowDown with repeat=true must be handled');
+    assert.equal(prevented, true, 'ArrowDown with repeat=true must call preventDefault');
+
+    // Reduced motion handling: verifies explicit prefersReducedMotion flag is accepted
+    prevented = false;
+    const reducedRes = handleDocumentBodyKeyDown(target, createEv('ArrowDown'), true);
+    assert.equal(reducedRes, true, 'ArrowDown with prefersReducedMotion=true must be handled');
+    assert.equal(prevented, true, 'ArrowDown with prefersReducedMotion=true must call preventDefault');
+
+    // Non-scrollable container: when scrollHeight <= clientHeight, stays at 0
+    const nonScrollable = { scrollTop: 0, scrollHeight: 300, clientHeight: 500 };
+    handleDocumentBodyKeyDown(nonScrollable, createEv('ArrowDown'));
+    assert.equal(nonScrollable.scrollTop, 0, 'Non-scrollable container must stay at 0');
+    handleDocumentBodyKeyDown(nonScrollable, createEv('End'));
+    assert.equal(nonScrollable.scrollTop, 0, 'Non-scrollable container End must stay at 0');
+  }
+});
+
+test('C3 Hotspot Labels: all 11 interactables mapped with descriptive object/action names and no speaker confusion', () => {
+  // All 11 C3 interactables must be explicitly present in C3_HOTSPOT_LABELS
+  const expectedLabels: Record<string, string> = {
+    // S1
+    'hitbox-gramophone': 'Xem máy hát đĩa',
+    'hitbox-fabric-attic': 'Nhặt biên nhận tiền',
+    'hitbox-c3-read-receipt': 'Đọc biên nhận tiền',
+    'hitbox-street-exit': 'Ra ngoài đường',
+    // S2
+    'hitbox-incense-bowl': 'Xem bát hương',
+    'hitbox-bagua-mirror': 'Xem gương Bát Quái',
+    'hitbox-bagua-chest': 'Mở rương Bát Quái',
+    // S3
+    'hitbox-salon-table': 'Trình chứng cứ',
+    'hitbox-c3-read-revision': 'Đọc bản sửa hồ sơ',
+    'hitbox-vinh-support': 'Nói chuyện với Vinh',
+    'hitbox-styling-mai': 'Phối đồ cho Mai',
+  };
+
+  const keys = Object.keys(expectedLabels);
+  assert.equal(keys.length, 11, 'Exactly 11 interactables must be mapped in C3');
+
+  for (const [id, label] of Object.entries(expectedLabels)) {
+    assert.equal(C3_HOTSPOT_LABELS[id], label, `Label for ${id} must match expected label`);
+  }
+
+  // Critical audit regression check: Objects must NOT be labeled with speaker names
+  const objectHotspots = [
+    'hitbox-gramophone',
+    'hitbox-fabric-attic',
+    'hitbox-c3-read-receipt',
+    'hitbox-street-exit',
+    'hitbox-incense-bowl',
+    'hitbox-bagua-mirror',
+    'hitbox-bagua-chest',
+    'hitbox-salon-table',
+    'hitbox-c3-read-revision',
+    'hitbox-styling-mai',
+  ];
+
+  for (const id of objectHotspots) {
+    const label = C3_HOTSPOT_LABELS[id];
+    assert.ok(!label.includes('Bà Mai'), `Object ${id} must NOT have speaker label "Bà Mai"`);
+    assert.ok(label !== 'Mai', `Object ${id} must NOT have speaker label "Mai"`);
+    assert.ok(!label.includes('Thầy Ba Càn'), `Object ${id} must NOT have speaker label "Thầy Ba Càn"`);
+    assert.ok(!label.includes('Bà Lớn'), `Object ${id} must NOT have speaker label "Bà Lớn"`);
+  }
+
+  // Only the NPC hotspot uses character name
+  assert.ok(C3_HOTSPOT_LABELS['hitbox-vinh-support'].includes('Vinh'), 'hitbox-vinh-support must include character name Vinh');
+});

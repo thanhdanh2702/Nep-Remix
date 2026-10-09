@@ -270,7 +270,7 @@ test('natural menu journey Prologue → C1 → C2 → C3 demo', async ({page})=>
     await page.getByRole('button',{name:'Xác nhận đã đọc',exact:true}).click();
     await spot(page,'hitbox-salon-table').click();
     await dialog(page).getByRole('button',{name:content.itemsById.get('so_tu_vi_nguyen_ban_1962')!.name,exact:true}).click();
-    await page.getByRole('button',{name:'Trình chứng cứ',exact:true}).click();
+    await dialog(page).getByRole('button',{name:'Trình chứng cứ',exact:true}).click();
     await page.getByRole('button',{name:'Khép lời kể',exact:true}).click();
     await page.getByRole('button',{name:'Khép lời kể',exact:true}).click();
     await spot(page,'hitbox-styling-mai').click();

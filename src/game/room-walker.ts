@@ -1,4 +1,5 @@
 import { AN, type Direction } from './assets';
+import type { ExitArrow } from '../content/schema';
 
 // Pure logic for An walking inside a point-and-click room: where she stands next to an object, how she
 // steps toward it and which sheet cell shows. World px = the room background's own pixels. No DOM here.
@@ -24,6 +25,55 @@ const clamp = (v: number, lo: number, hi: number) => Math.min(hi, Math.max(lo, v
 
 export const clampToFloor = (p: Pt, floor: Floor, worldW: number): Pt =>
   ({ x: clamp(p.x, EDGE * worldW, (1 - EDGE) * worldW), y: clamp(p.y, floor.top, floor.bottom) });
+
+export const C3_DOORWAY_Y: Record<string, number> = {
+  'c3-s1-tiem-may-da-kao': 790.44,
+  'c3-s2-phong-phong-thuy': 795.15,
+  'c3-s3-dinh-thu-doi-dau': 819.61,
+};
+
+export const C3_HOTSPOT_LABELS: Record<string, string> = {
+  // S1: Tiệm may Mai Sài Gòn tại Đa Kao
+  'hitbox-gramophone': 'Xem máy hát đĩa',
+  'hitbox-fabric-attic': 'Nhặt biên nhận tiền',
+  'hitbox-c3-read-receipt': 'Đọc biên nhận tiền',
+  'hitbox-street-exit': 'Ra ngoài đường',
+
+  // S2: Gian phòng phong thủy Thầy Ba Càn
+  'hitbox-incense-bowl': 'Xem bát hương',
+  'hitbox-bagua-mirror': 'Xem gương Bát Quái',
+  'hitbox-bagua-chest': 'Mở rương Bát Quái',
+
+  // S3: Phòng đối chất tại dinh thự
+  'hitbox-salon-table': 'Trình chứng cứ',
+  'hitbox-c3-read-revision': 'Đọc bản sửa hồ sơ',
+  'hitbox-vinh-support': 'Nói chuyện với Vinh',
+  'hitbox-styling-mai': 'Phối đồ cho Mai',
+};
+
+/**
+ * Entry point when walking into a room through an exit arrow.
+ * For C3 side doorways (left/right arrows), places feet on the room's open floor threshold.
+ * For other chapters/arrows, preserves legacy upper/side placement.
+ */
+export function entryPoint(
+  arrow: { rect: Rect; dir?: ExitArrow['dir'] },
+  floor: Floor,
+  world: { w: number; h: number },
+  chapterId?: string,
+  areaId?: string
+): Pt {
+  const r = arrow.rect;
+  if (chapterId === 'c3' && (arrow.dir === 'left' || arrow.dir === 'right')) {
+    const x = (r.x + r.w / 2) * world.w;
+    const doorwayY = areaId ? C3_DOORWAY_Y[areaId] : undefined;
+    const y = doorwayY ?? Math.min(floor.bottom, Math.max(floor.top, (r.y + r.h) * world.h));
+    return { x, y };
+  }
+  return (r.y + r.h) * world.h > floor.top
+    ? { x: (r.x + r.w / 2) * world.w, y: r.y * world.h }
+    : { x: r.x > 0.15 ? (r.x - 0.06) * world.w : (r.x + r.w + 0.06) * world.w, y: floor.top };
+}
 
 /** Direction from one point to another. `bias` > 1 favours left/right (a target must be that many times
  *  further vertically than horizontally before she turns up or down). */
@@ -78,11 +128,13 @@ const OBSTACLES: Record<string, Rect[]> = {
     { x: 0.68, y: 0.48, w: 0.21, h: 0.34 },
   ],
   'c3-s2-phong-phong-thuy': [
+    { x: 0.05, y: 0.48, w: 0.17, h: 0.345 },
     { x: 0.275, y: 0.48, w: 0.145, h: 0.34 },
     { x: 0.44, y: 0.45, w: 0.19, h: 0.36 },
     { x: 0.63, y: 0.45, w: 0.18, h: 0.36 },
   ],
   'c3-s3-dinh-thu-doi-dau': [
+    { x: 0.05, y: 0.48, w: 0.18, h: 0.371 },
     { x: 0.36, y: 0.48, w: 0.28, h: 0.35 },
   ],
 };

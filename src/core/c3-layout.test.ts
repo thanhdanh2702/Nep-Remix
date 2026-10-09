@@ -16,15 +16,16 @@ import { createInitialState, runCommand, createInitialTree, toJSON, fromJSON } f
 const input = {
   "baseline": "c61d98fec539caec8d9481753247aeaaab16ca23",
   "sourceCheckout": "/Users/thanhdanh/Nep-Remix-frontend",
-  "status": "REVIEW INPUT ONLY — not final geometry approval",
+  "status": "Audit candidate numeric snapshot — painted-floor visual acceptance pending",
   "fingerprints": {
+    "src/game/C3-GEOMETRY-AUDIT-HANDOFF.md": "24d4d32c5dde338952a24b9b325894820903da54312b7965a347de9b976d5f00",
     "src/game/C3-LAYOUT-HANDOFF.md": "8149d5b9b5c15fb3d829305d5e8423f6664fbb1b96e70302cad7c78f536f0417",
     "src/game/c3-m1.test.ts": "7ab1471c19114dced8af6963c6a0736282005a0655b2a9c797b98a5c3747f6df",
-    "src/game/room-walker.ts": "31063822f43a41dfc8b0d17276724c891409877bbaf8cc82bc33384479792cad",
-    "src/game/RoomScene.tsx": "5b7d09cf3eea30d5545d5f6449990dbdc58fd4a658536825d6dc67d4929fafd7",
+    "src/game/room-walker.ts": "ba2d88daecf6a666b3522eeeb90178f16a64b1ff4425eef39aa512d3c284f512",
+    "src/game/RoomScene.tsx": "c272f58c97fc2313c09147cd9dab70472b2263eb8f88f846fe7f6940021cd568",
     "src/game/room-render.ts": "59be77c9087e14e534c53cd3f517e244c91fe15708e827dd637e088a0183aa7b",
     "src/game/character-scale.ts": "2cda1b2172950fd6e82cfc24926fa91aeeff84512c4c00f21c6429715829ebfa",
-    "src/game/c3-layout.test.ts": "f7d97dca15412c1ebe1946d22eab711f59ae2755042503f351be6563de70da25"
+    "src/game/c3-layout.test.ts": "5305e6e9e8618a6f87150ffa631aa98fe9e0962947277b489bcd594c43787ae4"
   },
   "world": {
     "w": 1672,
@@ -195,7 +196,7 @@ const {adapter,c3ExitArrows}=await sourceModule(`
   export function adapter(env) {
     const {HUMAN_HEIGHT,area,areaId,chapterId,effectiveExitArrows,prevArea,scene,world,
       walker,interact,pending,prefersReducedMotion,stop,paint,run,
-      clampToFloor,newWalker,standClear,targetFor,arriveNow,findPath}=env;
+      clampToFloor,newWalker,standClear,targetFor,arriveNow,findPath,entryPoint}=env;
     ${slice(roomSource,'const STAND_GAP =','// Every loaded view')}
     ${slice(roomSource,'  const go = (i: Interactable) => {','  const hover =')}
     return {initialize(){
@@ -226,12 +227,12 @@ test('corrected FE handoff pins the same 11 IDs/actions/native rects/approaches/
   }
   assert.deepEqual({top:HUMAN_HEIGHT.c3.floorTop*world.h,bottom:HUMAN_HEIGHT.c3.floorBottom*world.h},floor);
 });
-const expectedInitial=[{x:250.8,y:790.44},{x:167.2,y:639.88},{x:167.2,y:639.88}];
+const expectedInitial=[{x:250.8,y:790.44},{x:167.2,y:795.145},{x:167.2,y:819.611}];
 const expectedTransitions:Record<string,{x:number;y:number}>={
-  'c3-s1-tiem-may-da-kao':{x:1571.68,y:639.88},
-  'c3-s2-phong-phong-thuy:back':{x:83.6,y:639.88},
-  'c3-s2-phong-phong-thuy:mansion':{x:1588.4,y:639.88},
-  'c3-s3-dinh-thu-doi-dau':{x:83.6,y:639.88},
+  'c3-s1-tiem-may-da-kao':{x:1571.68,y:790.44},
+  'c3-s2-phong-phong-thuy:back':{x:83.6,y:795.15},
+  'c3-s2-phong-phong-thuy:mansion':{x:1588.4,y:795.15},
+  'c3-s3-dinh-thu-doi-dau':{x:83.6,y:819.61},
 };
 // Proposal-only: these values are exactly FE's explicit numbers, not an approved
 // content delta. Testing them does not change c3.json or claim painted-floor signoff.
