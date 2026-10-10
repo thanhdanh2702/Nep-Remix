@@ -7,10 +7,13 @@ export function LookbookMoodPicker({ inputs, eventName }: { inputs: LookbookInpu
   const fileRef = useRef<HTMLInputElement>(null);
   const { mood, background } = inputs;
   return <section className="lookbook-section" aria-labelledby="lookbook-mood-h">
-    <h3 id="lookbook-mood-h">{COPY.moodHeading}</h3>
+    <h3 id="lookbook-mood-h">❀ Bối cảnh</h3>
     <div className="lookbook-mood-grid" role="group" aria-label={COPY.moodGroupLabel}>
-      {loadLookbookStyle().moods.map(m =>
-        <button key={m.id} type="button" aria-pressed={mood === m.id} onClick={() => inputs.setMood(m.id)}>{m.labelVi}</button>)}
+      {[...loadLookbookStyle().moods].sort((a, b) => ['san-nha', 'pho-co', 'vuon-hoa', 'tuong-voi', 'custom'].indexOf(a.id) - ['san-nha', 'pho-co', 'vuon-hoa', 'tuong-voi', 'custom'].indexOf(b.id)).map(m =>
+        <button key={m.id} type="button" className={'lookbook-mood-' + m.id} aria-pressed={mood === m.id} onClick={() => inputs.setMood(m.id)}>
+          {m.id !== 'custom' && <span className="lookbook-mood-thumbnail" data-mood={m.id} aria-hidden="true" />}
+          <span>{m.labelVi}</span>
+        </button>)}
     </div>
     {mood === 'custom' && <div className="lookbook-bg-row">
       <div className="lookbook-thumb is-landscape">

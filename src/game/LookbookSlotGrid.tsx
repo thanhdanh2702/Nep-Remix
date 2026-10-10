@@ -1,5 +1,7 @@
 import { LOOKBOOK_ANGLE_IDS, type LookbookAngleId } from '../server/ai/lookbook-contract.ts';
 import { loadLookbookStyle } from '../content/lookbook-style';
+import { asset } from './assets';
+import type { CSSProperties } from 'react';
 import { selectExhausted, type LookbookSlot, type LookbookState } from './lookbook-state';
 import { COPY, LOOKBOOK_REASON_TEXT } from './lookbook-copy';
 
@@ -29,12 +31,27 @@ function SlotBody({ slot, label, garmentName, retryDisabled, canRetry, onOpen, o
     </div>;
   }
   const text = slot.status === 'generating' ? COPY.slotGenerating : slot.status === 'queued' ? COPY.slotQueued : COPY.slotIdle;
-  return <p className="lookbook-slot-text">{text}</p>;
+  return <div className="lookbook-slot-empty"><span aria-hidden="true">❀</span><p className="lookbook-slot-text">{slot.status === 'idle' ? 'Chưa có ảnh' : text}</p></div>;
+}
+
+// CSS crops of the approved LB1 preview, kept separate from real AI results.
+const sampleCrops: Record<LookbookAngleId, [number, number, number, number]> = {
+  front: [689, 165, 298, 242], turn: [1105, 165, 307, 242],
+  back: [680, 456, 302, 246], detail: [1104, 457, 308, 246],
+};
+export function samplePhotoStyle(id: LookbookAngleId): CSSProperties {
+  const [x, y, w, h] = sampleCrops[id];
+  return {
+    backgroundImage: 'url("' + asset('assets/screens/studio/lookbook-sample-sheet.png') + '")',
+    backgroundSize: (1672 / w * 100) + '% ' + (941 / h * 100) + '%',
+    backgroundPosition: (x / (1672 - w) * 100) + '% ' + (y / (941 - h) * 100) + '%',
+  };
 }
 
 /** Four slots laid over the painted frame. Positions come from lookbook.css (.lookbook-frame-slot[data-angle]). */
-export function LookbookSlotGrid({ state, garmentName, onOpen, onRetry }: {
+export function LookbookSlotGrid({ state, garmentName, onOpen, onRetry, sample = false }: {
   state: LookbookState; garmentName: string; onOpen: (id: LookbookAngleId) => void; onRetry: (id: LookbookAngleId) => void;
+  sample?: boolean;
 }) {
   const running = state.phase === 'running';
   const canRetry = !selectExhausted(state);
@@ -44,8 +61,11 @@ export function LookbookSlotGrid({ state, garmentName, onOpen, onRetry }: {
       const label = angleLabel(id);
       return <figure key={id} className="lookbook-slot lookbook-frame-slot" data-angle={id} data-status={slot.status}
         aria-busy={slot.status === 'generating' ? true : undefined}>
-        <SlotBody slot={slot} label={label} garmentName={garmentName} canRetry={canRetry} retryDisabled={running}
-          onOpen={onOpen} onRetry={onRetry} />
+        <div className="lookbook-photo-aperture">
+          {sample ? <div className="lookbook-sample-photo" role="img" aria-label={'Ảnh mẫu · ' + label} style={samplePhotoStyle(id)} />
+            : <SlotBody slot={slot} label={label} garmentName={garmentName} canRetry={canRetry} retryDisabled={running}
+              onOpen={onOpen} onRetry={onRetry} />}
+        </div>
         <figcaption className="lookbook-chip is-label">{label}</figcaption>
       </figure>;
     })}

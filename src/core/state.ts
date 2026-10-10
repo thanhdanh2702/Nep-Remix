@@ -1,5 +1,6 @@
 import type { ChapterId } from '../content/schema.ts';
 import type { GameContent } from '../content/index.ts';
+import { OPEN_CHAPTER_IDS } from './chapter-access.ts';
 
 // ==========================================
 // 1. Session Drafts (Studio & Puzzle)
@@ -13,6 +14,7 @@ export interface StudioDraft {
   silhouette: 'tu_than' | 'ngu_than_tay_chen' | 'ngu_than_tay_thung' | 'tan_thoi';
   garmentId: string;
   colorPalette: [string, string, string, string];
+  bottomPalette?: [string, string, string, string];
   equippedAccessories: {
     headwear?: string;
     footwear?: string;
@@ -61,6 +63,7 @@ export interface SavedOutfit {
     [slot: string]: string | undefined;
   };
   colorPalette: [string, string, string, string];
+  bottomPalette?: [string, string, string, string];
   motifId?: string;
   createdAt: string;
 }
@@ -188,7 +191,7 @@ export function createInitialState(
       solvedPuzzleIds: [],
       hintTiers: {},
       claimed: false,
-      status: chId === 'prologue' ? 'in_progress' : 'locked',
+      status: OPEN_CHAPTER_IDS.includes(chId) ? 'in_progress' : 'locked',
       dialogueQueue: [],
       puzzleDrafts: {},
       activeDialogue: null

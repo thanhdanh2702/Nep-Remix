@@ -16,6 +16,7 @@ export function Slice({ path, className = '', style, fillCenter = true, ...props
   };
   return <div className={`slice pixel-native ${className}`} style={{ ...border, ...style }} {...props} />;
 }
-export const CARD_FRAME = 'assets/screens/main-shop/action-card-frame--9slice.png';
+export const CARD_FRAME = 'assets/screens/main-shop/ui/action-card-frame--9slice.png';
+
 export const STUDIO_FRAME = 'assets/screens/studio/studio-panel-frame--9slice.png';
 export const MUSEUM_FRAME = 'assets/screens/museum/card-modal--9slice.png';

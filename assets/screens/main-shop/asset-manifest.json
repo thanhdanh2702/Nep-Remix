@@ -5,23 +5,7 @@
   "rendering": "nearest-neighbor / image-rendering: pixelated",
   "assets": [
     {
-      "file": "background--landscape.png",
-      "kind": "screen-background-landscape",
-      "width": 800,
-      "height": 500,
-      "rgbaColors": 32,
-      "alpha": "opaque"
-    },
-    {
-      "file": "background--portrait.png",
-      "kind": "screen-background-portrait",
-      "width": 320,
-      "height": 480,
-      "rgbaColors": 32,
-      "alpha": "opaque"
-    },
-    {
-      "file": "ui-hud--3slice.png",
+      "file": "ui/ui-hud--3slice.png",
       "kind": "ui-bar-3slice",
       "width": 120,
       "height": 40,
@@ -34,7 +18,7 @@
       }
     },
     {
-      "file": "action-card-frame--9slice.png",
+      "file": "ui/action-card-frame--9slice.png",
       "kind": "ui-frame-9slice",
       "width": 64,
       "height": 64,
@@ -50,13 +34,33 @@
       }
     },
     {
-      "file": "door-entrance-glow.png",
-      "kind": "vfx",
-      "width": 64,
-      "height": 96,
-      "rgbaColors": 16,
-      "alpha": "transparent and partial alpha",
-      "frames": 1
+      "file": "backgrounds/garden-user--landscape.png",
+      "kind": "screen-background",
+      "width": 1586,
+      "height": 992,
+      "sha256": "7c5e4fe3e251e6d33363fcc2699b24f86b523e48cdc34f81971eff2b19558857"
+    },
+    {
+      "file": "ui/area-sign-frame.png",
+      "kind": "screen-component",
+      "width": 2048,
+      "height": 683,
+      "sha256": "93a04275b087c683cae0774dd892c11eabffd41b44db0693d332fefac280523b"
+    },
+    {
+      "file": "ui/currency-hud.png",
+      "kind": "screen-component",
+      "width": 2048,
+      "height": 683,
+      "sha256": "77b8d3b45cf0a673e2fbf7d3fc405abf24845258e03638f6a1178d05ec0d1348"
+    },
+    {
+      "file": "ui/settings-button.png",
+      "kind": "screen-component",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "d6b44ef1729a22c1faab3ebec1f175ed6843e7603159a9f871f4764b8c7a523f"
     }
-  ]
+  ],
+  "integration": "Runtime courtyard background and UI; see README.md."
 }

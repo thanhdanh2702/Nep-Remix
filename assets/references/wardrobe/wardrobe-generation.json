@@ -1,0 +1,23 @@
+{
+  "tool": "image_gen.imagegen (built-in)",
+  "date": "2026-10-06",
+  "reference": "artifacts/proposals/closet-redesign-concept.png",
+  "assets": [
+    {
+      "file": "wardrobe-room--landscape.png",
+      "transparent": false,
+      "prompt": "Use case: precise-object-edit. Production background asset for reconstructing the approved Vietnamese wardrobe UI concept, which is image 1. Preserve its precise room art style and composition: warm muted lotus-pink plaster, dark reddish carved Vietnamese timber, bright window at far left, long pink silk curtain, blue-white ceramic lotus vase and low carved dressing table bottom left, tall empty wooden standing mirror at x29% y34%-73%, one small red upholstered stool at x43% y65%-78%, terracotta tiled floor, oval dusty rose lotus rug at x14%-42% y76%-91%, warm light from the left. Remove ALL UI from the picture: entire header/nav, text, panels, coin/settings, caption and button. Remove the character. Remove the LARGE FOREGROUND WARDROBE CABINET covering the RIGHT HALF, replacing it with the same quiet pink-plaster timber wall behind and floor below. Remove all six garment cards and any clothes. Keep the existing room details on the left and far-right vase/furniture; the right half is an intentionally calm empty wall for the real cabinet UI to overlay. Entire room visible edge-to-edge, 16:9 image; no bars/margins. Preserve exact locations relative to the original ROOM portion (header is not part of room; expand scene to fill its place). Standing position on rug at x28.5% y80%; no human/character/reflection, no lettering, no icons, no fake placeholder boxes. Rich high-resolution hand-painted crisp pixel-art matching reference, not photographic or glossy 3D. This is a new isolated layer, not a flattened UI screenshot."
+    },
+    {
+      "file": "wardrobe-cabinet.png",
+      "transparent": true,
+      "prompt": "Use case: precise-object-edit. Image 1 is the approved wardrobe game concept. Create ONLY its large reddish wooden cabinet foreground as an isolated production UI layer with actual transparent exterior. No surrounding room, no person, no floor, no backdrop. Front-facing orthographic cabinet UI, full object with tiny margin, approximately 1:1 square canvas, entire width and full feet visible. Recreate its exact rich carved burgundy/red-brown lacquer wood rails, warm-gold fine edge highlights, small lotus corner carvings and tiny dusty pink floral accents.\nStructure same as reference cabinet: top 10% is decorative arched cabinet crown and a central blank dark wooden title plaque. Below at y11%-18% a long uninterrupted blank dark wood strip for real DOM tabs (DO NOT draw three separate tab buttons). At y19%-77% leave ONE LARGE UNINTERRUPTED EMPTY DARK BURGUNDY WOOD INTERIOR opening to overlay real 3-column x2-row game cards; DO NOT PAINT ANY SIX SLOT FRAMES OR PLACEHOLDER RECTANGLES, no garments, no hangers, no locks. Only cabinet outer left and right vertical wood posts, each 4% width, around that blank region. At y79%-89% a single EMPTY light cream paper inset bordered by wooden rails for selection info. At y90%-97% two horizontal carved lower drawer fronts separated at midpoint as shortcut buttons, dark wood faces, completely blank no lettering or icons. Preserve top crown, thick rails, two blank bottom drawers, feet and beautiful authentic Vietnamese wood style. Outer transparent margin <=2%. NO WORDS OR LETTERS anywhere, no price, no coin, no tabs, no garment cards, no cards drawn inside the big blank interior. Fine crisp pixel-art finish exactly matching reference. Genuine alpha transparency only around cabinet; the cabinet interior is opaque dark wood and lower paper inset opaque cream."
+    }
+  ],
+  "reused": [
+    "assets/screens/museum/gallery-frame.png",
+    "assets/screens/studio/garment-catalog--atlas.png",
+    "StudioCharacter paperdoll and accessory layers"
+  ],
+  "integration": "Runtime text, controls and item states are DOM/canvas overlays. The cabinet crown/posts/base are sliced separately (210/100/370/100) to adapt the wood rails without stretching the entire cabinet. Compact layouts use a sliced existing wood frame."
+}

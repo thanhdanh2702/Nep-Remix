@@ -26,6 +26,7 @@ import itemsJson from './items.json';
 import cluesJson from './clues.json';
 import cultureCardsJson from './culture-cards.json';
 import studioJson from './studio.json';
+import { isHistoricalGarment } from './garment-catalog';
 
 export interface GameContent {
   chapters: Record<string, ChapterContent>;
@@ -117,7 +118,7 @@ export function loadContent(): GameContent {
     cluesById: new Map(clues.map((c) => [c.id, c])),
     cultureCards,
     cultureCardsById: new Map(cultureCards.map((c) => [c.id, c])),
-    garments: studio.garments,
+    garments: studio.garments.filter(g => isHistoricalGarment(g.id)),
     garmentsById: new Map(studio.garments.map((g) => [g.id, g])),
     accessories: studio.accessories,
     accessoriesById: new Map(studio.accessories.map((a) => [a.id, a])),

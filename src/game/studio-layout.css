@@ -1,0 +1,124 @@
+/* Room composition: model, actions and catalog have independent space budgets. */
+.game-stage .studio-room {
+  --studio-top: 12px;
+  --studio-dock-h: clamp(232px, 32cqh, 288px);
+  --studio-tools-h: 128px;
+  --studio-lookbook-w: min(28cqw, calc((100cqh - var(--studio-dock-h) - 100px) * 1.091));
+}
+.game-stage .studio-room .room-background { bottom: var(--studio-dock-h); height: auto; overflow: hidden; }
+.game-stage .studio-room .room-background img {
+  position: absolute; left: var(--studio-scene-left, 0px); top: var(--studio-scene-top, 0px);
+  width: var(--studio-scene-w, 100%); height: var(--studio-scene-h, 100%); max-width: none;
+}
+.game-stage .studio-room .mannequin-stage { width: min(340px, 50cqw); }
+.game-stage .studio-room .doll-caption { max-width: 280px; font-size: 22px; padding: 3px 16px; background: #fff1df; color: #4c273b; border-color: #ae7655; }
+.game-stage .studio-room .studio-lookbook { top: var(--studio-top); right: 16px; width: var(--studio-lookbook-w); }
+.studio-room .studio-lookbook-card figcaption { font-size: 13px; }
+.studio-room .studio-actions button { min-height: 44px; }
+.studio-room .studio-tools {
+  position: absolute; bottom: calc(var(--studio-dock-h) + 12px); left: calc((100% - var(--studio-lookbook-w) - 32px) * .52); transform: translateX(-50%);
+  width: min(640px, calc(100% - var(--studio-lookbook-w) - 48px)); height: var(--studio-tools-h);
+  display: grid; grid-template-rows: 44px 44px; align-content: center; gap: 8px;
+  padding: 4px 12px; color: var(--c-deep-plum);
+  border: 12px solid transparent; border-image: var(--studio-tray-art) 210 fill / 12px / 0 stretch; box-shadow: 0 3px 0 #432131;
+}
+.studio-tools .studio-session, .studio-tools .studio-an-controls-row { margin: 0; flex-wrap: nowrap; gap: 8px; }
+.studio-tools .studio-session { width: min(100%, 520px); justify-self: center; }
+.studio-tools .studio-score { flex: 1; border: 0; background: transparent; color: var(--c-deep-plum); font-size: 14px; padding: 0 8px; }
+.studio-tools .studio-score-bar { height: 8px; background: linear-gradient(90deg, #b27d33 var(--score), #dfcbb5 var(--score)); }
+.studio-tools button { min-height: 44px; padding: 4px 12px; font-size: 14px; box-shadow: none; }
+.studio-tools .studio-ai-row { position: static; width: auto; margin: 0; }
+.studio-tools .studio-reset-btn { min-width: 74px; background: transparent; border-color: #b87859; }
+.studio-tools .studio-lookbook-open-btn { background: #a53660; color: #fff5e7; border-color: #793349; }
+
+/* A fitted cabinet with real hanging-garment previews, rather than one oversized scrolling painting. */
+.studio-wardrobe .wardrobe-scroll { overflow: hidden; height: 100%; width: 100%; mask-image: none; }
+.studio-wardrobe .wardrobe-board {
+  position: relative; width: 100%; height: 100%; margin: 0; padding: 8px 12px;
+  display: grid; grid-template-columns: minmax(0, 1fr) 144px; grid-template-rows: 44px minmax(0, 1fr); gap: 8px 14px;
+  border: 14px solid transparent; border-image: var(--wardrobe-frame) 210 fill / 14px / 0 stretch;
+}
+.studio-wardrobe .wardrobe-tabs { position: static; width: auto; display: flex; gap: 8px; }
+.studio-wardrobe .wardrobe-tabs button { height: 44px; font-size: 22px; }
+.studio-wardrobe .wardrobe-tabs button[aria-selected="true"] { background: #a53660; color: #fff1df; border-color: #f3c67a; }
+.studio-wardrobe .wardrobe-pagination { position: static; width: auto; height: 44px; gap: 6px; font-size: 16px; }
+.studio-wardrobe .wardrobe-pagination button { flex: none; width: 44px; height: 44px; }
+.studio-wardrobe .wardrobe-cards { position: static; width: auto; height: auto; display: grid; grid-template-columns: repeat(var(--wardrobe-columns), minmax(0, 1fr)); gap: 10px; }
+.studio-wardrobe .wardrobe-card {
+  display: flex; flex-direction: column; align-items: center; padding: 2px 4px; gap: 4px;
+  border: 10px solid transparent; border-image: var(--wardrobe-card-frame) 210 fill / 10px / 0 stretch; color: #4b2738;
+}
+.studio-wardrobe .wardrobe-card:hover:not([aria-disabled="true"]) { background: #ffe4dc; border-color: #edbd72; }
+.studio-wardrobe .wardrobe-card.is-selected { background: #ffe5df; border-color: #f4c976; box-shadow: inset 0 0 0 2px #a86a35; }
+.studio-wardrobe .wardrobe-card.is-selected::after { content: ''; position: absolute; inset: -8px; border: 2px solid #f4c976; background: none; pointer-events: none; }
+.studio-wardrobe .wardrobe-preview { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; width: 100%; min-height: 0; }
+.studio-wardrobe .wardrobe-thumb { position: relative; display: flex; align-items: center; justify-content: center; width: 100%; height: 100%; min-height: 0; overflow: hidden; }
+.studio-wardrobe .wardrobe-hanging { padding-top: 18px; }
+.studio-wardrobe .wardrobe-hanger { position: absolute; top: 0; left: 50%; translate: -50% 0; width: 36px; height: 18px; color: #78482d; }
+.studio-wardrobe .wardrobe-preview > img { max-width: 80%; max-height: 80%; object-fit: contain; }
+.studio-wardrobe .wardrobe-garment { display: block; flex: none; }
+.studio-wardrobe .wardrobe-name { flex: none; width: 100%; min-height: 34px; max-height: 34px; margin: 0; font: 500 13px/17px var(--font-body); text-align: center; -webkit-line-clamp: 2; line-clamp: 2; overflow: hidden; }
+.studio-wardrobe .wardrobe-card > small { top: 5px; left: 5px; right: auto; padding: 1px 5px; font-size: 11px; background: #f4cf8a; color: #543021; border: 0; }
+.studio-wardrobe .wardrobe-card.is-locked { background: #ddc8b5; cursor: not-allowed; }
+.studio-wardrobe .wardrobe-card.is-locked .wardrobe-garment, .studio-wardrobe .wardrobe-card.is-locked .wardrobe-preview > img { opacity: .28; filter: grayscale(1); }
+.studio-wardrobe .wardrobe-lock { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 3px; padding: 0; background: none; color: #5c3542; font-size: 11px; }
+.studio-wardrobe .wardrobe-lock svg { width: 20px; height: 24px; color: #704526; }
+.studio-wardrobe .wardrobe-colors { position: static; width: auto; height: auto; justify-content: center; gap: 8px; border-left: 1px solid #bc8770; padding-left: 10px; }
+.studio-wardrobe .wardrobe-colors > strong { font-size: 20px; }
+.studio-wardrobe .wardrobe-colors > div { grid-template-columns: repeat(3, 36px); grid-auto-rows: 36px; gap: 8px; }
+.studio-wardrobe .wardrobe-colors button { min-height: 36px; width: 36px; height: 36px; }
+
+@media (max-width: 1100px) and (min-width: 641px) {
+  .studio-room .studio-tools button { padding-inline: 8px; font-size: 12px; }
+  .studio-room .studio-lookbook-card figcaption { font-size: 11px; }
+}
+@media (max-width: 640px) {
+  .game-stage .studio-room { --studio-dock-h: 240px; --studio-tools-h: 112px; --studio-lookbook-w: min(45cqw, calc((100cqh - var(--studio-dock-h) - var(--studio-tools-h) - 100px) * 1.091)); }
+  .game-stage .studio-room .studio-lookbook { right: 8px; }
+  .game-stage .studio-room .mannequin-stage { width: min(190px, 52cqw); }
+  .game-stage .studio-room .doll-caption { max-width: 48cqw; font-size: 18px; }
+  .studio-room .studio-tools { left: 8px; transform: none; width: calc(100% - 16px); padding: 4px; border-width: 6px; border-image-width: 6px; gap: 4px; }
+  .studio-tools .studio-session .studio-score { order: 1; flex-basis: auto; }
+  .studio-tools .studio-session button { min-width: 65px; padding: 4px; font-size: 12px; }
+  .studio-tools .studio-an-controls-row { gap: 4px; }
+  .studio-tools .studio-an-controls-row button { padding: 4px 6px; font-size: 11px; min-width: 0; }
+  .studio-room .studio-lookbook .studio-actions button { font-size: 11px; padding: 2px; }
+  .studio-room .studio-lookbook-card figcaption { font-size: 10px; padding: 0; }
+  .studio-wardrobe .wardrobe-board { padding: 4px 6px; border-width: 10px; border-image-width: 10px; grid-template-columns: minmax(0, 1fr); grid-template-rows: 44px minmax(0, 1fr) 44px; gap: 6px; }
+  .studio-wardrobe .wardrobe-tabs { grid-row: 1; gap: 4px; }
+  .studio-wardrobe .wardrobe-tabs button { font-size: 19px; padding-inline: 2px; }
+  .studio-wardrobe .wardrobe-cards { grid-row: 2; gap: 8px; }
+  .studio-wardrobe .wardrobe-name { font-size: 12px; line-height: 16px; min-height: 32px; max-height: 32px; }
+  .studio-wardrobe .wardrobe-pagination { grid-row: 3; }
+  .studio-wardrobe .wardrobe-colors { display: none; }
+}
+@media (max-height: 500px) and (min-width: 641px) {
+  .game-stage .studio-room { --studio-dock-h: 154px; --studio-tools-h: 56px; }
+  .game-stage .studio-room .studio-lookbook { left: 42%; right: 8px; top: 8px; width: auto; height: calc(100cqh - var(--studio-dock-h) - var(--studio-tools-h) - 24px); }
+  .studio-room .studio-tools { left: 42%; transform: none; width: calc(58% - 8px); bottom: calc(var(--studio-dock-h) + 8px); height: 56px; grid-template-rows: 44px; padding: 0 4px; border-width: 6px; border-image-width: 6px; }
+  .studio-tools .studio-session { display: none; }
+  .studio-tools .studio-an-controls-row { gap: 4px; }
+  .studio-tools .studio-ai-button { width: auto; padding: 2px 6px; font-size: 11px; }
+  .game-stage .studio-room .mannequin-stage { width: 220px; }
+  .game-stage .studio-room .doll-caption { font-size: 16px; }
+  .studio-wardrobe .wardrobe-board { border-width: 8px; border-image-width: 8px; padding: 4px 8px; gap: 4px 8px; grid-template-columns: minmax(0, 1fr) 128px; }
+  .studio-wardrobe .wardrobe-card { padding: 2px 4px; gap: 0; }
+  .studio-wardrobe .wardrobe-name { min-height: 28px; max-height: 28px; font-size: 11px; line-height: 14px; }
+  .studio-wardrobe .wardrobe-hanging { padding-top: 10px; }
+  .studio-wardrobe .wardrobe-hanger { height: 10px; }
+  .studio-wardrobe .wardrobe-lock span { display: none; }
+  .studio-wardrobe .wardrobe-colors > strong { display: none; }
+  .studio-wardrobe .wardrobe-colors { padding-left: 4px; }
+  .studio-wardrobe .wardrobe-colors > div { grid-template-columns: repeat(3, 32px); grid-auto-rows: 28px; gap: 4px; }
+  .studio-wardrobe .wardrobe-colors button { width: 32px; height: 28px; min-height: 28px; }
+}
+@media (max-width: 640px) and (max-height: 740px) {
+  .game-stage .studio-room .studio-lookbook-heading { position: static; width: auto; height: auto; clip-path: none; margin: 0; padding: 4px; font: 18px/20px var(--font-display); text-align: center; }
+  .studio-room .studio-lookbook-board { height: 100px; aspect-ratio: auto; }
+  .studio-room .studio-lookbook-art { display: none; }
+  .studio-room .studio-lookbook-grid { position: static; width: 100%; height: 100%; padding: 3px; gap: 3px; }
+  .studio-room .studio-lookbook-card { padding: 2px; border: 1px solid #b87859; }
+  .studio-room .studio-lookbook-card figcaption { left: 0; right: 0; bottom: 0; font-size: 8px; line-height: 11px; white-space: nowrap; }
+  .studio-room .studio-actions { flex-direction: row; gap: 4px; padding: 4px; }
+  .studio-room .studio-lookbook .studio-actions button { font-size: 10px; min-height: 52px; }
+}

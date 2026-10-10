@@ -19,9 +19,35 @@ export function MannequinStage({children,room}:{children:ReactNode;room:'studio'
       if(!canvas||!image.naturalWidth)return;
       const w=container.clientWidth,h=container.clientHeight;
       const top=container.getBoundingClientRect().top;
+      if (room === 'studio') {
+        const dock = container.querySelector<HTMLElement>('.studio-wardrobe-dock')!;
+        const tools = container.querySelector<HTMLElement>('.studio-tools')!;
+        const lookbook = container.querySelector<HTMLElement>('.studio-lookbook')!;
+        const short = h <= 440 && w > 640;
+        const nav = container.closest('.nep-app')?.querySelector('.room-navigation') ?? container.closest('.app-shell')?.querySelector('.main-nav');
+        const safeTop = Math.max(12, nav ? nav.getBoundingClientRect().bottom - top + 12 : 12);
+        const floor = (short ? dock.offsetTop : tools.offsetTop) - 12;
+        const captionHeight = stage.offsetHeight - canvas.offsetHeight;
+        const height = Math.floor(clamp(floor - safeTop - captionHeight, 48, AN.cellHeight));
+        const availableWidth = lookbook.offsetLeft - 16;
+        const x = availableWidth * .52;
+        stage.style.setProperty('--studio-character-height', `${height}px`);
+        stage.style.left = `${Math.round(x - stage.offsetWidth / 2)}px`;
+        stage.style.top = `${Math.round(floor - height - captionHeight)}px`;
+        // The room and model use the same floor anchor; scale the art uniformly.
+        const artHeight = image.parentElement!.clientHeight;
+        const sceneScale = Math.max(w / image.naturalWidth, artHeight / image.naturalHeight);
+        const artWidth = image.naturalWidth * sceneScale, scaledHeight = image.naturalHeight * sceneScale;
+        const feet = floor - captionHeight - height * (1 - AN.anchor.y / AN.cellHeight);
+        container.style.setProperty('--studio-scene-w', `${artWidth}px`);
+        container.style.setProperty('--studio-scene-h', `${scaledHeight}px`);
+        container.style.setProperty('--studio-scene-left', `${clamp(x - artWidth * .405, w - artWidth, 0)}px`);
+        container.style.setProperty('--studio-scene-top', `${clamp(feet - scaledHeight * .80, artHeight - scaledHeight, 0)}px`);
+        return;
+      }
       const scale=Math.max(w/image.naturalWidth,h/image.naturalHeight);
       const portrait=image.naturalWidth===320;
-      const anchor=room==='studio'?{x:image.naturalWidth*.425,y:image.naturalHeight*.615}:(portrait?{x:160,y:250}:{x:300,y:430});
+      const anchor=portrait?{x:160,y:250}:{x:300,y:430};
       const anchorX=(w-image.naturalWidth*scale)/2+anchor.x*scale;
       const anchorY=(h-image.naturalHeight*scale)/2+anchor.y*scale;
       const footRatio=Number(canvas.dataset.footRatio ?? AN.anchor.y/AN.cellHeight);
@@ -32,7 +58,7 @@ export function MannequinStage({children,room}:{children:ReactNode;room:'studio'
       const dock=container.querySelector<HTMLElement>('.studio-wardrobe-dock');
       let bottomLimit=(dock ? dock.offsetTop : h)-8;
       let rightLimit=w;
-      const side=container.querySelector<HTMLElement>(room==='studio'?'.studio-lookbook':'.room-panel');
+      const side=container.querySelector<HTMLElement>('.room-panel');
       if(side){
         const box=side.getBoundingClientRect();
         // A panel spanning the width (phone portrait closet) sits under the model instead of beside it.
@@ -56,13 +82,6 @@ export function MannequinStage({children,room}:{children:ReactNode;room:'studio'
       stage.style.left=`${Math.round(x-half)}px`;
       stage.style.top=`${Math.round(feet-footRatio*height-canvasOffset)}px`;
 
-      if(room==='studio'){
-        // Keep the rug under the feet by sliding the cover-cropped art instead of translating it.
-        const cropX=image.naturalWidth*scale-w,cropY=image.naturalHeight*scale-h;
-        const px=cropX>1?clamp(50+(anchorX-x)/cropX*100,0,100):50;
-        const py=cropY>1?clamp(50+(anchorY-feet)/cropY*100,0,100):50;
-        image.style.objectPosition=`${px}% ${py}%`;
-      }
     };
     const observer=new ResizeObserver(()=>alignRef.current());observer.observe(container);
     const align=()=>alignRef.current();

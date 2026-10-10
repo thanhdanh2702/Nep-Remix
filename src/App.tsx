@@ -44,6 +44,7 @@ export default function App() {
     else if (hasPlayed.current) entryButton.current?.focus({ preventScroll: true });
   }, [entered]);
   const header = useRef<HTMLElement>(null);
+  const [gameHeader, setGameHeader] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
     if (!menuOpen) return;
     // The open menu pauses the game, so every way out of it must close it: Esc, a tap
@@ -129,6 +130,7 @@ export default function App() {
       <button className="nep-wordmark" onClick={entered ? returnToWelcome : () => setMenuOpen(false)} disabled={entered && gameBlocked} aria-label={entered ? 'Tiệm May Nếp · Về màn chờ' : 'Tiệm May Nếp'}>
         <PixelIcon kind="lotus" /><span>TIỆM MAY NẾP</span>
       </button>
+      {entered && <div ref={setGameHeader} className="nep-game-navigation" />}
       <button className="nep-menu-toggle" disabled={entered && gameBlocked} aria-label={menuOpen ? 'Đóng menu' : 'Mở menu'} aria-expanded={menuOpen} aria-controls="nep-header-nav" onClick={() => setMenuOpen(!menuOpen)}><PixelIcon kind={menuOpen ? 'close' : 'menu'} /></button>
       <nav id="nep-header-nav" className={'nep-header-nav ' + (menuOpen ? 'is-open' : '')} aria-label="Thông tin về tiệm">
         {entered && <button onClick={returnToWelcome} disabled={gameBlocked} className="nep-return">‹ Màn chờ</button>}
@@ -139,7 +141,7 @@ export default function App() {
 
     {entered ? <div className="game-stage" inert={Boolean(panel)} aria-label="Khu chơi game">
       <ErrorBoundary onReset={returnToWelcome}>
-        <Game embedded paused={Boolean(panel) || menuOpen} onBlockedChange={setGameBlocked} pendingAvatarPreset={pendingAvatarPreset} onAvatarApplied={() => setPendingAvatarPreset(null)} />
+        <Game embedded headerSlot={gameHeader} paused={Boolean(panel) || menuOpen} onBlockedChange={setGameBlocked} pendingAvatarPreset={pendingAvatarPreset} onAvatarApplied={() => setPendingAvatarPreset(null)} />
       </ErrorBoundary>
     </div> : <main className="nep-welcome" inert={Boolean(panel)}>
       <img className="nep-welcome-art art-hires" src={welcomeArt} alt="Hai nhân vật mặc áo dài trắng và hồng cùng mèo Nếp trong sân tiệm may Việt Nam lúc hoàng hôn" fetchPriority="high" />

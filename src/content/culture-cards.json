@@ -2,185 +2,369 @@
   {
     "id": "ao-tu-than",
     "title": "Áo tứ thân",
-    "timePeriod": "Thế kỷ 18 đến đầu thế kỷ 20",
-    "historicalFact": "Bắt nguồn từ kiểu áo dài giao lĩnh xẻ tà, ghép từ 4 khổ vải hẹp thích nghi với lao động nông nghiệp Bắc Bộ.",
-    "officialName": "Áo tứ thân truyền thống",
-    "folkName": "Áo bốn thân, Áo cánh xẻ vạt"
+    "timePeriod": "Trang phục Bắc Bộ, phổ biến đến đầu thế kỷ 20",
+    "historicalFact": "Áo tứ thân ghép bốn thân vải, mở hai vạt trước, thường mặc cùng yếm, váy và thắt lưng. Bộ trang phục gắn với phụ nữ Bắc Bộ trong sinh hoạt và lễ hội.",
+    "officialName": "Áo tứ thân",
+    "folkName": "Áo bốn thân",
+    "contentType": "history",
+    "sourceIds": [
+      "hue-ao-dai-2025",
+      "vwm-fashion"
+    ],
+    "sourceNote": "Đối chiếu cấu trúc áo và cách mặc. Chưa đủ căn cứ để chốt năm ra đời hay một đường phát triển duy nhất từ áo giao lĩnh.",
+    "designNote": "Mẫu minh họa chọn áo nâu, yếm và váy riêng; màu sắc có thể đổi khi phối đồ.",
+    "garmentId": "ao-tu-than"
   },
   {
     "id": "ao-ngu-than-tay-chen",
     "title": "Áo ngũ thân tay chẽn",
     "timePeriod": "Triều Nguyễn (1802 - 1945)",
-    "historicalFact": "Định hình từ chúa Nguyễn Phúc Khoát (1744) và chuẩn hóa qua các đạo dụ Minh Mạng (1827-1837) thành quốc phục người Kinh.",
+    "historicalFact": "Ngũ thân chỉ năm phần thân áo, gồm một thân con nằm bên trong. Kiểu tay chẽn có ống tay gọn, cổ đứng và hàng năm khuy bên phải người mặc; đây là dạng thường phục được bảo tàng giới thiệu.",
     "officialName": "Áo ngũ thân lập lĩnh tay chẽn",
-    "folkName": "Áo chẽn, Áo năm thân"
+    "folkName": "Áo ngũ thân tay chẽn",
+    "contentType": "history",
+    "sourceIds": [
+      "vnmh-ngu-than-2021",
+      "hue-ao-dai-2025"
+    ],
+    "sourceNote": "Bài của Bảo tàng Lịch sử quốc gia mô tả hiện vật nam được tặng năm 2021; dùng để đối chiếu khuy và tay áo, không coi đó là hiện vật gốc của mẫu An mặc.",
+    "designNote": "Bản mặc trên An là minh họa của dự án, không phải bản sao một hiện vật thời Nguyễn.",
+    "garmentId": "ao-ngu-than-tay-chen"
   },
   {
     "id": "ao-ngu-than-tay-thung",
     "title": "Áo ngũ thân tay thụng (Áo tấc)",
-    "timePeriod": "Triều Nguyễn đến nay",
-    "historicalFact": "Lễ phục quy định trong hội điển triều Nguyễn, tay thụng rộng dài quá tà một tấc, dùng trong tế tự và hôn lễ.",
-    "officialName": "Áo ngũ thân lập lĩnh tay thụng",
-    "folkName": "Áo tấc, Áo thụng đại lễ"
+    "timePeriod": "Lễ phục thời Nguyễn và sự tiếp nối hiện nay",
+    "historicalFact": "Áo tấc là dạng ngũ thân tay thụng, cổ đứng, tay rộng và dài, dùng làm lễ phục cho cả nam và nữ. Dáng tay này khác rõ với ống tay gọn của áo ngũ thân tay chẽn.",
+    "officialName": "Áo ngũ thân tay thụng",
+    "folkName": "Áo tấc, áo rộng",
+    "contentType": "history",
+    "sourceIds": [
+      "hue-ao-dai-2025",
+      "vnmh-y-phuc"
+    ],
+    "sourceNote": "Nguồn giới thiệu lễ phục tay rộng và hiện vật áo tấc; không xác lập quy tắc tay áo luôn dài quá tà đúng một tấc.",
+    "designNote": "Mẫu trong game chọn tay rộng và nền vàng; đây là lựa chọn tạo hình của dự án.",
+    "garmentId": "ao-ngu-than-tay-thung"
   },
   {
     "id": "ao-dai-tan-thoi-lemur",
-    "title": "Áo dài tân thời Lemur",
-    "timePeriod": "Năm 1934 - cuối thập niên 1930",
-    "historicalFact": "Họa sĩ Nguyễn Cát Tường công bố trên báo Phong Hóa số 90 ngày 23/3/1934, cách tân cổ lá sen và vai bồng.",
-    "officialName": "Áo dài tân thời Lemur",
-    "folkName": "Áo dài Cát Tường"
+    "title": "Áo dài Le Mur (Lemur)",
+    "timePeriod": "Phong trào tân thời thập niên 1930, mốc 1934",
+    "historicalFact": "Năm 1934, họa sĩ Nguyễn Cát Tường giới thiệu cải cách áo dài Le Mur. Các mẫu thay đổi cổ, tay và độ ôm thân áo, tiếp nhận yếu tố thời trang phương Tây; Le Mur có nhiều biến thể.",
+    "officialName": "Áo dài Le Mur",
+    "folkName": "Áo dài Cát Tường, áo dài Lemur",
+    "contentType": "history",
+    "sourceIds": [
+      "swm-ao-dai-2020"
+    ],
+    "sourceNote": "Nguồn bảo tàng ghi mốc 1934. Số báo và ngày công bố cụ thể cần được đối chiếu thêm với báo gốc.",
+    "designNote": "Game chọn cổ lá sen và vai bồng để gợi trào lưu Le Mur; chưa xác lập một mẫu Cát Tường cụ thể để phục dựng.",
+    "garmentId": "ao-dai-lemur"
   },
   {
     "id": "trang-phuc-hon-le-truyen-thong",
     "title": "Trang phục hôn lễ truyền thống",
-    "timePeriod": "Thời Nguyễn đến hiện đại",
-    "historicalFact": "Tục lệ 'tân lang tân nương vi vương nhất nhật' cho phép thường dân ngày cưới mặc lễ phục áo tấc hoặc Nhật bình.",
-    "officialName": "Hôn phục truyền thống người Kinh",
-    "folkName": "Đồ cưới cổ truyền"
+    "timePeriod": "Tập quán hôn lễ, thay đổi theo thời kỳ và địa phương",
+    "historicalFact": "Trang phục cưới thay đổi theo địa phương và thời kỳ. Với Nhật bình, nghiên cứu của Phan Thanh Hải ghi nhận sự lan tỏa từ cung đình ra dân gian sau năm 1945 và việc phụ nữ Huế chọn áo làm lễ phục cưới.",
+    "officialName": "Trang phục hôn lễ",
+    "folkName": "Đồ cưới",
+    "contentType": "history",
+    "sourceIds": [
+      "nhat-binh-2022"
+    ],
+    "sourceNote": "Đây là một trường hợp được tư liệu ghi nhận tại Huế. Nguồn này không xác lập quyền mặc Nhật bình ngày cưới cho mọi thường dân thời Nguyễn."
   },
   {
     "id": "trang-phuc-tang-le-truyen-thong",
     "title": "Trang phục tang lễ truyền thống",
-    "timePeriod": "Thời Lê sơ đến thời Nguyễn",
-    "historicalFact": "Quy chế Ngũ phục dùng vải xô gai để sổ gấu thể hiện lòng hiếu nghĩa tột cùng đối với đấng sinh thành.",
-    "officialName": "Tang phục truyền thống người Kinh",
-    "folkName": "Đồ đại tang, Áo xô gai"
+    "timePeriod": "Tư liệu hiện vật thời Nguyễn",
+    "historicalFact": "Bảo tàng Lịch sử quốc gia lưu giữ áo sa đen cổ Nhật bình, thêu phượng, được mô tả là áo mặc khi có tang của công chúa hoặc phi tần. Hiện vật cho thấy tang phục cần được xét theo hoàn cảnh và người mặc.",
+    "officialName": "Trang phục dùng khi có tang",
+    "folkName": "Tang phục",
+    "contentType": "history",
+    "sourceIds": [
+      "vnmh-y-phuc"
+    ],
+    "sourceNote": "Thẻ giới thiệu một hiện vật cụ thể; không dùng nó làm quy tắc màu sắc hoặc chất liệu chung cho mọi tang lễ."
   },
   {
     "id": "ao-nhat-binh",
     "title": "Áo Nhật bình",
-    "timePeriod": "Ban hành năm 1807 thời vua Gia Long",
-    "historicalFact": "Thường phục của Hoàng thái hậu, Hoàng hậu, Công chúa và triều phục của Cung tần mệnh phụ triều Nguyễn.",
-    "officialName": "Áo Đối khâm Nhật bình",
-    "folkName": "Áo phi phong xứ Huế"
+    "timePeriod": "Triều Nguyễn, quy định từ năm 1807",
+    "historicalFact": "Nhật bình là áo đối khâm với cổ bản rộng tạo hình chữ nhật trước ngực. Triều Nguyễn quy định màu, vải và trang trí theo thứ bậc hậu phi, công chúa, cung tần; về sau áo được dùng rộng hơn trong dân gian.",
+    "officialName": "Áo Nhật bình",
+    "folkName": "Nhật bình",
+    "contentType": "history",
+    "sourceIds": [
+      "nhat-binh-2022"
+    ],
+    "sourceNote": "Bài của TS. Phan Thanh Hải nêu quy định năm Gia Long thứ 6 (1807). Không đồng nhất tên Nhật bình với mọi áo phi phong."
   },
   {
     "id": "ao-giao-linh",
     "title": "Áo giao lĩnh",
-    "timePeriod": "Thời Lý, Trần, Lê (thế kỷ 11 - 18)",
-    "historicalFact": "Trang phục cổ xưa nhất của người Kinh, vạt trái đè chéo lên vạt phải (hữu nhậm), tượng trưng âm dương hòa hợp.",
-    "officialName": "Áo giao lĩnh Đại Việt",
-    "folkName": "Áo cổ chéo, Áo tràng vạt"
+    "timePeriod": "Trang phục Việt truyền thống qua nhiều thời kỳ",
+    "historicalFact": "Giao lĩnh là dáng áo có hai phần cổ giao nhau khi khép vạt. Kiểu áo xuất hiện trong trang phục nhiều tầng lớp; cách may và sử dụng thay đổi theo bối cảnh.",
+    "officialName": "Áo giao lĩnh",
+    "folkName": "Áo cổ chéo",
+    "contentType": "history",
+    "sourceIds": [
+      "vnp-giao-linh"
+    ],
+    "sourceNote": "Nguồn giải thích tên gọi và hình thức cổ giao nhau; chưa đủ để chốt niên đại khởi đầu hoặc ý nghĩa âm dương của kiểu áo."
   },
   {
     "id": "ao-yem",
     "title": "Áo yếm",
-    "timePeriod": "Thời Lý - Trần đến giữa thế kỷ 20",
-    "historicalFact": "Nội y bất ly thân của phụ nữ Việt, gồm hai dáng yếm cổ xây kín đáo và yếm cánh sen duyên dáng.",
-    "officialName": "Áo yếm truyền thống",
-    "folkName": "Cái yếm lụa đào"
+    "timePeriod": "Trang phục phụ nữ Bắc Bộ trong tư liệu áo dài truyền thống",
+    "historicalFact": "Yếm là lớp mặc bên trong được nhắc cùng trang phục phụ nữ Bắc Bộ. Khi phối áo tứ thân mở vạt, yếm che phần ngực và góp một lớp màu cho bộ áo.",
+    "officialName": "Yếm",
+    "folkName": "Cái yếm",
+    "contentType": "history",
+    "sourceIds": [
+      "hue-ao-dai-2025",
+      "swm-ao-dai-2016"
+    ],
+    "sourceNote": "Đối chiếu vai trò của yếm trong bộ tứ thân; chưa chốt niên đại khởi đầu từ thời Lý–Trần."
   },
   {
     "id": "ao-dai-tay-raglan",
     "title": "Áo dài tay raglan",
-    "timePeriod": "Mẫu minh họa trong câu chuyện năm 1962",
-    "historicalFact": "Ghi chú kỹ thuật của mẫu minh họa: đường ráp tay raglan đi từ vùng cổ về nách. Không dùng đường ráp để chứng minh lời bói; không khẳng định tác giả hay năm phát minh chưa được kiểm chứng.",
-    "officialName": "Áo dài tay raglan — mẫu minh họa",
-    "folkName": "Áo ráp tay raglan"
+    "timePeriod": "Áo dài miền Nam, thập niên 1960",
+    "historicalFact": "Raglan là cách ráp tay chéo từ chân cổ xuống nách. Trên áo dài, kỹ thuật này giúp giảm nếp nhăn ở vai, nách và tạo thuận lợi khi cử động; nó không quy định một kiểu cổ duy nhất.",
+    "officialName": "Áo dài tay raglan",
+    "folkName": "Áo dài tay rắc lăng",
+    "contentType": "history",
+    "sourceIds": [
+      "hue-ao-dai-2025",
+      "swm-ao-dai-2016"
+    ],
+    "sourceNote": "Nguồn Huế đặt kỹ thuật trong thập niên 1960 và nhắc nhà may Dung ở Đa Kao. Không suy ra một ngày phát minh chính xác hay góc ráp cố định.",
+    "designNote": "Mai và tiệm may năm 1962 thuộc câu chuyện hư cấu của Chương 3; đường ráp là chi tiết kỹ thuật để quan sát.",
+    "garmentId": "ao-dai-raglan"
   },
   {
     "id": "ao-ba-ba",
     "title": "Áo bà ba",
-    "timePeriod": "Thế kỷ 19 đến hiện nay",
-    "historicalFact": "Gắn liền văn hóa sông nước Nam Bộ, cải tiến từ trang phục người Baba để thích nghi lao động miệt vườn.",
-    "officialName": "Áo bà ba Nam Bộ",
-    "folkName": "Áo cánh xẻ ngực"
+    "timePeriod": "Trang phục dân gian, tư liệu Hội An đầu thế kỷ 20",
+    "historicalFact": "Tư liệu Hội An mô tả áo bà ba cài nút giữa, cổ tròn, về sau có kiểu cổ trái tim. Áo được điều chỉnh cho lao động thường ngày, với khác biệt giữa áo nam và nữ.",
+    "officialName": "Áo bà ba",
+    "folkName": "Áo bà ba",
+    "contentType": "history",
+    "sourceIds": [
+      "hoian-ba-ba-2014"
+    ],
+    "sourceNote": "Nguồn là ghi chép tại Hội An, không đại diện mọi vùng. Không chốt giả thuyết áo bắt nguồn từ người Baba khi chưa đối chiếu thêm."
   },
   {
     "id": "trang-phuc-hau-dong-tho-mau",
     "title": "Trang phục hầu đồng Tín ngưỡng thờ Mẫu",
-    "timePeriod": "UNESCO vinh danh Di sản ngày 01/12/2016",
-    "historicalFact": "Hệ thống khăn chầu áo ngự 36 giá đồng tuân thủ nghiêm ngặt theo 4 phủ: đỏ (Thiên), xanh (Nhạc), trắng (Thoải), vàng (Địa).",
-    "officialName": "Lễ phục Tín ngưỡng thờ Mẫu Tam phủ",
-    "folkName": "Khăn chầu áo ngự"
+    "timePeriod": "Thực hành tín ngưỡng được UNESCO ghi danh năm 2016",
+    "historicalFact": "Thực hành tín ngưỡng thờ Mẫu Tam phủ của người Việt kết hợp nghi lễ, trang phục, âm nhạc và múa. UNESCO ghi danh thực hành này năm 2016, gắn với ba miền trời, nước và núi rừng.",
+    "officialName": "Trang phục trong thực hành tín ngưỡng thờ Mẫu",
+    "folkName": "Khăn chầu áo ngự",
+    "contentType": "history",
+    "sourceIds": [
+      "unesco-mother-goddesses"
+    ],
+    "sourceNote": "UNESCO ghi danh toàn bộ thực hành văn hóa, không chứng nhận riêng một bộ áo. Không áp bảng màu Tứ phủ hay số 36 giá thành quy tắc của hồ sơ Tam phủ này."
   },
   {
     "id": "card-tiem-may-nep-origins",
-    "title": "Nếp nhà và nghề may Hà Nội",
-    "timePeriod": "Năm 2026",
-    "historicalFact": "Lịch sử nếp nhà phố cổ Hàng Đào qua 5 thế hệ gìn giữ hồn cốt chiếc áo dài truyền thống.",
-    "officialName": "Di sản Tiệm May Nếp",
-    "folkName": "Tiệm May Nếp"
+    "title": "Nếp nhà và nghề may trong Tiệm May Nếp",
+    "timePeriod": "Năm 2026 · bối cảnh hư cấu",
+    "historicalFact": "Tiệm May Nếp ở Hàng Đào là không gian hư cấu nối ký ức gia đình với nghề may. An khám phá những câu chuyện được gửi lại qua trang phục và kỷ vật.",
+    "officialName": "Nếp nhà và nghề may trong Tiệm May Nếp",
+    "folkName": "Ghi chép của Tiệm May Nếp",
+    "contentType": "interpretation",
+    "sourceIds": [],
+    "sourceNote": "Nguồn nội bộ: Phần mở đầu. Đây là diễn giải của tác phẩm về các nhân vật và sự kiện hư cấu, không phải hồ sơ lịch sử của một gia đình có thật."
   },
   {
     "id": "card-ngu-than-nguyen-dynasty",
     "title": "Cấu trúc áo ngũ thân thời Nguyễn",
-    "timePeriod": "Năm 1888",
-    "historicalFact": "Quy chuẩn 5 thân áo, 5 khuy cài tượng trưng cho Nhân - Lễ - Nghĩa - Trí - Tín của triều Nguyễn.",
-    "officialName": "Quy chế ngũ thân thời Nguyễn",
-    "folkName": "Áo năm thân Đồng Khánh"
+    "timePeriod": "Thời Nguyễn · câu chuyện lấy bối cảnh 1888",
+    "historicalFact": "Năm thân áo là kết cấu gồm cả thân con bên trong, không phải năm tà rời. Năm khuy ngũ thân thường được diễn giải gắn với ngũ thường trong Nho giáo.",
+    "officialName": "Cấu trúc và cách diễn giải áo ngũ thân",
+    "folkName": "Áo năm thân",
+    "contentType": "history",
+    "sourceIds": [
+      "hue-ao-dai-2025"
+    ],
+    "sourceNote": "Phân biệt mô tả kết cấu với diễn giải biểu tượng. Năm 1888 là bối cảnh Chương 1, không phải năm ban hành một quy chế áo trong thẻ.",
+    "garmentId": "ao-ngu-than-tay-chen"
   },
   {
     "id": "card-hu-tuc-ep-thu-tiet",
-    "title": "Khảo cứu hủ tục ép thủ tiết",
-    "timePeriod": "Cuối thế kỷ 19",
-    "historicalFact": "Lệ làng phong kiến ép phụ nữ góa thủ tiết giam mình để dòng họ đổi lấy biển Tiết hạnh khả phong.",
-    "officialName": "Hương ước và lệ thủ tiết làng xã",
-    "folkName": "Lệ thủ tiết thờ chồng"
+    "title": "Câu chuyện Cụ Cầm và quyền lựa chọn",
+    "timePeriod": "Bối cảnh hư cấu cuối thế kỷ 19",
+    "historicalFact": "Trong Chương 1, Cụ Cầm bị áp đặt việc thủ tiết. Người chơi tìm thư và văn tự để nhận diện sự cưỡng ép, qua đó suy nghĩ về quyền tự quyết của người phụ nữ.",
+    "officialName": "Câu chuyện Cụ Cầm và quyền lựa chọn",
+    "folkName": "Ghi chép của Tiệm May Nếp",
+    "contentType": "interpretation",
+    "sourceIds": [],
+    "sourceNote": "Nguồn nội bộ: Chương 1. Đây là diễn giải của tác phẩm về các nhân vật và sự kiện hư cấu, không phải hồ sơ lịch sử của một gia đình có thật."
   },
   {
     "id": "card-phong-trao-ao-dai-lemur-1934",
     "title": "Phong trào áo dài Lemur 1934",
     "timePeriod": "Năm 1934 - 1935",
-    "historicalFact": "Cuộc cách tân y phục phụ nữ của nhóm Tự Lực Văn Đoàn trên báo Phong Hóa và Ngày Nay.",
-    "officialName": "Cải cách y phục Tự Lực Văn Đoàn",
-    "folkName": "Phong trào Lemur"
+    "historicalFact": "Cải cách Le Mur của Cát Tường năm 1934 là một dấu mốc trong quá trình thay đổi áo dài phụ nữ. Thay đổi diễn ra ở nhiều chi tiết cổ, tay và thân áo.",
+    "officialName": "Cải cách áo dài Le Mur",
+    "folkName": "Phong trào Lemur",
+    "contentType": "history",
+    "sourceIds": [
+      "swm-ao-dai-2020"
+    ],
+    "sourceNote": "Nguồn bảo tàng hỗ trợ mốc và thay đổi trang phục. Cụ Loan cùng bản vẽ mật mã ở Chương 2 thuộc cốt truyện hư cấu.",
+    "garmentId": "ao-dai-lemur"
   },
   {
     "id": "card-hu-tuc-tao-hon-ep-duyen",
-    "title": "Khảo cứu nạn ép duyên gán nợ",
-    "timePeriod": "Thập niên 1930",
-    "historicalFact": "Định kiến 'nữ nhi vô tài tiện thị đức' và thủ đoạn ép hôn gán nợ thời kỳ thuộc địa.",
-    "officialName": "Hủ tục hôn nhân môn đăng hộ đối",
-    "folkName": "Ép duyên gán nợ"
+    "title": "Câu chuyện Cụ Loan và nạn ép duyên",
+    "timePeriod": "Bối cảnh hư cấu thập niên 1930",
+    "historicalFact": "Trong Chương 2, Cụ Loan phải đối diện việc ép duyên và gán nợ. Biên lai cùng giao kèo giúp người chơi làm rõ sự việc và bảo vệ lựa chọn của nhân vật.",
+    "officialName": "Câu chuyện Cụ Loan và nạn ép duyên",
+    "folkName": "Ghi chép của Tiệm May Nếp",
+    "contentType": "interpretation",
+    "sourceIds": [],
+    "sourceNote": "Nguồn nội bộ: Chương 2. Đây là diễn giải của tác phẩm về các nhân vật và sự kiện hư cấu, không phải hồ sơ lịch sử của một gia đình có thật."
   },
   {
     "id": "card-ky-thuat-ao-dai-raglan-1960",
     "title": "Quan sát đường ráp tay raglan",
-    "timePeriod": "Bối cảnh gia đình hư cấu, năm 1962",
-    "historicalFact": "Ghi chú kỹ thuật của mẫu áo Mai đang làm: quan sát đường ráp tay từ vùng cổ về nách trong preview. Đây không phải bằng chứng bói toán; thẻ không khẳng định tác giả, năm phát minh hoặc một góc ráp cố định.",
-    "officialName": "Quan sát kỹ thuật trên mẫu minh họa",
-    "folkName": "Đường ráp tay raglan"
+    "timePeriod": "Thập niên 1960 · câu chuyện lấy bối cảnh 1962",
+    "historicalFact": "Đường ráp raglan đi từ chân cổ xuống nách. Hãy quan sát đường ráp và độ rủ quanh vai trên mẫu áo; đây là một cách nhận biết kỹ thuật may.",
+    "officialName": "Kỹ thuật ráp tay raglan",
+    "folkName": "Đường ráp tay rắc lăng",
+    "contentType": "history",
+    "sourceIds": [
+      "swm-ao-dai-2016"
+    ],
+    "sourceNote": "Nguồn hỗ trợ cấu trúc đường ráp. Mai và hồ sơ năm 1962 là hư cấu; kỹ thuật may không phải bằng chứng cho lời bói.",
+    "garmentId": "ao-dai-raglan"
   },
   {
     "id": "card-phe-phan-hu-tuc-boi-toan",
     "title": "Nhận diện hành vi thao túng bằng lời phán",
     "timePeriod": "Chuyện gia đình hư cấu tại Đa Kao, năm 1962",
-    "historicalFact": "Diễn giải của tác phẩm: biên nhận, sổ gốc, thư thỏa thuận và bản sửa cho thấy hành vi nhận tiền để áp đặt lựa chọn lên Mai. Không một lời phán hay đặc điểm ngoại hình nào quyết định phẩm giá hoặc quyền tự quyết của cô.",
-    "officialName": "Diễn giải của tác phẩm — quyền tự quyết",
-    "folkName": "Đối chiếu chứng cứ, nhận diện thao túng"
+    "historicalFact": "Trong Chương 3, biên nhận, sổ gốc và thư thỏa thuận làm rõ việc nhận tiền để áp đặt lựa chọn lên Mai. Câu chuyện đặt trọng tâm vào chứng cứ và quyền tự quyết của cô.",
+    "officialName": "Nhận diện hành vi thao túng bằng lời phán",
+    "folkName": "Ghi chép của Tiệm May Nếp",
+    "contentType": "interpretation",
+    "sourceIds": [],
+    "sourceNote": "Nguồn nội bộ: Chương 3. Đây là diễn giải của tác phẩm về các nhân vật và sự kiện hư cấu, không phải hồ sơ lịch sử của một gia đình có thật."
   },
   {
     "id": "card-ao-dai-thoi-bao-cap-1980",
-    "title": "Áo dài thời kỳ bao cấp",
-    "timePeriod": "Năm 1982",
-    "historicalFact": "Nét đẹp giản dị, thanh khiết của chiếc áo dài cưới vải phin và popolin công nghiệp dệt Nam Định.",
-    "officialName": "Y phục thời kỳ tem phiếu",
-    "folkName": "Áo dài cưới vải phin"
+    "title": "Áo dài thập niên 1980 và câu chuyện của Phương",
+    "timePeriod": "Thập niên 1980 · câu chuyện lấy bối cảnh 1982",
+    "historicalFact": "Bảo tàng Phụ nữ Nam Bộ ghi nhận áo dài thêu hoa, chim và cây lá trong những năm 1980. Chiếc áo cưới phin của Phương và áo popolin hoa cúc là hai mẫu sáng tác trong bối cảnh ấy.",
+    "officialName": "Áo dài thập niên 1980",
+    "folkName": "Áo dài trong câu chuyện của Phương",
+    "contentType": "history",
+    "sourceIds": [
+      "swm-ao-dai-2016"
+    ],
+    "sourceNote": "Nguồn chỉ hỗ trợ bối cảnh trang trí áo dài. Chương 4 cung cấp chiếc áo cưới và sự kiện gia đình; chưa có chứng cứ xuất xứ Nam Định cho hai mẫu game."
   },
   {
     "id": "card-phe-phan-trong-nam-khinh-nu",
-    "title": "Phê phán tư tưởng trọng nam khinh nữ",
-    "timePeriod": "Thập niên 1980",
-    "historicalFact": "Đấu tranh chống lại định kiến 'nhất nam viết hữu, thập nữ viết vô' xóa tên phụ nữ khỏi phả tộc.",
-    "officialName": "Bình đẳng giới trong gia đình",
-    "folkName": "Xóa tên khỏi gia phả"
+    "title": "Bình đẳng trong câu chuyện gia đình Phương",
+    "timePeriod": "Bối cảnh hư cấu năm 1982",
+    "historicalFact": "Trong Chương 4, những trang gia phả và kỷ vật giúp người chơi nhận diện việc gạt bỏ đóng góp của phụ nữ. Tác phẩm đặt câu hỏi về cách gia đình ghi nhớ các thành viên.",
+    "officialName": "Bình đẳng trong câu chuyện gia đình Phương",
+    "folkName": "Ghi chép của Tiệm May Nếp",
+    "contentType": "interpretation",
+    "sourceIds": [],
+    "sourceNote": "Nguồn nội bộ: Chương 4. Đây là diễn giải của tác phẩm về các nhân vật và sự kiện hư cấu, không phải hồ sơ lịch sử của một gia đình có thật."
   },
   {
     "id": "card-viet-phuc-remix-tuong-lai",
-    "title": "Tương lai của Việt phục Remix",
-    "timePeriod": "Năm 2026",
-    "historicalFact": "Đưa cổ phục bước vào đời sống đương đại với sự tôn trọng lịch sử và tinh thần sáng tạo trẻ trung.",
-    "officialName": "Bảo tồn di sản thời trang số",
-    "folkName": "Việt phục Remix"
+    "title": "Áo ngũ thân Remix 2026 của An",
+    "timePeriod": "Thiết kế hư cấu năm 2026",
+    "historicalFact": "Remix 2026 là thiết kế của An trong tác phẩm, lấy cảm hứng từ áo ngũ thân tay chẽn. Màu sắc và cách phối mới thể hiện lựa chọn sáng tạo của nhân vật.",
+    "officialName": "Áo ngũ thân Remix 2026",
+    "folkName": "Áo Remix của An",
+    "contentType": "fiction",
+    "sourceIds": [
+      "vnmh-ngu-than-2021"
+    ],
+    "sourceNote": "Nguồn nội bộ: Chương 5 và thiết kế của dự án. Bài bảo tàng dùng để đối chiếu nền kết cấu ngũ thân; không xác nhận bộ Remix là cổ phục phục dựng.",
+    "designNote": "Người chơi đổi bảng màu và phụ kiện trên cùng thiết kế đương đại.",
+    "garmentId": "ao-ngu-than-remix-2026"
   },
   {
     "id": "card-tong-ket-nam-the-he-phu-nu",
-    "title": "Năm thế hệ phụ nữ kiên cường",
-    "timePeriod": "1888 - 2026",
-    "historicalFact": "Tổng kết hành trình qua 5 thế hệ Cụ Cầm, Cụ Loan, Bà Mai, Mẹ Phương và An trong dòng chảy văn hóa.",
-    "officialName": "Phả hệ nữ quyền Tiệm May Nếp",
-    "folkName": "Năm thế hệ nếp áo"
+    "title": "Năm thế hệ phụ nữ trong Tiệm May Nếp",
+    "timePeriod": "1888–2026 · dòng thời gian hư cấu",
+    "historicalFact": "Cụ Cầm, Cụ Loan, Bà Mai, Mẹ Phương và An là năm thế hệ trong câu chuyện Tiệm May Nếp. Mỗi nếp áo nối một lựa chọn của người phụ nữ với ký ức gia đình.",
+    "officialName": "Năm thế hệ phụ nữ trong Tiệm May Nếp",
+    "folkName": "Ghi chép của Tiệm May Nếp",
+    "contentType": "interpretation",
+    "sourceIds": [],
+    "sourceNote": "Nguồn nội bộ: Toàn bộ cốt truyện. Đây là diễn giải của tác phẩm về các nhân vật và sự kiện hư cấu, không phải hồ sơ lịch sử của một gia đình có thật."
+  },
+  {
+    "id": "ao-dai-tan-thoi-vang-mo-ga",
+    "title": "Áo dài tân thời cổ đứng",
+    "timePeriod": "Cuối thập niên 1930",
+    "historicalFact": "Bảo tàng Phụ nữ Nam Bộ mô tả áo dài năm 1939 trở lại cổ đứng, tay thẳng và cửa tay hẹp. Đây là một bước chuyển trong quá trình biến đổi áo dài tân thời.",
+    "officialName": "Áo dài tân thời cổ đứng",
+    "folkName": "Áo dài cổ đứng",
+    "contentType": "history",
+    "sourceIds": [
+      "swm-ao-dai-2020"
+    ],
+    "sourceNote": "Nguồn đối chiếu kiểu cổ và tay cuối thập niên 1930. Vàng mỡ gà là tên màu của mẫu game, không phải tên một loại áo lịch sử riêng.",
+    "designNote": "Mẫu chọn nền vàng mỡ gà và vai không bồng để phân biệt với áo lấy cảm hứng Le Mur.",
+    "garmentId": "ao-dai-tan-thoi-vang-mo-ga"
+  },
+  {
+    "id": "ao-dai-co-thuyen",
+    "title": "Áo dài cổ thuyền",
+    "timePeriod": "Miền Nam, cuối thập niên 1950–1960",
+    "historicalFact": "Áo dài cổ thuyền có cổ mở ngang, cong nông và không có chân cổ đứng. Kiểu cổ hở xuất hiện nổi bật ở miền Nam cuối thập niên 1950, rồi có nhiều biến thể.",
+    "officialName": "Áo dài cổ thuyền",
+    "folkName": "Áo dài cổ hở",
+    "contentType": "history",
+    "sourceIds": [
+      "hue-ao-dai-2025",
+      "swm-ao-dai-2016"
+    ],
+    "sourceNote": "Nguồn Huế nhắc Thái Thúc Nha, nguồn bảo tàng nhắc Trần Lệ Xuân. Vì cách quy tác giả khác nhau, thẻ không chốt người phát minh duy nhất.",
+    "designNote": "Mẫu An mặc giữ vai kín, tay dài và cổ thuyền nông; màu xanh ngọc là lựa chọn của dự án.",
+    "garmentId": "ao-dai-co-thuyen"
+  },
+  {
+    "id": "ao-dai-cuoi-phin",
+    "title": "Áo dài cưới vải phin · câu chuyện 1982",
+    "timePeriod": "Bối cảnh hư cấu năm 1982",
+    "historicalFact": "Chiếc áo cưới trắng bằng vải phin, thêu cành đào nhỏ, gắn với Phương trong Chương 4. Đây là thiết kế và kỷ vật của câu chuyện, không phải hiện vật lịch sử đã được xác minh.",
+    "officialName": "Áo dài cưới vải phin của Phương",
+    "folkName": "Áo cưới vải phin",
+    "contentType": "fiction",
+    "sourceIds": [
+      "swm-ao-dai-2016"
+    ],
+    "sourceNote": "Nguồn nội bộ: Chương 4 và thiết kế trang phục của dự án. Bài bảo tàng chỉ cung cấp bối cảnh áo dài có trang trí thêu những năm 1980, không xác nhận chiếc áo, chất liệu hay xuất xứ Nam Định.",
+    "designNote": "Năm 1982, màu trắng và cành đào là chi tiết truyện; không khái quát thành quy chuẩn áo cưới thời bao cấp.",
+    "garmentId": "ao-dai-cuoi-phin"
+  },
+  {
+    "id": "ao-dai-popolin",
+    "title": "Áo dài popolin hoa cúc",
+    "timePeriod": "Mẫu sáng tác trong bối cảnh thập niên 1980",
+    "historicalFact": "Poplin (cũng viết popeline) là tên vải dệt trơn có gân ngang mịn, ngày nay thường làm từ bông. Tên chất liệu không xác định một phom áo dài riêng.",
+    "officialName": "Áo dài bằng vải poplin",
+    "folkName": "Áo dài popolin (tên dùng trong game)",
+    "contentType": "history",
+    "sourceIds": [
+      "trc-poplin"
+    ],
+    "sourceNote": "TRC được dùng cho thông tin chất liệu. Chưa có nguồn xác nhận mẫu hoa cúc của game là trang phục tiêu biểu của công nhân hoặc cô giáo Nam Định thập niên 1980.",
+    "designNote": "Phom hai tà và hoa cúc nhỏ là thiết kế của dự án, gắn với bối cảnh Chương 4.",
+    "garmentId": "ao-dai-popolin"
   }
 ]

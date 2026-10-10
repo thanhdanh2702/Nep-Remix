@@ -1968,12 +1968,12 @@
       255
     ],
     "bounds": [
-      26,
+      22,
       4,
-      70,
-      93
+      74,
+      92
     ],
-    "sha256": "d647b4da802970458d9e38bdce0604ed1426db1aa1bfab8fbe667e79c51620b0"
+    "sha256": "c8b249af1207620e51dbae27340a2173d0a48d1b733684edc84dc706f9e0b9b3"
   },
   {
     "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin--icon.png",
@@ -1987,12 +1987,12 @@
       255
     ],
     "bounds": [
-      24,
+      23,
       4,
-      72,
-      93
+      73,
+      92
     ],
-    "sha256": "f4b416187eaa3caadc6035f1add64dabd78b52d0dc44a2a8cd2ef56d41701277"
+    "sha256": "084e5803269b0248ca371e1793ac49aed06344d11089927109ac3401f6192d14"
   },
   {
     "path": "assets/garments/ao-dai-lemur/ao-dai-lemur--icon.png",
@@ -2006,12 +2006,12 @@
       255
     ],
     "bounds": [
-      21,
-      2,
-      76,
-      94
+      23,
+      4,
+      72,
+      92
     ],
-    "sha256": "1a9cc3da84f5726c31968d24a32a2309f15fd46440cec8f1b560c3ff61828c5c"
+    "sha256": "b8d7c9dc6b2967916f6cceb391ab8b281649d50ed375b85e92cebb90933b674c"
   },
   {
     "path": "assets/garments/ao-dai-lemur/ao-dai-lemur.png",
@@ -2025,12 +2025,12 @@
       255
     ],
     "bounds": [
-      29,
-      126,
-      510,
-      377
+      25,
+      127,
+      511,
+      370
     ],
-    "sha256": "c7e08255a5cd1343326bd5205f1829a58f814931223f49cabb8515819bd52779"
+    "sha256": "eded4b1b2adb44608843634c6cd2d54747700d0be0f8d265134f55513ca90dec"
   },
   {
     "path": "assets/garments/ao-dai-popolin/ao-dai-popolin--icon.png",
@@ -2044,12 +2044,12 @@
       255
     ],
     "bounds": [
-      26,
-      2,
-      70,
-      94
+      22,
+      4,
+      73,
+      92
     ],
-    "sha256": "f11671dcf271b925f57a4ea6e2fa54fe072136f987b2e16122c998ffe54c35b1"
+    "sha256": "441520f256834aed5a9a4c4dc330c265fe686905505b8842714776087a2022ce"
   },
   {
     "path": "assets/garments/ao-dai-raglan/ao-dai-raglan--icon.png",
@@ -2063,12 +2063,12 @@
       255
     ],
     "bounds": [
-      25,
-      2,
-      71,
-      94
+      22,
+      4,
+      73,
+      92
     ],
-    "sha256": "c83e7c3e7e60d56274de908971a6a6878d3999aafa50d247a16e3228ba805ceb"
+    "sha256": "0f48e6678270f6310387f4c3d3d8703166d8fd3b12a7f4e95b155ea9fa9e9888"
   },
   {
     "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga--icon.png",
@@ -2082,12 +2082,12 @@
       255
     ],
     "bounds": [
-      28,
+      23,
       4,
-      68,
+      72,
       92
     ],
-    "sha256": "77d99b79d6cfee5778fb3cd3e17ecf18e2faf7c2afa6880ab9b7eda32dc97c07"
+    "sha256": "29e5f5ac1d1abd351f9c30e3e3f103290e3a3937f221c4e15b7c5d08a705287e"
   },
   {
     "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026--icon.png",
@@ -2101,12 +2101,12 @@
       255
     ],
     "bounds": [
-      17,
-      2,
-      79,
-      93
+      21,
+      4,
+      74,
+      92
     ],
-    "sha256": "0bd04c49f2c02acbc5f9470042f6575586b0837d6d2d85b775f3f12775689ce8"
+    "sha256": "1ced0224c7b144a6dc4d83fff54d1f97ea5a372b9022bb40671bd6d41843a682"
   },
   {
     "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen--icon.png",
@@ -2120,31 +2120,12 @@
       255
     ],
     "bounds": [
-      16,
+      22,
       4,
-      80,
+      74,
       92
     ],
-    "sha256": "9eaf3f6f6a8330299527ae3baedc6b4ee7b4080ffe5215af09bc549649984567"
-  },
-  {
-    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--icon.png",
-    "kind": "garment-thumb",
-    "width": 96,
-    "height": 96,
-    "format": "PNG",
-    "mode": "RGBA",
-    "alphaRange": [
-      0,
-      255
-    ],
-    "bounds": [
-      2,
-      4,
-      94,
-      92
-    ],
-    "sha256": "60461f92f7b7d2f9b0a03d5b2e57efc6405eea4ea0366130a95d33696eecb21e"
+    "sha256": "271a7ba550e4efd90d7ffa1bd626add58b8180b9e056a53b111c922769cf0bc8"
   },
   {
     "path": "assets/garments/ao-tu-than/ao-tu-than--icon.png",
@@ -2158,12 +2139,12 @@
       255
     ],
     "bounds": [
-      14,
+      20,
       4,
-      81,
+      76,
       92
     ],
-    "sha256": "2dc264583f9a61dd59ae5eacdd7c0e09ad676fe0396d476a7e82355584f27532"
+    "sha256": "2e00df9608a28bc37ea05a1428bd73773d455899e39e46c18169be95061ac0e1"
   },
   {
     "path": "assets/items/ban-giao-keo-ep-hon/ban-giao-keo-ep-hon.png",
@@ -4134,12 +4115,12 @@
       255
     ],
     "bounds": [
-      29,
-      126,
-      510,
-      377
+      27,
+      127,
+      513,
+      370
     ],
-    "sha256": "f654814b15e329e42becd0c1179740aeede4810f2561ffcb0c79fc14b6e24846"
+    "sha256": "d3a04e12c31864b1ec60566c35f3b0426db8154bc4c859393e8d10580ac4e30c"
   },
   {
     "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen.png",
@@ -4153,12 +4134,12 @@
       255
     ],
     "bounds": [
-      29,
-      126,
-      510,
-      377
+      21,
+      120,
+      513,
+      366
     ],
-    "sha256": "5a2f2a242b83ffa2bebd7f3679955f959f28eb572ab5697de97ede5c79942b37"
+    "sha256": "55a696b62d81984989e46dc15a4ac2d1af0e831896c487dc79ab0a13642df7d5"
   },
   {
     "path": "assets/accessories/kinh-mat-meo/kinh-mat-meo.png",
@@ -4463,5 +4444,1183 @@
       941
     ],
     "sha256": "6d26e0e388e01f102589949b056a0ed9482771e71bcdc5b7db0a4f62b0176cc1"
+  },
+  {
+    "path": "assets/characters/an/studio-neck--right.png",
+    "kind": "character-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      95,
+      126,
+      129,
+      150
+    ],
+    "sha256": "a957c8068a122120cfe0422d49d69104ecf96174e3ed32a49fb21c8daaae8ae2"
+  },
+  {
+    "path": "assets/characters/an/studio-neck.png",
+    "kind": "character-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      66,
+      126,
+      474,
+      150
+    ],
+    "sha256": "0dd0b75eccee8fc4bc674fa6033b5c8b45b241cbc5fd20a3939a8c373eb67f11"
+  },
+  {
+    "path": "assets/characters/an/studio-trousers--right.png",
+    "kind": "character-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      69,
+      222,
+      135,
+      388
+    ],
+    "sha256": "7a8c7b897b3f45c8a80e52271580450e704909eaa6490f77c4e89beac59e63f8"
+  },
+  {
+    "path": "assets/characters/an/studio-trousers.png",
+    "kind": "character-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      50,
+      222,
+      486,
+      388
+    ],
+    "sha256": "01e3e4f308026ebb18fc34ba5777d2c8cb24b270961582f4421b128050163a80"
+  },
+  {
+    "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      310
+    ],
+    "sha256": "19c307ed903f7acee725d7593b8b2dc48b7a876d2c8f62d28b3fee328c08be35"
+  },
+  {
+    "path": "assets/garments/ao-dai-co-thuyen/ao-dai-co-thuyen--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      38,
+      120,
+      148,
+      364
+    ],
+    "sha256": "d95fd48055ddae8f36e6eddfba73dfa8edb51f458667fdd7c0cf5a6803548bb3"
+  },
+  {
+    "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      322
+    ],
+    "sha256": "fcb3998454d2aa70b28c0e32f99c10a28681781d5e4eb48caed02dc9b8b90623"
+  },
+  {
+    "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      49,
+      127,
+      149,
+      370
+    ],
+    "sha256": "0d931aa57dfbd7cf2d5530b10c35f4523fbc35f6d2512f6d8b9b3ea623e05361"
+  },
+  {
+    "path": "assets/garments/ao-dai-cuoi-phin/ao-dai-cuoi-phin.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      127,
+      515,
+      370
+    ],
+    "sha256": "a77ca799c39f7fd84665feb6b60f689915c22c70b2bcc671a023288f9e0c6597"
+  },
+  {
+    "path": "assets/garments/ao-dai-lemur/ao-dai-lemur--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      326
+    ],
+    "sha256": "1618b56f349ff10877b4f135c1daa535b62ade0a0d72d84e13f445965e92fffb"
+  },
+  {
+    "path": "assets/garments/ao-dai-lemur/ao-dai-lemur--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      47,
+      127,
+      147,
+      370
+    ],
+    "sha256": "a3671f2ac54e31a33c54874f3b1451f0fe62f01ccd4271da5dfae87c5d7c83c6"
+  },
+  {
+    "path": "assets/garments/ao-dai-popolin/ao-dai-popolin--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      316
+    ],
+    "sha256": "177995bb796b296e210ec8c0b499b47441747c20d9e4b1053309c171963a785b"
+  },
+  {
+    "path": "assets/garments/ao-dai-popolin/ao-dai-popolin--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      52,
+      127,
+      154,
+      370
+    ],
+    "sha256": "e8d7dafb8d2148a69cffc17fccca85ccd631e46a33e9c6b6fac7cc980eb7f79f"
+  },
+  {
+    "path": "assets/garments/ao-dai-popolin/ao-dai-popolin.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      30,
+      127,
+      513,
+      370
+    ],
+    "sha256": "d70037d9dd2b4db2e01fca5abfa00510d5a30a971e2642abe96841031e266b70"
+  },
+  {
+    "path": "assets/garments/ao-dai-raglan/ao-dai-raglan--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      316
+    ],
+    "sha256": "2e638ea2852b9fe41d6b92002e30d3c4cf85532b988b8a4db2a6375d1112ccb7"
+  },
+  {
+    "path": "assets/garments/ao-dai-raglan/ao-dai-raglan--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      51,
+      127,
+      152,
+      370
+    ],
+    "sha256": "dd5676df32a5b7d8f5a167db95c62c12b18d8b32a2a2b99c50030e471de64637"
+  },
+  {
+    "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      329
+    ],
+    "sha256": "7a866740c2ba5c09da62848761f50257642f73fd7823d70bdfb921c23b0f7350"
+  },
+  {
+    "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      50,
+      127,
+      152,
+      370
+    ],
+    "sha256": "cec8b8066bc21b32738505f76b3b290957b15e4c77092988cb8780829e4e929a"
+  },
+  {
+    "path": "assets/garments/ao-dai-tan-thoi-vang-mo-ga/ao-dai-tan-thoi-vang-mo-ga.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      127,
+      513,
+      370
+    ],
+    "sha256": "49f00acb78006e4fd877f92cd7f31feb0e705fa0af9555d1459d9700d444f42e"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      308
+    ],
+    "sha256": "8e962eaf9b854725ef2c74a544432dbc6edd6be26161e44012720c86bd383b15"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      50,
+      127,
+      151,
+      370
+    ],
+    "sha256": "302c61f956bbb69de8a6e0845d4d2d9e4524f4b653f3210fe8d6a8dd541438a1"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-remix-2026/ao-ngu-than-remix-2026.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      28,
+      127,
+      515,
+      370
+    ],
+    "sha256": "241d17ef92dfc85e177f5c9752feb038b9786f7e69e9e6e97c9ba532aa1ddecb"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      314
+    ],
+    "sha256": "33461ad6c07c05f8513ea45d40f35758d965271e0e50bbe5749727f34522c82d"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      51,
+      127,
+      152,
+      370
+    ],
+    "sha256": "05955d23067622ef3d82603203ebe14e0396a936f5ac4f9d8d47eb1013517d0d"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-chen/ao-ngu-than-tay-chen.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      27,
+      127,
+      514,
+      370
+    ],
+    "sha256": "3c6050b9aab00695d9e9ff8cfb9d7b72c6aec7d4f675c97c0dd854f8cb33487c"
+  },
+  {
+    "path": "assets/garments/ao-tu-than/ao-tu-than--bottom-right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      59,
+      222,
+      151,
+      382
+    ],
+    "sha256": "26c84c7b6a3882cd24f2171accb46eba2f08675e79629ead4ad7fd07995b42c4"
+  },
+  {
+    "path": "assets/garments/ao-tu-than/ao-tu-than--bottom.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      36,
+      222,
+      505,
+      382
+    ],
+    "sha256": "7281af705753ef2883dd4aba033560610b62428ee37d36136909f6e6edb0df1a"
+  },
+  {
+    "path": "assets/garments/ao-tu-than/ao-tu-than--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      294
+    ],
+    "sha256": "24aae03ee76ddc21a52a58f25769a6aef89f793b5df3ae5a3d9199f6a467aa2f"
+  },
+  {
+    "path": "assets/garments/ao-tu-than/ao-tu-than--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      47,
+      127,
+      158,
+      370
+    ],
+    "sha256": "f4e4a4f9fa949c059c858b504e2e2e39da10f0f6fe86328f5225c89d2854287b"
+  },
+  {
+    "path": "assets/garments/ao-tu-than/ao-tu-than.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      127,
+      518,
+      370
+    ],
+    "sha256": "52619d6d2dade86d3c640524ce96f2480a061ba1fa7a5ad8fb406b38dc99b0ee"
+  },
+  {
+    "path": "assets/screens/journey/journey-map--landscape.png",
+    "kind": "screen-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "8a822c69cec5626c58daa5c5481a6f1b593f1a3c5be7618360235a8de8790a8a"
+  },
+  {
+    "path": "assets/screens/main-shop/backgrounds/garden-user--landscape.png",
+    "kind": "screen-asset",
+    "width": 1586,
+    "height": 992,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1586,
+      992
+    ],
+    "sha256": "7c5e4fe3e251e6d33363fcc2699b24f86b523e48cdc34f81971eff2b19558857"
+  },
+  {
+    "path": "assets/screens/main-shop/ui/action-card-frame--9slice.png",
+    "kind": "screen-asset",
+    "width": 64,
+    "height": 64,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      64,
+      64
+    ],
+    "sha256": "feb36ab823594aac1c404a30d1669a63e303cf30704f65392a971815b57ecc00"
+  },
+  {
+    "path": "assets/screens/main-shop/ui/area-sign-frame.png",
+    "kind": "screen-asset",
+    "width": 2048,
+    "height": 683,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      31,
+      34,
+      2016,
+      683
+    ],
+    "sha256": "93a04275b087c683cae0774dd892c11eabffd41b44db0693d332fefac280523b"
+  },
+  {
+    "path": "assets/screens/main-shop/ui/currency-hud.png",
+    "kind": "screen-asset",
+    "width": 2048,
+    "height": 683,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      254
+    ],
+    "bounds": [
+      67,
+      52,
+      1983,
+      683
+    ],
+    "sha256": "77b8d3b45cf0a673e2fbf7d3fc405abf24845258e03638f6a1178d05ec0d1348"
+  },
+  {
+    "path": "assets/screens/main-shop/ui/settings-button.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      105,
+      103,
+      1135,
+      1117
+    ],
+    "sha256": "d6b44ef1729a22c1faab3ebec1f175ed6843e7603159a9f871f4764b8c7a523f"
+  },
+  {
+    "path": "assets/screens/main-shop/ui/ui-hud--3slice.png",
+    "kind": "screen-asset",
+    "width": 120,
+    "height": 40,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      120,
+      40
+    ],
+    "sha256": "6d8d3d027d350e10215f7a6f27272e01c64fec6c709505b6d07de07e20f2aeec"
+  },
+  {
+    "path": "assets/screens/museum/archive-folio.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      21,
+      1220,
+      1254
+    ],
+    "sha256": "99c0f7ca6c78b6f48a9a3eb50d5b142a7b0504885e3326527057a9394932f9aa"
+  },
+  {
+    "path": "assets/screens/museum/collection-dock--panorama.png",
+    "kind": "screen-asset",
+    "width": 2172,
+    "height": 724,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "sha256": "f9084a72697ce4a8cee749d25a04bde3743b035f9faac428ec75f2eef9a532c5"
+  },
+  {
+    "path": "assets/screens/museum/collection-paper-frame.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      13,
+      1240,
+      1254
+    ],
+    "sha256": "820d78d98d0dab2c87c0a37e09b62becbfcbb9608753d1836564474d1ea67640"
+  },
+  {
+    "path": "assets/screens/museum/exhibit-stand.png",
+    "kind": "screen-asset",
+    "width": 1086,
+    "height": 1448,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1076,
+      1448
+    ],
+    "sha256": "5c14d95b51a02822d597e0a32adcffb9d58e517b01a5abb21ac5edaae9e5fcdd"
+  },
+  {
+    "path": "assets/screens/museum/gallery-frame.png",
+    "kind": "screen-asset",
+    "width": 1289,
+    "height": 1221,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1289,
+      1221
+    ],
+    "sha256": "b0a12196e81c22f9d94bea5c4301bd0b78313c27c892619324ff322c9427242a"
+  },
+  {
+    "path": "assets/screens/museum/gallery-room--panorama.png",
+    "kind": "screen-asset",
+    "width": 2164,
+    "height": 727,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      2164,
+      727
+    ],
+    "sha256": "3825bbf5318e07418dc84ac1b6a02c4d4deba05da77ced6bace701082e15a2d9"
+  },
+  {
+    "path": "assets/screens/museum/read-lotus.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      52,
+      1210,
+      1220
+    ],
+    "sha256": "e23c5559e1387c6b1ea8b39eb5c4ba7e4c727921a473523be80c4444e26baae4"
+  },
+  {
+    "path": "assets/screens/museum/sewing-memory.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      9,
+      1245,
+      1254
+    ],
+    "sha256": "718924ab312cf803b093e740a138a609a9300d475e9c802c82f010fefb240e38"
+  },
+  {
+    "path": "assets/screens/studio/mirror-frame.png",
+    "kind": "screen-asset",
+    "width": 845,
+    "height": 1862,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      845,
+      1862
+    ],
+    "sha256": "d57c94d646235a8e45b40826a59c5521b39051f5a78963c1faadb0165e14ff8c"
+  },
+  {
+    "path": "assets/screens/studio/vietnamese-room--panorama.png",
+    "kind": "screen-asset",
+    "width": 2172,
+    "height": 724,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      2172,
+      724
+    ],
+    "sha256": "a407bdf19347798a45683a0b0fd609ae755a59ba6778e950b269a226a7ab2297"
+  },
+  {
+    "path": "assets/screens/wardrobe/wardrobe-cabinet.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      15,
+      5,
+      1238,
+      1254
+    ],
+    "sha256": "00ecd3e82720dd339a3e775bb91f403a47313aecf2d33d230ece93757afcd414"
+  },
+  {
+    "path": "assets/screens/wardrobe/wardrobe-room--landscape.png",
+    "kind": "screen-asset",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "95f8a065419b937a551eef03bb602ec377ba894751526681730d15b81e6bed09"
+  },
+  {
+    "path": "assets/screens/studio/catalog-cabinet--9slice-v2.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "4b501309913b9417c9f0b3dcaac27ebabb011d2efa9b5f19f4e11651ea45badc"
+  },
+  {
+    "path": "assets/screens/studio/styling-tray--9slice-v2.png",
+    "kind": "screen-asset",
+    "width": 1254,
+    "height": 1254,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1254,
+      1254
+    ],
+    "sha256": "8f2f6ca43ed148d7f2f1aa3c47eafb0b6cd575899a4f341fbaf6a72b1d4121fc"
+  },
+  {
+    "path": "assets/screens/studio/studio-book-room.png",
+    "kind": "screen-art",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "57278788bcaa524134f739762f60024650096bab0058b37767224f1b770222ba"
+  },
+  {
+    "path": "assets/screens/studio/studio-book-workbench.png",
+    "kind": "screen-art",
+    "width": 1480,
+    "height": 1063,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1480,
+      1063
+    ],
+    "sha256": "b084aa5023ddbb0b2d80a1687bb316ff397a0f0a87ddc355e7470cbf4520d238"
+  },
+  {
+    "path": "assets/screens/studio/lookbook-album-shell.png",
+    "kind": "screen-art",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      44,
+      0,
+      1627,
+      925
+    ],
+    "sha256": "ea17427f2eb2544302bc19a7900c63b3e2e60a73e4e82ea8a361a5367a8f6447"
+  },
+  {
+    "path": "assets/screens/studio/lookbook-sample-sheet.png",
+    "kind": "screen-art",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "2ad3c712432d0ca3437193022c36fffb6d0a2a847e39e23ca3dba261b2d5092a"
+  },
+  {
+    "path": "assets/screens/studio/studio-c-backplate.png",
+    "kind": "screen-art",
+    "width": 1672,
+    "height": 941,
+    "format": "PNG",
+    "mode": "RGB",
+    "alphaRange": [
+      255,
+      255
+    ],
+    "bounds": [
+      0,
+      0,
+      1672,
+      941
+    ],
+    "sha256": "b10eb60adceb5c9c59dc10a59f3ee15c5648ff84b2025fb1c0be854510ee1b02"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung.png",
+    "kind": "garment-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      23,
+      126,
+      525,
+      376
+    ],
+    "sha256": "7d58c76647ed04af8e04cb334016b385ee49230393c5a3c9395438c209868a8f"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--right.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      42,
+      127,
+      164,
+      372
+    ],
+    "sha256": "5c07ef223fab39ba333fa31b1182aebb51d875fd4dcea63998ed3d3471904c3c"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--hanging.png",
+    "kind": "garment-layer",
+    "width": 176,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      6,
+      34,
+      170,
+      278
+    ],
+    "sha256": "588e4095fc49c6f14ecc09502ad06ec3128895b0933d810f8a4f8834202c6ceb"
+  },
+  {
+    "path": "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--icon.png",
+    "kind": "garment-layer",
+    "width": 96,
+    "height": 96,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      18,
+      4,
+      77,
+      92
+    ],
+    "sha256": "aceb83ce0cb8f0d87ab9d54246d30cf4b3ac33a9b5c69b78fb449c75fcaad670"
+  },
+  {
+    "path": "assets/accessories/non-la/non-la.png",
+    "kind": "accessory-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      19,
+      0,
+      522,
+      329
+    ],
+    "sha256": "beabc1ab674c48c5830cdca311d79424fee37243c1afc353f7a302a6702a706e"
+  },
+  {
+    "path": "assets/accessories/non-quai-thao/non-quai-thao.png",
+    "kind": "accessory-layer",
+    "width": 528,
+    "height": 416,
+    "format": "PNG",
+    "mode": "RGBA",
+    "alphaRange": [
+      0,
+      255
+    ],
+    "bounds": [
+      18,
+      0,
+      527,
+      369
+    ],
+    "sha256": "6e77573f06db7614e6876bba082bdbf177909c7513200692f4d3db72f10bff03"
   }
 ]

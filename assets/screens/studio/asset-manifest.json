@@ -1,102 +1,59 @@
 {
-    "generatedWith":  "built-in image_gen",
-    "technicalQA":  "passed",
-    "artReview":  "AI-assisted visual inspection complete; human pixel cleanup and cultural review pending",
-    "integration":  "asset-only; App.tsx currently returns null",
-    "rendering":  "nearest-neighbor / image-rendering: pixelated",
-    "portraitNote":  "320x480 is intentional per Studio README (2:3), despite legacy 9:16 label",
-    "assets":  [
-                   {
-                       "file":  "workbench-ui--landscape.png",
-                       "source":  "_raw/workbench-ui--landscape-v1.png",
-                       "kind":  "screen-background-landscape",
-                       "width":  800,
-                       "height":  500,
-                       "rgbaColors":  32,
-                       "alpha":  "opaque",
-                       "sha256":  "6ddd50856c48e900ac9741480e710615ffc80c0ee62e5ab150367642b2bf45b4"
-                   },
-                   {
-                       "file":  "workbench-ui--portrait.png",
-                       "source":  "_raw/workbench-ui--portrait-v3.png",
-                       "kind":  "screen-background-portrait",
-                       "width":  320,
-                       "height":  480,
-                       "rgbaColors":  32,
-                       "alpha":  "opaque",
-                       "sha256":  "5f7f37eb5fb0a85fba859f15ddb8916bdcc1d15865b275b3f3f7b74dcea1b32b"
-                   },
-                   {
-                       "file":  "lookbook-modal--9slice.png",
-                       "source":  "_raw/lookbook-modal--9slice-v1.png",
-                       "kind":  "ui-frame-9slice",
-                       "width":  64,
-                       "height":  64,
-                       "rgbaColors":  12,
-                       "alpha":  "binary",
-                       "sha256":  "b12fd64d001860dfc5926bc48a3cf4e9a24d7c04aa7839c3513e09e007bc6157",
-                       "slice":  {
-                                     "left":  16,
-                                     "bottom":  16,
-                                     "top":  16,
-                                     "right":  16,
-                                     "repeat":  "edges",
-                                     "center":  "transparent"
-                                 }
-                   },
-                   {
-                       "file":  "studio-panel-frame--9slice.png",
-                       "source":  "_raw/studio-panel-frame--9slice-v1.png",
-                       "kind":  "ui-frame-9slice",
-                       "width":  48,
-                       "height":  48,
-                       "rgbaColors":  11,
-                       "alpha":  "binary",
-                       "sha256":  "c615e8eac964ca79ddbfc0b2759ae9fe4e6df01915633555b909093861cf9292",
-                       "slice":  {
-                                     "left":  10,
-                                     "bottom":  10,
-                                     "top":  10,
-                                     "right":  10,
-                                     "repeat":  "edges",
-                                     "center":  "transparent"
-                                 }
-                   },
-                   {
-                       "file":  "color-palette-bar--3slice.png",
-                       "source":  "_raw/color-palette-bar--3slice-v1.png",
-                       "kind":  "ui-bar-3slice",
-                       "width":  120,
-                       "height":  48,
-                       "rgbaColors":  14,
-                       "alpha":  "binary",
-                       "sha256":  "e924673211fca1e1babe3dc61eaee2a4e42927dfd45c2ba15e69b198d544203f",
-                       "slice":  {
-                                     "left":  16,
-                                     "bottom":  0,
-                                     "top":  0,
-                                     "right":  16,
-                                     "repeat":  "horizontal",
-                                     "center":  "cream inset"
-                                 }
-                   },
-                   {
-                       "file":  "event-selector-strip--3slice.png",
-                       "source":  "_raw/event-selector-strip--3slice-v1.png",
-                       "kind":  "ui-bar-3slice",
-                       "width":  120,
-                       "height":  40,
-                       "rgbaColors":  14,
-                       "alpha":  "binary",
-                       "sha256":  "ab33cf913b0ad71e712cce3edaae5bb37f3efb07f105f0bace05653584c547f2",
-                       "slice":  {
-                                     "left":  14,
-                                     "bottom":  0,
-                                     "top":  0,
-                                     "right":  14,
-                                     "repeat":  "horizontal",
-                                     "center":  "cream inset"
-                                 }
-                   }
-               ]
+  "integration": "Current runtime assets; source prompts are in assets/references.",
+  "assets": [
+    {
+      "file": "lookbook-frame.png",
+      "kind": "screen-asset",
+      "width": 1144,
+      "height": 1375,
+      "sha256": "1d17c6b26d44c246e7cce564d235df7fa078ea64b2882f7d36f846b10058604b"
+    },
+    {
+      "file": "mirror-frame.png",
+      "kind": "screen-asset",
+      "width": 845,
+      "height": 1862,
+      "sha256": "d57c94d646235a8e45b40826a59c5521b39051f5a78963c1faadb0165e14ff8c"
+    },
+    {
+      "file": "vietnamese-room--panorama.png",
+      "kind": "screen-asset",
+      "width": 2172,
+      "height": 724,
+      "sha256": "a407bdf19347798a45683a0b0fd609ae755a59ba6778e950b269a226a7ab2297"
+    },
+    {
+      "file": "wardrobe-frame--landscape.png",
+      "kind": "screen-asset",
+      "width": 2172,
+      "height": 724,
+      "sha256": "1e1fb1d7735d83767f162caccc71d5a73538a3f2f9237b72145eaa32d8115c50"
+    },
+    {
+      "file": "catalog-cabinet--9slice-v2.png",
+      "kind": "9slice",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "4b501309913b9417c9f0b3dcaac27ebabb011d2efa9b5f19f4e11651ea45badc",
+      "slice": {
+        "top": 210,
+        "right": 210,
+        "bottom": 210,
+        "left": 210
+      }
+    },
+    {
+      "file": "styling-tray--9slice-v2.png",
+      "kind": "9slice",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "8f2f6ca43ed148d7f2f1aa3c47eafb0b6cd575899a4f341fbaf6a72b1d4121fc",
+      "slice": {
+        "top": 210,
+        "right": 210,
+        "bottom": 210,
+        "left": 210
+      }
+    }
+  ]
 }

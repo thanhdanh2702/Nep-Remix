@@ -1,0 +1,150 @@
+/* Approved wardrobe concept: a dressing corner alongside one carved cabinet.
+   Slice the painted crown/posts/base separately, so the wood rails can adapt
+   without stretching corner carvings. All text remains in the DOM. */
+.game-stage .closet-room {
+  --closet-top: calc(var(--header-h, 64px) - 18px);
+  --closet-cabinet-h: calc(100cqh - var(--closet-top) - 12px);
+  --closet-cabinet-w: min(54.5cqw, calc(var(--closet-cabinet-h) * 1.07));
+  display: block; padding: 0; background: #422033;
+}
+.closet-layout { position: absolute; inset: 0; }
+.game-stage .closet-room .room-background { inset: 0; height: 100%; overflow: hidden; }
+.game-stage .closet-room .room-background img {
+  position: absolute; left: var(--closet-art-left, 0px); top: var(--closet-art-top, 0px);
+  width: var(--closet-art-w, 100%); height: var(--closet-art-h, 100%); max-width: none;
+}
+.closet-model { position: absolute; left: var(--closet-model-x, 28.5%); top: var(--closet-model-top, 35%); transform: translateX(-50%); width: min(280px, 39cqw); text-align: center; }
+.closet-model-preview { display: block; width: 100%; min-height: 0; padding: 0; border: 0; box-shadow: none; background: none; }
+.closet-model-preview:hover:not(:disabled) { background: none; }
+.closet-model-preview:active:not(:disabled) { transform: none; box-shadow: none; }
+.closet-model .studio-character { height: var(--closet-character-h, 320px); max-width: none; width: auto; }
+.closet-model-caption { width: fit-content; max-width: 100%; min-width: 160px; margin: 4px auto 6px; padding: 3px 16px; color: #432331; background: #fff1df; border: 2px solid #ad694c; box-shadow: inset 0 0 0 2px #edc993; font-family: var(--font-display); font-size: 22px; line-height: 1.2; }
+.closet-continue.primary { width: 210px; max-width: 100%; height: 56px; min-height: 48px; padding: 4px; line-height: 1.2; font-family: var(--font-display); font-size: 26px; font-weight: 400; border: 3px solid #f3ca88; box-shadow: 0 3px 0 #402031, inset 0 0 0 2px #762a4d; }
+.closet-borrowed { display: block; margin-top: 6px; padding: 4px; background: var(--c-paper-cream); font-size: 12px; }
+.closet-cabinet { position: absolute; top: var(--closet-top); right: 1.3%; width: var(--closet-cabinet-w); height: var(--closet-cabinet-h); isolation: isolate; border: 0 solid transparent; border-image: var(--closet-cabinet-art) 210 100 370 100 fill / 17% 8% 29.5% 8% / 0 stretch; }
+.closet-cabinet-art { display: none; }
+.closet-cabinet-title { position: absolute; left: 33%; top: 2.2%; width: 34%; height: 5%; margin: 0; display: grid; place-items: center; color: #fff1df; font-size: clamp(20px, 2cqw, 30px); text-align: center; white-space: nowrap; }
+.closet-pagination { position: absolute; left: 8%; right: 8%; top: 4.5%; display: flex; align-items: center; justify-content: flex-end; gap: 6px; color: #fff1df; font-family: var(--font-display); font-size: 18px; }
+.closet-pagination > span:first-child { margin-right: auto; }
+.closet-pagination button { min-width: 44px; min-height: 44px; padding: 0; border-color: #b57658; font-family: var(--font-display); font-size: 28px; line-height: 1; box-shadow: none; }
+.closet-pagination button:disabled { background: #ead9c8; color: #b98f83; border-color: #966a55; }
+.closet-page-number { min-width: 42px; text-align: center; }
+.closet-tabs { position: absolute; left: 8%; right: 8%; top: 10.5%; height: 6%; display: flex; gap: 8px; }
+.closet-tabs button { flex: 1; min-width: 0; min-height: 44px; padding: 2px 4px; background: #fff1df; border: 2px solid #b67b55; box-shadow: inset 0 0 0 1px #f3d3a3; font-family: var(--font-display); font-weight: 400; font-size: 24px; color: #4b2533; }
+.closet-tabs button[aria-selected="true"] { color: #fff1df; background: #a53661; border-color: #efbd80; }
+.closet-collection { position: absolute; top: 18%; left: 8%; right: 8%; height: 53%; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 10px; min-height: 0; }
+.closet-card { position: relative; display: flex; flex-direction: column; min-width: 0; min-height: 0; padding: 2px 5px 5px; overflow: hidden; background: radial-gradient(ellipse at center, #fff1dc, #efd0aa); border: 12px solid transparent; border-image: var(--closet-frame) 190 / 12px / 0 stretch; box-shadow: none; color: #482534; }
+.closet-card:hover:not(:disabled) { background: #f7dfca; }
+.closet-card-art { position: relative; flex: 1; min-height: 0; width: 100%; display: flex; justify-content: center; align-items: center; }
+.closet-card .wardrobe-thumb { position: absolute; inset: 0; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+.closet-card .wardrobe-garment { position: static; max-width: 100%; max-height: 100%; object-fit: contain; }
+.closet-card-art > img { max-width: 85%; max-height: 85%; width: auto; height: auto; object-fit: contain; image-rendering: pixelated; }
+.closet-card .studio-character-wrap { width: 100%; height: 100%; }
+.closet-card .studio-character { height: 100%; width: auto; max-width: 100%; object-fit: contain; }
+.closet-card-name { position: relative; display: flex; align-items: center; justify-content: center; min-height: 32px; margin: 5px -6px -3px; padding: 1px 4px; font-family: var(--font-display); font-size: 22px; font-weight: 400; line-height: 1.05; text-align: center; background: #fff1df; border: 1px solid #ab7657; }
+.closet-card.is-selected { box-shadow: inset 0 0 0 2px #e8b75f; }
+.closet-card.is-selected .closet-card-name { background: #a53661; color: #fff1df; border-color: #eac072; }
+.closet-card.is-selected::after { content: ''; position: absolute; inset: -7px; pointer-events: none; background: linear-gradient(#f5c76a 0 0) left top / 20px 3px no-repeat, linear-gradient(#f5c76a 0 0) left top / 3px 20px no-repeat, linear-gradient(#f5c76a 0 0) right top / 20px 3px no-repeat, linear-gradient(#f5c76a 0 0) right top / 3px 20px no-repeat, linear-gradient(#f5c76a 0 0) left bottom / 20px 3px no-repeat, linear-gradient(#f5c76a 0 0) left bottom / 3px 20px no-repeat, linear-gradient(#f5c76a 0 0) right bottom / 20px 3px no-repeat, linear-gradient(#f5c76a 0 0) right bottom / 3px 20px no-repeat; }
+.closet-card.is-locked { background: #4e342d; border-image: var(--closet-frame) 190 / 12px / 0 stretch; }
+.closet-card.is-locked .closet-card-art { opacity: .24; filter: saturate(.25); }
+.closet-card.is-locked .closet-card-name { color: #dbc5ab; background: #3b2825; border-color: #78563f; }
+.closet-card.is-locked:hover { background: #5c3b34; }
+.closet-lock { position: absolute; left: 50%; top: 48%; transform: translate(-50%, -50%); width: 26px; height: 30px; color: #edc68a; }
+.closet-lock svg { width: 100%; height: 100%; fill: #b5844b; stroke: #ffe1a2; stroke-width: 2.5; }
+.closet-lock svg path:last-child { stroke: #502d24; }
+.closet-card-price { font-size: 12px; line-height: 1.2; padding-top: 4px; }
+.closet-empty { grid-column: 1 / -1; grid-row: 1 / -1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 16px; color: var(--c-paper-cream); text-align: center; }
+.closet-empty svg { width: 90px; height: 70px; fill: none; stroke: #e9b66b; stroke-width: 4; }
+.closet-empty p { max-width: 360px; margin: 12px auto; font-size: 16px; }
+.closet-empty button { font-family: var(--font-display); font-size: 20px; }
+.closet-selection { position: absolute; left: 9%; right: 9%; top: 74%; height: 8.5%; display: flex; align-items: center; gap: 12px; padding: 3px 8px; }
+.closet-selection-copy { flex: 1; min-width: 0; display: grid; gap: 2px; color: #482332; }
+.closet-selection-copy strong { font-family: var(--font-display); font-size: 24px; font-weight: 400; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.closet-selection-copy span { font-size: 13px; }
+.closet-selection-copy .is-owned { color: #2e6847; }
+.closet-selection button { flex: none; min-height: 44px; max-width: 52%; padding: 4px 12px; font-family: var(--font-display); font-size: 20px; font-weight: 400; border-color: #a3694e; box-shadow: inset 0 0 0 2px #efcf9d; }
+.closet-shortcuts { position: absolute; left: 8%; right: 8%; top: 85.5%; height: 6%; display: flex; gap: 24px; }
+.closet-shortcuts button { flex: 1; min-width: 0; min-height: 44px; padding: 2px 4px; color: #fff1df; background: none; border: 0; box-shadow: none; font-family: var(--font-display); font-size: 23px; font-weight: 400; }
+.closet-shortcuts button:hover:not(:disabled) { background: #7c3d3b; }
+.closet-dialog .modal { color: var(--c-deep-plum); }
+.closet-dialog p { font-size: 16px; }
+.closet-dialog-model .studio-character { height: min(416px, 55cqh); width: auto; }
+.closet-dialog-model .primary { display: block; margin: 16px auto 0; }
+.closet-manage-actions { display: flex; gap: 12px; flex-wrap: wrap; }
+.closet-delete { color: var(--c-error); }
+.closet-unlock-hint { padding: 12px; background: var(--c-hint-bg); }
+.closet-dialog-workshop .workshop-preview { max-height: 32cqh; }
+
+@media (max-width: 1100px), (max-height: 700px) {
+  .closet-pagination { top: 7%; right: 8%; gap: 4px; font-size: 16px; }
+  .closet-pagination > span:first-child { display: none; }
+  .closet-cabinet-title { top: 2%; font-size: 24px; }
+  .closet-tabs { top: 13%; height: 44px; }
+  .closet-tabs button { font-size: 20px; }
+  .closet-collection { top: 23%; height: 47%; gap: 8px; }
+  .closet-card-name { font-size: 18px; min-height: 30px; }
+  .closet-card { padding: 4px 5px 5px; border-width: 10px; border-image-width: 10px; }
+  .closet-selection-copy strong { font-size: 20px; }
+  .closet-selection-copy span { font-size: 12px; }
+  .closet-selection button { font-size: 18px; padding-inline: 6px; }
+  .closet-shortcuts button { font-size: 18px; }
+}
+@media (max-width: 640px) {
+  .game-stage .closet-room { --closet-top: calc(var(--header-h, 52px) + clamp(220px, 40cqh, 320px)); }
+  .closet-model { width: 240px; max-width: 95%; }
+  .closet-model-caption { min-width: 120px; max-width: 240px; font-size: 18px; margin-block: 2px 4px; padding: 1px 10px; }
+  .closet-continue.primary { width: 172px; min-height: 44px; font-size: 22px; }
+  .closet-borrowed { position: absolute; left: 100%; bottom: 0; width: 112px; }
+  .closet-cabinet { left: 6px; right: 6px; top: var(--closet-top); bottom: 6px; width: auto; height: auto; min-height: 260px; border: 10px solid transparent; border-image: var(--closet-frame) 190 / 10px / 0 stretch; background: #50282c; }
+  .closet-cabinet-art { display: none; }
+  .closet-cabinet-title { left: 0; top: 0; width: 51%; height: 44px; font-size: 22px; }
+  .closet-pagination { top: 0; left: auto; right: 0; height: 44px; gap: 4px; }
+  .closet-pagination > span:first-child { display: none; }
+  .closet-page-number { min-width: 30px; }
+  .closet-pagination button { min-width: 44px; min-height: 44px; font-size: 26px; }
+  .closet-tabs { left: 0; right: 0; top: 48px; height: 44px; gap: 4px; }
+  .closet-tabs button { font-size: 19px; }
+  .closet-collection { top: 98px; left: 0; right: 0; bottom: 100px; height: auto; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: minmax(0, 1fr); gap: 4px; }
+  .closet-collection[data-page-size="2"] { grid-template-rows: minmax(0, 1fr); }
+  .closet-card { padding: 0 4px 3px; border-width: 7px; border-image-width: 7px; }
+  .closet-card.is-selected { padding: 0 4px 3px; }
+  .closet-card-name { min-height: 24px; margin: 1px -3px -1px; font-size: 17px; }
+  .closet-lock { width: 20px; height: 24px; }
+  .closet-selection { left: 0; right: 0; top: auto; bottom: 46px; height: 48px; padding: 2px 6px; gap: 4px; background: #fff1df; }
+  .closet-selection-copy strong { font-size: 18px; }
+  .closet-selection-copy span { font-size: 12px; }
+  .closet-selection button { font-size: 17px; max-width: 48%; padding: 2px 4px; }
+  .closet-shortcuts { left: 0; right: 0; top: auto; bottom: 0; height: 44px; gap: 4px; }
+  .closet-shortcuts button { font-size: 17px; }
+  .closet-continue.primary { height: 44px; min-height: 44px; padding: 0; }
+  .closet-empty { padding: 4px; }
+  .closet-empty svg { display: none; }
+  .closet-empty p { font-size: 13px; margin: 0 0 4px; line-height: 1.35; }
+  .closet-empty button { min-height: 44px; font-size: 17px; padding: 2px 6px; }
+  .closet-dialog .modal { width: 100%; }
+}
+@media (max-width: 640px) and (max-height: 720px) {
+  .game-stage .closet-room { --closet-top: calc(var(--header-h, 52px) + 190px); }
+  .closet-model-caption { font-size: 16px; }
+}
+@media (max-height: 500px) and (min-width: 641px) {
+  .game-stage .closet-room { --closet-top: calc(var(--header-h, 56px) + 8px); }
+  .closet-cabinet { width: 55%; height: calc(100% - var(--closet-top) - 8px); }
+  .closet-cabinet-art { display: none; }
+  .closet-cabinet { border: 8px solid transparent; border-image: var(--closet-frame) 190 / 8px / 0 stretch; background: #50282c; }
+  .closet-cabinet-title { top: 0; left: 0; width: 48%; height: 32px; font-size: 22px; }
+  .closet-pagination { top: 0; left: auto; right: 0; height: 44px; }
+  .closet-tabs { top: 36px; left: 0; right: 0; height: 44px; }
+  .closet-collection { top: 84px; left: 0; right: 0; bottom: 92px; height: auto; grid-template-rows: minmax(0, 1fr); }
+  .closet-card, .closet-card.is-selected { flex-direction: row; align-items: center; gap: 4px; padding: 2px 3px; border-width: 6px; border-image-width: 6px; }
+  .closet-card-art { flex: 0 0 44%; height: 100%; }
+  .closet-card-name { flex: 1; min-height: 0; margin: 0; padding: 1px; font-size: 16px; line-height: 1.1; }
+  .closet-lock { left: 24%; top: 50%; width: 18px; height: 22px; }
+  .closet-card-price { position: absolute; bottom: 2px; right: 6px; font-size: 12px; }
+  .closet-selection { top: auto; bottom: 46px; height: 44px; left: 0; right: 0; padding: 2px 4px; background: #fff1df; }
+  .closet-selection-copy strong { font-size: 17px; }
+  .closet-shortcuts { top: auto; bottom: 0; height: 44px; left: 0; right: 0; gap: 4px; }
+  .closet-shortcuts button { font-size: 18px; }
+  .closet-model-caption { min-width: 120px; font-size: 18px; }
+  .closet-continue.primary { height: 44px; min-height: 44px; width: 160px; font-size: 22px; }
+}

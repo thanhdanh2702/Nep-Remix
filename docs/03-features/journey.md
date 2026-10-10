@@ -1,5 +1,7 @@
 # Đặc Tả Tính Năng Game Cốt Truyện (Journey)
 
+> Cập nhật 10/10/2026: Map mở sẵn Mở đầu và Chương 1–3 vì đã có giao diện phòng chơi. Có thể vào trực tiếp từng chương, kể cả Chương 3 khi chưa hoàn thành Chương 2. Bản lưu cũ cũng được mở các chương này, giữ nguyên câu đố, phần thưởng và vật phẩm; Chương 4–5 hiển thị đang hoàn thiện giao diện.
+
 > Hồ sơ triển khai toàn bộ Mở đầu + 5 chương nằm tại [docs/07-game](../07-game/README.md): kịch bản từng phòng, gameplay, kế hoạch kỹ thuật, văn hóa và nghiệm thu. Đây là đặc tả đề xuất ngày 06/10/2026; không mở rộng mặc định phạm vi demo 10/10. Các mô tả Lật vải dưới đây thuộc hướng thiết kế mở rộng, không phải điều kiện của bản cơ sở.
 
 ## 1. Mục đích của khu vực

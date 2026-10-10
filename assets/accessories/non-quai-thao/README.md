@@ -10,5 +10,9 @@
 
 | Tên tệp | Mô tả bằng lời | Trạng thái |
 | :--- | :--- | :---: |
-| `non-quai-thao.png` | accessory-layer | Lớp phụ kiện mặc trên người dạng thang xám | Chờ gen lại (spec An) |
-| `non-quai-thao--icon.png` | accessory-icon | Biểu tượng phụ kiện trong cửa hàng | ⬜ chưa gen |
+| `non-quai-thao.png` | Lớp nón màu gốc, dải 528×416 gồm trước, nghiêng trái, sau | Đã tích hợp |
+| `non-quai-thao--icon.png` | Biểu tượng phụ kiện trong cửa hàng | Đã có |
+
+Lớp đội được bổ sung ngày 10/10/2026 bằng ImageGen từ icon hiện có và đầu An, giữ màu nan và quai đỏ của icon. Nguồn, prompt và điểm căn nằm trong [generation.json](../../references/headwear/generation.json); đóng gói lại bằng `python scripts/pack-headwear.py`. Mỗi ô 176×416 có alpha trong suốt, chỉ chứa nón và quai. Góc phải dùng ô nghiêng trái phản chiếu. Không thay icon gốc.
+
+QA: `artifacts/headwear/non-quai-thao-{down,left,up,right}.png` và `closet-non-quai-thao.png`; kiểm tra chọn nón, thay nón, tháo, hoàn tác trong Studio và thử miễn phí trong Tủ đồ.

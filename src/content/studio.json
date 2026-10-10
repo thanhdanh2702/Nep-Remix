@@ -7,7 +7,7 @@
       "historicalPeriod": "thoi_nguyen",
       "defaultColorPalette": ["#C4A482", "#8B5A2B", "#5C3A21", "#2C1608"],
       "supportedEvents": ["dao_pho", "le_chua", "tet"],
-      "culturalSummary": "Áo tứ thân truyền thống chất liệu vải thô nhuộm củ nâu hoặc mớ ba mớ bảy, gắn liền với hình ảnh người phụ nữ lao động và trẩy hội Bắc Bộ.",
+      "culturalSummary": "Áo bốn thân mở vạt, mặc cùng yếm, váy và thắt lưng; gắn với trang phục phụ nữ Bắc Bộ.",
       "spriteBasePath": "assets/game/garments/ao-tu-than"
     },
     {
@@ -17,7 +17,7 @@
       "historicalPeriod": "thoi_nguyen",
       "defaultColorPalette": ["#E6A1B0", "#C25975", "#802D45", "#3A0D1B"],
       "supportedEvents": ["tet", "dam_cuoi", "be_giang", "dao_pho", "le_chua"],
-      "culturalSummary": "Áo ngũ thân lập lĩnh tay chẽn kín đáo, năm thân áo tượng trưng cho tứ thân phụ mẫu và bản thân người mặc.",
+      "culturalSummary": "Áo cổ đứng, có thân con bên trong, năm khuy bên phải và tay gọn. Bản trên An là mẫu minh họa.",
       "spriteBasePath": "assets/game/garments/ao-ngu-than-tay-chen"
     },
     {
@@ -27,17 +27,17 @@
       "historicalPeriod": "thoi_nguyen",
       "defaultColorPalette": ["#E8C547", "#C49B18", "#7D620A", "#382B02"],
       "supportedEvents": ["dam_cuoi", "le_chua", "tet", "vieng_tang"],
-      "culturalSummary": "Lễ phục tay thụng rộng uy nghiêm triều Nguyễn, chuyên dùng cho các nghi lễ trang trọng, tế tự và hôn lễ.",
+      "culturalSummary": "Áo tấc: ngũ thân tay rộng dùng làm lễ phục. Mẫu game chọn nền vàng, phân biệt với tay chẽn.",
       "spriteBasePath": "assets/game/garments/ao-ngu-than-tay-thung"
     },
     {
       "id": "ao-dai-lemur",
-      "name": "Áo dài Lemur 1934",
+      "name": "Áo dài Le Mur (Lemur)",
       "silhouette": "tan_thoi",
       "historicalPeriod": "nam_1934",
       "defaultColorPalette": ["#FFCCD5", "#FB6F92", "#C9365F", "#5E0E27"],
       "supportedEvents": ["dao_pho"],
-      "culturalSummary": "Thiết kế cách tân nổi tiếng của họa sĩ Cát Tường đăng báo Phong Hóa năm 1934, nổi bật với cổ lá sen và vai bồng.",
+      "culturalSummary": "Mẫu lấy cảm hứng Le Mur của Cát Tường, trào lưu cách tân thập niên 1930; game chọn cổ lá sen, vai bồng.",
       "spriteBasePath": "assets/game/garments/ao-dai-lemur"
     },
     {
@@ -47,7 +47,7 @@
       "historicalPeriod": "nam_1934",
       "defaultColorPalette": ["#FFF3B0", "#E9D8A6", "#9B8342", "#3D3315"],
       "supportedEvents": ["be_giang", "dao_pho", "dam_cuoi"],
-      "culturalSummary": "Áo dài tân thời cổ đứng không vai bồng giai đoạn sau Lemur cuối thập niên 1930, tiền thân của áo dài truyền thống hôm nay.",
+      "culturalSummary": "Mẫu cổ đứng, tay gọn gợi áo dài cuối thập niên 1930. Vàng mỡ gà là màu do dự án chọn.",
       "spriteBasePath": "assets/game/garments/ao-dai-tan-thoi-vang-mo-ga"
     },
     {
@@ -57,7 +57,7 @@
       "historicalPeriod": "hien_dai",
       "defaultColorPalette": ["#A8DADC", "#457B9D", "#1D3557", "#0D1B2A"],
       "supportedEvents": ["dao_pho", "be_giang", "tet"],
-      "culturalSummary": "Mẫu minh họa trong câu chuyện gia đình hư cấu tại Đa Kao năm 1962. Đường ráp tay đi từ vùng cổ về nách; quan sát kỹ thuật riêng với việc đối chiếu hồ sơ, không suy ra lời bói.",
+      "culturalSummary": "Áo dài ráp tay chéo từ cổ xuống nách, giúp vai và nách bớt nhăn. Mẫu của Mai thuộc câu chuyện hư cấu năm 1962.",
       "spriteBasePath": "assets/garments/ao-dai-raglan"
     },
     {
@@ -67,7 +67,7 @@
       "historicalPeriod": "hien_dai",
       "defaultColorPalette": ["#90E0EF", "#00B4D8", "#0077B6", "#03045E"],
       "supportedEvents": ["dao_pho", "dam_cuoi"],
-      "culturalSummary": "Mẫu áo cổ thuyền minh họa, phần thưởng phụ của câu chuyện gia đình hư cấu năm 1962. Đây không phải đáp án thay thế áo raglan trong brief phối đồ C3.",
+      "culturalSummary": "Áo dài cổ mở ngang, cong nông, không chân cổ đứng; gợi kiểu cổ hở miền Nam cuối thập niên 1950–1960.",
       "spriteBasePath": "assets/garments/ao-dai-co-thuyen"
     },
     {
@@ -77,7 +77,7 @@
       "historicalPeriod": "hien_dai",
       "defaultColorPalette": ["#FFFFFF", "#F0EFEB", "#D6CCC2", "#8D8175"],
       "supportedEvents": ["dam_cuoi"],
-      "culturalSummary": "Chiếc áo cưới giản dị thời bao cấp dệt Nam Định, thêu cành hoa đào nhỏ, biểu trưng cho tình yêu thủy chung son sắt.",
+      "culturalSummary": "Áo cưới phin trắng, cành đào nhỏ của Phương trong câu chuyện năm 1982; thiết kế hư cấu, chưa xác minh xuất xứ lịch sử.",
       "spriteBasePath": "assets/game/garments/ao-dai-cuoi-phin"
     },
     {
@@ -87,7 +87,7 @@
       "historicalPeriod": "hien_dai",
       "defaultColorPalette": ["#E9EDC9", "#CCD5AE", "#D4A373", "#606C38"],
       "supportedEvents": ["be_giang", "dao_pho"],
-      "culturalSummary": "Mẫu áo dài họa tiết hoa cúc dại nền nã may từ vải pô-pơ-lin công nghiệp dệt Nam Định thập niên 1980.",
+      "culturalSummary": "Mẫu áo dài hoa cúc do dự án sáng tác. Popolin (poplin) là tên chất liệu, không phải phom áo riêng.",
       "spriteBasePath": "assets/game/garments/ao-dai-popolin"
     },
     {
@@ -97,7 +97,7 @@
       "historicalPeriod": "hien_dai",
       "defaultColorPalette": ["#FFD166", "#EF476F", "#06D6A0", "#118AB2"],
       "supportedEvents": ["tet", "dao_pho", "be_giang", "dam_cuoi"],
-      "culturalSummary": "Thiết kế độc quyền của An kết hợp phom dáng ngũ thân tay chẽn chuẩn mực với tinh thần năng động hiện đại.",
+      "culturalSummary": "Thiết kế đương đại hư cấu của An, lấy cảm hứng ngũ thân tay chẽn; bảng màu và cách phối thuộc sáng tạo của game.",
       "spriteBasePath": "assets/game/garments/ao-ngu-than-remix-2026"
     }
   ],

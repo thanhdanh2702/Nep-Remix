@@ -30,7 +30,7 @@ Bước 3: Hiển thị kết quả:
 
 ### Bố cục ngang (chính)
 - **Phân khu Tủ đồ (`wardrobe`):**
-  - **Cảnh nền:** Nền gốc `closet-shelf--landscape.png`, hiển thị với smoothing để fit/cover viewport, thể hiện phòng phục trang gỗ lim ấm áp và gương soi toàn thân.
+  - **Cảnh nền:** Nền gốc `wardrobe-room--landscape.png`, hiển thị với smoothing để fit/cover viewport, thể hiện phòng phục trang gỗ lim ấm áp và gương soi toàn thân.
   - **Nửa bên trái:** Bục đứng An mặc thử (khung 176×416, điểm chân 88,400), hiển thị ngay diện mạo khi bấm chọn đồ trong tủ; phía dưới có nút "Phối tiếp trong Studio". Áo được vẽ theo spec An với fallback nếu chưa có asset lớp áo.
   - **Nửa bên phải:** Bảng tủ đồ bọc trong khung `action-card-frame--9slice.png`, chứa thanh tab ("Áo đã có", "Bộ đã lưu", "Cửa hàng", "Xưởng may") và lưới ô đồ. Khi chuyển sang Cửa hàng, hiển thị danh sách phụ kiện kèm giá Sen Ngọc và trạng thái sở hữu.
 - **Phân khu Xưởng may (`workshop`):**

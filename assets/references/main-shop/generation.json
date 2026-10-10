@@ -1,0 +1,25 @@
+{
+  "tool": "built-in image_gen",
+  "sources": [
+    "assets/screens/main-shop/README.md",
+    "assets/README.md",
+    "docs/03-features/hub.md",
+    "docs/03-features/onboarding.md",
+    "docs/06-design/design-system.md"
+  ],
+  "portraitSizeDecision": "320x480 follows the target folder README; global design-system specifies 270x480.",
+  "status": "AI-generated; technical normalization and visual QA only, not human pixel cleanup/cultural approval.",
+  "assets": [
+    {
+      "file": "ui-hud--3slice.png",
+      "transparent": true,
+      "prompt": "Use case: ui-mockup. Asset type: single reusable pixel-art 3-slice HUD background PNG, not an entire screen.\npixel art, 120x40 pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing.\nDraw exactly one blank horizontal HUD bar, aspect 3:1, straight-on, centered and fully visible, intended at 120x40 native pixels. Outer stepped pixel corner silhouette contained in first and last 16-pixel end caps. Main interior paper cream #FFF1DF, 4-pixel deep plum #2B2035 outer border, thin warm gold #E9B66B inset border. Very restrained dark wood accents only within end caps. Middle 88-pixel region has absolutely flat solid fill, straight continuous horizontal borders and no ornament, gradients, lighting or texture, so it can be repeated seamlessly. Both end caps match in height. Stepped square edges, no smooth rounding, no perspective. Truly transparent background outside bar. Clean empty interior. Max 16 colors. No text, logo, symbols, numbers, buttons, coins, icons, guides or measurements. No separate duplicate bar.\nAvoid: photorealistic, realistic, hyperrealistic, 3D render, CGI, unreal engine, smooth gradients, anti-aliased, blurry, soft focus, bokeh, drop shadow, modern text, english text, chinese characters, kanji, hanzi, letters, signature, watermark, logo, western clothing, chinese qipao, korean hanbok, japanese kimono"
+    },
+    {
+      "file": "action-card-frame--9slice.png",
+      "transparent": true,
+      "prompt": "Use case: ui-mockup. Asset type: single reusable square pixel-art 9-slice action-card frame PNG, not an entire screen.\npixel art, 64x64 pixel grid, every pixel a crisp square block, limited palette, hard edges, no anti-aliasing.\nOne square empty frame at 64x64 native pixels, front view, matching an antique Vietnamese tailoring courtyard UI. Outer 4-pixel border deep plum #2B2035, inner thin warm gold #E9B66B line, pale paper cream #FFF1DF totally flat clean center. Stepped square pixel corners. Frame edges and ornaments entirely contained in 12-pixel border bands. Very small restrained lotus pink #D986A7 lotus ornaments confined inside upper left and upper right 12x12 corner caps; other corners matching stepped border. Horizontal and vertical edge bands between corners must be perfectly straight, repeatable and texture-free. Center 40x40 pixels entirely uniform cream and blank to stretch for live UI content. True transparency only outside stepped corners. Fully visible with no cropping, no perspective, no soft drop shadow. Maximum 16 colors. No text, no icons, no buttons, no avatar, no decorative elements in middle edge strips, no slice guides.\nAvoid: photorealistic, realistic, hyperrealistic, 3D render, CGI, unreal engine, smooth gradients, anti-aliased, blurry, soft focus, bokeh, drop shadow, modern text, english text, chinese characters, kanji, hanzi, letters, signature, watermark, logo, western clothing, chinese qipao, korean hanbok, japanese kimono"
+    }
+  ],
+  "landscapeRevisionPrompt": "Move only the bookshelf niche from the right of the central gateway to the left, restore white plaster at previous position, preserve all other features."
+}

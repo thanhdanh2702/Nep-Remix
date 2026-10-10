@@ -29,7 +29,7 @@ export function LookbookToolbar({ state, garmentId, garmentName, onCancel }: {
   return <div className="lookbook-toolbar">
     <div className="lookbook-actions">
       {busy && <button type="button" onClick={onCancel}>{COPY.cancel}</button>}
-      {allDone && <button type="button" disabled={working} onClick={() => void run(downloadBlob)}>{COPY.exportPng}</button>}
+      {!busy && <button type="button" className={allDone ? 'primary' : ''} aria-label={COPY.exportPng} disabled={!allDone || working} onClick={() => void run(downloadBlob)}>⇩ {COPY.exportPng}</button>}
       {allDone && canShareFiles() && <button type="button" disabled={working} onClick={() => void run(shareLookbook)}>{COPY.share}</button>}
     </div>
     {failed && <p className="lookbook-error" role="alert">{COPY.exportFailed}</p>}

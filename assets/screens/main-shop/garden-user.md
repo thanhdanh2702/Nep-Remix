@@ -1,5 +1,5 @@
 # Nền sảnh do người dùng chọn
 
-`garden-user--landscape.png` là bản sao gốc được chọn làm nền sảnh chính ngày 02/10/2026. Không sinh hoặc chỉnh sửa ảnh cho lần cập nhật này. File gốc được giữ nguyên.
+`backgrounds/garden-user--landscape.png` là nền người dùng chọn ngày 02/10/2026. Bản `sanh.png` ở gốc dự án trùng hoàn toàn với ảnh này đã được xóa khi dọn thư mục; giữ nguyên nội dung ảnh tại đường dẫn hiện tại.
 
 Nền được vẽ trong Scene tại (-100, -62.5), kích thước 1000×625. Biển gắn lên thanh ngang phía trên cửa của từng gian nhà: Phòng phối đồ tại (225, 91), nghiêng −14°; Tủ đồ tại (622, 149), nghiêng +24°; Bảo tàng tại (823, 296), nghiêng −18°. Khung và chữ xoay cùng nhau, có bóng nhẹ tạo cảm giác gắn lên gỗ. Cốt truyện nằm ngang trước cổng tại (438, 116). Biển theo camera của nền, có khoảng đệm tính cả độ nghiêng để toàn bộ khung và chữ luôn nằm trong vùng chơi khi màn hình ngang thấp cắt phần mái. Menu trên điện thoại giữ biển ngang dễ bấm. Sảnh không còn thẻ nổi “Chiếc rương của bà” và thanh khám phá phía dưới; vào câu chuyện bằng biển Cốt truyện. Vùng đi lại được vẽ theo sân gạch trong ảnh bằng polygon; bốn góc vùng chân nhân vật phải nằm trên sân. Ao sen, nền nhà và vườn bên ngoài không thuộc vùng đi lại. Điểm tương tác bảo tàng nằm ở lối tiếp cận từ sân chính.

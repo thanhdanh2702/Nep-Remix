@@ -1,124 +1,84 @@
-import { useEffect, useState, type CSSProperties } from 'react';
+import { useEffect, useMemo, useRef, useState, type CSSProperties, type KeyboardEvent } from 'react';
 import type { Command, GameState } from '../core';
-import { content } from './store';
-import { asset, garmentAsset } from './assets';
+import { asset } from './assets';
 import { Modal } from './Modal';
-import { MotifStrip } from './MotifStrip';
-import { MuseumCodex, type CodexKind } from './MuseumCodex';
+import { MuseumArt, MuseumRaster } from './MuseumArt';
+import { MuseumReader } from './MuseumReader';
+import { museumEntries, type MuseumTab } from './museum-gallery';
+import { PixelIcon } from '../welcome/PixelIcon';
 import './museum.css';
 
-// Share the existing entries across the 12 physical notebooks.
-const volumes = Array.from({ length: 12 }, (_, index) => ({
-  number: index + 1,
-  cards: content.cultureCards.slice(index * 2, index * 2 + 2),
-  x: [151, 199, 247, 295][index % 4],
-  y: [119, 209, 296][Math.floor(index / 4)],
-}));
-
-export function Museum({ state, send, onReadingChange }: {
-  state: GameState;
-  send: (command: Command) => GameState | null;
-  onReadingChange: (reading: boolean) => void;
-}) {
-  const [search, setSearch] = useState('');
-  const [period, setPeriod] = useState('all');
-  const [selected, setSelected] = useState<number | null>(null);
-  const [page, setPage] = useState(0);
-  const [direction, setDirection] = useState('next');
-  const [codex, setCodex] = useState<CodexKind | null>(null);
-  const volume = selected === null ? null : volumes[selected];
-  const pageCount = (volume?.cards.length ?? 2) * 2 + 2;
-  const card = volume?.cards[Math.min(Math.floor(page / 2), volume.cards.length - 1)];
-  const garmentId = card?.id === 'ao-dai-tan-thoi-lemur' ? 'ao-dai-lemur' : card?.id === 'ao-dai-tay-raglan' ? 'ao-dai-raglan' : card?.id;
-  const garment = garmentId ? content.garmentsById.get(garmentId) : undefined;
-  const options = content.cultureCards.filter(c => (period === 'all' || c.timePeriod.includes(period)) && `${c.title} ${c.historicalFact}`.toLocaleLowerCase('vi').includes(search.toLocaleLowerCase('vi')));
-
-  useEffect(() => {
-    onReadingChange(selected !== null || codex !== null);
-    return () => onReadingChange(false);
-  }, [selected, codex, onReadingChange]);
-
-  function turn(delta: number) {
-    setDirection(delta > 0 ? 'next' : 'previous');
-    setPage(current => Math.max(0, Math.min(pageCount - 1, current + delta)));
-  }
-  useEffect(() => {
-    if (selected === null) return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
-        event.preventDefault();
-        turn(event.key === 'ArrowRight' ? 1 : -1);
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [selected]);
-
-  function open(index: number, startPage = 0) {
-    setPage(startPage);
-    setDirection('next');
-    setSelected(index);
-  }
-
-  return <div className="room museum-room">
-    <div className="room-background museum-background" aria-hidden="true">
-      <div className="museum-art"><img className="art-hires" src={asset('assets/screens/museum/bookshelf-pink--landscape.png')} alt="" /></div>
-    </div>
-    <div className="museum-art museum-book-targets" role="group" aria-label="Kệ 12 cuốn sách văn hóa">
-      {volumes.map((book, index) => {
-        const read = book.cards.every(c => state.museum.readCardIds.includes(c.id));
-        return <button key={book.number} className="museum-book" aria-label={`Mở sách ${book.number}: ${book.cards.map(c => c.title).join(' · ')}${read ? ' · Đã đọc' : ''}`} title={book.cards.map(c => c.title).join(' · ')} style={{ left: `${book.x / 8}%`, top: `${book.y / 5}%`, width: '5%', height: '14.4%' } as CSSProperties} onClick={() => open(index)}>
-        <span className="museum-book-number">{String(book.number).padStart(2, '0')}</span>
-        <span className="museum-book-tooltip">{book.cards[0].title}</span>
-        {read && <span className="museum-book-read" aria-hidden="true">✓</span>}
-      </button>;
-      })}
-    </div>
-    <aside className="room-panel museum-guide">
-      <span className="eyebrow">THƯ PHÒNG · TIỆM MAY NẾP</span>
-      <h2>Bảo tàng nếp áo</h2>
-      <p className="museum-invitation">Một nếp nhà, bao câu chuyện.<br />Chọn một cuốn sách trên kệ để mở từng trang ký ức.</p>
-      <div className="museum-guide-codex">
-        <button type="button" aria-label="Mở sổ tay Nhân vật" onClick={() => setCodex('characters')}>Nhân vật</button>
-        <button type="button" aria-label="Mở sổ tay Kỷ vật" onClick={() => setCodex('items')}>Kỷ vật</button>
-      </div>
-      <details className="museum-catalog">
-        <summary>Tra cứu tư liệu <span>{state.museum.readCardIds.length}/{content.cultureCards.length} đã đọc</span></summary>
-        <div className="museum-catalog-content">
-          <label>Tìm tư liệu<input placeholder="Ngũ thân, Lemur, raglan…" value={search} onChange={e => setSearch(e.target.value)} /></label>
-          <label>Thời kỳ<select value={period} onChange={e => setPeriod(e.target.value)}><option value="all">Tất cả</option>{['Nguyễn', '1888', '1934', '1960', '1962', '1980', '1982', '2026'].map(p => <option key={p}>{p}</option>)}</select></label>
-          <div className="museum-catalog-results">{options.map(c => {
-            const index = content.cultureCards.indexOf(c);
-            return <button key={c.id} onClick={() => open(Math.floor(index / 2), index % 2 * 2)}><strong>{c.title}</strong><small>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc' : state.museum.unlockedCardIds?.includes(c.id) ? 'Ký vật đã nhận từ cốt truyện' : c.timePeriod}</small></button>;
-          })}{!options.length && <p>Chưa tìm thấy tư liệu phù hợp. Hãy thử từ khóa khác.</p>}</div>
-        </div>
-      </details>
+const tabs: { id: MuseumTab; label: string }[] = [{ id: 'culture', label: 'Tư liệu' }, { id: 'characters', label: 'Nhân vật' }, { id: 'items', label: 'Kỷ vật' }];
+const perPage = 6;
+function CollectionIcon({ tab }: { tab: MuseumTab }) {
+  return tab === 'characters' ? <svg className="nep-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M8 2h6v3h2v5h-2v2H8v-2H6V5h2zM5 13h12v2h3v7H2v-7h3z" /></svg> : <PixelIcon kind={tab === 'culture' ? 'book' : 'chest'} />;
+}
+export function Museum({ state, send, onReadingChange }: { state: GameState; send: (command: Command) => GameState | null; onReadingChange: (reading: boolean) => void }) {
+  const [tab, setTab] = useState<MuseumTab>('culture'), [selected, setSelected] = useState('ao-ngu-than-tay-chen');
+  const [search, setSearch] = useState(''), [period, setPeriod] = useState('all'), [page, setPage] = useState(0);
+  const [reading, setReading] = useState(false), [detailOpen, setDetailOpen] = useState(false);
+  const tabRefs = useRef<Partial<Record<MuseumTab, HTMLButtonElement | null>>>({});
+  const entries = useMemo(() => museumEntries(tab, state), [tab, state]);
+  const filtered = entries.filter(e => (period === 'all' || e.subtitle.includes(period)) && `${e.title} ${e.description}`.toLocaleLowerCase('vi').includes(search.trim().toLocaleLowerCase('vi')));
+  const pages = Math.max(1, Math.ceil(filtered.length / perPage)), currentPage = Math.min(page, pages - 1);
+  const visible = filtered.slice(currentPage * perPage, (currentPage + 1) * perPage);
+  const active = filtered.find(e => e.id === selected) ?? visible[0];
+  const completed = entries.filter(e => e.completed).length, progressLabel = tab === 'culture' ? 'tư liệu đã đọc' : tab === 'characters' ? 'nhân vật đã gặp' : 'kỷ vật đã tìm thấy';
+  const chooseTab = (next: MuseumTab) => { setTab(next); setSearch(''); setPeriod('all'); setPage(0); setSelected(''); };
+  const onTabKey = (event: KeyboardEvent, index: number) => {
+    const at = event.key === 'ArrowRight' ? index + 1 : event.key === 'ArrowLeft' ? index - 1 : event.key === 'Home' ? 0 : event.key === 'End' ? tabs.length - 1 : null;
+    if (at === null) return;
+    event.preventDefault(); const next = tabs[(at + tabs.length) % tabs.length].id; chooseTab(next); tabRefs.current[next]?.focus();
+  };
+  const paginate = (next: number) => { setPage(next); setSelected(filtered[next * perPage]?.id ?? ''); };
+  useEffect(() => { onReadingChange(reading || detailOpen); return () => onReadingChange(false); }, [reading, detailOpen, onReadingChange]);
+  const style = { '--museum-frame': `url("${asset('assets/screens/museum/gallery-frame.png')}")`, '--museum-paper-frame': `url("${asset('assets/screens/museum/collection-paper-frame.png')}")`, '--museum-dock-art': `url("${asset('assets/screens/museum/collection-dock--panorama.png')}")` } as CSSProperties;
+  return <div className="room museum-room" style={style}>
+    <picture className="room-background museum-background"><img className="art-hires" src={asset('assets/screens/museum/gallery-room--panorama.png')} alt="Thư phòng gỗ Việt với kệ sách, gốm men lam và ánh nắng ấm" /></picture>
+    <h2 className="museum-room-sign">❋ Bảo tàng nếp áo ❋</h2>
+    <aside className="museum-progress museum-frame" aria-label="Tiến độ bộ sưu tập">
+      <strong><PixelIcon kind="book" /> Bộ sưu tập</strong>
+      <span className="museum-count" role="status">{completed}/{entries.length} {progressLabel}</span>
+      <meter min={0} max={entries.length} value={completed} aria-label={progressLabel} />
     </aside>
-    {codex && <MuseumCodex kind={codex} state={state} onClose={() => setCodex(null)} />}
-    {volume && card && <Modal title={`Sổ tay ${String(volume.number).padStart(2, '0')}`} wide className="museum-reader" onClose={() => setSelected(null)}>
-      <MotifStrip />
-      <div className="museum-open-book">
-        <div className="museum-frontispiece" aria-hidden="true">
-          <span className="eyebrow">TỦ SÁCH NẾP NHÀ</span><span className="museum-lotus">❋</span>
-          <h3>{volume.cards[0].title}</h3><span className="museum-book-rule" /><p>{volume.cards[1]?.title ?? 'Những câu chuyện trong nếp áo'}</p>
-          <small>Tiệm May Nếp · Sổ {String(volume.number).padStart(2, '0')}</small>
-        </div>
-        <section key={`${selected}-${page}`} className={`museum-paper turn-${direction}`} aria-label={`Trang ${page + 1}`}>
-          <div className="museum-page-content">
-            {page < volume.cards.length * 2 ? <><span className="eyebrow">{card.timePeriod}</span><h3>{card.title}</h3>
-              {page % 2 === 0 ? <>{garment && <img className="museum-garment pixel-native" src={asset(garmentAsset(garment.id, true))} alt={garment.name} />}<p className="historical-fact">{card.historicalFact}</p></> : <><span className="museum-section-note">Những tên gọi qua thời gian</span>{card.officialName && <p><strong>Tên chính thức</strong><br />{card.officialName}</p>}{card.folkName && <p><strong>Tên thường gọi</strong><br />{card.folkName}</p>}</>}
-            </> : page === pageCount - 2 ? <><span className="eyebrow">GHI CHÉP CUỐI SỔ</span><h3>Nguồn tư liệu</h3><img className="museum-seal pixel-native" src={asset('assets/screens/museum/citation-seal.png')} alt="" /><p>Tư liệu được cung cấp trong kho nội dung của tiệm.</p><p className="fine-print">Các trích dẫn thư mục chi tiết sẽ được bổ sung khi hoàn thiện nội dung.</p></> : <><span className="eyebrow">KHÉP MỘT NẾP KÝ ỨC</span><h3>Bạn đã đến trang cuối</h3><p>Ghi nhớ những nếp áo vừa khám phá, rồi chọn một cuốn sách khác trên kệ nhé.</p><div className="museum-reading-rewards">{volume.cards.map(c => <div key={c.id}><strong>{c.title}</strong><button className="primary" disabled={state.museum.readCardIds.includes(c.id)} onClick={() => send({ type: 'museum/readCard', payload: { cardId: c.id } })}>{state.museum.readCardIds.includes(c.id) ? 'Đã đọc' : 'Đã hiểu'}</button></div>)}</div></>}
+    {active ? <>
+      <figure className={`museum-exhibit ${active.garment ? 'has-garment' : ''}`} aria-label={`Hiện vật · ${active.title}`}>
+        <img className="museum-stand art-hires" src={asset('assets/screens/museum/exhibit-stand.png')} alt="" />
+        <MuseumArt entry={active} className="museum-main-art" />
+        <figcaption title={active.title}>{active.label}</figcaption>
+      </figure>
+      <aside className="museum-info museum-frame" aria-label="Thông tin hiện vật">
+        <h3><span aria-hidden="true">❋</span>{active.label}<span aria-hidden="true">❋</span></h3>
+        <span className="museum-period">{active.subtitle}</span>
+        <div className="museum-info-body">
+          <div className="museum-mini-frame"><MuseumArt entry={active} /></div>
+          <div className="museum-info-copy"><p>{active.description}</p>
+            <span className={`museum-entry-status ${active.completed ? 'is-complete' : ''}`}><MuseumRaster path="assets/screens/museum/read-lotus.png" />{tab === 'culture' ? active.completed ? 'Đã đọc' : 'Chưa đọc' : active.unlocked ? tab === 'characters' ? 'Đã gặp' : 'Đã tìm thấy' : tab === 'characters' ? 'Chưa gặp' : 'Chưa tìm thấy'}</span>
+            <button className="primary museum-open" disabled={!active.unlocked} onClick={() => active.card ? setReading(true) : setDetailOpen(true)}>{active.card ? 'Mở tư liệu' : 'Xem chi tiết'} <span aria-hidden="true">›</span></button>
           </div>
-          <span className="museum-folio">{String(page + 1).padStart(2, '0')}</span>
-        </section>
+        </div>
+      </aside>
+    </> : <div className="museum-empty museum-frame"><h3>Chưa tìm thấy ký ức phù hợp</h3><p>Hãy thử từ khóa khác hoặc chọn tất cả thời kỳ.</p><button onClick={() => { setSearch(''); setPeriod('all'); setPage(0); }}>Xem toàn bộ bộ sưu tập</button></div>}
+    <section className="museum-collection" aria-label="Khay bộ sưu tập">
+      <div className="museum-collection-head">
+        <div className="museum-tabs" role="tablist" aria-label="Bộ sưu tập bảo tàng">{tabs.map((t, i) => <button ref={el => { tabRefs.current[t.id] = el; }} key={t.id} id={`museum-tab-${t.id}`} role="tab" aria-selected={tab === t.id} aria-controls="museum-collection-panel" tabIndex={tab === t.id ? 0 : -1} onKeyDown={event => onTabKey(event, i)} onClick={() => chooseTab(t.id)}><CollectionIcon tab={t.id} />{t.label}</button>)}</div>
+        <label className="museum-search"><span className="screen-reader-only">Tìm trong bộ sưu tập</span><input type="search" placeholder="Tìm trong bộ sưu tập…" value={search} onChange={event => { setSearch(event.target.value); setPage(0); }} /></label>
+        {tab === 'culture' && <label className="museum-filter">Thời kỳ<select aria-label="Thời kỳ" value={period} onChange={event => { setPeriod(event.target.value); setPage(0); }}><option value="all">Tất cả</option>{['Nguyễn', '1888', '1934', '1960', '1962', '1980', '1982', '2026'].map(p => <option key={p}>{p}</option>)}</select></label>}
       </div>
-      <nav className="museum-page-controls" aria-label="Lật trang sách">
-        <button disabled={page === 0} onClick={() => turn(-1)}>‹ Trang trước</button>
-        <span role="status" aria-live="polite" aria-atomic="true">Trang {page + 1} / {pageCount}</span>
-        <button disabled={page === pageCount - 1} onClick={() => turn(1)}>Trang sau ›</button>
-      </nav>
-      <p className="fine-print">Đọc mỗi thẻ lần đầu nhận 15 Sen Ngọc. Thẻ được mở từ cốt truyện chưa được tính là đã đọc.</p>
-      <p className="museum-key-hint">Dùng phím ← → để lật trang · Esc để khép sách</p>
-    </Modal>}
+      <div className="museum-collection-content">
+        <div className="museum-collection-scroll" tabIndex={0} aria-label="Cuộn ngang các thẻ bộ sưu tập">
+          <div className="museum-cards" id="museum-collection-panel" role="tabpanel" aria-labelledby={`museum-tab-${tab}`}>
+            {visible.map(entry => <button key={entry.id} data-entry={entry.id} className={`museum-collection-card ${entry.id === active?.id ? 'is-selected' : ''}`} aria-label={entry.title} aria-pressed={entry.id === active?.id} onClick={() => setSelected(entry.id)}>
+              <MuseumArt entry={entry} /><span className="museum-card-label">{entry.label}</span>
+              {entry.completed && <span className="museum-read-stamp" aria-label={tab === 'culture' ? 'Đã đọc' : 'Đã khám phá'}><MuseumRaster path="assets/screens/museum/read-lotus.png" /></span>}
+            </button>)}
+            {!visible.length && <p className="museum-no-results">Không có kết quả phù hợp.</p>}
+          </div>
+        </div>
+        <nav className="museum-pagination" aria-label="Trang bộ sưu tập"><button aria-label="Trang bộ sưu tập trước" disabled={currentPage === 0} onClick={() => paginate(currentPage - 1)}>‹</button><span>{currentPage + 1}/{pages}</span><button aria-label="Trang bộ sưu tập tiếp" disabled={currentPage === pages - 1} onClick={() => paginate(currentPage + 1)}>›</button></nav>
+      </div>
+    </section>
+    {reading && active?.card && <MuseumReader key={active.id} entry={active} state={state} send={send} onClose={() => setReading(false)} />}
+    {detailOpen && active && <Modal title={active.title} className="museum-reader museum-detail" onClose={() => setDetailOpen(false)}><MuseumArt entry={active} /><p className="eyebrow">{active.subtitle}</p><p>{active.description}</p></Modal>}
   </div>;
 }

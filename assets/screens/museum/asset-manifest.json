@@ -1,79 +1,68 @@
 {
-    "generatedOn":  "2026-10-01",
-    "generatedWith":  "built-in image_gen",
-    "technicalQA":  "passed",
-    "artReview":  "AI-assisted visual inspection; human pixel cleanup and cultural review pending",
-    "integration":  "asset-only; App.tsx currently returns null",
-    "rendering":  "nearest-neighbor / image-rendering: pixelated",
-    "palette":  "canonical project palette from assets/README.md",
-    "portraitNote":  "320x480 is intentional per Museum README (2:3); corrected legacy 9:16 label",
-    "citationNote":  "32x32 per Museum README; decorative lotus stamp without text",
-    "assets":  [
-                   {
-                       "file":  "bookshelf-view--landscape.png",
-                       "source":  "_raw/bookshelf-view--landscape-v1.png",
-                       "kind":  "screen-background-landscape",
-                       "width":  800,
-                       "height":  500,
-                       "rgbaColors":  25,
-                       "alpha":  "opaque",
-                       "sha256":  "db20264d5d38c8db8f078cf59293100ed5c7036a45d0b79223f3ba720c46ced7"
-                   },
-                   {
-                       "file":  "bookshelf-view--portrait.png",
-                       "source":  "_raw/bookshelf-view--portrait-v1.png",
-                       "kind":  "screen-background-portrait",
-                       "width":  320,
-                       "height":  480,
-                       "rgbaColors":  24,
-                       "alpha":  "opaque",
-                       "sha256":  "ef5ef4973897d1209e2e19b376c7d7e96c9a903af1577eaccf3a99f0fa8f7c01"
-                   },
-                   {
-                       "file":  "card-modal--9slice.png",
-                       "source":  "_raw/card-modal--9slice-v1.png",
-                       "kind":  "ui-frame-9slice",
-                       "width":  64,
-                       "height":  64,
-                       "rgbaColors":  12,
-                       "alpha":  "binary",
-                       "sha256":  "6a250b2410568158490e9c94cf4299eb4f5956e8418ced6f89c35c664da35ff3",
-                       "slice":  {
-                                     "left":  16,
-                                     "bottom":  16,
-                                     "top":  16,
-                                     "right":  16,
-                                     "repeat":  "edges",
-                                     "center":  "transparent; UI supplies do-paper fill"
-                                 }
-                   },
-                   {
-                       "file":  "museum-filter-bar--3slice.png",
-                       "source":  "_raw/museum-filter-bar--3slice-v1.png",
-                       "kind":  "ui-bar-3slice",
-                       "width":  120,
-                       "height":  40,
-                       "rgbaColors":  10,
-                       "alpha":  "binary",
-                       "sha256":  "f3f322dec33562dbc84fdeac73185a2094d998d2c138155eb349a2da35abd5fe",
-                       "slice":  {
-                                     "left":  14,
-                                     "bottom":  0,
-                                     "top":  0,
-                                     "right":  14,
-                                     "repeat":  "horizontal",
-                                     "center":  "cream inset"
-                                 }
-                   },
-                   {
-                       "file":  "citation-seal.png",
-                       "source":  "_raw/citation-seal-v1.png",
-                       "kind":  "item-icon",
-                       "width":  32,
-                       "height":  32,
-                       "rgbaColors":  4,
-                       "alpha":  "binary",
-                       "sha256":  "e1a0ce286f42e896aee40542f3a98f1c850351a7e83481090421d25d8709c756"
-                   }
-               ]
+  "integration": "Current runtime assets; source prompts are in assets/references.",
+  "assets": [
+    {
+      "file": "archive-folio.png",
+      "kind": "screen-asset",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "99c0f7ca6c78b6f48a9a3eb50d5b142a7b0504885e3326527057a9394932f9aa"
+    },
+    {
+      "file": "citation-seal.png",
+      "kind": "screen-asset",
+      "width": 32,
+      "height": 32,
+      "sha256": "e1a0ce286f42e896aee40542f3a98f1c850351a7e83481090421d25d8709c756"
+    },
+    {
+      "file": "collection-dock--panorama.png",
+      "kind": "screen-asset",
+      "width": 2172,
+      "height": 724,
+      "sha256": "f9084a72697ce4a8cee749d25a04bde3743b035f9faac428ec75f2eef9a532c5"
+    },
+    {
+      "file": "collection-paper-frame.png",
+      "kind": "screen-asset",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "820d78d98d0dab2c87c0a37e09b62becbfcbb9608753d1836564474d1ea67640"
+    },
+    {
+      "file": "exhibit-stand.png",
+      "kind": "screen-asset",
+      "width": 1086,
+      "height": 1448,
+      "sha256": "5c14d95b51a02822d597e0a32adcffb9d58e517b01a5abb21ac5edaae9e5fcdd"
+    },
+    {
+      "file": "gallery-frame.png",
+      "kind": "screen-asset",
+      "width": 1289,
+      "height": 1221,
+      "sha256": "b0a12196e81c22f9d94bea5c4301bd0b78313c27c892619324ff322c9427242a"
+    },
+    {
+      "file": "gallery-room--panorama.png",
+      "kind": "screen-asset",
+      "width": 2164,
+      "height": 727,
+      "sha256": "3825bbf5318e07418dc84ac1b6a02c4d4deba05da77ced6bace701082e15a2d9"
+    },
+    {
+      "file": "read-lotus.png",
+      "kind": "screen-asset",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "e23c5559e1387c6b1ea8b39eb5c4ba7e4c727921a473523be80c4444e26baae4"
+    },
+    {
+      "file": "sewing-memory.png",
+      "kind": "screen-asset",
+      "width": 1254,
+      "height": 1254,
+      "sha256": "718924ab312cf803b093e740a138a609a9300d475e9c802c82f010fefb240e38"
+    }
+  ]
 }

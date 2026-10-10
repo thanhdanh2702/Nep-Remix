@@ -185,9 +185,9 @@ export function runSelfCheck(): SelfCheckReport {
 
     // chapter/enter locked chapter
     const enterDef = defaultRegistry.get('chapter/enter')!;
-    const g1 = enterDef.guard(s0, { chapterId: 'c2' }, content);
+    const g1 = enterDef.guard(s0, { chapterId: 'c4' }, content);
     if (g1 === true || (typeof g1 === 'object' && g1.ok)) {
-      throw new Error('chapter/enter should reject locked chapter c2');
+      throw new Error('chapter/enter should reject locked chapter c4');
     }
 
     // area/goTo locked area

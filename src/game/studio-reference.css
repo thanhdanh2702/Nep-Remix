@@ -1,0 +1,81 @@
+/* Measured from concept C at 1672 x 941. The cleaned reference retains its
+   exact wood, paper apertures and button borders; HTML supplies all live content. */
+@media (min-width: 801px) {
+  .game-stage .studio-book-room .room-background img { position: absolute; top: -5.849%; left: 0; width: 100%; height: 105.849%; }
+  .studio-book { right: 0; top: 3.15%; width: 60.4%; height: 95.05%; }
+  .studio-book-art { display: none; }
+  .studio-fitting { left: 25.9%; bottom: 13.6%; }
+  .studio-fitting .studio-character { height: min(53.9cqh, 530px); margin-left: 36px; }
+  .game-stage .studio-fitting .doll-caption { width: 190px; min-height: 38px; margin-bottom: 8px; padding: 4px 8px; font: 400 24px/1.1 var(--font-display); }
+  .studio-view-tabs { width: 19.5cqw; margin: auto; gap: 4px; }
+  .studio-view-tabs button { flex: 1; height: 41px; min-height: 41px; padding: 3px 7px; border: 3px solid transparent; background: #fff1df; background-clip: padding-box; box-shadow: none; font: 500 clamp(14px, 1.05cqw, 18px)/1.1 var(--font-body); }
+  .studio-view-tabs button[aria-pressed=true] { background: #a42b5a; background-clip: padding-box; border-color: transparent; }
+  .studio-book-title { left: 31%; top: 1.5%; font-size: clamp(24px, 2cqw, 33px); }
+  .studio-book .wardrobe-tabs { left: 0; top: 9.35%; width: 100%; height: 5.9%; display: block; }
+  .studio-book .wardrobe-tabs button { position: absolute; top: 0; width: 15.2%; border: 4px solid transparent; background: #fff1df; background-clip: padding-box; box-shadow: none; font: 500 clamp(15px, 1.13cqw, 19px)/1.1 var(--font-body); }
+  .studio-book .wardrobe-tabs button:nth-child(1) { left: 17.03%; }
+  .studio-book .wardrobe-tabs button:nth-child(2) { left: 33.32%; }
+  .studio-book .wardrobe-tabs button:nth-child(3) { left: 50.89%; }
+  .studio-book .wardrobe-tabs button:nth-child(4) { left: 67.13%; }
+  .studio-book .wardrobe-tabs button[aria-selected=true] { background: #a42b5a; background-clip: padding-box; border-color: transparent; }
+  .studio-book .wardrobe-cards { left: 9.7%; top: 18.22%; width: 36.4%; height: 53.2%; padding: 18px 17px 26px; gap: 18px 16px; }
+  .studio-book .wardrobe-card { padding: 4px 3px 0; border: 0; background: transparent; box-shadow: none; }
+  .studio-book .wardrobe-card::before { display: none; }
+  .studio-book .wardrobe-card.is-selected { border: 0; box-shadow: none; }
+  .studio-book .wardrobe-card.is-selected::after { content: ''; position: absolute; inset: 0; border: 1px solid #e1b259; pointer-events: none; }
+  .studio-book .wardrobe-card.is-selected:first-child::after { display: none; }
+  .studio-book .wardrobe-card.is-locked { background: transparent; }
+  .studio-book .wardrobe-name { min-height: 36px; max-height: 40px; padding: 2px 1px; font: 500 clamp(12px, .98cqw, 16px)/1.1 var(--font-body); background: #fff1df; }
+  .studio-book .is-selected .wardrobe-name { background: #992a58; color: #fff3e5; }
+  .studio-book .wardrobe-pagination { left: 55.65%; top: 36.1%; width: 30.35%; height: 4%; justify-content: space-between; gap: 0; pointer-events: none; }
+  .studio-book .wardrobe-pagination span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+  .studio-book .wardrobe-pagination button { width: 32px; height: 34px; min-width: 32px; min-height: 34px; padding: 0; border: 0; background: transparent; color: #332238; pointer-events: auto; box-shadow: none; font: 400 24px/1 var(--font-display); }
+  .studio-book .wardrobe-pagination button:disabled { background: transparent; color: #8a7473; }
+  .studio-book-detail { left: 54.7%; top: 19.2%; width: 32.7%; height: 52%; gap: 12px; pointer-events: none; }
+  .studio-book-detail h2 { position: absolute; inset: 0 0 auto; height: 30px; font-size: clamp(22px, 1.7cqw, 28px); }
+  .studio-book-detail .studio-selected-garment { position: absolute; left: 0; top: 8%; width: 100%; height: 57%; }
+  .studio-fabric { position: absolute; left: 0; top: 65%; width: 100%; gap: 3px; font: 500 clamp(13px, .97cqw, 16px)/1.1 var(--font-body); }
+  .studio-fabric > div { gap: 10px; background: #fff1df; box-shadow: 0 0 0 4px #fff1df; }
+  .studio-fabric button { height: 46px; min-height: 38px; border: 1px solid #927555; box-shadow: none; pointer-events: auto; }
+  .studio-fabric button[aria-pressed=true] { outline: 2px solid #e29b35; outline-offset: 2px; }
+  .studio-book-event { position: absolute; left: 0; top: 84.45%; width: 100%; font: 500 clamp(13px, .98cqw, 16px)/1.1 var(--font-body); gap: 8px; }
+  .studio-book-event > span { width: 98px; }
+  .studio-book-event select { pointer-events: auto; font: inherit; height: 38px; min-height: 38px; border: 2px solid #35233c; background: #fff8ed; }
+  .studio-book-score { position: absolute; left: 0; top: 97%; width: 100%; font: 400 clamp(13px, .98cqw, 16px)/1 var(--font-body); gap: 14px; }
+  .studio-book-score > span:first-child { flex: none; width: 64px; }
+  .studio-book-score > span:last-child { flex: none; width: 56px; }
+  .studio-book-score .studio-score-bar { height: 12px; }
+  .studio-book-actions { inset: 0; width: 100%; height: 100%; display: block; pointer-events: none; }
+  .studio-book-actions button { height: 100%; padding: 3px 5px; border: 3px solid transparent; background: transparent; background-clip: padding-box; box-shadow: none; font: 500 clamp(13px, .98cqw, 16px)/1.1 var(--font-body); pointer-events: auto; display: flex; align-items: center; justify-content: center; gap: 10px; }
+  .studio-book-actions .primary { background: transparent; border-color: transparent; color: #fff2e3; }
+  .studio-history { position: absolute; left: 8.9%; top: 81.66%; width: 11.3%; height: 5.8%; gap: 16px; }
+  .studio-history button { padding: 0; font-size: 0; color: #f5d486; border: 0; background: transparent; }
+  .studio-history button:disabled { opacity: .65; }
+  .studio-book-actions .studio-ai-row { position: absolute; left: 23.85%; top: 81.78%; width: 17.53%; height: 5.7%; }
+  .studio-book-actions > button:not(.primary) { position: absolute; left: 42.57%; top: 81.78%; width: 18.51%; height: 5.7%; }
+  .studio-book-actions > .primary { position: absolute; left: 63.56%; top: 81.13%; width: 24.95%; height: 6.75%; }
+}
+@media (max-width: 800px) {
+  .game-stage .studio-book-room .room-background img { content: url('../../assets/screens/studio/studio-book-room.png'); object-fit: cover; }
+}
+@media (max-height: 500px) and (min-width: 801px) {
+  .game-stage .studio-book-room { overflow-y: auto; }
+  .studio-book-layout { position: relative; height: 620px; min-height: 620px; }
+  .game-stage .studio-book-room .room-background { height: 620px; bottom: auto; }
+  .studio-fitting .studio-character { height: 340px; margin-left: 20px; }
+  .game-stage .studio-fitting .doll-caption { min-height: 28px; width: 150px; font-size: 18px; margin-bottom: 4px; }
+  .studio-fitting { bottom: 13.6%; }
+  .studio-view-tabs button { height: 30px; min-height: 30px; font-size: 14px; }
+  .studio-book .wardrobe-cards { padding: 9px 8px 12px; gap: 8px; }
+  .studio-book .wardrobe-name { min-height: 25px; font-size: 11px; }
+  .studio-book-detail { gap: 4px; }
+  .studio-book-detail h2 { font-size: 20px; }
+  .studio-fabric button { height: 25px; min-height: 25px; }
+  .studio-book-event > span { width: 60px; }
+  .studio-book-event select { height: 28px; min-height: 28px; padding: 2px; font-size: 12px; }
+  .studio-book-score { font-size: 12px; gap: 5px; }
+  .studio-book-score > span:first-child { width: 45px; }
+  .studio-book-score > span:last-child { width: 40px; }
+  .studio-book-actions button { min-height: 28px; font-size: 11px; gap: 5px; }
+  .studio-book-actions .nep-icon, .studio-book-actions .studio-action-icon { width: 17px; height: 17px; }
+}

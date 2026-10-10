@@ -1,0 +1,93 @@
+{
+  "tool": "built-in image_gen",
+  "date": "2026-10-10",
+  "prompt": "Use case: stylized-concept. Asset type: pixel-art game headwear sprite sheet for An.\nGenerate ONLY the wearable hat layer on genuine transparency. Image 1 is the approved shop icon and determines the exact hat design/material/colors. Image 2 is an existing registered headwear sheet and determines the three-view layout and pixel-art treatment. Images 3, 4, 5 are the character front, facing left, and back, for head-fit reference ONLY; do not include any character pixels in output.\nOutput a 1056 by 832 transparent sheet of THREE EQUAL 352 by 832 cells in this precise order: FRONT, LEFT PROFILE facing left, BACK. Each cell is a full-body registration frame but contains ONLY the hat in its upper portion; leave the entire area below y=280 fully transparent. Target the head crown at x=188,y=44 front/back, x=160,y=44 profile within each cell. Hat brim should sit at y=138 to 156, above the eyes at y=184. Hat width about 320 pixels front/back, 296 profile. Peak must remain within canvas. Straps may extend to y=270 at sides of cheeks, leave face opening empty. Keep every view in its own cell.\nStyle: crisp warm detailed pixel-art, stepped edges, small coherent color palette, outlines matching existing headwear, no blur, no text, no grid lines, no people, no hair, no skin, no clothes. Do not draw checkerboard; actual transparent alpha.",
+  "assets": [
+    {
+      "id": "non-la",
+      "source": "assets/references/headwear/non-la-source.png",
+      "subject": "Vietnamese nón lá conical palm-leaf hat, warm ivory straw, pointed peak, fine concentric bamboo ribbing, simple brown underbrim and light brown chin strap. Preserve icon design.",
+      "views": [
+        {
+          "direction": "down",
+          "crop": [
+            0,
+            0,
+            492,
+            1114
+          ],
+          "width": 154,
+          "centerX": 94,
+          "top": 0
+        },
+        {
+          "direction": "left",
+          "crop": [
+            492,
+            0,
+            937,
+            1114
+          ],
+          "width": 150,
+          "centerX": 80,
+          "top": 0
+        },
+        {
+          "direction": "up",
+          "crop": [
+            937,
+            0,
+            1412,
+            1114
+          ],
+          "width": 154,
+          "centerX": 94,
+          "top": 0
+        }
+      ]
+    },
+    {
+      "id": "non-quai-thao",
+      "source": "assets/references/headwear/non-quai-thao-source.png",
+      "subject": "Vietnamese nón ba tầm quai thao, large circular flat shallow straw hat, low flat crown (NOT conical), creamy straw woven horizontal circular surface with dark red trim and red/brown silk straps and modest tassels as in approved icon. Keep side silk straps outside face opening and back straps beside hair. Hat top y=20 brim y=110, straps to y=270.",
+      "views": [
+        {
+          "direction": "down",
+          "crop": [
+            0,
+            0,
+            492,
+            1114
+          ],
+          "width": 164,
+          "centerX": 94,
+          "top": 0
+        },
+        {
+          "direction": "left",
+          "crop": [
+            492,
+            0,
+            937,
+            1114
+          ],
+          "width": 158,
+          "centerX": 80,
+          "top": 0
+        },
+        {
+          "direction": "up",
+          "crop": [
+            937,
+            0,
+            1412,
+            1114
+          ],
+          "width": 164,
+          "centerX": 94,
+          "top": 0
+        }
+      ]
+    }
+  ]
+}

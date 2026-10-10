@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-10",
+  "tool": "built-in image_gen",
+  "sequence": "Pilot garment first, verify on original An before generating the remaining garments.",
+  "assets": [
+    {
+      "id": "ao-ngu-than-tay-thung",
+      "source": "assets/references/wearables/remake-2026-10-10/ao-ngu-than-tay-thung-v2.png",
+      "registration": "full-frame",
+      "prompt": "Use case: precise-object-edit / background-extraction.\nTarget: the exact provided transparent 1824x862 five-cell An áo-tấc prototype. Extract its CLOTHING ONLY, keeping the exact cloth pixels, texture, scale, poses and coordinates. Do NOT redraw the garment in a smoother style. Do NOT crop the canvas or center the visible objects.\nRemove all heads, faces, hair, skin, hands, trousers, shoes and shadows from ALL five cells. Leave true alpha-zero transparency where those parts were, above the collar, in side slits and below the cloth hem.\nKeep only the gray-white áo tấc in cells FRONT, LEFT, BACK, RIGHT, relaxed FRONT presentation. Its pixel fabric was painted to fit An: preserve these visible fabric pixels exactly and continue the SAME gray pixel cloth behind removed hair where hair previously hid the shoulder/back. Do not expand the garment to the removed head silhouette. Back collar remains at native y127, shoulder fabric joins at y135 and covers the back down to its hem. Clothing occupies native logical y127..370, not the whole image height.\nThe standing collar, five tiny round buttons on wearer's RIGHT hò, broad long rectangular sleeves covering the hands and plain long panels must stay identical. Fifth cell's sleeves are relaxed downward; remove its trousers/shoes, retain the same garment. Keep the subtle finely clustered woven shading and original stepped pixel contours. No colored halo, decorative embroidery, flowers, new folds or design changes. Neutral grayscale fabric.\nPreserve this EXACT canvas 1824x862 and equal five full-frame cells. The first four neck/shoulder/elbow/hem locations must remain exactly where they were on the person. No bounding-box trim, torso stretching or panel stretching. Five garments ONLY, no people, mannequins, props, hanger, guides, letters or watermark. True transparent background.",
+      "references": [
+        "assets/references/wearables/remake-2026-10-10/ao-tac-dressed-prototype.png"
+      ],
+      "status": "accepted-after-worn-review",
+      "compiled": true,
+      "outputs": [
+        "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung.png",
+        "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--right.png",
+        "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--hanging.png",
+        "assets/garments/ao-ngu-than-tay-thung/ao-ngu-than-tay-thung--icon.png"
+      ],
+      "candidates": [
+        {
+          "source": "assets/references/wearables/remake-2026-10-10/ao-ngu-than-tay-thung-v1.png",
+          "status": "rejected",
+          "reason": "Smooth shading and collar too high on An; presentation kept crossed sleeves."
+        }
+      ],
+      "prototypePrompt": "Use case: identity-preserve / precise-object-edit. Image 1 is the exact 1760x832 registered An character sheet to EDIT. Image 2 is a construction reference for the ceremonial garment ONLY, not a rendering style.\nChange ONLY the clothing worn by the FIRST FOUR An figures. Keep An's ORIGINAL pixel face, exact hair, head size, skin, position, body pose, trouser silhouette, feet and every non-clothing pixel unchanged. The new cloth must look like it was originally painted as part of this same detailed pixel sprite, with the SAME logical pixel size and fabric shading detail as An's original ivory tunic. The current smooth garment illustration in image 2 looks pasted on and is unacceptable: REDRAW it as finely shaded, clustered PIXEL fabric.\nOutfit: Vietnamese ceremonial áo tấc with loose five-panel closed body, short standing collar joining naturally under An's neck, wearer's RIGHT hò closing with FIVE small round cloth buttons (one at collar and four down hò), genuinely broad rectangular long draping sleeves and long plain panels. NO flowers, embroidery, insignia, sash or pointed bell sleeves. Front arms follow the existing clasped-hands pose, the wide folds can cover hands naturally. Profiles follow An's actual hanging arms; back shows back panel not buttons. Gray-white cloth, subdued neutral warm-gray shadows, textured clustered fold gradients, tiny pixel highlights at creases, thin warm-charcoal stepped contours. Keep cloth subtle and matte, not plastic. Much finer fabric detail than image 2, no flat geometric triangles or smooth vector curves.\nCrucial: keep canvas EXACTLY 1760x832 and four figures in their original first four 352x832 cells (FRONT, LEFT, BACK, RIGHT). Do not resize, recenter, elongate torso or zoom in. Native neck centers remain front(94,127), left(71,127), back(94,127), right(105,127) within 176x416 logical cells. Upper empty margin and feet placement exactly unchanged. Hem around logical y370. Broad sleeves add room around actual arms while keeping elbow locations.\nIn fifth cell place ONLY a matching RELAXED front clothing presentation, sleeves hanging down naturally, no crossed arms, no mannequin and no hanger. Same collar/closure/fabric construction as the worn garment, consistent pixel style.\nTrue transparency outside figures/clothes, no room, labels, text or guide marks. This is a fit-and-style prototype, not a new character. Do not redraw or beautify An; preserve her exact pixels while painting the new gray áo tấc around her existing anatomy.",
+      "prototype": "assets/references/wearables/remake-2026-10-10/ao-tac-dressed-prototype.png",
+      "viewOffsets": [
+        [
+          3,
+          12
+        ],
+        [
+          -4,
+          10
+        ],
+        [
+          7,
+          12
+        ],
+        [
+          6,
+          11
+        ],
+        [
+          0,
+          0
+        ]
+      ],
+      "registrationNote": "Uniform per-cell translations align generated collar centers to native An. No separate body/hem scaling.",
+      "qa": "artifacts/wearables/remake-2026-10-10/pilot-v2"
+    }
+  ]
+}

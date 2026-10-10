@@ -1,13 +1,16 @@
 # Khung chọn trang phục
 
-- Mẫu: `khung.png` ở thư mục gốc dự án.
+- Mẫu: `assets/references/studio/khung.png`.
 - Asset mới: `wardrobe-frame--landscape.png`, tạo bằng ImageGen tích hợp.
 - Bố cục: sáu ô giấy kem, khung gỗ nâu hồng, tab ở trên và bảng màu bên phải; trang trí hoa sen.
 - Ảnh tạo có lề trắng phía trên và dưới. `wardrobe-art` cắt lề bằng CSS, chỉ hiển thị vùng khung; không kéo giãn ảnh trang phục bên trong.
-- Trang phục thật được đặt bằng `StudioWardrobe.tsx`, đổi màu từ lớp áo có sẵn và căn theo vùng alpha để áo chiếm vừa ô. Phụ kiện và giày dùng icon có sẵn, giữ tỷ lệ.
+- Áo treo lấy từ `assets/garments/<id>/<id>--hanging.png`, cùng thiết kế và cùng phép đổi màu với lớp mặc của An; móc treo là SVG dùng chung. Icon áo thu từ bản treo đã duyệt. Phụ kiện và giày dùng icon có sẵn, giữ tỷ lệ.
 - Sáu mục mỗi trang, viền vàng cho mục đang chọn. Bản nhỏ cuộn ngang khay; tab, chọn màu, đổi trang và chọn đồ là điều khiển HTML.
 - Khay đặt cố định sát đáy phòng, dưới nhân vật ở mọi kích thước màn hình. Bảng tùy chỉnh cũ được thay bằng cửa sổ Tùy chỉnh bộ phối; khay không nằm trong Lookbook hoặc cửa sổ này.
-- Nhóm quần trong mẫu được thay bằng Màu vải để khớp chức năng phối đồ hiện có; không thêm lựa chọn quần không lưu được vào bộ phối.
+- Trên màn hình rộng, bảng phủ hết chiều ngang để không có khoảng tím ở hai bên. Trên điện thoại, bảng giữ chiều rộng tối thiểu và cuộn ngang.
+- Bốn tab: Áo dài, Quần/Váy, Phụ kiện, Giày. Tab Quần đổi màu lớp quần riêng (`bottomPalette`), hỗ trợ hoàn tác/làm lại và lưu cùng bộ phối. Bảng màu bên phải đổi màu áo hoặc quần theo tab đang mở.
+- Mục đang chọn có bốn góc vàng như mẫu; đồ chưa mở khóa vẫn hiện hình áo, có ký hiệu và thông tin điều kiện mở khóa.
+- Prompt của catalog và khung gương mới nằm trong `catalog-generation.json` (công cụ ImageGen tích hợp).
 
 ## Prompt ImageGen
 

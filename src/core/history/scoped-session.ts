@@ -127,6 +127,7 @@ export function commitSession(session: ScopedSession<any>): CommitResult {
           garmentId: draft.garmentId,
           equippedAccessories: draft.equippedAccessories,
           colorPalette: draft.colorPalette,
+          bottomPalette: draft.bottomPalette,
           motifId: draft.motifId
         }
       }

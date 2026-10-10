@@ -5,6 +5,7 @@ import type { GameState } from '../state.ts';
 import { validateState } from '../invariants.ts';
 import { grantRewardGifts } from '../commands/journey/reward-commands.ts';
 import { enqueueDialogues } from '../commands/journey/dialogue-queue.ts';
+import { OPEN_CHAPTER_IDS } from '../chapter-access.ts';
 
 export const CONTENT_VERSION = 'sprint-03-core-1';
 export interface SerializedHistoryEnvelope {
@@ -93,6 +94,11 @@ function migrateSnapshot(original: GameState, content: GameContent, legacyC2: bo
       state = grantRewardGifts(state, chapter.chapter.reward);
       state.claimedRewardIds = [...new Set([...state.claimedRewardIds!, chapter.chapter.reward.id])];
     }
+  }
+  // Apply access to every history snapshot so returning to an older branch keeps ready chapters open.
+  // Do this after legacy chapter migrations; opening a chapter grants no solves or rewards.
+  for (const id of OPEN_CHAPTER_IDS) {
+    if (state.journey[id]?.status === 'locked') state.journey[id].status = 'in_progress';
   }
   return state;
 }

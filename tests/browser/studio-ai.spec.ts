@@ -7,7 +7,7 @@ const suggestion = (garmentId: string, garmentName: string, accessoryIds: string
 const suggestions = [
   suggestion('ao-tu-than', 'Áo tứ thân', ['khan-van-den'], ['Khăn vấn nhung đen']),
   suggestion('ao-ngu-than-tay-chen', 'Áo ngũ thân tay chẽn', ['guoc-moc'], ['Guốc mộc quai nhung']),
-  suggestion('ao-dai-lemur', 'Áo dài Lemur 1934', ['quat-lua'], ['Quạt lụa thêu hoa']),
+  suggestion('ao-dai-lemur', 'Áo dài Le Mur (Lemur)', ['quat-lua'], ['Quạt lụa thêu hoa']),
 ];
 async function openStudio(page: Page) {
   const errors: string[] = [];
@@ -36,7 +36,7 @@ test('stylist ok: 3 cards, locked parts are labelled, Mặc thử changes the ga
   await expect(page.getByRole('dialog')).toHaveCount(0);
   await expect(page.locator('.doll-caption')).toHaveText('Áo ngũ thân tay chẽn');
   // Undo works like any other studio command.
-  await page.locator('.studio-session').getByRole('button', { name: 'Hoàn tác' }).click();
+  await page.locator('.studio-history').getByRole('button', { name: 'Hoàn tác' }).click();
   await expect(page.locator('.doll-caption')).toHaveText('Áo tứ thân');
   expect(errors).toEqual([]);
 });
@@ -51,13 +51,21 @@ test('stylist fallback: neutral offline badge, static suggestions, no raw reason
   await expect(page.locator('body')).not.toContainText('ai_unavailable');
   await dialog.getByRole('button', { name: 'Đóng', exact: true }).click();
   await expect(page.locator('.studio-ai-row .ai-badge')).toHaveText('AI offline – dùng gợi ý có sẵn');
+  // The offline announcement must not steal the neighboring Lookbook button.
+  for (const viewport of [{ width: 1672, height: 941 }, { width: 1900, height: 872 }, { width: 1366, height: 768 }]) {
+    await page.setViewportSize(viewport);
+    await page.screenshot({ path: `artifacts/studio-ui-fix/fallback-${viewport.width}x${viewport.height}.png`, animations: 'disabled' });
+    await page.getByRole('button', { name: 'Chụp Lookbook AI', exact: true }).click();
+    await expect(page.getByRole('dialog', { name: 'Lookbook AI' })).toBeVisible();
+    await page.keyboard.press('Escape');
+  }
 });
 
 test('entering the Studio makes no AI request', async ({ page }) => {
   const calls: string[] = [];
   page.on('request', request => { if (request.url().includes('/api/ai/')) calls.push(request.url()); });
   await openStudio(page);
-  await expect(page.locator('.studio-lookbook canvas')).toHaveCount(4);
+  await expect(page.locator('.studio-book')).toBeVisible();
   await page.waitForTimeout(500);
   expect(calls).toEqual([]);
 });

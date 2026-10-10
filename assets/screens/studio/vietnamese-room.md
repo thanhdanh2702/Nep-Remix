@@ -1,12 +1,18 @@
 # Nền phòng phối đồ
 
-- Ảnh tham chiếu: `phongphoido.png` ở thư mục gốc dự án.
-- Tệp sử dụng: `vietnamese-room--landscape.png`.
+- Ảnh tham chiếu: `assets/references/studio/phongphoido.png`.
+- Tệp sử dụng: `vietnamese-room--panorama.png` (2172 × 724, tỉ lệ 3:1). Ảnh nguồn của panorama nằm tại `assets/references/studio/vietnamese-room--landscape.png` và không được đưa vào bản build.
 - Tạo bằng công cụ ImageGen tích hợp; chỉ chứa cảnh phòng, không chứa nhân vật, gương, chữ hoặc giao diện.
 - Giữ tông hồng trầm, gỗ nâu, ánh sáng ấm; thêm hoa sen, cửa gỗ và gốm men lam.
-- Điểm đặt chân trong ảnh: `(42.5%, 61.5%)`. Nền và nhân vật được căn theo cùng điểm khi thay đổi kích thước; điện thoại đặt nhân vật ở 26% chiều ngang để dành chỗ cho Lookbook bên phải.
+- Nền chỉ phủ vùng phía trên khay chọn đồ; An được tăng chiều cao theo vùng còn trống dưới thanh điều hướng. Nền được căn dọc để thảm vẫn nằm dưới chân, tránh căn phòng quá cao so với người. Trên máy tính An ở khoảng 40.5% chiều ngang; điện thoại dọc ở 24%.
+- Gương là thành phần riêng `StudioMirror.tsx` dùng khung `mirror-frame.png` có lòng trong suốt. Phản chiếu dùng cùng `StudioDraft` và renderer với An, hiển thị hướng đối diện và lật ngang. Màu áo, quần, phụ kiện, hoàn tác/làm lại và bộ đã lưu luôn dùng chung trạng thái.
+- Gương đứng sau và sát phía phải An: chân gương lùi lên so với điểm chân nhân vật, không đặt ngang hàng ở tiền cảnh. Vị trí và chiều cao căn theo nhân vật khi màn hình đổi kích thước.
+- Hai nút xoay đặt trên thảm, dưới chân An, với nhãn Đổi góc ở giữa; tên áo nằm ngay dưới. Điểm hài hòa, hoàn tác/làm lại và gợi ý được gom vào bảng bên trái. Điện thoại dọc dùng dải Lookbook phía trên khay để không che gương.
 - An sử dụng khung đứng yên đầu tiên của bốn hướng sprite có sẵn. Trang phục mô-đun được đổi màu và chiếu lên dáng người theo hướng nhìn. Góc nghiêng và sau lưng hiện là bản chiếu 2D của trang phục chính diện, chưa có bộ sprite may riêng cho từng góc.
 - Nút xoay đổi hướng nhìn; không thay đổi bộ phối hay vị trí. Lookbook bên phải hiển thị trực tiếp bốn khung chính diện, nghiêng, sau lưng và cận cảnh, tự cập nhật theo bộ phối. Không có nút Chụp Lookbook.
+
+- Nền panorama có đồ đạc nhỏ ở phía sau, sàn thoáng ở giữa và không có mặt quầy lớn ở tiền cảnh. Renderer nhân cùng một hệ số vào chiều rộng và chiều cao, sau đó cắt phần dư; không dùng `object-fit: fill`. Điểm đứng trên thảm ở khoảng (40.5%, 80%) được căn theo chân An. Trên điện thoại dọc, vùng nền kết thúc ngay trên dải Lookbook. Kiểm tra trình duyệt xác nhận tỉ lệ ảnh không đổi ở mọi kích thước và An vẫn cao hơn ghế trên màn hình rộng.
+- Prompt tạo bản panorama bằng ImageGen tích hợp được lưu đầy đủ trong `../../references/studio/panorama-generation.json`; ảnh nguồn dùng làm tham chiếu phong cách, bố cục được vẽ lại cho khung 3:1, không kéo giãn ảnh nguồn.
 
 ## Prompt ImageGen
 

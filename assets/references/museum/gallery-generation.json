@@ -1,0 +1,43 @@
+{
+  "tool": "built-in image_gen",
+  "reference": "artifacts/proposals/museum-redesign-concept.png",
+  "assets": [
+    {
+      "key": "room",
+      "file": "gallery-room--panorama.png",
+      "transparent": false,
+      "prompt": "Use case: precise-object-edit. Input image 1 is the approved museum UI concept. Match its exact detailed pixel-art style, burgundy carved Vietnamese wood, muted gold, dusty rose, cream paper and warm light. This asset is a production layer for reconstructing that exact approved screen. Generate ONLY the room BACKGROUND from the concept, after removing ALL interface, all panels, headers, navigation, signs with lettering, tabs, thumbnail cards, the entire bottom gallery dock, the large central displayed garment AND its stand/plinth, and the entire right framed info panel. Reconstruct the scene behind those elements. True wide 3:1 panoramic canvas, approximately 2400x800; do NOT squeeze furniture to achieve this framing. Fill with naturally proportioned Vietnamese wooden study / heritage gallery: lattice window at far left, modest small desk and chair, modest book shelf with small bound books at left x20%, central burgundy timber rose plaster wall with quiet lotus stencilling and carved wooden columns, a ceramic lotus vase on modest console toward right. The area x35%-55% must be empty for a display stand drawn separately, and far right is an ordinary continuous rose wall and lattice window behind where the info board will sit. Back wall/floor junction y62%; rose terracotta tile floor extends to bottom. Pink lotus rug under the exhibit x28%-62%, with standing centre x45%, y84%. No foreground counter or fascia. Maintain depth and normal proportions, same room architecture as the concept. No people, no garments, no mirror, no exhibit stand, no UI, no frame, no writing, no watermark. Opaque full background."
+    },
+    {
+      "key": "stand",
+      "file": "exhibit-stand.png",
+      "transparent": true,
+      "prompt": "Use case: precise-object-edit. Input image 1 is the approved museum UI concept. Match its exact detailed pixel-art style, burgundy carved Vietnamese wood, muted gold, dusty rose, cream paper and warm light. This asset is a production layer for reconstructing that exact approved screen. Extract/recreate ONLY the central freestanding ornate burgundy carved wood garment display stand AND its connected low plinth from the concept, removing the garment completely. Genuinely transparent background outside it AND throughout the entire empty aperture inside it. Exactly the same top beam with lotus crown, narrow tall side posts with small warm gold details, tassels near the beam, base rail and broad low rectangular raised wooden plinth with a lotus carving. Front-facing camera, naturally proportioned tall upright approximately 3:4 overall asset, centred, entire object visible with only a tiny transparent margin. The inner opening is empty alpha zero, no fabric, no hanger, no mannequin, no people. Include one small blank gold/cream name plaque centred above the plinth front, no letters. No room, no floor, no backdrop, no UI, no drop shadow outside the plinth. Only the stand, plinth and blank plaque on actual transparency."
+    },
+    {
+      "key": "frame",
+      "file": "gallery-frame.png",
+      "transparent": true,
+      "prompt": "Use case: precise-object-edit. Input image 1 is the approved museum UI concept. Match its exact detailed pixel-art style, burgundy carved Vietnamese wood, muted gold, dusty rose, cream paper and warm light. This asset is a production layer for reconstructing that exact approved screen. Recreate a reusable square carved wooden picture/UI BORDER based precisely on the large information panel on the RIGHT in the approved concept. A square burgundy/red-brown wooden frame with two thin layered rails, gold edge highlights, tiny carved lotus ornaments in all four corners, and an inner narrow cream/pink paper trim with delicate red corner flourishes. It will be used as a 9-slice CSS border on rectangles of different sizes: keep all four corner ornaments entirely within the outer 15% on each edge; the middle sections of the four rails must be straight repeating wood, no ornaments in middle. The ENTIRE central 70%x70% opening MUST be genuinely transparent alpha zero; outside frame transparent too. NO cream paper fill in the centre. Front-on flat rectangular UI frame, not photographed or in perspective. Frame flush to near canvas edges with no outer blank margin. No words, no garment, no icons, no room, no shadows or content in the transparent opening. Detailed crisp pixel art matching the concept's wood."
+    },
+    {
+      "key": "dock",
+      "file": "collection-dock--panorama.png",
+      "transparent": false,
+      "prompt": "Use case: precise-object-edit. Input image 1 is the approved museum UI concept. Match its exact detailed pixel-art style, burgundy carved Vietnamese wood, muted gold, dusty rose, cream paper and warm light. This asset is a production layer for reconstructing that exact approved screen. Recreate ONLY the bottom full-width burgundy wooden collection drawer from the approved museum concept as a standalone wide 3:1 canvas. Outer carved wooden frame with golden edge highlights, chunky ornate side posts with lotus medallions, wood texture and layered horizontal rails matching the exact approved dock. The interior is entirely EMPTY uninterrupted burgundy warm wood so the game will overlay tabs, search and six individual paper cards; do not paint any card frames or placeholder rectangles. Reserve the upper 25% of interior for tab/search controls and the bottom 65% of interior for collection cards. Outer side posts each at most 3% of full width, top and bottom rails at most 6% canvas height. Fill the whole image edge-to-edge, no surrounding scene or margin, fully opaque. No lettering, no buttons, no icons, no paper slots, no cards, no swatches. Rich crisp wood carving, not glossy or photorealistic."
+    },
+    {
+      "key": "folio",
+      "file": "archive-folio.png",
+      "transparent": true,
+      "prompt": "Use case: precise-object-edit. Recreate ONLY the small pile of aged cream Vietnamese archival papers and bound notebooks visible in the FIFTH collection card at bottom of input image 1, the approved museum UI concept. Crisp detailed warm pixel-art matching this game's wood/paper style. A small stack of cloth-bound tan notebooks, cream folded sheets, one lightly opened document leaning atop the pile with a few abstract faint ink strokes, NO legible letters or historical claims. Angled three-quarter view matching the thumbnail; centred isolated full object, with tiny margin on a square canvas. Actual transparent background. No paper frame, no label, no lotus stamp, no UI, no room, no watermark."
+    },
+    {
+      "key": "basket",
+      "file": "sewing-memory.png",
+      "transparent": true,
+      "prompt": "Use case: precise-object-edit. Recreate ONLY the nostalgic Vietnamese silk sewing keepsake arrangement visible in the SIXTH collection card at bottom of input image 1, the approved museum concept. Small carved burgundy wooden sewing boxes and shallow basket, a neatly draped folded ivory/pink floral silk textile, a few gold sewing notions. Exactly the same charming crisp warm pixel-art style and natural object proportions as reference. Angled three-quarter view, centred full object entirely visible, tiny margin on square canvas. Actual transparent background. No UI card, no frame, no words, no stamp, no room, no watermark."
+    }
+  ],
+  "roomRefinement": "Use case: precise-object-edit. Input image 1 is the newly generated production museum background, the edit target. Input image 2 is the approved museum UI concept and is the exact rug shape/style reference. Change ONLY the rug on the floor of image 1: replace its rectangular rug with the OVAL dusty pink lotus rug visible under the central exhibit in image 2. A broad oval rug flat on floor, correctly foreshortened in the same room perspective, with a delicate gold/cream lotus floral border and quiet empty pink centre. Keep approximately same position and extent x28%-68%, y78%-99%, rug centre x45%-48%. Preserve the entire room, architecture, furniture, vases, light, colours, dimensions and pixel-art style of image 1 exactly. No interface, no exhibit, no people, no text. No other changes. Opaque full panoramic background."
+}

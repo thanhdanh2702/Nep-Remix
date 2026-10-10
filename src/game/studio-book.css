@@ -1,0 +1,114 @@
+/* Concept C: live garment assets on a carved, two-page tailoring workbench. */
+.game-stage .studio-book-room { --studio-dock-h: 0px; padding: 0; overflow: hidden; }
+.game-stage .studio-book-room .room-background { inset: 0; height: 100%; }
+.game-stage .studio-book-room .room-background img { width: 100%; height: 100%; object-fit: fill; }
+.studio-book-layout { position: absolute; inset: 0; }
+.studio-fitting { position: absolute; left: 25%; bottom: 13%; width: 29%; transform: translateX(-50%); text-align: center; }
+.studio-fitting .studio-character { height: min(54cqh, 530px); width: auto; image-rendering: auto; }
+.studio-fitting .studio-model { display: flex; justify-content: center; }
+.game-stage .studio-fitting .doll-caption { max-width: 100%; margin: 0 auto 7px; background: #fff1df; color: #4b2738; border: 2px solid #b47b55; box-shadow: inset 0 0 0 2px #edc58b; padding: 4px 20px; font-size: clamp(18px, 1.6cqw, 25px); }
+.studio-view-tabs { display: flex; justify-content: center; gap: 5px; }
+.studio-view-tabs button { min-height: 42px; padding: 4px 16px; font: 400 clamp(18px, 1.3cqw, 23px)/1 var(--font-display); border: 2px solid #b07857; box-shadow: inset 0 0 0 1px #f3ce92; background: #fff1df; color: #4c2639; }
+.studio-view-tabs button[aria-pressed=true] { background: #a72d60; color: #fff6e6; border-color: #f4c981; }
+.studio-view-tabs .studio-view-next { min-width: 32px; padding: 2px 7px; }
+.studio-book { position: absolute; right: .6%; top: 3.4%; width: 60.4%; height: 94%; color: #492637; }
+.studio-book-art { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+.studio-book-title { position: absolute; z-index: 2; left: 32%; top: 2.7%; width: 36%; height: 6%; min-height: 0; display: grid; place-items: center; margin: 0; padding: 0; border: 0; box-shadow: none; background: transparent; color: #fff3d9; font: 400 clamp(20px, 2.15cqw, 36px)/1 var(--font-display); white-space: nowrap; }
+.studio-book-title:hover:not(:disabled) { background: transparent; color: #ffd792; }
+.studio-book .studio-book-catalog { position: absolute; inset: 0; background: none; pointer-events: none; }
+.studio-book .studio-book-catalog button { pointer-events: auto; }
+.studio-book .wardrobe-scroll, .studio-book .wardrobe-board { position: absolute; inset: 0; width: 100%; height: 100%; padding: 0; border: 0; overflow: visible; background: none; }
+.studio-book .wardrobe-tabs { position: absolute; left: 17%; top: 10.9%; width: 66%; height: 6%; display: flex; gap: 9px; }
+.studio-book .wardrobe-tabs button { height: 100%; min-height: 38px; color: #4b2637; font-size: clamp(20px, 1.6cqw, 28px); font-weight: 400; background: #fff1df; border: 2px solid #b97b53; box-shadow: inset 0 0 0 1px #f7d6a8, 0 2px #66322b; }
+.studio-book .wardrobe-tabs button[aria-selected=true] { background: #a72d60; color: #fff3de; border-color: #f1c477; }
+.studio-book .wardrobe-cards { left: 10.2%; top: 22.3%; width: 37.4%; height: 49.5%; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.studio-book .wardrobe-card { display: flex; flex-direction: column; min-height: 0; padding: 6px 6px 4px; gap: 3px; border: 1px solid #d29378; background: transparent; box-shadow: none; }
+.studio-book .wardrobe-card::before { content: ''; position: absolute; inset: 2px; pointer-events: none; border: 1px solid #eeb29b; clip-path: polygon(0 0,12% 0,12% 3%,3% 3%,3% 12%,0 12%,0 0,100% 0,100% 12%,97% 12%,97% 3%,88% 3%,88% 0,100% 0,100% 100%,88% 100%,88% 97%,97% 97%,97% 88%,100% 88%,100% 100%,0 100%,0 88%,3% 88%,3% 97%,12% 97%,12% 100%,0 100%); }
+.studio-book .wardrobe-card:hover:not([aria-disabled=true]) { background: #f8dbcb88; box-shadow: none; }
+.studio-book .wardrobe-card.is-selected { background: transparent; border: 2px solid #d19a43; box-shadow: inset 0 0 0 2px #fff4d3; }
+.studio-book .wardrobe-preview { position: relative; display: flex; align-items: center; justify-content: center; flex: 1; width: 100%; min-height: 0; }
+.studio-book .wardrobe-thumb { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+.studio-book .wardrobe-hanging { padding-top: 18px; }
+.studio-book .wardrobe-hanger { position: absolute; width: 36px; height: 18px; left: calc(50% - 18px); top: 0; color: #855238; }
+.studio-book .wardrobe-preview > img { max-width: 80%; max-height: 80%; object-fit: contain; }
+.studio-book .wardrobe-garment { position: relative; flex: none; }
+.studio-book .wardrobe-name { flex: none; display: grid; place-items: center; width: 100%; min-height: 29px; max-height: 44px; padding: 3px 2px; font: 400 clamp(15px, 1.23cqw, 21px)/1.08 var(--font-display); color: #4f2b3e; }
+.studio-book .is-selected .wardrobe-name { background: #a72d60; color: #fff4df; }
+.studio-book .wardrobe-card > small { display: none; }
+.studio-book .wardrobe-card.is-locked { background: #d8c3ad66; color: #74506e; }
+.studio-book .is-locked .wardrobe-garment, .studio-book .is-locked .wardrobe-preview > img { opacity: .3; filter: grayscale(1); }
+.studio-book .wardrobe-lock { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; background: none; color: #6d4a41; font: 400 17px var(--font-display); }
+.studio-book .wardrobe-lock svg { width: 20px; height: 24px; color: #865c33; }
+.studio-book .wardrobe-pagination { position: absolute; top: 74.4%; left: 13%; width: 31%; height: 4.5%; gap: 10px; color: #744632; font: 400 20px var(--font-display); }
+.studio-book .wardrobe-pagination button { min-width: 34px; width: 34px; height: 34px; min-height: 34px; border: 1px solid #c08b68; background: #fff4e5; box-shadow: none; font-size: 24px; }
+.studio-book .wardrobe-pagination button:disabled { color: #c4a78c; background: #f1e0cc; }
+.studio-book-detail { position: absolute; left: 55.5%; top: 19.5%; width: 35.5%; height: 53.3%; display: flex; flex-direction: column; min-height: 0; gap: 12px; }
+.studio-book-detail h2 { flex: none; margin: 0; min-height: 24px; text-align: center; font: 400 clamp(20px, 1.8cqw, 30px)/1.15 var(--font-display); color: #8e2e51; }
+.studio-selected-garment { flex: 1; min-height: 50px; width: 100%; position: relative; }
+.studio-fabric { flex: none; display: flex; flex-direction: column; gap: 7px; font: 400 clamp(18px, 1.3cqw, 23px)/1.1 var(--font-display); }
+.studio-fabric strong { font-weight: 400; }
+.studio-fabric > div { display: flex; gap: 7px; }
+.studio-fabric button { flex: 1; min-width: 0; min-height: 34px; height: clamp(34px, 3.1cqw, 48px); padding: 0; background: var(--swatch); border: 2px solid #96734f; box-shadow: inset 0 0 0 2px #fff8e955; }
+.studio-fabric button:hover:not(:disabled) { background: var(--swatch); outline: 2px solid #d6a359; }
+.studio-fabric button[aria-pressed=true] { outline: 2px solid #d79130; outline-offset: 2px; }
+.studio-book-event { flex: none; display: flex; align-items: center; gap: 10px; font: 400 clamp(18px, 1.25cqw, 22px)/1.1 var(--font-display); white-space: nowrap; }
+.studio-book-event select { flex: 1; min-width: 0; margin: 0; padding: 6px 8px; min-height: 38px; background: #fff8ed; border: 2px solid #74506e; font: inherit; }
+.studio-book-score { display: flex; align-items: center; gap: 10px; flex: none; font: 400 clamp(17px, 1.2cqw, 21px)/1 var(--font-display); }
+.studio-book-score .studio-score-bar { flex: 1; margin: 0; height: 10px; background: linear-gradient(90deg,#b48235 var(--score),#ddcbb3 var(--score)); }
+.studio-book-actions { position: absolute; left: 10%; top: 82.1%; width: 80%; height: 7%; display: grid; grid-template-columns: 15% 28% 25% 29%; justify-content: space-between; gap: 1%; align-items: stretch; }
+.studio-book-actions button { min-width: 0; min-height: 38px; padding: 2px 7px; border: 2px solid #bd875d; box-shadow: inset 0 0 0 1px #eed0a4,0 2px #472333; font: 400 clamp(17px, 1.36cqw, 24px)/1.05 var(--font-display); background: #fff1df; color: #4b2738; }
+.studio-book-actions .primary { background: #a72d60; color: #fff4df; border-color: #f4ca88; }
+.studio-history { display: flex; gap: 7px; }
+.studio-history button { flex: 1; overflow: hidden; font-size: 0; background: #703225; color: #f8d58c; border-color: #d3a566; }
+.studio-history button:first-child::after { content: '↶'; font: 28px var(--font-display); }
+.studio-history button:last-child::after { content: '↷'; font: 28px var(--font-display); }
+.studio-history button:disabled { opacity: .6; }
+.studio-book-actions .studio-ai-row { position: relative; margin: 0; display: flex; flex-direction: column; }
+.studio-book-actions .studio-ai-row button { flex: 1; width: 100%; }
+/* The dialog shows the full AI status. Keep its live announcement out of
+   the fixed action rail so a fallback message cannot cover adjacent buttons. */
+.studio-book-actions .studio-ai-row > .ai-badge {
+  position: absolute; left: 0; top: 0; width: 1px; height: 1px;
+  margin: -1px; padding: 0; border: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap; pointer-events: none;
+}
+.studio-book-challenge { position: absolute; bottom: 0; left: 10%; width: 80%; z-index: 5; }
+.studio-book-actions .nep-icon, .studio-action-icon { width: 21px; height: 21px; flex: none; }
+@media (max-width: 800px) {
+  .game-stage .studio-book-room { overflow-y: auto; }
+  .studio-book-layout { min-height: max(900px, 100%); position: relative; }
+  .studio-fitting { top: 8px; bottom: auto; left: 50%; width: 80%; height: 330px; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; }
+  .studio-fitting > * { flex: none; }
+  .studio-fitting .studio-character { height: 285px; }
+  .game-stage .studio-fitting .doll-caption { min-width: 140px; min-height: 32px; margin-top: -12px; padding-block: 2px; font-size: 20px; }
+  .studio-view-tabs button { min-height: 38px; padding-inline: 17px; font-size: 20px; }
+  .studio-book { top: 360px; right: 1%; width: 98%; height: 520px; }
+  .studio-book-title { font-size: 24px; }
+  .studio-book .wardrobe-tabs { gap: 4px; left: 10%; width: 80%; height: 7%; top: 10%; }
+  .studio-book .wardrobe-tabs button { font-size: 18px; min-height: 36px; white-space: nowrap; padding-inline: 2px; }
+  .studio-book .wardrobe-cards { left: 9%; width: 39%; height: 50%; gap: 7px; }
+  .studio-book .wardrobe-name { font-size: 14px; min-height: 32px; max-height: 32px; display: -webkit-box; -webkit-line-clamp: 2; line-clamp: 2; }
+  .studio-book-detail { left: 54%; width: 36%; gap: 8px; }
+  .studio-book-detail h2 { font-size: 17px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .studio-fabric { font-size: 17px; gap: 4px; }
+  .studio-fabric > div { gap: 4px; flex-wrap: wrap; }
+  .studio-fabric button { flex: 0 0 calc(33.33% - 3px); height: 30px; min-height: 30px; }
+  .studio-book-event { font-size: 16px; flex-direction: column; align-items: stretch; gap: 4px; }
+  .studio-book-event select { width: 100%; font-size: 16px; min-height: 32px; padding: 2px 4px; }
+  .studio-book-score { font-size: 15px; gap: 4px; }
+  .studio-book-actions { left: 8%; width: 84%; grid-template-columns: 16% 27% 22% 32%; }
+  .studio-book-actions button { font-size: 15px; padding: 1px 2px; }
+  .studio-history { gap: 3px; }
+}
+@media (max-height: 500px) and (min-width: 801px) {
+  .studio-fitting { bottom: 6%; }
+  .studio-fitting .studio-character { height: 62cqh; }
+  .studio-fitting .doll-caption { font-size: 17px; padding-block: 0; margin-bottom: 3px; }
+  .studio-view-tabs button { min-height: 32px; padding: 2px 10px; font-size: 17px; }
+  .studio-book-detail { gap: 4px; }
+  .studio-book-detail h2 { font-size: 20px; }
+  .studio-book-event select { min-height: 30px; padding: 1px 5px; }
+  .studio-fabric button { min-height: 25px; height: 25px; }
+  .studio-book .wardrobe-name { font-size: 15px; min-height: 22px; }
+  .studio-book .wardrobe-tabs button, .studio-book-actions button { min-height: 30px; font-size: 17px; }
+}

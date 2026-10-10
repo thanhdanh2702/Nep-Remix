@@ -4,6 +4,7 @@ import type { Garment } from '../content/schema';
 import type { GarmentAnalysisFallback, GarmentAnalysisSuccessResponse } from '../server/ai/analyze-garment';
 import { validateImageFile, toDownscaledDataUrl } from '../ui/image-upload';
 import { content } from './store';
+import { isHistoricalGarment } from '../content/garment-catalog';
 import { callAi, type AiResult } from './ai-client';
 import { AiStatusBadge } from './AiStatusBadge';
 import { makeDraft } from './Studio';
@@ -20,7 +21,7 @@ const darken = (hex: string) => '#' + [1, 3, 5].map(i => Math.round(parseInt(hex
 
 /** Exact garment if unlocked, else an unlocked one with the same silhouette, else the first unlocked. */
 function pickGarment(unlockedIds: string[], garmentId?: string, silhouette?: string) {
-  const owned = unlockedIds.map(id => content.garmentsById.get(id)).filter((g): g is Garment => !!g);
+  const owned = unlockedIds.filter(isHistoricalGarment).map(id => content.garmentsById.get(id)).filter((g): g is Garment => !!g);
   const exact = owned.find(g => g.id === garmentId);
   return { garment: exact ?? owned.find(g => g.silhouette === silhouette) ?? owned[0], inCloset: !!exact };
 }

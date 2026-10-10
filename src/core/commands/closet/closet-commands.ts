@@ -13,6 +13,7 @@ export interface ClosetSaveOutfitPayload {
   garmentId?: string;
   equippedAccessories?: Record<string, string | undefined>;
   colorPalette?: [string, string, string, string];
+  bottomPalette?: [string, string, string, string];
   motifId?: string;
 }
 
@@ -42,6 +43,7 @@ export const closetSaveOutfitCommand: CommandDef<ClosetSaveOutfitPayload> = {
     const equippedAccessories = payload.equippedAccessories ?? session?.equippedAccessories ?? {};
     const colorPalette = payload.colorPalette ?? session?.colorPalette ?? ['#FFF', '#FFF', '#FFF', '#000'];
     const motifId = payload.motifId ?? session?.motifId;
+    const bottomPalette = payload.bottomPalette ?? session?.bottomPalette;
 
     const newOutfit: SavedOutfit = {
       id: outfitId,
@@ -49,6 +51,7 @@ export const closetSaveOutfitCommand: CommandDef<ClosetSaveOutfitPayload> = {
       garmentId,
       equippedAccessories: { ...equippedAccessories },
       colorPalette: [...colorPalette],
+      ...(bottomPalette ? { bottomPalette: [...bottomPalette] as [string, string, string, string] } : {}),
       motifId,
       createdAt: '1970-01-01T00:00:00.000Z'
     };

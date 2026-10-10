@@ -6,6 +6,7 @@ import { content } from './store';
 import { callAi } from './ai-client';
 import { AiStatusBadge, type AiBadgeStatus } from './AiStatusBadge';
 import { Modal } from './Modal';
+import { StudioActionIcon } from './StudioActionIcon';
 import './studio-ai.css';
 
 type StylistFallback = { suggestions?: StylistOutfitSuggestion[]; message?: string };
@@ -54,7 +55,7 @@ export function StudioStylist({ state, draft, update, notify }: { state: GameSta
   };
 
   return <div className="studio-ai-row" ref={rowRef} aria-live="polite">
-    <button className="studio-ai-button" disabled={loading} aria-busy={loading} onClick={ask}>{loading ? 'Đang hỏi Gemini…' : 'Gợi ý từ Gemini'}</button>
+    <button className="studio-ai-button" aria-label="Gợi ý từ Gemini" disabled={loading} aria-busy={loading} onClick={ask}><StudioActionIcon kind="sparkle" /><span>{loading ? 'Đang hỏi…' : 'Gợi ý phối'}</span></button>
     {result && !loading && <AiStatusBadge status={result.status} offlineText={OFFLINE_TEXT} />}
     {open && result && createPortal(<Modal title="Gợi ý từ Nếp" className="studio-ai-modal" onClose={() => setOpen(false)}>
       <p className="studio-ai-note"><AiStatusBadge status={result.status} offlineText={OFFLINE_TEXT} /> {result.message}</p>

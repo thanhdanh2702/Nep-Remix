@@ -1,12 +1,11 @@
 import mainMeta from '../../assets/screens/main-shop/asset-manifest.json';
-import studioMeta from '../../assets/screens/studio/asset-manifest.json';
-import museumMeta from '../../assets/screens/museum/asset-manifest.json';
 import assetMetadata from '../../data/runtime-assets.json';
+import legacySlices from '../../data/legacy-screen-slices.json';
 
 // Vite owns these URLs in dev and production. Never import drafts or QA images.
 const files = typeof process !== 'undefined' && !process.env.VITE
   ? {}
-  : import.meta.glob<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**'], {
+  : import.meta.glob<string>(['../../assets/**/*.png', '../../map.png', '!../../assets/**/_raw/**', '!../../assets/references/**'], {
       eager: true, query: '?url', import: 'default',
     });
 /** Only metadata-backed assets may enter runtime; local art drafts stay untouched. */
@@ -23,24 +22,17 @@ export function asset(path: string): string {
   if (!url) throw new Error(`Thiếu asset: ${path}`);
   return url;
 }
-export const screenAssets = {
-  hub: 'assets/screens/main-shop/background',
-  studio: 'assets/screens/studio/workbench-ui',
-  closet: 'assets/screens/wardrobe/closet-shelf',
-  museum: 'assets/screens/museum/bookshelf-view',
-};
 export const brandingAssets = {
-  currencyHud: 'assets/screens/main-shop/currency-hud.png',
-  settingsButton: 'assets/screens/main-shop/settings-button.png',
-  areaSign: 'assets/screens/main-shop/area-sign-frame.png',
-  garden: 'assets/screens/main-shop/garden-user--landscape.png',
+  currencyHud: 'assets/screens/main-shop/ui/currency-hud.png',
+  settingsButton: 'assets/screens/main-shop/ui/settings-button.png',
+  areaSign: 'assets/screens/main-shop/ui/area-sign-frame.png',
+  garden: 'assets/screens/main-shop/backgrounds/garden-user--landscape.png',
   logo: 'assets/branding/logo-viet-phuc.png',
   coin: 'assets/ui-pixel/icon-sen-ngoc.png',
 };
 export const sliceMetadata = [
+  ...legacySlices,
   ...mainMeta.assets.map(a => ({ ...a, path: `assets/screens/main-shop/${a.file}` })),
-  ...studioMeta.assets.map(a => ({ ...a, path: `assets/screens/studio/${a.file}` })),
-  ...museumMeta.assets.map(a => ({ ...a, path: `assets/screens/museum/${a.file}` })),
 ];
 /** Folder name under assets/areas for a chapter id: `prologue` stays, `c1` -> `chapter-1`. */
 export const chapterFolder = (chapterId: string) => chapterId.replace(/^c(\d+)$/, 'chapter-$1');
@@ -76,6 +68,20 @@ export const AN = {
   layers: ['shadow', 'hair_back', 'outfit_back', 'legs', 'shoes', 'body', 'bottom', 'outfit_main', 'head', 'face', 'hair_front', 'hands', 'head_accessory'],
 };
 export type Direction = keyof typeof AN.directions;
+
+/** The same bottom design is used by the model, mirror, lookbook and picker. */
+export function studioBottomAsset(garmentId: string, direction: Direction = 'down'): {
+  path: string; kind: 'skirt' | 'trousers'; native: boolean;
+} {
+  const skirt = garmentAsset(garmentId).replace('.png', '--bottom.png');
+  if (assetRegistry[skirt]) {
+    const right = skirt.replace('--bottom.png', '--bottom-right.png');
+    return { path: direction === 'right' && assetRegistry[right] ? right : skirt, kind: 'skirt', native: false };
+  }
+  const trousers = `assets/characters/an/studio-trousers${direction === 'right' ? '--right' : ''}.png`;
+  if (assetRegistry[trousers]) return { path: trousers, kind: 'trousers', native: false };
+  return { path: 'assets/characters/an/bottom.png', kind: 'trousers', native: true };
+}
 const cache = new Map<string, Promise<HTMLImageElement>>();
 export function loadImage(path: string) {
   if (!cache.has(path)) cache.set(path, new Promise((resolve, reject) => {

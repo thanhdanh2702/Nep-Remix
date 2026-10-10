@@ -1,0 +1,147 @@
+[
+  {
+    "file": "ui-hud--3slice.png",
+    "kind": "ui-bar-3slice",
+    "width": 120,
+    "height": 40,
+    "rgbaColors": 6,
+    "alpha": "binary",
+    "slice": {
+      "left": 16,
+      "right": 16,
+      "repeat": "horizontal"
+    },
+    "path": "assets/screens/main-shop/ui-hud--3slice.png"
+  },
+  {
+    "file": "action-card-frame--9slice.png",
+    "kind": "ui-frame-9slice",
+    "width": 64,
+    "height": 64,
+    "rgbaColors": 8,
+    "alpha": "binary",
+    "slice": {
+      "top": 12,
+      "right": 12,
+      "bottom": 12,
+      "left": 12,
+      "repeat": "edges",
+      "center": "#FFF1DF"
+    },
+    "path": "assets/screens/main-shop/action-card-frame--9slice.png"
+  },
+  {
+    "file": "lookbook-modal--9slice.png",
+    "source": "_raw/lookbook-modal--9slice-v1.png",
+    "kind": "ui-frame-9slice",
+    "width": 64,
+    "height": 64,
+    "rgbaColors": 12,
+    "alpha": "binary",
+    "sha256": "b12fd64d001860dfc5926bc48a3cf4e9a24d7c04aa7839c3513e09e007bc6157",
+    "slice": {
+      "left": 16,
+      "bottom": 16,
+      "top": 16,
+      "right": 16,
+      "repeat": "edges",
+      "center": "transparent"
+    },
+    "path": "assets/screens/studio/lookbook-modal--9slice.png"
+  },
+  {
+    "file": "studio-panel-frame--9slice.png",
+    "source": "_raw/studio-panel-frame--9slice-v1.png",
+    "kind": "ui-frame-9slice",
+    "width": 48,
+    "height": 48,
+    "rgbaColors": 11,
+    "alpha": "binary",
+    "sha256": "c615e8eac964ca79ddbfc0b2759ae9fe4e6df01915633555b909093861cf9292",
+    "slice": {
+      "left": 10,
+      "bottom": 10,
+      "top": 10,
+      "right": 10,
+      "repeat": "edges",
+      "center": "transparent"
+    },
+    "path": "assets/screens/studio/studio-panel-frame--9slice.png"
+  },
+  {
+    "file": "color-palette-bar--3slice.png",
+    "source": "_raw/color-palette-bar--3slice-v1.png",
+    "kind": "ui-bar-3slice",
+    "width": 120,
+    "height": 48,
+    "rgbaColors": 14,
+    "alpha": "binary",
+    "sha256": "e924673211fca1e1babe3dc61eaee2a4e42927dfd45c2ba15e69b198d544203f",
+    "slice": {
+      "left": 16,
+      "bottom": 0,
+      "top": 0,
+      "right": 16,
+      "repeat": "horizontal",
+      "center": "cream inset"
+    },
+    "path": "assets/screens/studio/color-palette-bar--3slice.png"
+  },
+  {
+    "file": "event-selector-strip--3slice.png",
+    "source": "_raw/event-selector-strip--3slice-v1.png",
+    "kind": "ui-bar-3slice",
+    "width": 120,
+    "height": 40,
+    "rgbaColors": 14,
+    "alpha": "binary",
+    "sha256": "ab33cf913b0ad71e712cce3edaae5bb37f3efb07f105f0bace05653584c547f2",
+    "slice": {
+      "left": 14,
+      "bottom": 0,
+      "top": 0,
+      "right": 14,
+      "repeat": "horizontal",
+      "center": "cream inset"
+    },
+    "path": "assets/screens/studio/event-selector-strip--3slice.png"
+  },
+  {
+    "file": "card-modal--9slice.png",
+    "source": "_raw/card-modal--9slice-v1.png",
+    "kind": "ui-frame-9slice",
+    "width": 64,
+    "height": 64,
+    "rgbaColors": 12,
+    "alpha": "binary",
+    "sha256": "6a250b2410568158490e9c94cf4299eb4f5956e8418ced6f89c35c664da35ff3",
+    "slice": {
+      "left": 16,
+      "bottom": 16,
+      "top": 16,
+      "right": 16,
+      "repeat": "edges",
+      "center": "transparent; UI supplies do-paper fill"
+    },
+    "path": "assets/screens/museum/card-modal--9slice.png"
+  },
+  {
+    "file": "museum-filter-bar--3slice.png",
+    "source": "_raw/museum-filter-bar--3slice-v1.png",
+    "kind": "ui-bar-3slice",
+    "width": 120,
+    "height": 40,
+    "rgbaColors": 10,
+    "alpha": "binary",
+    "sha256": "f3f322dec33562dbc84fdeac73185a2094d998d2c138155eb349a2da35abd5fe",
+    "slice": {
+      "left": 14,
+      "bottom": 0,
+      "top": 0,
+      "right": 14,
+      "repeat": "horizontal",
+      "center": "cream inset"
+    },
+    "path": "assets/screens/museum/museum-filter-bar--3slice.png"
+  }
+]

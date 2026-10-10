@@ -10,5 +10,6 @@ playwright-report/
 .env*
 !.env.example
 server.mjs
-.claude/
 plans/
+__pycache__/
+*.pyc

@@ -20,13 +20,13 @@ export function LookbookModelPicker({ inputs, gender, gate }: { inputs: Lookbook
   const fileRef = useRef<HTMLInputElement>(null);
   const { mode, person } = inputs;
   return <section className="lookbook-section" aria-labelledby="lookbook-model-h">
-    <h3 id="lookbook-model-h">{COPY.modelHeading}</h3>
+    <h3 id="lookbook-model-h">Nguồn ảnh</h3>
     <div className="lookbook-toggle-row" role="group" aria-label={COPY.modeGroupLabel}>
-      <button type="button" aria-pressed={mode === 'fictional'} onClick={() => inputs.setMode('fictional')}>{COPY.modeShop}</button>
+      <button type="button" aria-label={COPY.modeShop} aria-pressed={mode === 'fictional'} onClick={() => inputs.setMode('fictional')}>❀ Mẫu của tiệm</button>
       <button type="button" aria-pressed={mode === 'personal'} onClick={() => inputs.setMode('personal')}>{COPY.modeMine}</button>
     </div>
     {mode === 'fictional'
-      ? <p className="lookbook-note">{COPY.shopNote(gender)}</p>
+      ? <p className="lookbook-note lookbook-model-note">Người mẫu hư cấu · dáng {gender === 'male' ? 'nam' : 'nữ'}</p>
       : <div className="lookbook-person">
         <div className="lookbook-thumb is-portrait">
           {isDataImage(person) ? <img src={person} alt="Ảnh của bạn" /> : <span>{COPY.noPhoto}</span>}

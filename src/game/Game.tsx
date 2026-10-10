@@ -1,8 +1,11 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import './game.css';
 import './fullscreen.css';
 import './hub.css';
 import './stage-embed.css';
+import './room-navigation.css';
+import settingsRosette from '../../assets/ui-vietnamese/settings-rosette.svg';
 import { type Command, type GameState, type StudioDraft } from '../core';
 import { content, execute, freshTree, restoreGame, saveGame } from './store';
 import { isChapterPlayable } from './chapter-availability';
@@ -37,9 +40,10 @@ function Coins({ value }: { value: number }) {
 }
 type Panel = 'journal' | 'settings' | 'restart' | 'ending' | null;
 const screenNames:Record<Screen,string>={hub:'Sân nhà',studio:'Phòng phối đồ',closet:'Tủ đồ',museum:'Bảo tàng',journey:'Cốt truyện'};
-export default function Game({ embedded = false, paused = false, navigationRequest, onBlockedChange, pendingAvatarPreset, onAvatarApplied }: {
+export default function Game({ embedded = false, paused = false, headerSlot, navigationRequest, onBlockedChange, pendingAvatarPreset, onAvatarApplied }: {
   embedded?: boolean;
   paused?: boolean;
+  headerSlot?: HTMLElement | null;
   navigationRequest?: { screen: Destination; id: number } | null;
   onBlockedChange?: (blocked: boolean) => void;
   pendingAvatarPreset?: string | null;
@@ -59,6 +63,7 @@ export default function Game({ embedded = false, paused = false, navigationReque
   const inRoom=screen==='journey' && !showingMap;
   const [panel,setPanel]=useState<Panel>(null);
   const [museumReading,setMuseumReading]=useState(false);
+  const [closetDialog,setClosetDialog]=useState(false);
   const [puzzleId,setPuzzleId]=useState<string|null>(()=>state.activeSession?.type==='puzzle' ? state.activeSession.puzzleId : null);
   const [selectedItem,setSelectedItem]=useState(''); // item preselected when the bag opens from the inventory strip
   const [toast,setToast]=useState(restored.status==='restored' ? '' : restored.notice);
@@ -75,7 +80,7 @@ export default function Game({ embedded = false, paused = false, navigationReque
   const puzzle=chapter.puzzles.find(p=>p.id===puzzleId && p.type!=='styling');
   const sessionId=state.activeSession?.type==='puzzle'?state.activeSession.puzzleId:'';
   const challenge=inRoom?chapter.puzzles.find(p=>p.id===sessionId && p.type==='styling'):undefined; // styling puzzle = Studio session kept in the save, so a reload resumes it
-  const internalBlocked=Boolean(panel || puzzle || challenge || progress.activeDialogue || museumReading || mapChapter);
+  const internalBlocked=Boolean(panel || puzzle || challenge || progress.activeDialogue || museumReading || closetDialog || mapChapter);
   const blocked=paused || internalBlocked;
   useEffect(()=>{onBlockedChange?.(internalBlocked);},[internalBlocked,onBlockedChange]);
   // Avatar suggested from the welcome selfie flow: applied once, then the parent clears it. Read the live tree
@@ -162,11 +167,17 @@ export default function Game({ embedded = false, paused = false, navigationReque
   // After a screen swap the old focus target is gone; keep keyboard users in the new screen.
   useEffect(()=>{if(document.activeElement===document.body)heading.current?.focus({preventScroll:true});},[screen,journeyView]);
   const visit=()=>{setIntro(false);try{localStorage.setItem('tiem-may-nep-visited','yes');}catch{/* Progress remains available in memory. */}};
+  const headerNavigation = screen !== 'hub' && Boolean(headerSlot);
+  const roomNavigation = <nav className="main-nav room-navigation" aria-label="Các khu vực">
+    <button className="back-home" disabled={blocked} onClick={()=>navigate('hub')}>‹ Về sân nhà</button>
+    {(['studio','closet','museum','journey'] as Screen[]).map(id=><button key={id} aria-current={screen===id?'page':undefined} disabled={blocked} onClick={()=>navigate(id)}>{screenNames[id]}</button>)}
+    <button className="room-settings" disabled={blocked} onClick={()=>setPanel('settings')} title={`${state.wallet.senNgoc.toLocaleString('vi-VN')} Sen Ngọc`}><img src={settingsRosette} alt=""/><span>Cài đặt</span></button>
+  </nav>;
 
-  return <div className={`app-shell screen-${screen}${showingMap?' screen-journey-map':''}${inRoom?' in-room':''}`}>
+  return <div className={`app-shell screen-${screen}${showingMap?' screen-journey-map':''}${inRoom?' in-room':''}`} data-header-navigation={headerNavigation || undefined}>
     <header className="site-header">
       <button className="brand" aria-label="Tiệm May Nếp · Về sân nhà" onClick={()=>navigate('hub')} disabled={blocked}><img src={asset(brandingAssets.logo)} alt="Việt Phục"/><span>TIỆM MAY NẾP</span></button>
-      <Slice path="assets/screens/main-shop/ui-hud--3slice.png" className="tagline">Một tà áo. Muôn câu chuyện.</Slice>
+      <Slice path="assets/screens/main-shop/ui/ui-hud--3slice.png" className="tagline">Một tà áo. Muôn câu chuyện.</Slice>
       <div className="header-actions">
         <PlayerPortrait className="hud-portrait"/>
         {screen==='hub' ? <>
@@ -178,22 +189,24 @@ export default function Game({ embedded = false, paused = false, navigationReque
             <img src={asset(brandingAssets.settingsButton)} alt=""/>
           </button>
         </> : <>
-          <Slice path="assets/screens/main-shop/ui-hud--3slice.png" fillCenter={false} className="hud"><img src={asset(brandingAssets.coin)} alt=""/><strong aria-label={`${state.wallet.senNgoc} Sen Ngọc`}><Coins value={state.wallet.senNgoc}/> <span className="hud-unit">Sen Ngọc</span></strong></Slice>
-          <button className="settings-button hud-ic hud-ic-settings" disabled={blocked} onClick={()=>setPanel('settings')}>Cài đặt</button>
+          <Slice path="assets/screens/main-shop/ui/ui-hud--3slice.png" fillCenter={false} className="hud"><img src={asset(brandingAssets.coin)} alt=""/><strong aria-label={`${state.wallet.senNgoc} Sen Ngọc`}><Coins value={state.wallet.senNgoc}/> <span className="hud-unit">Sen Ngọc</span></strong></Slice>
+          {!headerNavigation && <button className="settings-button hud-ic hud-ic-settings" disabled={blocked} onClick={()=>setPanel('settings')}>Cài đặt</button>}
         </>}
       </div>
     </header>
-    {screen!=='hub' && <button className="back-home" disabled={blocked} onClick={()=>navigate('hub')}>‹ Về sân nhà</button>}
-    {(screen!=='hub'||portrait) && !inRoom && <nav className="main-nav" aria-label="Các khu vực">{(['studio','closet','museum','journey'] as Screen[]).map(id=>screen==='hub'?<AreaSign key={id} disabled={blocked} onClick={()=>navigate(id)}>{screenNames[id]}</AreaSign>:<button key={id} aria-current={screen===id?'page':undefined} disabled={blocked} onClick={()=>navigate(id)}>{screenNames[id]}</button>)}</nav>}
+    {headerNavigation && headerSlot ? createPortal(roomNavigation, headerSlot) : <>
+      {screen!=='hub' && <button className="back-home" disabled={blocked} onClick={()=>navigate('hub')}>‹ Về sân nhà</button>}
+      {(screen!=='hub'||portrait) && !inRoom && <nav className="main-nav" aria-label="Các khu vực">{(['studio','closet','museum','journey'] as Screen[]).map(id=>screen==='hub'?<AreaSign key={id} disabled={blocked} onClick={()=>navigate(id)}>{screenNames[id]}</AreaSign>:<button key={id} aria-current={screen===id?'page':undefined} disabled={blocked} onClick={()=>navigate(id)}>{screenNames[id]}</button>)}</nav>}
+    </>}
     <main>
       <ErrorBoundary resetKey={`${screen}-${journeyView}`} onReset={()=>{setPanel(null);setScreen('hub');}}>
       <h1 ref={heading} tabIndex={-1} className="screen-reader-only">{screenNames[screen]}</h1>
       {screen==='hub' && <div className="play-area"><Scene key={screen} state={state} hub portrait={portrait} blocked={blocked} onInteract={interact} onNavigate={navigate}/></div>}
       {inRoom && !challenge && <div className="play-area"><RoomScene state={state} blocked={blocked} onInteract={interact} onExit={exitArea}/></div>}
       {inRoom && challenge && <Studio state={state} send={send} notify={setToast} challenge={draft=><StyleChallengeBar puzzle={challenge} draft={draft} hintTier={progress.hintTiers[challenge.id]??0} feedback={feedback} onSubmit={answer=>submitPuzzle(challenge,answer)} onHint={()=>hint(challenge)} onCancel={()=>{setFeedback('');send({type:'puzzle/close',payload:{}});}}/>}/>}
-      {showingMap && <JourneyMap state={state} paused={blocked} onSelect={selectChapter} onHome={()=>navigate('hub')}/>}
+      {showingMap && <JourneyMap state={state} paused={blocked} onSelect={selectChapter} onHome={headerNavigation ? undefined : ()=>navigate('hub')}/>}
       {screen==='studio' && <Studio state={state} send={send} notify={setToast} initial={studioDraft}/>}
-      {screen==='closet' && <Closet state={state} send={send} onStudio={draft=>{setStudioDraft(draft);setScreen('studio');}}/>}
+      {screen==='closet' && <Closet state={state} send={send} onDialogChange={setClosetDialog} onStudio={draft=>{setStudioDraft(draft);setScreen('studio');}}/>}
       {screen==='museum' && <Museum state={state} send={send} onReadingChange={setMuseumReading}/>}
       {screen==='hub' && intro && <div className="hub-cards"><Slice path={CARD_FRAME} className="welcome-card"><img className="welcome-avatar" src={asset('assets/paperdoll/avatar-female-default.png')} alt="An"/><div><h2>Bắt đầu câu chuyện của bạn</h2><p>Đi cùng An qua những nếp áo và ký ức gia đình.</p><div className="actions"><button className="primary" onClick={()=>setPanel('settings')}>Chọn diện mạo</button><button onClick={visit}>Dạo quanh sân nhà</button></div></div></Slice></div>}
       {screen==='journey' && !showingMap && !challenge && <div className="journey-hud"><div className="journey-toolbar"><button className="hud-ic hud-ic-bag" disabled={blocked} onClick={()=>setPanel('journal')}>Túi đồ & Sổ manh mối</button><button className="hud-ic hud-ic-map" disabled={blocked} onClick={openMap}>Bản đồ chương</button><span>{progress.solvedPuzzleIds.length}/{chapter.puzzles.length} câu đố đã giải</span></div><div className="inventory-strip" aria-label="Túi đồ">{state.inventory.itemIds.map(id=>{const path=itemAsset(id);return <button key={id} disabled={blocked} onClick={()=>{setSelectedItem(id);setPanel('journal');}} title={content.itemsById.get(id)?.description}>{path&&<img src={asset(path)} alt=""/>}<span>{content.itemsById.get(id)?.name}</span></button>;})}</div></div>}

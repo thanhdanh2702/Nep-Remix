@@ -1,0 +1,73 @@
+/* Room controls are portalled into the cream App header, above the painted scene. */
+.nep-game-navigation:empty { display: none; }
+.nep-header:has(.room-navigation) { gap: 12px; padding-inline: 16px; }
+.nep-game-navigation { flex: 1; min-width: 0; display: flex; justify-content: flex-end; }
+.nep-header .room-navigation {
+  position: static; inset: auto; max-width: 100%; min-width: 0; margin: 0; padding: 2px;
+  display: flex; align-items: center; justify-content: safe flex-end; flex-wrap: nowrap; gap: 8px;
+  overflow-x: auto; overflow-y: hidden; scrollbar-width: none; border: 0;
+}
+.nep-header .room-navigation::-webkit-scrollbar { display: none; }
+.nep-header .room-navigation button {
+  position: relative; inset: auto; flex: 0 0 auto; display: flex; align-items: center; justify-content: center;
+  gap: 7px; min-height: 44px; height: 44px; padding: 0 9px; white-space: nowrap;
+  border: 12px solid transparent; border-image: url('../../assets/ui-vietnamese/navigation-frame.svg') 22 / 12px stretch;
+  background: linear-gradient(110deg, #fff8ed, #f6e8d4); color: #492536; background-clip: padding-box;
+  font: 400 22px/1 var(--font-display); box-shadow: 0 1px 0 #65344866;
+}
+.nep-header .room-navigation button:hover:not(:disabled) { background: #f5dacd; }
+.nep-header .room-navigation button[aria-current="page"] {
+  background: #382032; color: #f2cb78;
+  border-image-source: url('../../assets/ui-vietnamese/navigation-frame-active.svg');
+}
+.nep-header .room-navigation button:focus-visible { outline: 2px solid var(--c-crimson); outline-offset: -2px; }
+.nep-header .room-navigation button:disabled { opacity: .55; cursor: not-allowed; box-shadow: none; }
+.nep-header .room-settings img { width: 28px; height: 28px; max-width: none; margin-block: -5px; }
+
+/* Keep information and the welcome route available through the existing menu. */
+.nep-header:has(.room-navigation) .nep-menu-toggle {
+  display: flex; flex: 0 0 44px; min-width: 44px; align-items: center; justify-content: center;
+  padding: 4px; border: 0; box-shadow: none; background: transparent; order: 3;
+}
+.nep-header:has(.room-navigation) .nep-header-nav { display: none; }
+.nep-header:has(.room-navigation) .nep-header-nav.is-open {
+  display: flex; position: absolute; top: 100%; right: 0; width: 240px;
+  padding: 12px 20px; flex-direction: column; align-items: stretch; gap: 4px;
+  background: var(--c-light-cream); border: 2px solid var(--c-muted-plum); border-top: 0;
+  box-shadow: 0 4px var(--c-deep-plum);
+}
+.nep-header:has(.room-navigation) .nep-header-nav button { text-align: left; }
+
+/* The old HUD now exposes currency to assistive technology; controls live in the header. */
+.game-stage [data-header-navigation] > .site-header {
+  width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden;
+  clip-path: inset(50%); pointer-events: none;
+}
+.game-stage:has([data-header-navigation]) { --header-h: 12px; }
+@media (min-width: 641px) {
+  .game-stage:has([data-header-navigation]) .closet-room { --closet-top: 8px; }
+}
+
+@media (min-width: 801px) {
+  .nep-app:has(.room-navigation) { grid-template-rows: 52px minmax(0, 1fr); }
+}
+@media (min-width: 801px) and (max-width: 1200px) {
+  .nep-header:has(.room-navigation) .nep-wordmark { gap: 6px; font-size: 24px; }
+  .nep-header .room-navigation { gap: 5px; }
+  .nep-header .room-navigation button { font-size: 20px; padding-inline: 5px; }
+}
+@media (min-width: 801px) and (max-width: 1000px) {
+  .nep-header:has(.room-navigation) .nep-wordmark span { display: none; }
+}
+@media (max-width: 800px) {
+  .nep-app:has(.room-navigation) { grid-template-rows: 104px minmax(0, 1fr); }
+  .nep-header:has(.room-navigation) {
+    display: grid; grid-template-columns: minmax(0, 1fr) 44px; grid-template-rows: 48px 50px;
+    align-content: center; padding-inline: 8px; gap: 0 8px;
+  }
+  .nep-header:has(.room-navigation) .nep-wordmark { grid-column: 1; grid-row: 1; width: max-content; }
+  .nep-header:has(.room-navigation) .nep-menu-toggle { grid-column: 2; grid-row: 1; }
+  .nep-game-navigation { grid-column: 1 / -1; grid-row: 2; width: 100%; }
+  .nep-header .room-navigation { width: 100%; justify-content: flex-start; gap: 6px; }
+  .nep-header .room-navigation button { font-size: 20px; padding-inline: 7px; }
+}

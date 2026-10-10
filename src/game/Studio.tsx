@@ -18,15 +18,17 @@ import {
 } from '../core';
 import type { Garment } from '../content/schema';
 import { content } from './store';
+import { isHistoricalGarment } from '../content/garment-catalog';
 import { asset } from './assets';
 import { Modal } from './Modal';
-import { MannequinStage } from './MannequinStage';
+import { StudioBook } from './StudioBook';
 import { pop } from '../ui/motion';
-import { StudioCharacter, studioViews } from './StudioCharacter';
-import { StudioWardrobe, type WardrobeTab } from './StudioWardrobe';
-import { StudioStylist } from './StudioStylist';
+import { StudioCharacter } from './StudioCharacter';
+import { type WardrobeTab } from './StudioWardrobe';
 import { StudioLookbookAi } from './StudioLookbookAi';
 import './studio.css';
+import './studio-book.css';
+import './studio-reference.css';
 
 export const events = [
   { id: 'dao_pho', name: 'Dạo phố' },
@@ -38,7 +40,7 @@ export const events = [
 ];
 
 const palettes: { name: string; colors: [string, string, string, string] }[] = [
-  { name: 'Củ nâu', colors: ['#C4A482', '#6B4423', '#50321A', '#2C1608'] },
+  { name: 'Củ nâu', colors: ['#C4A482', '#8B5A2B', '#5C3A21', '#2C1608'] },
   { name: 'Chàm', colors: ['#637687', '#2D3E50', '#1E2A38', '#101720'] },
   { name: 'Đỏ son', colors: ['#E7A08E', '#B83A24', '#8B261E', '#3A1916'] },
   { name: 'Hoàng yến', colors: ['#F3DF9F', '#CFA449', '#907030', '#382B02'] },
@@ -102,10 +104,10 @@ export function Studio({
         return createScopedSession(opened.draft, 'studio');
       }
       notify(opened.reason);
-      const fallback = initial ?? makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds[0])!);
+      const fallback = initial && isHistoricalGarment(initial.garmentId) ? initial : makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds.find(isHistoricalGarment) ?? content.garments[0].id)!);
       return createScopedSession(fallback, 'studio');
     }
-    const fallback = initial ?? makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds[0])!);
+    const fallback = initial && isHistoricalGarment(initial.garmentId) ? initial : makeDraft(content.garmentsById.get(state.closet.unlockedGarmentIds.find(isHistoricalGarment) ?? content.garments[0].id)!);
     return createScopedSession(fallback, 'studio');
   });
 
@@ -118,9 +120,7 @@ export function Studio({
   const [lookbookModalOpen, setLookbookModalOpen] = useState(false);
   const saveRef = useRef<HTMLButtonElement>(null);
   const lookbookOpenRef = useRef<HTMLButtonElement>(null);
-  const view = studioViews[viewIndex];
   const preset = state.profile?.avatarPreset ?? 'an-default';
-  const turn = (step: number) => setViewIndex(index => (index + step + studioViews.length) % studioViews.length);
   const draft = session.current;
 
   const challengeWardrobe = useMemo(() => {
@@ -191,22 +191,6 @@ export function Studio({
         },
       },
     });
-
-  const wardrobe = (className: string) => (
-    <StudioWardrobe
-      className={className}
-      state={state}
-      draft={draft}
-      tab={tab}
-      onTab={setTab}
-      palettes={palettes}
-      onGarment={selectGarment}
-      onColor={palette => update({ type: 'studio/setColor', payload: { colorPalette: palette.colors } })}
-      onAccessory={accessoryId => update({ type: 'studio/equip', payload: { accessoryId } })}
-      loanGarmentIds={loanGarmentIds}
-      loanAccessoryIds={loanAccessoryIds}
-    />
-  );
 
   const save = () => {
     const hasBorrowedGarment =
@@ -293,23 +277,22 @@ export function Studio({
   };
 
   const undo = (
-    <button disabled={!session.history.length} onClick={handleUndo}>
+    <button aria-label="Hoàn tác" disabled={!session.history.length} onClick={handleUndo}>
       Hoàn tác
     </button>
   );
   const redo = (
-    <button disabled={!session.future.length} onClick={handleRedo}>
+    <button aria-label="Làm lại" disabled={!session.future.length} onClick={handleRedo}>
       Làm lại
     </button>
   );
-  const garmentName = content.garmentsById.get(draft.garmentId)?.name;
 
   return (
-    <div className="room studio-room">
+    <div className="room studio-room studio-book-room" style={{ '--studio-tray-art': `url("${asset('assets/screens/studio/styling-tray--9slice-v2.png')}")` } as CSSProperties}>
       <picture className="room-background">
         <img
           className="art-hires"
-          src={asset('assets/screens/studio/vietnamese-room--landscape.png')}
+          src={asset('assets/screens/studio/studio-c-backplate.png')}
           alt="Phòng may gỗ Việt với lụa hồng, gốm men lam và thảm hoa sen"
         />
       </picture>
@@ -318,105 +301,20 @@ export function Studio({
           {challengeWardrobe.reason}
         </div>
       )}
-      <MannequinStage room="studio">
-        <div className="studio-model">
-          <StudioCharacter draft={draft} direction={view.direction} preset={preset} />
-          {sparkle > 0 && <span key={sparkle} className="studio-sparkle" aria-hidden="true" />}
-          <div className="studio-turn-controls" role="group" aria-label="Xoay nhân vật">
-            <button onClick={() => turn(-1)} aria-label="Xoay nhân vật sang trái">
-              ‹
-            </button>
-            <span aria-live="polite">{view.label}</span>
-            <button onClick={() => turn(1)} aria-label="Xoay nhân vật sang phải">
-              ›
-            </button>
-          </div>
-        </div>
-        <p className="doll-caption" title={garmentName}>
-          {garmentName}
-        </p>
-        <div
-          className={`studio-session ${optionsOpen ? 'is-covered' : ''}`}
-          role="group"
-          aria-label="Độ hài hòa và lịch sử phối"
-        >
-          <div
-            className="studio-score"
-            role="meter"
-            aria-label="Độ hài hòa"
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-valuenow={evaluation.score}
-          >
-            <span>
-              <span>Độ hài hòa</span>
-              <span>{evaluation.score}/100</span>
-            </span>
-            <span className="studio-score-bar" style={{ '--score': `${evaluation.score}%` } as CSSProperties} />
-          </div>
-          {undo}
-          {redo}
-        </div>
-        <div className="studio-an-controls-row" role="group" aria-label="Gợi ý và chụp Lookbook">
-          <StudioStylist state={state} draft={draft} update={update} notify={notify} />
-          <button ref={lookbookOpenRef} className="studio-ai-button studio-lookbook-open-btn" onClick={() => setLookbookModalOpen(true)}>
-            Chụp Lookbook AI
-          </button>
-          <button className="studio-ai-button studio-reset-btn" onClick={handleReset}>
-            Đặt lại
-          </button>
-        </div>
-      </MannequinStage>
-      {challenge?.(draft)}
-      <section className="studio-lookbook" aria-label="Lookbook của bạn">
-        <h2 className="studio-lookbook-heading">Lookbook của bạn</h2>
-        <StudioLookbookAi
-          draft={draft}
-          gender={state.profile?.gender ?? 'female'}
-          eventId={draft.eventContextId ?? 'dao_pho'}
-          eventName={events.find(e => e.id === draft.eventContextId)?.name ?? events[0].name}
-          open={lookbookModalOpen}
-          onClose={() => setLookbookModalOpen(false)}
-          openerRef={lookbookOpenRef}
-          onSave={save}
-          garmentIds={[...new Set([...state.closet.unlockedGarmentIds, ...loanGarmentIds])]}
-          onGarment={id => { const garment = content.garmentsById.get(id); if (garment) selectGarment(garment); }}
-          actions={
-            <>
-              <button onClick={() => setOptionsOpen(true)}>Tùy chỉnh bộ phối</button>
-              <button ref={saveRef} className="primary" onClick={save}>
-                Lưu bộ phối
-              </button>
-            </>
-          }
-        >
-          {(
-            [
-              { id: 'front', direction: 'down', label: 'Chính diện' },
-              { id: 'side', direction: 'left', label: 'Góc nghiêng' },
-              { id: 'back', direction: 'up', label: 'Sau lưng' },
-              { id: 'closeup', direction: 'down', label: 'Cận cảnh' },
-            ] as const
-          ).map(portrait => (
-            <figure
-              key={portrait.id}
-              className={`studio-lookbook-card ${portrait.id === 'closeup' ? 'studio-lookbook-closeup' : ''}`}
-            >
-              <div className="studio-lookbook-portrait">
-                <StudioCharacter
-                  id={`lookbook-${portrait.id}`}
-                  draft={draft}
-                  direction={portrait.direction}
-                  label={portrait.label}
-                  preset={preset}
-                />
-              </div>
-              <figcaption>{portrait.label}</figcaption>
-            </figure>
-          ))}
-        </StudioLookbookAi>
-      </section>
-      {wardrobe('studio-wardrobe-dock')}
+      <StudioBook state={state} draft={draft} tab={tab} onTab={setTab} palettes={palettes}
+        onGarment={selectGarment} onColor={palette => update({ type: 'studio/setColor', payload: { colorPalette: palette.colors } })}
+        onAccessory={accessoryId => update({ type: 'studio/equip', payload: { accessoryId } })}
+        onEvent={eventId => update({ type: 'studio/selectEvent', payload: { eventId } })} events={events}
+        loanGarmentIds={loanGarmentIds} loanAccessoryIds={loanAccessoryIds} preset={preset} viewIndex={viewIndex}
+        onView={setViewIndex} sparkle={sparkle} score={evaluation.score} undo={undo} redo={redo}
+        onSave={save} onOptions={() => setOptionsOpen(true)} onLookbook={() => setLookbookModalOpen(true)}
+        saveRef={saveRef} lookbookRef={lookbookOpenRef} inert={lookbookModalOpen || optionsOpen}
+        update={update} notify={notify} challenge={challenge?.(draft)} />
+      <StudioLookbookAi draft={draft} gender={state.profile?.gender ?? 'female'} playerName={state.profile?.name ?? 'An'}
+        eventId={draft.eventContextId ?? 'dao_pho'} eventName={events.find(e => e.id === draft.eventContextId)?.name ?? events[0].name}
+        open={lookbookModalOpen} onClose={() => setLookbookModalOpen(false)} openerRef={lookbookOpenRef} onSave={save}
+        garmentIds={[...new Set([...state.closet.unlockedGarmentIds, ...loanGarmentIds])]}
+        onGarment={id => { const garment = content.garmentsById.get(id); if (garment) selectGarment(garment); }} />
       {optionsOpen && (
         <Modal title="Tùy chỉnh bộ phối" className="studio-options" onClose={() => setOptionsOpen(false)}>
           <label className="outfit-name">
@@ -479,7 +377,7 @@ export function Studio({
                 <p key={i}>{f.message}</p>
               ))}
           </div>
-          <p className="fine-print">Bốn ô Lookbook tự cập nhật theo bộ đồ đang phối.</p>
+          <p className="fine-print">Lookbook dùng bộ đồ đang phối. Mở sổ ảnh trên bàn để xem bốn góc chụp.</p>
         </Modal>
       )}
     </div>

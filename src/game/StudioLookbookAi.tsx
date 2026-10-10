@@ -1,11 +1,9 @@
-import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useEffect, useRef, useState, type RefObject } from 'react';
 import type { StudioDraft } from '../core';
-import { LOOKBOOK_ANGLE_IDS, LOOKBOOK_EVENT_IDS, type LookbookAngleId } from '../server/ai/lookbook-contract.ts';
+import { LOOKBOOK_EVENT_IDS, type LookbookAngleId } from '../server/ai/lookbook-contract.ts';
 import { content } from './store';
-import { asset } from './assets';
-import { AiStatusBadge } from './AiStatusBadge';
 import { useLookbookSession, type LookbookCaptureInput } from './lookbook-session';
-import { selectBadge, selectBusy, selectDoneCount, selectExhausted } from './lookbook-state';
+import { selectBusy } from './lookbook-state';
 import { useLookbookInputs, type PhotoGate } from './use-lookbook-dialog';
 import { LookbookDialog } from './LookbookDialog';
 import { LookbookLightbox } from './LookbookLightbox';
@@ -13,6 +11,7 @@ import { angleLabel } from './LookbookSlotGrid';
 import { COPY } from './lookbook-copy';
 import './studio-ai.css';
 import './lookbook.css';
+import './lookbook-album.css';
 
 export interface StudioLookbookAiProps {
   draft: StudioDraft;
@@ -26,17 +25,23 @@ export interface StudioLookbookAiProps {
   /** Garments the player may wear now (unlocked or lent by a challenge), in wardrobe order. */
   garmentIds: string[];
   onGarment: (id: string) => void;
-  children: ReactNode;
-  actions: ReactNode;
+  playerName: string;
 }
 
-/** Side panel (4 pixel portraits, or the AI photos once shot) + the Lookbook dialog/lightbox (portalled to body). */
-export function StudioLookbookAi({ draft, gender, eventId, eventName, open, onClose, openerRef, onSave, garmentIds, onGarment, children, actions }: StudioLookbookAiProps) {
+/** The LB1 album opens on demand; the same AI session still owns all four angles. */
+export function StudioLookbookAi({ draft, gender, eventId, eventName, open, onClose, openerRef, onSave, garmentIds, onGarment, playerName }: StudioLookbookAiProps) {
   const { state, capture, retry, cancel, checkPhoto } = useLookbookSession();
-  const inputs = useLookbookInputs(checkPhoto, () => { if (selectBusy(state) || state.check) cancel(); });
+  const inputs = useLookbookInputs(checkPhoto, cancel);
   const [enlarged, setEnlarged] = useState<LookbookAngleId | null>(null);
-  const [showPixel, setShowPixel] = useState(false);
   const capturing = useRef(false); // double-click guard: one stream at a time
+  useEffect(() => {
+    if (!open) return;
+    const header = document.querySelector<HTMLElement>('.nep-header');
+    if (!header) return;
+    const wasInert = header.inert;
+    header.inert = true;
+    return () => { header.inert = wasInert; };
+  }, [open]);
   const garment = content.garmentsById.get(draft.garmentId);
   const garmentName = garment?.name ?? 'Áo truyền thống';
   const eventKey = LOOKBOOK_EVENT_IDS.find(id => id === eventId) ?? 'dao_pho';
@@ -55,14 +60,13 @@ export function StudioLookbookAi({ draft, gender, eventId, eventName, open, onCl
     ...(noCache ? { noCache: true } : {})
   });
 
-  // A different outfit or event makes the shots stale: cancel and show the live pixel panel again.
+  // A different outfit or event invalidates the old shots.
   const outfitKey = JSON.stringify([draft.garmentId, draft.colorPalette, accessoryIds, eventKey]);
   const lastOutfit = useRef(outfitKey);
   useEffect(() => {
     if (lastOutfit.current === outfitKey) return;
     lastOutfit.current = outfitKey;
     cancel();
-    setShowPixel(false);
   }, [outfitKey, cancel]);
 
   const gate: PhotoGate = inputs.mode === 'personal' && state.check?.verdict === 'block' ? { status: 'block', check: state.check } : inputs.gate;
@@ -73,54 +77,23 @@ export function StudioLookbookAi({ draft, gender, eventId, eventName, open, onCl
   const startCapture = async () => {
     if (capturing.current || disabledReason !== undefined) return;
     capturing.current = true;
-    setShowPixel(false);
     try { await capture(buildInput(state.phase === 'finished')); } finally { capturing.current = false; }
   };
-  const retryAngle = (id: LookbookAngleId) => { setShowPixel(false); void retry(id, buildInput(false)); };
+  const retryAngle = (id: LookbookAngleId) => { void retry(id, buildInput(false)); };
   const close = () => {
     if (selectBusy(state)) cancel();
     setEnlarged(null);
     onClose();
-    openerRef.current?.focus();
+    requestAnimationFrame(() => openerRef.current?.focus());
   };
-  const save = () => { onSave(); setEnlarged(null); onClose(); openerRef.current?.focus(); };
+  const save = () => { onSave(); setEnlarged(null); onClose(); requestAnimationFrame(() => openerRef.current?.focus()); };
 
-  const done = selectDoneCount(state);
-  const showAi = done > 0 && !showPixel;
-  const busy = selectBusy(state);
   const enlargedImage = enlarged ? state.slots[enlarged].image : undefined;
 
   return <>
-    <div className="studio-lookbook-board">
-      <div className="studio-lookbook-art" aria-hidden="true">
-        <img className="art-hires" src={asset('assets/screens/studio/lookbook-frame.png')} alt="" />
-      </div>
-      <div className="studio-lookbook-grid">
-        {showAi
-          ? LOOKBOOK_ANGLE_IDS.filter(id => state.slots[id].status === 'done').map(id => <figure key={id} className="studio-lookbook-card">
-            <div className="studio-lookbook-portrait">
-              <img className="studio-ai-photo" src={state.slots[id].image} alt={COPY.slotAlt(angleLabel(id), garmentName)} loading="lazy" />
-            </div>
-            <figcaption>{angleLabel(id)}</figcaption>
-          </figure>)
-          : children}
-      </div>
-      <div className="studio-ai-lookbook-status" aria-live="polite">
-        {busy && <span>{COPY.progress(done)}</span>}
-        {!busy && selectExhausted(state) && <span>{COPY.exhausted}</span>}
-        {!busy && !selectExhausted(state) && state.phase === 'finished' && <>
-          <AiStatusBadge status={selectBadge(state)} offlineText="ảnh pixel" />
-          {done > 0 && <span>{COPY.aiGenerated}</span>}
-        </>}
-      </div>
-    </div>
-    <div className="studio-actions" role="group" aria-label="Lưu và tùy chỉnh bộ phối">
-      {actions}
-      {showAi && <button className="studio-ai-capture" onClick={() => setShowPixel(true)}>{COPY.pixelAgain}</button>}
-    </div>
     {open && !(enlarged && enlargedImage) && <LookbookDialog
-      state={state} inputs={inputs} gate={gate} gender={gender} eventName={eventName}
-      garment={{ id: draft.garmentId, name: garmentName, story: garment?.culturalSummary ?? '' }}
+      state={state} inputs={inputs} gate={gate} gender={gender} eventName={eventName} playerName={playerName}
+      colorPalette={draft.colorPalette} garment={{ id: draft.garmentId, name: garmentName, story: garment?.culturalSummary ?? '' }}
       garments={garmentIds.map(id => ({ id, name: content.garmentsById.get(id)?.name ?? id }))} onGarment={onGarment}
       disabledReason={disabledReason} onCapture={() => void startCapture()} onSave={save} onRetry={retryAngle}
       onOpenSlot={setEnlarged} onCancel={cancel} onClose={close} />}

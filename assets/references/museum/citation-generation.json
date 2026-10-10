@@ -1,0 +1,15 @@
+{
+  "generatedOn": "2026-10-01",
+  "tool": "built-in image_gen",
+  "sourceDocuments": [
+    "assets/README.md",
+    "assets/screens/museum/README.md",
+    "docs/03-features/museum.md"
+  ],
+  "decisions": [
+    "Retained source and prompt for the current citation-seal.png."
+  ],
+  "prompts": {
+    "citation-seal": "pixel art, 32x32 logical pixel grid, every pixel a crisp square block, limited palette of at most 10 opaque colors, hard edges, no anti-aliasing, no dithering. Asset: isolated tiny Vietnamese cultural-reference citation icon. A single square vermilion-red ink stamp impression, viewed absolutely front-on, solid red square footprint with a slightly worn doubled square border and a very simple ivory three-petal lotus pictogram in the center, thick readable pixel clusters. Inspired by Vietnamese son-red printing ink on dó paper; a decorative UI symbol, not a reproduction of any historical royal seal. NO characters or seal script or letter-like ornament. Fits 28x28 pixels centered inside a complete 32x32 canvas with transparent 2px margins. Genuine transparent background outside ink footprint. No handle or physical stamp block, no perspective, no shadow, no paper backdrop. Avoid: photorealistic, realistic, hyperrealistic, 3D render, CGI, unreal engine, smooth gradients, anti-aliased, blurry, soft focus, bokeh, drop shadow, modern text, english text, chinese characters, kanji, hanzi, letters, signature, watermark, logo, western clothing, chinese qipao, korean hanbok, japanese kimono. No lettering, numbers, text or readable seal characters."
+  }
+}

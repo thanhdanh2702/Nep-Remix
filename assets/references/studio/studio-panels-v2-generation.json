@@ -1,0 +1,50 @@
+{
+  "generator": "imagegen built-in",
+  "purpose": "Responsive fitting-room catalog and styling toolbar, decorative only; labels and controls remain in React.",
+  "use_case": "stylized-concept",
+  "slice": 210,
+  "assets": [
+    {
+      "path": "assets/screens/studio/catalog-cabinet--9slice-v2.png",
+      "kind": "screen-asset",
+      "width": 1254,
+      "height": 1254,
+      "format": "PNG",
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "4b501309913b9417c9f0b3dcaac27ebabb011d2efa9b5f19f4e11651ea45badc"
+    },
+    {
+      "path": "assets/screens/studio/styling-tray--9slice-v2.png",
+      "kind": "screen-asset",
+      "width": 1254,
+      "height": 1254,
+      "format": "PNG",
+      "mode": "RGB",
+      "alphaRange": [
+        255,
+        255
+      ],
+      "bounds": [
+        0,
+        0,
+        1254,
+        1254
+      ],
+      "sha256": "8f2f6ca43ed148d7f2f1aa3c47eafb0b6cd575899a4f341fbaf6a72b1d4121fc"
+    }
+  ],
+  "notes": [
+    "Generated in the existing mahogany, lotus, cream-paper and antique-gold palette.",
+    "Source images are preserved at their generated dimensions; CSS nine-slice keeps corner ornaments square."
+  ]
+}

@@ -1,6 +1,8 @@
 # Tài Nguyên Màn Hình Giao Diện Ứng Dụng (assets/screens)
 
-Thư mục này chứa hình ảnh nền khung nhìn và các thành phần giao diện HUD, khung modal 9-slice, thanh 3-slice cho năm phân khu chức năng chính trong ứng dụng **Tiệm May Nếp**: Sảnh chính (`main-shop`), Phòng phối đồ (`studio`), Bảo tàng (`museum`), Tủ đồ (`wardrobe`), và Xưởng may (`workshop`).
+Thư mục này chứa asset đang dùng của **Tiệm May Nếp**, gom theo màn hình: Sảnh (`main-shop`), Phòng phối đồ (`studio`), Bảo tàng (`museum`), Tủ đồ (`wardrobe`), màn chờ (`welcome`) và bản đồ (`journey`). Xưởng may (`workshop`) hiện dùng HTML/CSS trong hộp thoại Tủ đồ và không có PNG riêng.
+
+Asset sảnh chia thành `main-shop/backgrounds/` và `main-shop/ui/`. Ảnh mẫu, ảnh nguồn và prompt tạo ảnh nằm trong [`../references/`](../references/README.md), không được đưa vào bản build. README của từng màn liệt kê bộ hình hiện tại.
 
 Mọi màn hình tuân thủ nguyên tắc thiết kế thích ứng hai hướng: **Bố cục ngang là bố cục chính** dành cho màn hình máy tính, và **bố cục dọc là bố cục phụ** dành cho thiết bị di động.
 
@@ -29,4 +31,4 @@ Mọi màn hình tuân thủ nguyên tắc thiết kế thích ứng hai hướn
 
 ---
 
-Tài liệu đặc tả chi tiết giao diện xem tại `docs/03-features/`.
+Tài liệu đặc tả chi tiết giao diện và luồng màn hình xem tại `docs/03-features/` và `docs/06-design/design-system.md`.

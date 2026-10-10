@@ -1,58 +1,58 @@
-import { test, expect, type Page } from '@playwright/test';
+﻿import { test, expect, type Page } from '@playwright/test';
 
-async function openMap(page: Page) {
+async function openAlbum(page: Page) {
   await page.goto('/');
   await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
   await page.getByRole('button', { name: 'Cốt truyện', exact: true }).first().click();
-  await expect(page.locator('.journey-map-screen')).toBeVisible();
+  await expect(page.locator('.journey-album')).toBeVisible();
 }
 
-test('Map reveals through two clouds, shows the six representatives and preserves progress', async ({ page }) => {
-  const errors: string[] = [];
-  page.on('pageerror', error => errors.push(error.message));
-  page.on('response', response => { if (response.status() >= 400) errors.push(response.url()); });
-  await openMap(page);
-  await expect(page.locator('.journey-cloud')).toHaveCount(2);
-  await expect(page.locator('.journey-map-screen')).toHaveAttribute('data-revealing', 'true');
-  await expect(page.locator('.journey-map-art')).toHaveAttribute('inert', '');
-  await page.screenshot({ path: 'artifacts/journey-map-clouds.png' });
-  await expect(page.locator('.journey-map-screen')).toHaveAttribute('data-revealing', 'false');
-  await expect(page.locator('.journey-cloud')).toHaveCount(0);
-  await expect(page.locator('.journey-map-stop')).toHaveCount(6);
-  await expect(page.locator('.is-locked .journey-map-label')).toHaveCount(5);
-  await expect(page.locator('.is-locked .journey-map-label .journey-lock')).toHaveCount(5);
-  await expect(page.locator('[data-chapter="c1"] .journey-map-label')).toBeDisabled();
-  for (const id of ['prologue', 'c5']) await expect(page.locator(`[data-chapter="${id}"] canvas`)).toHaveAttribute('data-ready', 'true');
-  expect(await page.locator('.journey-map-character img').evaluateAll(images => images.every(image => (image as HTMLImageElement).complete && (image as HTMLImageElement).naturalWidth > 0))).toBe(true);
-  const save = await page.evaluate(() => localStorage.getItem('tiem-may-nep-save-v1'));
-  await page.screenshot({ path: 'artifacts/journey-map-desktop.png' });
-  await page.locator('[data-chapter="prologue"] .journey-map-character').click();
-  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-ready', 'true');
-  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', 'c0-s1-tiem-may-chieu');
-  await page.getByRole('button', { name: 'Bản đồ chương', exact: true }).click();
-  await expect(page.locator('.journey-map-screen')).toHaveAttribute('data-revealing', 'false');
-  expect(await page.evaluate(() => localStorage.getItem('tiem-may-nep-save-v1'))).toBe(save);
-  await page.getByRole('button', { name: '‹ Về sân nhà', exact: true }).click();
-  await expect(page.locator('.app-shell')).toHaveClass('app-shell screen-hub');
-  expect(errors).toEqual([]);
+test('album previews chapters, opens ready rooms, and preserves old save progress', async ({ page }) => {
+  await openAlbum(page);
+  await expect(page.locator('.journey-album-row')).toHaveCount(6);
+  await page.evaluate(() => {
+    const key = 'tiem-may-nep-save-v1', save = JSON.parse(localStorage.getItem(key)!);
+    for (const node of Object.values(save.tree.nodes) as { snapshot: { journey: Record<string, { status: string }> } }[]) {
+      for (const id of ['c1', 'c2', 'c3']) node.snapshot.journey[id].status = 'locked';
+    }
+    localStorage.setItem(key, JSON.stringify(save));
+  });
+  await page.reload();
+  await page.getByRole('button', { name: /^(Vào game|Tiếp tục chơi)$/ }).click();
+  await page.getByRole('button', { name: 'Cốt truyện', exact: true }).first().click();
+  for (const id of ['c4', 'c5']) {
+    await page.locator(`[data-chapter="${id}"]`).click();
+    await expect(page.locator('.journey-enter-chapter')).toBeDisabled();
+    await expect(page.locator('.journey-chapter-status:not(.is-ready)')).toHaveCount(2);
+  }
+  for (const [id, area] of [['c1', 'c1-s1-buong-det-khoa-kin'], ['c2', 'c2-s1-gac-lung-ve-tranh'], ['c3', 'c3-s1-tiem-may-da-kao']]) {
+    await page.locator(`[data-chapter="${id}"]`).click();
+    await expect(page.locator(`[data-chapter="${id}"]`)).toHaveAttribute('aria-pressed', 'true');
+    await expect(page.locator('.journey-enter-chapter')).toBeEnabled();
+    if (id === 'c3') await page.screenshot({ path: 'artifacts/journey-album-desktop.png' });
+    if (id !== 'c3') continue;
+    await page.locator('.journey-enter-chapter').click();
+    await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', area);
+
+  }
+  const state = await page.evaluate(() => {
+    const tree = JSON.parse(localStorage.getItem('tiem-may-nep-save-v1')!).tree;
+    return tree.nodes[tree.headId].snapshot;
+  });
+  expect(state.wallet.senNgoc).toBe(100);
+  expect(state.journey.prologue.solvedPuzzleIds).toEqual([]);
+  expect(state.journey.c3.claimed).toBe(false);
 });
 
-test('Mobile map pans without page overflow and respects reduced motion', async ({ page }) => {
+test('mobile album fits the viewport and opens the selected chapter', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });
-  await openMap(page);
-  await expect(page.locator('.journey-map-screen')).toHaveAttribute('data-revealing', 'false');
-  await expect(page.locator('.journey-clouds')).toHaveCount(0);
-  const scroll = page.locator('.journey-map-scroll');
-  expect(await scroll.evaluate(el => el.scrollWidth > el.clientWidth)).toBe(true);
+  await openAlbum(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBe(390);
-  await expect(page.locator('[data-chapter="prologue"] canvas')).toHaveAttribute('data-ready', 'true');
-  await page.screenshot({ path: 'artifacts/journey-map-mobile.png' });
-  await scroll.evaluate(el => { el.scrollLeft = 0; });
-  await expect(page.locator('[data-chapter="c1"] .journey-map-label')).toBeInViewport();
-  await scroll.evaluate(el => { el.scrollLeft = el.scrollWidth; });
-  await expect(page.locator('[data-chapter="c5"] .journey-map-label')).toBeInViewport();
-  await page.locator('[data-chapter="prologue"] .journey-map-label').click();
-  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-world-width', '890');
-  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', 'c0-s1-tiem-may-chieu');
+  await page.locator('[data-chapter="c3"]').click();
+  await expect(page.locator('#journey-chapter-title')).toHaveText('Sài Gòn · Đa Kao');
+  await page.screenshot({ path: 'artifacts/journey-album-mobile.png' });
+  await page.locator('.journey-enter-chapter').click();
+  await expect(page.locator('.room-stage canvas')).toHaveAttribute('data-area', 'c3-s1-tiem-may-da-kao');
 });
+

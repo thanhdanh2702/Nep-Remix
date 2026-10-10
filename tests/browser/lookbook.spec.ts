@@ -122,12 +122,13 @@ test('fictional happy path: no request on open, id-only body, 4 slots fill, stor
   expect(mock.stream).toHaveLength(1);
   const body = mock.stream[0];
   expect(Object.keys(body).sort()).toEqual(['accessoryIds', 'colorPalette', 'eventId', 'garmentId', 'mode', 'modelGender', 'moodId']);
-  expect(body).toMatchObject({ mode: 'fictional', modelGender: 'female', garmentId: 'ao-tu-than', accessoryIds: [], eventId: 'dao_pho', moodId: 'pho-co' });
+  expect(body).toMatchObject({ mode: 'fictional', modelGender: 'female', garmentId: 'ao-tu-than', accessoryIds: [], eventId: 'dao_pho', moodId: 'san-nha' });
   expect(body.colorPalette).toEqual(expect.arrayContaining([expect.stringMatching(/^#[0-9a-f]{6}$/)]));
   expect((body.colorPalette as string[]).every(c => /^#[0-9a-f]{6}$/.test(c))).toBe(true);
   for (const id of ANGLES) await expect(slot(dialog, id).locator('img.lookbook-slot-img')).toHaveAttribute('src', IMG[id]);
   await expect(dialog.getByRole('button', { name: 'Lưu ảnh PNG', exact: true })).toBeVisible();
-  await expect(page.locator('img.studio-ai-photo')).toHaveCount(4);
+  await expect(dialog.locator('img.lookbook-slot-img')).toHaveCount(4);
+  await dialog.locator('.lookbook-album-story summary').click();
   await expect(dialog.getByRole('region', { name: 'Câu chuyện tà áo' })).toContainText(TU_THAN.culturalSummary);
   expect(errors).toEqual([]);
 });
@@ -168,7 +169,7 @@ test('personal mode is gated by photo, consent and a single server check', async
   await captureBtn(dialog).click();
   await expect(dialog.locator('figure.lookbook-slot[data-status="done"]')).toHaveCount(4);
   expect(mock.check).toHaveLength(1);
-  expect(mock.stream[0]).toMatchObject({ mode: 'personal', moodId: 'pho-co' });
+  expect(mock.stream[0]).toMatchObject({ mode: 'personal', moodId: 'san-nha' });
   expect(String(mock.stream[0].personImage)).toMatch(/^data:image\/jpeg;base64,/);
 });
 
@@ -212,7 +213,7 @@ test('retry one angle: sends angle + hero + token, only that slot changes', asyn
   await dialog.getByRole('button', { name: 'Chụp lại góc Cận cảnh', exact: true }).click();
   await expect(slot(dialog, 'detail')).toHaveAttribute('data-status', 'done');
   expect(mock.angle).toHaveLength(1);
-  expect(mock.angle[0]).toMatchObject({ angle: 'detail', heroImage: IMG.front, heroToken: 'tok-front', mode: 'fictional', moodId: 'pho-co' });
+  expect(mock.angle[0]).toMatchObject({ angle: 'detail', heroImage: IMG.front, heroToken: 'tok-front', mode: 'fictional', moodId: 'san-nha' });
   expect(mock.angle[0].noCache).toBeUndefined();
   await expect(slot(dialog, 'detail').locator('img.lookbook-slot-img')).toHaveAttribute('src', RETRY_IMG);
   for (const id of ['front', 'turn', 'back'] as const) await expect(slot(dialog, id).locator('img.lookbook-slot-img')).toHaveAttribute('src', IMG[id]);
@@ -271,7 +272,7 @@ test('daily quota: friendly sentence in every slot, capture locked, pixel panel 
   await expect(dialog.locator('.lookbook-slot-error')).toHaveCount(4);
   for (const error of await dialog.locator('.lookbook-slot-error').all()) await expect(error).toHaveText('Tiệm đã hết lượt chụp hôm nay, mai quay lại nhé.');
   await expect(captureBtn(dialog, 'Hết lượt hôm nay')).toBeDisabled();
-  await expect(page.locator('.studio-lookbook canvas')).toHaveCount(4);
+  await expect(page.locator('#paperdoll')).toHaveAttribute('data-ready', 'true');
   await expect(page.locator('img.studio-ai-photo')).toHaveCount(0);
   expect(await bodyText(page)).not.toMatch(REASONS_RE);
 });
@@ -300,20 +301,10 @@ test('every failure reason (and an unknown one) shows Vietnamese copy, never the
 test('dialog is portalled to body above the HUD; Escape closes and returns focus to the opener', async ({ page }) => {
   await mockLookbook(page, {});
   await enterStudio(page);
-  // What is on top at the centre of each HUD control (wallet pill, settings button)? Both sit inside .site-header.
-  const topAtHud = () => page.evaluate(() => ['.site-header .hud', '.site-header .settings-button'].map(selector => {
-    const rect = document.querySelector(selector)!.getBoundingClientRect();
-    const hit = document.elementFromPoint(rect.left + rect.width / 2, rect.top + rect.height / 2);
-    return { size: rect.width * rect.height, inHud: Boolean(hit?.closest('.site-header')), inDialog: Boolean(hit?.closest('body > .modal-backdrop.lookbook-dialog')) };
-  }));
-  // control: the HUD is reachable without the dialog (poll: the room is still animating in)
-  await expect.poll(async () => (await topAtHud()).every(hit => hit.inHud && !hit.inDialog)).toBe(true);
   const dialog = await openDialog(page);
   await expect(page.locator('body > .modal-backdrop.lookbook-dialog')).toHaveCount(1);
-  for (const hit of await topAtHud()) {
-    expect(hit.size).toBeGreaterThan(0);
-    expect(hit).toMatchObject({ inHud: false, inDialog: true });
-  }
+  await expect(page.locator('.nep-header')).toHaveAttribute('inert', '');
+  await expect(page.locator('.studio-book-layout')).toHaveAttribute('inert', '');
   await page.keyboard.press('Escape');
   await expect(dialog).toHaveCount(0);
   await expect(opener(page)).toBeFocused();

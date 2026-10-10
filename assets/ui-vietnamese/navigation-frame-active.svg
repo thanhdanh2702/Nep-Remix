@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="72" height="72" viewBox="0 0 72 72" fill="none" shape-rendering="crispEdges">
+  <rect x="1" y="1" width="70" height="70" stroke="#492536" stroke-width="2"/>
+  <rect x="5" y="5" width="62" height="62" stroke="#efc575"/>
+  <g stroke="#dca75e" stroke-width="2">
+    <path id="corner" d="M4 17V4h13M8 17V8h9v5h-4V9M4 21h4v-4h5"/>
+    <use href="#corner" transform="translate(72 0) scale(-1 1)"/>
+    <use href="#corner" transform="translate(0 72) scale(1 -1)"/>
+    <use href="#corner" transform="translate(72 72) scale(-1 -1)"/>
+  </g>
+</svg>

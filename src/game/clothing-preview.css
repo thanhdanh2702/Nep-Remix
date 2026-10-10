@@ -1,0 +1,9 @@
+:is(.closet-room, .museum-room) .wardrobe-thumb { position: relative; flex: 1 1 0; min-height: 0; width: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+:is(.closet-room, .museum-room) .wardrobe-thumb > img, :is(.closet-room, .museum-room) .wardrobe-thumb > canvas { display: block; flex: none; }
+:is(.closet-room, .museum-room) .wardrobe-thumb > img { max-width: 85%; max-height: 85%; width: auto; height: auto; object-fit: contain; }
+:is(.closet-room, .museum-room) .wardrobe-garment { color: var(--c-deep-plum); }
+:is(.closet-room, .museum-room) .wardrobe-hanging { padding-top: 18px; }
+:is(.closet-room, .museum-room) .wardrobe-hanger { position: absolute; top: 0; left: 50%; translate: -50% 0; width: 36px; height: 18px; color: #78482d; }
+.museum-art-pending,.garment-art-pending{display:flex;align-items:center;justify-content:center;max-width:100%;padding:12px;text-align:center;font:500 14px/1.5 var(--font-body);color:#805a48;background:#f8ecd9;border:1px dashed #bc9672}
+.museum-main-art .museum-art-pending{font-size:18px;max-width:230px}
+.wardrobe-thumb .wardrobe-garment[hidden]{display:none}

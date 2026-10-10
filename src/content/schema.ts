@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { cultureSources, type CultureSourceId } from './culture-sources';
 
 // ==========================================
 // 1. Literal ID Unions Derived from Content
@@ -308,6 +309,10 @@ export const CultureCardIdSchema = z.enum([
   'ao-giao-linh',
   'ao-yem',
   'ao-dai-tay-raglan',
+  'ao-dai-tan-thoi-vang-mo-ga',
+  'ao-dai-co-thuyen',
+  'ao-dai-cuoi-phin',
+  'ao-dai-popolin',
   'ao-ba-ba',
   'trang-phuc-hau-dong-tho-mau',
   'card-tiem-may-nep-origins',
@@ -578,8 +583,17 @@ export const CultureCardSchema = z.object({
   title: z.string(),
   timePeriod: z.string(),
   historicalFact: z.string(),
+  garmentId: GarmentIdSchema.optional(),
+  contentType: z.enum(['history', 'interpretation', 'fiction']),
+  sourceIds: z.array(z.enum(Object.keys(cultureSources) as [CultureSourceId, ...CultureSourceId[]])),
+  sourceNote: z.string(),
+  designNote: z.string().optional(),
   officialName: z.string().optional(),
   folkName: z.string().optional()
+}).superRefine((card, ctx) => {
+  if (card.contentType === 'history' && card.sourceIds.length === 0) {
+    ctx.addIssue({ code: 'custom', message: `${card.id}: historical content needs a source` });
+  }
 });
 export type CultureCard = z.infer<typeof CultureCardSchema>;
 

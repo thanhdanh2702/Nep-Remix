@@ -1,0 +1,107 @@
+/* LB1: all controls and media are live HTML over the blank album furniture. */
+.modal-backdrop.lookbook-album-dialog { position: fixed; inset: 52px 0 0; padding: 8px; background: rgb(40 18 29 / 48%); overflow: auto; }
+.lookbook-album-dialog .lookbook-shell { position: relative; display: block; container-type: inline-size; width: min(96vw, calc((100dvh - 72px) * 1672 / 941)); aspect-ratio: 1672 / 941; max-height: none; color: #4d293b; }
+.lookbook-album-art { position: absolute; inset: -11px 0 auto; width: 100%; height: calc(100% + 22px); pointer-events: none; }
+.lookbook-album-title { position: absolute; top: 1.8%; left: 38.5%; width: 24.5%; height: 4.9%; margin: 0; display: grid; place-items: center; white-space: nowrap; color: #fff4de; font: 600 clamp(22px, 2.3cqw, 36px)/1 var(--font-display); }
+.lookbook-album-close { position: absolute; right: 4.3%; top: 3.5%; z-index: 4; width: 3.3%; min-width: 36px; height: 5.8%; min-height: 36px; padding: 0; background: #a72d60; color: #fff8e8; border: 2px solid #f0c78a; box-shadow: inset 0 0 0 2px #78344b; font: 36px/1 var(--font-display); }
+.lookbook-album-dialog .lookbook-panel { position: absolute; left: 8.3%; top: 12%; width: 23%; height: 70%; padding: 0; display: flex; gap: 1.1cqw; overflow-y: auto; scrollbar-width: thin; background: transparent; border: 0; box-shadow: none; font-family: var(--font-display); }
+.lookbook-album-dialog .lookbook-panel-head { justify-content: center; padding-bottom: 6px; border-bottom: 1px solid #deb09a; }
+.lookbook-album-dialog .lookbook-panel-head h2 { font-size: clamp(20px, 1.9cqw, 30px); color: #853b55; font-weight: 400; }
+.lookbook-album-dialog .lookbook-section { flex: none; gap: 9px; }
+.lookbook-album-dialog .lookbook-section h3 { font: 400 clamp(17px, 1.5cqw, 24px)/1 var(--font-display); margin: 0; }
+.lookbook-album-dialog .lookbook-panel button { font: 400 clamp(15px, 1.3cqw, 21px)/1.1 var(--font-display); background: #fff4e5; border: 1px solid #c59172; min-height: 40px; padding: 6px; }
+.lookbook-album-dialog .lookbook-toggle-row { gap: 8px; }
+.lookbook-album-dialog .lookbook-toggle-row button { white-space: nowrap; }
+.lookbook-album-dialog .lookbook-panel button[aria-pressed=true] { background: #a72d60; color: #fff7e9; border-color: #b1546d; box-shadow: inset 0 0 0 2px #f8ccb1; }
+.lookbook-album-dialog .lookbook-note { font: 400 clamp(12px, 1cqw, 15px)/1.35 var(--font-body); color: #84617a; }
+.lookbook-album-dialog .lookbook-model-note { font-size: 12px; }
+.lookbook-selected-outfit { display: grid; grid-template-columns: 43% minmax(0,1fr); align-items: center; gap: 12px; }
+.lookbook-outfit-preview { height: 10cqw; min-height: 90px; border: 1px solid #d49b7d; position: relative; background: #fff4e155; padding: 8px; }
+.lookbook-outfit-preview .wardrobe-thumb { position: relative; width: 100%; height: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.lookbook-outfit-preview .wardrobe-hanger { position: absolute; top: 0; left: calc(50% - 18px); width: 36px; height: 18px; color: #805038; }
+.lookbook-outfit-preview .wardrobe-hanging { padding-top: 18px; }
+.lookbook-outfit-preview .wardrobe-garment { flex: none; }
+.lookbook-selected-outfit > div:last-child { display: flex; flex-direction: column; gap: 18px; }
+.lookbook-selected-outfit strong { font: 400 clamp(16px, 1.45cqw, 23px)/1.12 var(--font-display); }
+.lookbook-selected-outfit button { background: #f6c8d0 !important; border-color: #c78786 !important; }
+.lookbook-album-dialog .lookbook-garment-grid { max-height: 110px; }
+.lookbook-album-dialog .lookbook-mood-grid { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
+.lookbook-album-dialog .lookbook-mood-grid button { display: flex; flex-direction: column; align-items: stretch; gap: 5px; min-width: 0; padding: 4px; }
+.lookbook-mood-thumbnail { display: block; width: 100%; aspect-ratio: 1.05; background-image: url('../../assets/screens/studio/lookbook-sample-sheet.png'); background-size: 1700% 1200%; background-position: 11.8% 65.6%; }
+.lookbook-mood-thumbnail[data-mood=pho-co] { background-position: 19.2% 65.6%; }
+.lookbook-mood-thumbnail[data-mood=vuon-hoa] { background-position: 26.1% 65.6%; }
+.lookbook-mood-thumbnail[data-mood=tuong-voi] { background-position: 19.2% 65.6%; }
+.lookbook-album-dialog .lookbook-mood-tuong-voi { grid-column: 1; min-height: 36px !important; }
+.lookbook-album-dialog .lookbook-mood-tuong-voi .lookbook-mood-thumbnail { display: none; }
+.lookbook-album-dialog .lookbook-mood-custom { grid-column: 2 / 4; justify-content: center; min-height: 36px !important; }
+.lookbook-album-dialog .lookbook-frame { position: absolute; inset: 0; width: 100%; height: 100%; aspect-ratio: auto; container-type: normal; pointer-events: none; }
+.lookbook-album-dialog .lookbook-frame-slots { position: absolute; inset: 0; display: block; pointer-events: none; }
+.lookbook-album-dialog .lookbook-frame-slot[data-angle] { position: absolute; left: 40.6%; top: 12%; width: 19.4%; height: 31.2%; display: flex; flex-direction: column; gap: 5px; background: transparent; overflow: visible; pointer-events: auto; }
+.lookbook-album-dialog .lookbook-frame-slot[data-angle=turn], .lookbook-album-dialog .lookbook-frame-slot[data-angle=detail] { left: 67.2%; }
+.lookbook-album-dialog .lookbook-frame-slot[data-angle=back], .lookbook-album-dialog .lookbook-frame-slot[data-angle=detail] { top: 45.5%; }
+.lookbook-photo-aperture { position: relative; flex: 1; min-height: 0; width: 100%; overflow: hidden; background: #f5dcc588; border: 7px solid transparent; border-image: url('../../assets/ui-vietnamese/navigation-frame.svg') 22 / 7px stretch; }
+.lookbook-album-dialog .lookbook-chip.is-label { position: static; margin: 0; padding: 0; background: transparent; color: #4b283b; text-align: center; font: 400 clamp(17px, 1.5cqw, 23px)/1 var(--font-display); }
+.lookbook-album-dialog .lookbook-chip.is-ai { font-size: 10px; padding: 1px 4px; }
+.lookbook-slot-empty { height: 100%; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 12px; }
+.lookbook-slot-empty > span { font-size: 44px; color: #d993a4; opacity: .8; }
+.lookbook-album-dialog .lookbook-slot-text { font: 400 clamp(16px, 1.3cqw, 20px)/1.2 var(--font-display); color: #956d7e; }
+.lookbook-album-dialog .lookbook-slot-open { min-height: 0; box-shadow: none; }
+.lookbook-album-dialog .lookbook-slot-img { width: 100%; height: 100%; object-fit: contain; background: #f0dfce; }
+.lookbook-sample-photo { position: absolute; inset: 0; background-repeat: no-repeat; }
+.lookbook-album-dialog .lookbook-slot-redo { top: 5px; bottom: auto; right: 5px; width: 32px; height: 32px; min-height: 32px; background: #fff3df; color: #87455e; border: 1px solid #b47c63; font-size: 23px; }
+.lookbook-album-story { position: absolute; left: 37%; top: 80.2%; width: 54%; z-index: 3; border: 1px solid #cc9694; background: #f6ccd0; color: #732d51; font: 400 clamp(17px, 1.5cqw, 23px)/1.2 var(--font-display); }
+.lookbook-album-story summary { cursor: pointer; display: flex; justify-content: space-between; gap: 10px; padding: 6px 12px; list-style: none; }
+.lookbook-album-story summary::-webkit-details-marker { display: none; }
+.lookbook-album-story summary span { margin-left: auto; }
+.lookbook-album-story[open] { top: auto; bottom: 15.8%; }
+.lookbook-album-story[open] summary span { rotate: 45deg; }
+.lookbook-album-story > div { max-height: 150px; overflow: auto; padding: 12px; background: #fff1df; font: 14px/1.5 var(--font-body); }
+.lookbook-album-footer { position: absolute; left: 8%; top: 88.6%; width: 84%; height: 6.2%; margin: 0; padding: 0; border: 0; display: flex; align-items: stretch; gap: 14px; color: #fff4df; }
+.lookbook-album-dialog .lookbook-frame-progress { position: relative; left: auto; top: auto; width: 31%; height: auto; display: flex; justify-content: flex-start; font: 400 clamp(16px, 1.3cqw, 22px)/1.1 var(--font-display); white-space: normal; }
+.lookbook-album-dialog .lookbook-frame-progress::before { content: '▧'; margin-right: 12px; color: #f1cf91; font-size: 26px; }
+.lookbook-album-buttons { flex: 1; display: flex; justify-content: flex-end; gap: 10px; min-width: 0; }
+.lookbook-album-buttons button { min-width: 0; min-height: 36px; padding: 5px 18px; border: 2px solid #c38e60; background: #fff1df; color: #4b283c; box-shadow: inset 0 0 0 1px #f1d0a2; font: 400 clamp(16px, 1.5cqw, 24px)/1.1 var(--font-display); white-space: nowrap; }
+.lookbook-album-buttons .primary { background: #a72d60; color: #fff6e9; border-color: #f1c685; }
+.lookbook-album-buttons button:disabled { opacity: .55; cursor: not-allowed; }
+.lookbook-album-dialog .lookbook-toolbar { display: flex; gap: 0; }
+.lookbook-album-dialog .lookbook-toolbar > .lookbook-note { display: none; }
+.lookbook-album-dialog .lookbook-toolbar > .lookbook-error { position: absolute; right: 0; bottom: 100%; padding: 8px; background: #fff1df; z-index: 4; font: 14px/1.4 var(--font-body); }
+.lookbook-album-dialog .lookbook-toolbar .lookbook-actions { flex-wrap: nowrap; align-items: stretch; }
+.lookbook-album-disclosure { position: absolute; left: 9%; bottom: 1%; width: 82%; margin: 0; padding: 1px 5px; font: 11px/1.2 var(--font-body); color: #f8e4cd; text-align: center; pointer-events: none; }
+.lookbook-album-dialog .lookbook-slot[data-status=generating]::after { display: none; }
+.lookbook-album-dialog .lookbook-slot[data-status=generating] .lookbook-photo-aperture { background: #f4cad7; }
+.lookbook-album-dialog .lookbook-slot[data-status=error] { box-shadow: none; }
+.lookbook-album-dialog .lookbook-slot-fail { font-size: 12px; padding: 8px; height: 100%; justify-content: center; }
+@media (max-width: 800px), (max-height: 500px) {
+  .modal-backdrop.lookbook-album-dialog { inset: 104px 0 0; align-items: flex-start; padding: 8px; }
+  .lookbook-album-dialog .lookbook-shell { width: 100%; aspect-ratio: auto; min-height: 950px; background: #fff1df; border: 7px solid #713429; padding: 50px 12px 15px; box-shadow: inset 0 0 0 2px #d6a25f; }
+  .lookbook-album-art { display: none; }
+  .lookbook-album-title { top: 0; left: 0; width: 100%; height: 42px; background: #74362a; font-size: 27px; }
+  .lookbook-album-close { top: 2px; right: 2px; height: 36px; width: 36px; font-size: 28px; }
+  .lookbook-album-dialog .lookbook-panel { position: static; width: 100%; height: auto; overflow: visible; gap: 15px; }
+  .lookbook-album-dialog .lookbook-panel-head { display: none; }
+  .lookbook-album-dialog .lookbook-section h3 { font-size: 20px; }
+  .lookbook-album-dialog .lookbook-panel button { font-size: 19px; min-height: 40px; }
+  .lookbook-album-dialog .lookbook-note { font-size: 12px; }
+  .lookbook-outfit-preview { min-height: 110px; height: 110px; }
+  .lookbook-selected-outfit { grid-template-columns: 32% minmax(0,1fr); }
+  .lookbook-selected-outfit strong { font-size: 22px; }
+  .lookbook-album-dialog .lookbook-mood-grid { grid-template-columns: repeat(5,minmax(0,1fr)); gap: 4px; }
+  .lookbook-album-dialog .lookbook-mood-grid button { font-size: 15px; }
+  .lookbook-album-dialog .lookbook-mood-tuong-voi, .lookbook-album-dialog .lookbook-mood-custom { grid-column: auto; }
+  .lookbook-album-dialog .lookbook-mood-tuong-voi .lookbook-mood-thumbnail { display: block; }
+  .lookbook-album-dialog .lookbook-frame { position: relative; left: auto; top: auto; width: 100%; height: 400px; margin-top: 20px; }
+  .lookbook-album-dialog .lookbook-frame-slots { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); grid-template-rows: repeat(2,minmax(0,1fr)); gap: 15px 8px; }
+  .lookbook-album-dialog .lookbook-frame-slot[data-angle] { position: relative; left: auto; top: auto; width: 100%; height: 100%; }
+  .lookbook-album-dialog .lookbook-chip.is-label { font-size: 19px; }
+  .lookbook-album-story { position: relative; top: auto; left: auto; width: 100%; margin-top: 15px; font-size: 20px; }
+  .lookbook-album-story[open] { bottom: auto; }
+  .lookbook-album-footer { position: relative; left: auto; top: auto; width: 100%; height: auto; margin-top: 15px; flex-direction: column; background: #71392c; padding: 10px; }
+  .lookbook-album-dialog .lookbook-frame-progress { width: 100%; min-height: 30px; font-size: 19px; }
+  .lookbook-album-buttons { flex-wrap: wrap; justify-content: center; gap: 6px; }
+  .lookbook-album-buttons button { font-size: 18px; padding: 6px 10px; min-height: 44px; }
+  .lookbook-album-disclosure { position: static; width: 100%; color: #7c5369; font-size: 11px; margin-top: 8px; }
+}
+@media (max-height: 500px) and (min-width: 801px) {
+  .modal-backdrop.lookbook-album-dialog { inset: 52px 0 0; }
+}

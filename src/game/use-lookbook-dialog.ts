@@ -49,7 +49,7 @@ async function readImage(file: File): Promise<{ dataUrl: string } | { error: str
 
 export function useLookbookInputs(checkPhoto: (image: string, signal?: AbortSignal) => Promise<CheckPhotoResult>, onChange: () => void) {
   const [mode, setModeState] = useState<LookbookMode>('fictional');
-  const [mood, setMoodState] = useState<LookbookMoodId>('pho-co');
+  const [mood, setMoodState] = useState<LookbookMoodId>('san-nha');
   const [person, setPerson] = useState<string>();
   const [background, setBackground] = useState<string>();
   const [consent, setConsent] = useState(false);
