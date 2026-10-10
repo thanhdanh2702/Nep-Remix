@@ -1,0 +1,20 @@
+/* Player pixel portrait: a square of real pixels, always scaled with nearest-neighbour. */
+.player-portrait {
+  display: block; image-rendering: pixelated; object-fit: cover;
+  border: var(--bw-thin) solid var(--c-deep-plum); background: var(--c-soft-pink);
+}
+.player-portrait.hud-portrait { width: 40px; height: 40px; flex: none; }
+.player-portrait.dialogue-portrait { float: left; width: 72px; height: 72px; margin: 0 var(--sp-3) var(--sp-2) 0; }
+
+/* Maker inside the welcome "Tải ảnh của bạn" panel */
+.portrait-maker { display: grid; gap: var(--sp-2); margin-top: var(--sp-3); padding-top: var(--sp-3); border-top: var(--bw-thin) solid var(--c-sub-border); }
+.portrait-maker h3 { margin: 0; font-size: var(--fs-body); }
+.portrait-gender { display: flex; gap: var(--sp-2); }
+.portrait-gender button { flex: 1; min-height: var(--target-min); }
+.portrait-gender button[aria-pressed="true"] { background: var(--c-soft-pink); border-color: var(--c-crimson); }
+.portrait-gender small { display: block; font-size: var(--fs-min); }
+.portrait-preview { display: flex; align-items: center; gap: var(--sp-3); }
+.portrait-preview .player-portrait { width: 128px; height: 128px; }
+.portrait-actions { display: flex; flex-wrap: wrap; gap: var(--sp-2); }
+.portrait-note { margin: 0; font-size: var(--fs-caption); color: var(--c-muted-plum); }
+.portrait-error { margin: 0; font-size: var(--fs-caption); color: var(--c-error); }

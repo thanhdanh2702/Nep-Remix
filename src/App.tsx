@@ -4,6 +4,7 @@ import { Modal } from './game/Modal';
 import { ErrorBoundary } from './game/ErrorBoundary';
 import { restoreGame } from './game/store';
 import { AiStatusBadge, type AiBadgeStatus } from './game/AiStatusBadge';
+import { PlayerPortraitMaker } from './game/PlayerPortraitMaker';
 import { callAi } from './game/ai-client';
 import { presetFromSelfie } from './game/avatar-preset';
 import { validateImageFile, toDownscaledDataUrl } from './ui/image-upload';
@@ -182,7 +183,7 @@ export default function App() {
         {photoError && <p className="nep-photo-error" role="alert">{photoError}</p>}
         <p className="nep-upload-status" role="status"><b>{photo ? 'Đã chọn ảnh. ' : ''}Tạo nhân vật từ ảnh · Gemini</b><br />Bạn có thể vào chơi với nhân vật có sẵn trong tiệm.</p>
         {photo && <section className="nep-selfie" aria-label="Gợi ý diện mạo từ ảnh">
-          <label className="nep-consent"><input type="checkbox" checked={consent} disabled={analyzing} onChange={event => setConsent(event.currentTarget.checked)} /><span>Tôi đồng ý gửi ảnh này tới Google Gemini để gợi ý diện mạo. Ảnh không được lưu lại.</span></label>
+          <label className="nep-consent"><input type="checkbox" checked={consent} disabled={analyzing} onChange={event => setConsent(event.currentTarget.checked)} /><span>Đây là ảnh của chính tôi. Tôi đồng ý gửi ảnh này tới Google Gemini để gợi ý diện mạo và vẽ chân dung pixel. Ảnh không được lưu lại.</span></label>
           <button className="primary" onClick={() => void analyzeSelfie()} disabled={!consent || analyzing}>{analyzing ? 'Gemini đang xem ảnh…' : 'Phân tích bằng Gemini'}</button>
           {selfie && <div className="nep-selfie-result" role="status">
             <AiStatusBadge status={selfie.status} offlineText="chọn diện mạo trong Cài đặt" />
@@ -190,6 +191,7 @@ export default function App() {
               ? <><p>Nếp gợi ý: <b>{selfie.hairLength === 'ngan' ? 'tóc ngắn' : 'tóc dài'}</b></p>{applied ? <p>{entered ? 'Đã chọn diện mạo này.' : 'Đã chọn diện mạo này. Nhân vật sẽ đổi khi bạn vào game.'}</p> : <button onClick={applySelfie}>Dùng diện mạo này</button>}</>
               : <p>Bạn vẫn có thể chọn diện mạo trong Cài đặt.</p>}
           </div>}
+          <PlayerPortraitMaker file={photoFile.current} consent={consent} />
         </section>}
         <p className="nep-dialog-caption">Ảnh chỉ được xem trước trên thiết bị của bạn, trừ khi bạn đồng ý và bấm Phân tích. Tiệm không lưu ảnh.</p>
       </>}

@@ -15,6 +15,7 @@ Header kem gồm logo Tiệm May Nếp, Về Nếp và Cách chơi. Footer kem g
 
 - **Vào game:** chỉ lúc bấm mới mở Game với nhân vật có sẵn. Bản lưu hợp lệ đổi nhãn thành Tiếp tục chơi.
 - **Tải ảnh của bạn:** chọn ảnh JPG/PNG/WEBP, tick đồng ý gửi tới Google Gemini, bấm **Phân tích bằng Gemini** để nhận gợi ý kiểu tóc rồi **Dùng diện mạo này** để áp vào An. Ảnh được thu nhỏ trên máy, không lưu lại; đóng hộp thoại là xóa.
+- **Chân dung pixel:** trong cùng hộp thoại, chọn giới tính (hiện chỉ "Nữ", "Nam" để "Sắp có") rồi bấm **Vẽ chân dung pixel**. Gemini kiểm tra ảnh (một người, thấy mặt, người lớn) và vẽ chân dung bán thân theo phong cách nhân vật trong tiệm; trình duyệt thu về lưới 96×96 pixel. Bấm **Dùng chân dung này** để lưu trên thiết bị: chân dung hiện trên HUD và cạnh lời thoại khi An nói. **Xoá chân dung đã lưu** để quay về như cũ. Nhân vật đi lại trong game vẫn là An ghép lớp.
 - **Cách chơi:** ngoài sân đi bằng WASD/phím mũi tên (điện thoại: nút hướng) và E/Tương tác; trong phòng cốt truyện bấm/chạm vào vật có viền sáng, **Soi** (Space) để lộ mọi vật, mở **Túi đồ** để ghép vật phẩm.
 - **Về Nếp:** giới thiệu mục tiêu giúp người trẻ tiếp cận văn hóa áo dài.
 - **Ba mục footer:** giới thiệu các phân hệ khi đang ở màn chờ; mở phòng tương ứng khi đang chơi.
@@ -28,7 +29,7 @@ Chấp nhận JPG/PNG/WEBP tối đa 5 MB. Ảnh hợp lệ được xem trướ
 
 Ảnh chỉ được xem trước trên thiết bị. Không tải ảnh lên máy chủ, không gọi tuyến AI, không tạo kết quả nhân vật giả, không lưu ảnh gốc vào localStorage. Object URL được thu hồi khi thay ảnh hoặc đóng ứng dụng.
 
-Tính năng tạo nhân vật từ ảnh thuộc giai đoạn tiếp theo. Khi phát triển cần để người dùng chủ động lựa chọn giới tính/diện mạo và giữ luồng chơi với nhân vật có sẵn.
+Chỉ khi người dùng tick đồng ý và bấm **Phân tích** hoặc **Vẽ chân dung pixel** thì ảnh (đã thu nhỏ) mới được gửi tới Gemini. Thứ duy nhất được giữ lại là chân dung pixel 96×96 người dùng chọn lưu; ảnh gốc không bao giờ được lưu. Sprite nhân vật nam chưa có nên lựa chọn "Nam" đang khóa.
 
 ## Tiêu chí hoàn thành
 

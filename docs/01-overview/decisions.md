@@ -53,7 +53,7 @@
 - **Lý do:** Chuẩn hóa cấu trúc thư mục tài nguyên theo đúng chuẩn Vite bundler và phân định rõ ràng giữa tài nguyên phân phối web và tài liệu lưu trữ prompt kỹ thuật.
 
 ### 9. Quyền riêng tư & Cơ chế nhận diện diện mạo (Privacy & Avatar Mapping)
-- **Quyết định:** Tuyệt đối không lưu trữ hay tái tạo ảnh khuôn mặt chân thực từ ảnh selfie của người dùng. Ảnh selfie chỉ được AI phân tích thuộc tính ngoại hình (kiểu tóc, màu tóc, kính mắt) để gán vào sprite nhân vật pixel tương ứng; không tự động đoán giới tính mà để người dùng tự chọn. Quy định này áp dụng cho luồng tạo avatar pixel; Lookbook chế độ "Ảnh của tôi" (người dùng chủ động tải ảnh và tick đồng ý) theo mục 17.
+- **Quyết định:** Tuyệt đối không lưu trữ hay tái tạo ảnh khuôn mặt chân thực từ ảnh selfie của người dùng. Ảnh selfie chỉ được AI phân tích thuộc tính ngoại hình (kiểu tóc, màu tóc, kính mắt) để gán vào sprite nhân vật pixel tương ứng; không tự động đoán giới tính mà để người dùng tự chọn. Quy định này áp dụng cho luồng tạo avatar pixel; Lookbook chế độ "Ảnh của tôi" (người dùng chủ động tải ảnh và tick đồng ý) theo mục 17. Ngoại lệ có đồng ý: **chân dung pixel**. Người dùng tick "Đây là ảnh của chính tôi" thì Gemini vẽ một chân dung pixel bán thân theo phong cách nhân vật trong tiệm, kèm bước kiểm tra ảnh (một người, thấy mặt, người lớn). Chỉ chân dung pixel 96×96 được lưu trên thiết bị (localStorage) để hiện trên HUD và khi An trò chuyện; ảnh gốc không lưu, người dùng xoá chân dung được bất cứ lúc nào. Giới tính do người dùng chọn; hiện chỉ mở "Nữ", "Nam" để "Sắp có".
 - **Lý do:** Bảo vệ nghiêm ngặt quyền riêng tư sinh trắc học và tôn trọng quyền tự quyết bản dạng của người dùng.
 
 ### 10. Nguyên tắc khai báo cấu hình Model AI

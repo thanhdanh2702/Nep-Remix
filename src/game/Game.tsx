@@ -15,6 +15,7 @@ import { Studio } from './Studio';
 import { Closet } from './Rooms';
 import { Museum } from './Museum';
 import { Modal } from './Modal';
+import { PlayerPortrait } from './player-portrait';
 import { PuzzleModal, StyleChallengeBar, ChapterEnding, ACTION_LABEL, unlockerOf } from './PuzzleModal';
 import { InventoryCombine } from './InventoryCombine';
 import type { ChapterId, ExitArrow, Puzzle } from '../content/schema';
@@ -167,6 +168,7 @@ export default function Game({ embedded = false, paused = false, navigationReque
       <button className="brand" aria-label="Tiệm May Nếp · Về sân nhà" onClick={()=>navigate('hub')} disabled={blocked}><img src={asset(brandingAssets.logo)} alt="Việt Phục"/><span>TIỆM MAY NẾP</span></button>
       <Slice path="assets/screens/main-shop/ui-hud--3slice.png" className="tagline">Một tà áo. Muôn câu chuyện.</Slice>
       <div className="header-actions">
+        <PlayerPortrait className="hud-portrait"/>
         {screen==='hub' ? <>
           <div className="hub-wallet">
             <img src={asset(brandingAssets.currencyHud)} alt=""/>

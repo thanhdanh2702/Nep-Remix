@@ -5,6 +5,7 @@ import { AN, loadImage } from './assets';
 import { spriteScaleFor } from './character-scale';
 import { typewriter } from '../ui/motion';
 import { anLayerPath, standingSource } from './npc-portraits';
+import { PlayerPortrait } from './player-portrait';
 
 /** Standing art may use about this share of the stage height. */
 const STAND_SHARE = 0.62;
@@ -127,6 +128,7 @@ export function DialogueBox({ speaker, text, preset, children }: { speaker: stri
   return <>
     <StandingArt speaker={speaker} preset={preset} />
     <Modal title={speaker} className={`dialogue-stage${emblem ? ' is-emblem' : ''}`}>
+      {speaker === 'An' && <PlayerPortrait className="dialogue-portrait" />}
       <p className="dialogue-text" onClick={() => skip.current?.abort()}>
         {shown}<span className="dialogue-untyped">{rest}</span>
       </p>
